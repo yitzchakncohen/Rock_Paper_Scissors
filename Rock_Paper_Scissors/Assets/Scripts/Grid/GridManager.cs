@@ -14,10 +14,6 @@ public class GridManager : MonoBehaviour
     private void Awake() 
     {
         grid = GetComponent<Grid>();
-    }
-
-    private void Start() 
-    {
         gridObjects = new GridObject[gridSize.x, gridSize.y];
 
         for (int x = 0; x < gridSize.x; x++)
@@ -53,10 +49,19 @@ public class GridManager : MonoBehaviour
         return Vector2Int.zero;
     }
 
-
     public GridObject GetGridObjectFromWorldPosition(Vector2 worldPosition)
     {
         Vector2Int gridPosition = GetGridPositionFromWorldPosition(worldPosition);
         return gridObjects[gridPosition.x, gridPosition.y];
+    }
+
+    public GridObject GetGridObject(Vector2Int gridPosition)
+    {
+        return gridObjects[gridPosition.x, gridPosition.y];
+    }
+
+    public Vector2Int GetGridSize()
+    {
+        return gridSize;
     }
 }

@@ -6,6 +6,7 @@ public class GridObject : MonoBehaviour
 {
     private Vector2Int gridPosition;
     private GridObjectUI gridObjectUI;
+    private bool isWalkable = true;
 
     private void Awake() 
     {
@@ -17,9 +18,18 @@ public class GridObject : MonoBehaviour
         gridObjectUI.SetGridPosition(gridPosition);
     }
 
-    public Vector2 GetGridPostion()
+    public Vector2Int GetGridPostion()
     {
         return gridPosition;
     }
-    
+
+    public bool IsWalkable()
+    {
+        return isWalkable;
+    }
+
+    public void SetIsWalkable(bool isWalkable)
+    {
+        this.isWalkable = isWalkable;
+    }
 }

@@ -11,7 +11,9 @@ public class UnitMovement : MonoBehaviour
     private InputManager inputManager;
     private Grid grid;
     private GridManager gridManager;
-    private GridObject targetGridObject = null;
+    private PathFinding pathfinding;
+    private List<GridObject> targetGridObjects = null;
+    private int currentPositionIndex = 0;
     
     private void Start() 
     {
@@ -19,19 +21,21 @@ public class UnitMovement : MonoBehaviour
         inputManager.onSingleTouch += InputManager_onSingleTouch;
         grid = FindObjectOfType<Grid>();
         gridManager = FindObjectOfType<GridManager>();
+        pathfinding = FindObjectOfType<PathFinding>();
     }
 
     private void Update() 
     {
-        if(targetGridObject != null)
+        if(targetGridObjects != null && currentPositionIndex < targetGridObjects.Count)
         {
-            if(Vector2.Distance(transform.position, targetGridObject.transform.position) < stoppingDistance)
+            if(Vector2.Distance(transform.position, targetGridObjects[currentPositionIndex].transform.position) < stoppingDistance)
             {
-                targetGridObject = null;
+                transform.position = targetGridObjects[currentPositionIndex].transform.position;
+                currentPositionIndex++;
             }
             else
             {
-                Vector2 moveDirection = (targetGridObject.transform.position - transform.position).normalized;
+                Vector2 moveDirection = (targetGridObjects[currentPositionIndex].transform.position - transform.position).normalized;
                 transform.position += (Vector3)(moveDirection * movementSpeed * Time.deltaTime);
             }
         }
@@ -44,8 +48,11 @@ public class UnitMovement : MonoBehaviour
 
     public void Move(Vector2 touchPosition)
     {
+        currentPositionIndex = 0;
         Vector3 worldPositionOfInput = Camera.main.ScreenToWorldPoint(touchPosition);
-        targetGridObject = gridManager.GetGridObjectFromWorldPosition(worldPositionOfInput);
+        GridObject targetGridObject = gridManager.GetGridObjectFromWorldPosition(worldPositionOfInput);
+        Vector2Int currentGridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
+        targetGridObjects = pathfinding.FindPath(currentGridPosition, targetGridObject.GetGridPostion(), out int pathLength);
         Debug.Log(targetGridObject.GetGridPostion().ToString());
     }
 }
