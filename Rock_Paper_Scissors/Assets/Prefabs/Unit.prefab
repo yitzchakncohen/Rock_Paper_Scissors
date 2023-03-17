@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7916932273127252848}
   - component: {fileID: 7916932273127252849}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Unit Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,8 @@ GameObject:
   - component: {fileID: 7916932273131375012}
   - component: {fileID: 7916932273131375014}
   - component: {fileID: 7916932273131375013}
-  m_Layer: 0
+  - component: {fileID: 8524512952808324588}
+  m_Layer: 6
   m_Name: Unit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,3 +145,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 5
   stoppingDistance: 0.1
+--- !u!58 &8524512952808324588
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7916932273131375011}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5

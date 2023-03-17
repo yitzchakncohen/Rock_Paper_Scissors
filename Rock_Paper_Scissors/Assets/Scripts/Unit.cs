@@ -4,10 +4,5 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    private bool selected;
 
-    private void Start() 
-    {
-        
-    }
 }

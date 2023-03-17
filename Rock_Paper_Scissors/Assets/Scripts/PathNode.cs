@@ -4,21 +4,20 @@ using UnityEngine;
 
 public class PathNode
 {
-    private GridObject GridObject;
+    private GridObject gridObject;
     private int gCost;
     private int hCost;
     private int fCost;
     private PathNode cameFromPathNode;
-    private bool isWalkable = true;
 
     public PathNode(GridObject gridObject)
     {
-        this.GridObject = gridObject;
+        this.gridObject = gridObject;
     }
 
     public override string ToString()
     {
-        return GridObject.ToString();
+        return gridObject.ToString();
     }
 
     public int GetGCost()
@@ -68,21 +67,16 @@ public class PathNode
 
     public Vector2Int GetGridPosition()
     {
-        return GridObject.GetGridPostion();
+        return gridObject.GetGridPostion();
     }
 
     public Vector3 GetWorldPosition()
     {
-        return GridObject.transform.position;
+        return gridObject.transform.position;
     }
 
     public bool IsWalkable()
     {
-        return isWalkable;
-    }
-
-    public void SetIsWalkable(bool isWalkable)
-    {
-        this.isWalkable = isWalkable;
+        return gridObject.IsWalkable();
     }
 }

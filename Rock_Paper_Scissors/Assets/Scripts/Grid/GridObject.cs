@@ -6,7 +6,6 @@ public class GridObject : MonoBehaviour
 {
     private Vector2Int gridPosition;
     private GridObjectUI gridObjectUI;
-    private bool isWalkable = true;
     private GameObject gridPositionOccupyingGameObject = null;
 
     private void Awake() 
@@ -27,6 +26,11 @@ public class GridObject : MonoBehaviour
 
     public bool IsWalkable()
     {
-        return (gridPositionOccupyingGameObject = null);
+        return (gridPositionOccupyingGameObject == null);
+    }
+
+    public void SetOccupent(GameObject occupent)
+    {
+        gridPositionOccupyingGameObject = occupent;
     }
 }

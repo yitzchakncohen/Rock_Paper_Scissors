@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class GridManager : MonoBehaviour
 {
+    [SerializeField] private LayerMask occupancyLayerMask;
     [SerializeField] private Vector2Int gridSize;
     [SerializeField] private GameObject gridObjectPrefab;
     [SerializeField] private Tilemap baseTilemap;
@@ -29,6 +30,11 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void Start() 
+    {
+        UpdateGridOccupancy();
     }
 
     public Vector2Int GetGridPositionFromWorldPosition(Vector2 worldPosition)
@@ -63,5 +69,22 @@ public class GridManager : MonoBehaviour
     public Vector2Int GetGridSize()
     {
         return gridSize;
+    }
+
+    public void UpdateGridOccupancy()
+    {
+        float raycastDistance = 0.1f;
+        for (int x = 0; x < gridSize.x; x++)
+        {
+            for (int y = 0; y < gridSize.y; y++)
+            {
+                RaycastHit2D hit = Physics2D.Raycast(gridObjects[x,y].transform.position, Vector2.up, raycastDistance, occupancyLayerMask);
+                if(hit.collider != null)
+                {
+                    gridObjects[x,y].SetOccupent(hit.collider.gameObject);
+                    Debug.Log(hit.collider.name + " at x:" + x + " y: " + y);
+                }
+            }
+        }
     }
 }
