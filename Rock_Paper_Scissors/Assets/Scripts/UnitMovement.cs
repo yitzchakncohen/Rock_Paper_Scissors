@@ -8,7 +8,6 @@ public class UnitMovement : MonoBehaviour
 {
     [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float stoppingDistance = 0.1f;
-    private InputManager inputManager;
     private Grid grid;
     private GridManager gridManager;
     private PathFinding pathfinding;
@@ -17,8 +16,6 @@ public class UnitMovement : MonoBehaviour
     
     private void Start() 
     {
-        inputManager = FindObjectOfType<InputManager>();
-        inputManager.onSingleTouch += InputManager_onSingleTouch;
         grid = FindObjectOfType<Grid>();
         gridManager = FindObjectOfType<GridManager>();
         pathfinding = FindObjectOfType<PathFinding>();
@@ -41,16 +38,9 @@ public class UnitMovement : MonoBehaviour
         }
     }
 
-    private void InputManager_onSingleTouch(object sender, Vector2 touchPosition)
-    {
-        Move(touchPosition);
-    }
-
-    public void Move(Vector2 touchPosition)
+    public void Move(GridObject targetGridObject)
     {
         currentPositionIndex = 0;
-        Vector3 worldPositionOfInput = Camera.main.ScreenToWorldPoint(touchPosition);
-        GridObject targetGridObject = gridManager.GetGridObjectFromWorldPosition(worldPositionOfInput);
         Vector2Int currentGridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
         targetGridObjects = pathfinding.FindPath(currentGridPosition, targetGridObject.GetGridPostion(), out int pathLength);
         Debug.Log(targetGridObject.GetGridPostion().ToString());
