@@ -9,7 +9,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private GameObject gridObjectPrefab;
     [SerializeField] private Tilemap baseTilemap;
     private Grid grid;
-    private List<GridObject> gridObjects = new List<GridObject>();
+    private GridObject[,] gridObjects;
 
     private void Awake() 
     {
@@ -18,17 +18,45 @@ public class GridManager : MonoBehaviour
 
     private void Start() 
     {
-        for (int x = -gridSize.x/2; x < gridSize.x/2; x++)
+        gridObjects = new GridObject[gridSize.x, gridSize.y];
+
+        for (int x = 0; x < gridSize.x; x++)
         {
-            for (int y = -gridSize.y/2; y < gridSize.y/2; y++)
+            for (int y = 0; y < gridSize.y; y++)
             {
                 Vector3 gridPosition = grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
                 GameObject gridGameObject = Instantiate(gridObjectPrefab, gridPosition, Quaternion.identity);
                 if(gridGameObject.TryGetComponent<GridObject>(out GridObject gridObject))
                 {
                     gridObject.Setup(new Vector2Int(x,y));
+                    gridObjects[x,y] = gridObject;
                 }
             }
         }
+    }
+
+    public Vector2Int GetGridPositionFromWorldPosition(Vector2 worldPosition)
+    {
+        Vector3Int targetGridPosition = grid.WorldToCell(worldPosition);
+        Vector3 cellCenterPosition = grid.GetCellCenterWorld(targetGridPosition);
+        for (int x = 0; x < gridSize.x; x++)
+        {
+            for (int y = 0; y < gridSize.y; y++)
+            {
+                if(gridObjects[x,y].transform.position == cellCenterPosition)
+                {
+                    return new Vector2Int(x,y);
+                }
+            }
+        }   
+
+        return Vector2Int.zero;
+    }
+
+
+    public GridObject GetGridObjectFromWorldPosition(Vector2 worldPosition)
+    {
+        Vector2Int gridPosition = GetGridPositionFromWorldPosition(worldPosition);
+        return gridObjects[gridPosition.x, gridPosition.y];
     }
 }

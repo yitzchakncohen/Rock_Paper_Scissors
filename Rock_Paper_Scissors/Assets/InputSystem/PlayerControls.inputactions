@@ -1,0 +1,45 @@
+{
+    "name": "PlayerControls",
+    "maps": [
+        {
+            "name": "GameInputs",
+            "id": "2b75fd33-a5c8-4878-a66d-d560ad9f51f7",
+            "actions": [
+                {
+                    "name": "SingleTouch",
+                    "type": "Button",
+                    "id": "7c2ac2aa-20a9-4ce0-af7c-04faa936bcb2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f7eb1f3b-df00-4da7-adc3-05835d70bea7",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SingleTouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bf737c76-4a1a-4709-a917-f3465334f5d8",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SingleTouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
