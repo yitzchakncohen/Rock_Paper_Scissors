@@ -17,7 +17,7 @@ public class InputManager : MonoBehaviour
 
     private void Update() 
     {
-        if(playerControls.GameInputs.SingleTouch.IsPressed())
+        if(playerControls.GameInputs.SingleTouch.IsPressed() && playerControls.GameInputs.SingleTouch.phase == InputActionPhase.Performed)
         {
             Vector2 touchPosition;
 #if UNITY_EDITOR

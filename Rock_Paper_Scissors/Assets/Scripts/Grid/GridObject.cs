@@ -6,7 +6,7 @@ public class GridObject : MonoBehaviour
 {
     private Vector2Int gridPosition;
     private GridObjectUI gridObjectUI;
-    private GameObject gridPositionOccupyingGameObject = null;
+    private Unit gridPositionOccupyingGameObject = null;
 
     private void Awake() 
     {
@@ -29,8 +29,13 @@ public class GridObject : MonoBehaviour
         return (gridPositionOccupyingGameObject == null);
     }
 
-    public void SetOccupent(GameObject occupent)
+    public void SetOccupent(Unit occupent)
     {
         gridPositionOccupyingGameObject = occupent;
+    }
+
+    public Unit GetOccupent()
+    {
+        return gridPositionOccupyingGameObject;
     }
 }

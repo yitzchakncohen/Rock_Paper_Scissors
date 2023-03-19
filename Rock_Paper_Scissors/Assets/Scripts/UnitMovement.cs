@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 
 public class UnitMovement : MonoBehaviour
 {
+    public static event EventHandler OnMovementCompleted;
     [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float stoppingDistance = 0.1f;
     private Grid grid;
@@ -13,6 +14,7 @@ public class UnitMovement : MonoBehaviour
     private PathFinding pathfinding;
     private List<GridObject> targetGridObjects = null;
     private int currentPositionIndex = 0;
+    private bool moving;
     
     private void Start() 
     {
@@ -23,9 +25,17 @@ public class UnitMovement : MonoBehaviour
 
     private void Update() 
     {
-        if(targetGridObjects != null && currentPositionIndex < targetGridObjects.Count)
+        if(moving)
         {
-            if(Vector2.Distance(transform.position, targetGridObjects[currentPositionIndex].transform.position) < stoppingDistance)
+            Move();
+        }
+    }
+
+    private void Move()
+    {
+        if (targetGridObjects != null && currentPositionIndex < targetGridObjects.Count)
+        {
+            if (Vector2.Distance(transform.position, targetGridObjects[currentPositionIndex].transform.position) < stoppingDistance)
             {
                 transform.position = targetGridObjects[currentPositionIndex].transform.position;
                 currentPositionIndex++;
@@ -36,13 +46,18 @@ public class UnitMovement : MonoBehaviour
                 transform.position += (Vector3)(moveDirection * movementSpeed * Time.deltaTime);
             }
         }
+        else
+        {
+            moving = false;
+            OnMovementCompleted?.Invoke(this, EventArgs.Empty);
+        }
     }
 
-    public void Move(GridObject targetGridObject)
+    public void StartMove(GridObject targetGridObject)
     {
         currentPositionIndex = 0;
         Vector2Int currentGridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
         targetGridObjects = pathfinding.FindPath(currentGridPosition, targetGridObject.GetGridPostion(), out int pathLength);
-        Debug.Log(targetGridObject.GetGridPostion().ToString());
+        moving = true;
     }
 }

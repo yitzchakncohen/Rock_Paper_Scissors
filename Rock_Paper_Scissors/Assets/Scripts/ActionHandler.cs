@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ActionHandler : MonoBehaviour
 {
+    public static event EventHandler<Unit> OnUnitSelected;
     [SerializeField] private Unit selectedUnit;
     private InputManager inputManager;
     private GridManager gridManager;
@@ -28,7 +30,17 @@ public class ActionHandler : MonoBehaviour
     {
         if(selectedUnit != null)
         {
-            selectedUnit.GetComponent<UnitMovement>().Move(gridObject);
+            // Check if the grid position is occupied. 
+            if(gridObject.GetOccupent() != null)
+            {
+                selectedUnit = gridObject.GetOccupent();
+                OnUnitSelected?.Invoke(this, selectedUnit);
+            }
+            else
+            {
+                // If the grid position is not occupied, move the selected unit there
+                selectedUnit.GetComponent<UnitMovement>().StartMove(gridObject);
+            }
         }
     }
 }

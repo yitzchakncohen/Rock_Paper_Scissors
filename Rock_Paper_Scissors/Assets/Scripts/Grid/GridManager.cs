@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,7 @@ public class GridManager : MonoBehaviour
         grid = GetComponent<Grid>();
         gridObjects = new GridObject[gridSize.x, gridSize.y];
 
+        // Setup the grid
         for (int x = 0; x < gridSize.x; x++)
         {
             for (int y = 0; y < gridSize.y; y++)
@@ -34,6 +36,7 @@ public class GridManager : MonoBehaviour
 
     private void Start() 
     {
+        UnitMovement.OnMovementCompleted += UnitMovement_OnMovementCompleted;
         UpdateGridOccupancy();
     }
 
@@ -81,10 +84,19 @@ public class GridManager : MonoBehaviour
                 RaycastHit2D hit = Physics2D.Raycast(gridObjects[x,y].transform.position, Vector2.up, raycastDistance, occupancyLayerMask);
                 if(hit.collider != null)
                 {
-                    gridObjects[x,y].SetOccupent(hit.collider.gameObject);
-                    Debug.Log(hit.collider.name + " at x:" + x + " y: " + y);
+                    // If the object is a unit set as occupent
+                    hit.collider.TryGetComponent<Unit>(out Unit unit);
+                    {
+                        gridObjects[x,y].SetOccupent(unit);
+                        // Debug.Log(hit.collider.name + " at x:" + x + " y: " + y);
+                    }
                 }
             }
         }
+    }
+
+    private void UnitMovement_OnMovementCompleted(object sender, EventArgs e)
+    {
+        UpdateGridOccupancy();
     }
 }
