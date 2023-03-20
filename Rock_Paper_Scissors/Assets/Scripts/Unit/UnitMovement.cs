@@ -7,12 +7,14 @@ using UnityEngine.InputSystem;
 public class UnitMovement : MonoBehaviour
 {
     public static event EventHandler OnMovementCompleted;
+    [SerializeField] private int moveDistance = 5;
     [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float stoppingDistance = 0.1f;
     private Grid grid;
     private GridManager gridManager;
     private PathFinding pathfinding;
     private List<GridObject> targetGridObjects = null;
+    private int movementPointsRemaining = 1;
     private int currentPositionIndex = 0;
     private bool moving;
     
@@ -49,15 +51,46 @@ public class UnitMovement : MonoBehaviour
         else
         {
             moving = false;
+            movementPointsRemaining -= 1;
             OnMovementCompleted?.Invoke(this, EventArgs.Empty);
         }
     }
 
-    public void StartMove(GridObject targetGridObject)
+    public bool TryStartMove(GridObject targetGridObject)
     {
-        currentPositionIndex = 0;
+        if(movementPointsRemaining <= 0)
+        {
+            return false;
+        }
+
         Vector2Int currentGridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
         targetGridObjects = pathfinding.FindPath(currentGridPosition, targetGridObject.GetGridPostion(), out int pathLength);
+        if(pathLength > moveDistance)
+        {
+            return false;
+        }
+        currentPositionIndex = 0;
         moving = true;
+        return true;
+    }
+
+    public int GetMoveDistance()
+    {
+        return moveDistance;
+    }
+
+    public bool IsMoving()
+    {
+        return moving;
+    }
+
+    public int GetMovementPointsRemaining()
+    {
+        return movementPointsRemaining;
+    }
+
+    public void ResetMovementPoints()
+    {
+        movementPointsRemaining = 1;
     }
 }

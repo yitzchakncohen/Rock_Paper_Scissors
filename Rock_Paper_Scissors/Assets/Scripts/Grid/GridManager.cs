@@ -37,7 +37,14 @@ public class GridManager : MonoBehaviour
     private void Start() 
     {
         UnitMovement.OnMovementCompleted += UnitMovement_OnMovementCompleted;
+        UnitAttacking.OnAttackingCompleted += UnitAttacking_OnAttackingCompleted;
         UpdateGridOccupancy();
+    }
+
+    private void OnDestroy() 
+    {
+        UnitMovement.OnMovementCompleted -= UnitMovement_OnMovementCompleted;
+        UnitAttacking.OnAttackingCompleted -= UnitAttacking_OnAttackingCompleted;
     }
 
     public Vector2Int GetGridPositionFromWorldPosition(Vector2 worldPosition)
@@ -91,12 +98,33 @@ public class GridManager : MonoBehaviour
                         // Debug.Log(hit.collider.name + " at x:" + x + " y: " + y);
                     }
                 }
+                else
+                {
+                    gridObjects[x,y].SetOccupent(null);
+                }
             }
         }
+    }
+
+    public bool IsValidGridPosition(Vector2Int testGridPosition)
+    {
+        if(testGridPosition.x >= 0 && testGridPosition.x < gridSize.x)
+        {
+            if(testGridPosition.y >= 0 && testGridPosition.y < gridSize.y)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void UnitMovement_OnMovementCompleted(object sender, EventArgs e)
     {
         UpdateGridOccupancy();
     }
+
+    private void UnitAttacking_OnAttackingCompleted(object sender, EventArgs e)
+    {
+        UpdateGridOccupancy();
+    }    
 }

@@ -37,15 +37,19 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\ActionHandler.cs" />
-     <Compile Include="Assets\Scripts\Unit.cs" />
+     <Compile Include="Assets\Scripts\Unit\Unit.cs" />
      <Compile Include="Assets\InputSystem\PlayerControls.cs" />
      <Compile Include="Assets\Scripts\Grid\GridManager.cs" />
      <Compile Include="Assets\Scripts\PathNode.cs" />
      <Compile Include="Assets\Scripts\Grid\GridObject.cs" />
      <Compile Include="Assets\Scripts\PathFinding.cs" />
-     <Compile Include="Assets\Scripts\UnitMovement.cs" />
+     <Compile Include="Assets\Scripts\Unit\UnitMovement.cs" />
      <Compile Include="Assets\Scripts\InputManager.cs" />
      <Compile Include="Assets\Scripts\Grid\GridObjectUI.cs" />
+     <Compile Include="Assets\Scripts\Grid\GridUIManager.cs" />
+     <Compile Include="Assets\Scripts\Unit\UnitAttacking.cs" />
+     <Compile Include="Assets\Scripts\Health.cs" />
+     <Compile Include="Assets\Scripts\GridHighlightType.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

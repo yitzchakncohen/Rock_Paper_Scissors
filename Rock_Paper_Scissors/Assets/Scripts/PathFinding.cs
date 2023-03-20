@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PathFinding : MonoBehaviour
 {
-    private const int MOVE_STRAIGHT_COST = 10;
+    private const int MOVE_STRAIGHT_COST = 1;
     private GridManager gridManager;
     private PathNode[,] pathNodes;
     private Vector2Int gridSize;

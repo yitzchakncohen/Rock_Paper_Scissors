@@ -13,6 +13,11 @@ public class GridObject : MonoBehaviour
         gridObjectUI = GetComponent<GridObjectUI>();
     }
 
+    private void Start() 
+    {
+        
+    }
+
     public void Setup(Vector2Int gridPosition) 
     {
         this.gridPosition = gridPosition;
@@ -38,4 +43,9 @@ public class GridObject : MonoBehaviour
     {
         return gridPositionOccupyingGameObject;
     }
+
+    public void ShowHighlight(GridHighlightType highlightType) => gridObjectUI.ShowHighlight(highlightType);
+
+    public void HideHighlight(GridHighlightType highlightType) => gridObjectUI.HideHighlight(highlightType);
+    public void HideAllHighlights() => gridObjectUI.HideAllHighlights();
 }

@@ -96,6 +96,8 @@ GameObject:
   - component: {fileID: 7916932273131375014}
   - component: {fileID: 7916932273131375013}
   - component: {fileID: 8524512952808324588}
+  - component: {fileID: 6410595749419278124}
+  - component: {fileID: 8114415440366524639}
   m_Layer: 6
   m_Name: Unit
   m_TagString: Untagged
@@ -132,6 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 7916932273127252849}
+  isFriendly: 1
 --- !u!114 &7916932273131375013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,6 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3e77aa5ef0f4e04fa9ced4329c2cc94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveDistance: 5
   movementSpeed: 5
   stoppingDistance: 0.1
 --- !u!58 &8524512952808324588
@@ -162,3 +166,30 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &6410595749419278124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7916932273131375011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2234e3a854b1c2e439ae4a1d110eddde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackRange: 1
+  attackDamage: 10
+--- !u!114 &8114415440366524639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7916932273131375011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f21129a7996cf42b423ab9e964a688, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
