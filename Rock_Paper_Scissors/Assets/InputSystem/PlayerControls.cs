@@ -53,6 +53,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Scroll"",
+                    ""type"": ""Value"",
+                    ""id"": ""c186f7d6-dcc5-495f-8728-746ad9196394"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Pinch"",
+                    ""type"": ""Button"",
+                    ""id"": ""1af275d2-baf1-4c92-8184-5bead6172e9c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -121,6 +139,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""SingleHold"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""33e8463c-7622-41da-9aec-d52a8397d141"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": ""InvertVector2(invertX=false)"",
+                    ""groups"": """",
+                    ""action"": ""Scroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6b0b9f28-639e-4e37-adc2-b01113dbc2d7"",
+                    ""path"": ""<Touchscreen>/touch*/Press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pinch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -132,6 +172,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_GameInputs_SingleTap = m_GameInputs.FindAction("SingleTap", throwIfNotFound: true);
         m_GameInputs_SingleHold = m_GameInputs.FindAction("SingleHold", throwIfNotFound: true);
         m_GameInputs_TouchPosition = m_GameInputs.FindAction("TouchPosition", throwIfNotFound: true);
+        m_GameInputs_Scroll = m_GameInputs.FindAction("Scroll", throwIfNotFound: true);
+        m_GameInputs_Pinch = m_GameInputs.FindAction("Pinch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -196,6 +238,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_GameInputs_SingleTap;
     private readonly InputAction m_GameInputs_SingleHold;
     private readonly InputAction m_GameInputs_TouchPosition;
+    private readonly InputAction m_GameInputs_Scroll;
+    private readonly InputAction m_GameInputs_Pinch;
     public struct GameInputsActions
     {
         private @PlayerControls m_Wrapper;
@@ -203,6 +247,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @SingleTap => m_Wrapper.m_GameInputs_SingleTap;
         public InputAction @SingleHold => m_Wrapper.m_GameInputs_SingleHold;
         public InputAction @TouchPosition => m_Wrapper.m_GameInputs_TouchPosition;
+        public InputAction @Scroll => m_Wrapper.m_GameInputs_Scroll;
+        public InputAction @Pinch => m_Wrapper.m_GameInputs_Pinch;
         public InputActionMap Get() { return m_Wrapper.m_GameInputs; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -221,6 +267,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @TouchPosition.started += instance.OnTouchPosition;
             @TouchPosition.performed += instance.OnTouchPosition;
             @TouchPosition.canceled += instance.OnTouchPosition;
+            @Scroll.started += instance.OnScroll;
+            @Scroll.performed += instance.OnScroll;
+            @Scroll.canceled += instance.OnScroll;
+            @Pinch.started += instance.OnPinch;
+            @Pinch.performed += instance.OnPinch;
+            @Pinch.canceled += instance.OnPinch;
         }
 
         private void UnregisterCallbacks(IGameInputsActions instance)
@@ -234,6 +286,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @TouchPosition.started -= instance.OnTouchPosition;
             @TouchPosition.performed -= instance.OnTouchPosition;
             @TouchPosition.canceled -= instance.OnTouchPosition;
+            @Scroll.started -= instance.OnScroll;
+            @Scroll.performed -= instance.OnScroll;
+            @Scroll.canceled -= instance.OnScroll;
+            @Pinch.started -= instance.OnPinch;
+            @Pinch.performed -= instance.OnPinch;
+            @Pinch.canceled -= instance.OnPinch;
         }
 
         public void RemoveCallbacks(IGameInputsActions instance)
@@ -256,5 +314,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnSingleTap(InputAction.CallbackContext context);
         void OnSingleHold(InputAction.CallbackContext context);
         void OnTouchPosition(InputAction.CallbackContext context);
+        void OnScroll(InputAction.CallbackContext context);
+        void OnPinch(InputAction.CallbackContext context);
     }
 }

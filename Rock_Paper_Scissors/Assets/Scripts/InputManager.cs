@@ -10,6 +10,7 @@ public class InputManager : MonoBehaviour
     public event EventHandler<Vector2> OnStartDragging;
     public event EventHandler<Vector2> Dragging;
     public event EventHandler<Vector2> OnDraggingCompleted;
+    public event EventHandler<float> OnScroll;
     private PlayerControls playerControls;
     private bool isDragging = false;
 
@@ -27,6 +28,7 @@ public class InputManager : MonoBehaviour
     {
         playerControls.GameInputs.SingleTap.performed += PlayerControls_GameInputs_SingleTouch_performed;
         playerControls.GameInputs.SingleHold.performed += PlayerControls_GameInputs_SingleHold_performed;
+        playerControls.GameInputs.Scroll.performed += PlayerControls_GameInputs_Scroll_performed;;
     }
 
     private void OnDisable() 
@@ -69,5 +71,10 @@ public class InputManager : MonoBehaviour
     {
         Debug.Log("Detect Tap");
         OnSingleTap?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
+    }
+
+    private void PlayerControls_GameInputs_Scroll_performed(InputAction.CallbackContext obj)
+    {
+        OnScroll?.Invoke(this, Mathf.Clamp(obj.ReadValue<Vector2>().y, -1, 1));
     }
 }
