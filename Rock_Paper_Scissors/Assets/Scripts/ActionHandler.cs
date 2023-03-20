@@ -20,14 +20,14 @@ public class ActionHandler : MonoBehaviour
         inputManager = FindObjectOfType<InputManager>();
         pathFinding = FindObjectOfType<PathFinding>();
 
-        inputManager.onSingleTouch += InputManager_onSingleTouch;
+        inputManager.OnSingleTap += InputManager_onSingleTouch;
         UnitMovement.OnMovementCompleted += UnitMovement_OnMovementCompleted;
         UnitAttacking.OnAttackingCompleted += UnitAttacking_OnAttackingCompleted;
     }
 
     private void OnDestroy() 
     {
-        inputManager.onSingleTouch -= InputManager_onSingleTouch;
+        inputManager.OnSingleTap -= InputManager_onSingleTouch;
         UnitMovement.OnMovementCompleted -= UnitMovement_OnMovementCompleted;
         UnitAttacking.OnAttackingCompleted -= UnitAttacking_OnAttackingCompleted;
     }

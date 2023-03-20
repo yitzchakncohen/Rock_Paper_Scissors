@@ -6,26 +6,68 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
-    public event EventHandler<Vector2> onSingleTouch;
+    public event EventHandler<Vector2> OnSingleTap;
+    public event EventHandler<Vector2> OnStartDragging;
+    public event EventHandler<Vector2> Dragging;
+    public event EventHandler<Vector2> OnDraggingCompleted;
     private PlayerControls playerControls;
+    private bool isDragging = false;
 
     private void Awake() 
     {
         playerControls = new PlayerControls();
-        playerControls.GameInputs.Enable();
     }
 
-    private void Update() 
+    private void OnEnable() 
     {
-        if(playerControls.GameInputs.SingleTouch.WasPressedThisFrame())
+        playerControls.GameInputs.Enable();        
+    }
+
+    private void Start() 
+    {
+        playerControls.GameInputs.SingleTap.performed += PlayerControls_GameInputs_SingleTouch_performed;
+        playerControls.GameInputs.SingleHold.performed += PlayerControls_GameInputs_SingleHold_performed;
+    }
+
+    private void OnDisable() 
+    {
+        playerControls.GameInputs.Disable();
+    }
+
+    private void PlayerControls_GameInputs_SingleHold_performed(InputAction.CallbackContext obj)
+    {
+        DetectDrag();
+    }
+
+    private void PlayerControls_GameInputs_SingleTouch_performed(InputAction.CallbackContext obj)
+    {   
+        DetectTap();
+    }
+
+    private void Update()
+    {
+        if(isDragging && playerControls.GameInputs.SingleHold.phase == InputActionPhase.Performed)
         {
-            Vector2 touchPosition;
-#if UNITY_EDITOR
-            touchPosition = Mouse.current.position.ReadValue();
-#elif (UNITY_IPHONE || UNITY_ANDROID)
-            touchLocation = Touchscreen.current.position.ReadValue();
-#endif
-            onSingleTouch?.Invoke(this, touchPosition);
+            Debug.Log("Dragging");
+            Dragging?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
         }
+        else
+        {
+            isDragging = false;
+            OnDraggingCompleted?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
+        }
+    }
+
+    private void DetectDrag()
+    {
+        Debug.Log("Detect Drag");
+        isDragging = true;
+        OnStartDragging?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
+    }
+
+    private void DetectTap()
+    {
+        Debug.Log("Detect Tap");
+        OnSingleTap?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
     }
 }
