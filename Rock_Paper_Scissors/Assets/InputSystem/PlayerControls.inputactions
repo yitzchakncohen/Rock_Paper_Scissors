@@ -24,9 +24,27 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "MultiHold",
+                    "type": "Value",
+                    "id": "ebe3c9e4-c8cf-4f1c-844a-f5f0a3d03cd1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=0.1)",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "TouchPosition",
                     "type": "Value",
                     "id": "0baf2cf7-b945-4ac8-a2b5-b5ea1cc87415",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "SecondaryTouchPosition",
+                    "type": "Value",
+                    "id": "f3faa4e2-bc6d-43d9-bb1e-7998e4876178",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -40,15 +58,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
-                },
-                {
-                    "name": "Pinch",
-                    "type": "Button",
-                    "id": "1af275d2-baf1-4c92-8184-5bead6172e9c",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -110,7 +119,7 @@
                 {
                     "name": "",
                     "id": "0468d8a5-bcb4-4b38-b88e-b6c737d38a7b",
-                    "path": "<Touchscreen>/primaryTouch/tap",
+                    "path": "<Touchscreen>/Press",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -131,12 +140,23 @@
                 },
                 {
                     "name": "",
-                    "id": "6b0b9f28-639e-4e37-adc2-b01113dbc2d7",
-                    "path": "<Touchscreen>/touch*/Press",
+                    "id": "d003047b-c6c0-4692-944c-df0f3428dc25",
+                    "path": "<Touchscreen>/touch1/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Pinch",
+                    "action": "SecondaryTouchPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a1601672-3081-4e38-b7c0-a50d0f90403a",
+                    "path": "<Touchscreen>/touch1/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MultiHold",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

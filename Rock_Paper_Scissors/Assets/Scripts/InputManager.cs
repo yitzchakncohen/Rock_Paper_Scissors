@@ -10,9 +10,13 @@ public class InputManager : MonoBehaviour
     public event EventHandler<Vector2> OnStartDragging;
     public event EventHandler<Vector2> Dragging;
     public event EventHandler<Vector2> OnDraggingCompleted;
+    public event EventHandler<Vector2> OnStartPinching;
+    public event EventHandler<Vector2> Pinching;
+    public event EventHandler<Vector2> OnPinchingCompleted;
     public event EventHandler<float> OnScroll;
     private PlayerControls playerControls;
     private bool isDragging = false;
+    private bool isPinching = false;
 
     private void Awake() 
     {
@@ -28,7 +32,16 @@ public class InputManager : MonoBehaviour
     {
         playerControls.GameInputs.SingleTap.performed += PlayerControls_GameInputs_SingleTouch_performed;
         playerControls.GameInputs.SingleHold.performed += PlayerControls_GameInputs_SingleHold_performed;
-        playerControls.GameInputs.Scroll.performed += PlayerControls_GameInputs_Scroll_performed;;
+        playerControls.GameInputs.MultiHold.performed += PlayerControls_GameInputs_MultiHold_performed;
+        playerControls.GameInputs.Scroll.performed += PlayerControls_GameInputs_Scroll_performed;
+    }
+
+    private void OnDestroy() 
+    {
+        playerControls.GameInputs.SingleTap.performed -= PlayerControls_GameInputs_SingleTouch_performed;
+        playerControls.GameInputs.SingleHold.performed -= PlayerControls_GameInputs_SingleHold_performed;
+        playerControls.GameInputs.MultiHold.performed -= PlayerControls_GameInputs_MultiHold_performed;
+        playerControls.GameInputs.Scroll.performed -= PlayerControls_GameInputs_Scroll_performed;
     }
 
     private void OnDisable() 
@@ -39,6 +52,11 @@ public class InputManager : MonoBehaviour
     private void PlayerControls_GameInputs_SingleHold_performed(InputAction.CallbackContext obj)
     {
         DetectDrag();
+    }
+
+    private void PlayerControls_GameInputs_MultiHold_performed(InputAction.CallbackContext obj)
+    {
+        DetectPinch();
     }
 
     private void PlayerControls_GameInputs_SingleTouch_performed(InputAction.CallbackContext obj)
@@ -52,12 +70,31 @@ public class InputManager : MonoBehaviour
         {
             Debug.Log("Dragging");
             Dragging?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
+
+            // Check for double touch
+            if(isPinching && playerControls.GameInputs.MultiHold.phase == InputActionPhase.Performed)
+            {
+                Pinching?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
+            }
+            else
+            {
+                isPinching = false;
+                OnPinchingCompleted?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
+            }
         }
         else
         {
             isDragging = false;
+            isPinching = false;
             OnDraggingCompleted?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
         }
+    }
+
+    private void DetectPinch()
+    {
+        Debug.Log("Detect Pinch");
+        isPinching = true;
+        OnStartPinching?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
     }
 
     private void DetectDrag()
@@ -76,5 +113,10 @@ public class InputManager : MonoBehaviour
     private void PlayerControls_GameInputs_Scroll_performed(InputAction.CallbackContext obj)
     {
         OnScroll?.Invoke(this, Mathf.Clamp(obj.ReadValue<Vector2>().y, -1, 1));
+    }
+
+    public PlayerControls GetPlayerControls()
+    {
+        return playerControls;
     }
 }

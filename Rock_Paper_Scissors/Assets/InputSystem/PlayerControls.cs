@@ -46,9 +46,27 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""MultiHold"",
+                    ""type"": ""Value"",
+                    ""id"": ""ebe3c9e4-c8cf-4f1c-844a-f5f0a3d03cd1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.1)"",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""TouchPosition"",
                     ""type"": ""Value"",
                     ""id"": ""0baf2cf7-b945-4ac8-a2b5-b5ea1cc87415"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SecondaryTouchPosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""f3faa4e2-bc6d-43d9-bb1e-7998e4876178"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -62,15 +80,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Pinch"",
-                    ""type"": ""Button"",
-                    ""id"": ""1af275d2-baf1-4c92-8184-5bead6172e9c"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -132,7 +141,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""0468d8a5-bcb4-4b38-b88e-b6c737d38a7b"",
-                    ""path"": ""<Touchscreen>/primaryTouch/tap"",
+                    ""path"": ""<Touchscreen>/Press"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -153,12 +162,23 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""6b0b9f28-639e-4e37-adc2-b01113dbc2d7"",
-                    ""path"": ""<Touchscreen>/touch*/Press"",
+                    ""id"": ""d003047b-c6c0-4692-944c-df0f3428dc25"",
+                    ""path"": ""<Touchscreen>/touch1/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Pinch"",
+                    ""action"": ""SecondaryTouchPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a1601672-3081-4e38-b7c0-a50d0f90403a"",
+                    ""path"": ""<Touchscreen>/touch1/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MultiHold"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -171,9 +191,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_GameInputs = asset.FindActionMap("GameInputs", throwIfNotFound: true);
         m_GameInputs_SingleTap = m_GameInputs.FindAction("SingleTap", throwIfNotFound: true);
         m_GameInputs_SingleHold = m_GameInputs.FindAction("SingleHold", throwIfNotFound: true);
+        m_GameInputs_MultiHold = m_GameInputs.FindAction("MultiHold", throwIfNotFound: true);
         m_GameInputs_TouchPosition = m_GameInputs.FindAction("TouchPosition", throwIfNotFound: true);
+        m_GameInputs_SecondaryTouchPosition = m_GameInputs.FindAction("SecondaryTouchPosition", throwIfNotFound: true);
         m_GameInputs_Scroll = m_GameInputs.FindAction("Scroll", throwIfNotFound: true);
-        m_GameInputs_Pinch = m_GameInputs.FindAction("Pinch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -237,18 +258,20 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<IGameInputsActions> m_GameInputsActionsCallbackInterfaces = new List<IGameInputsActions>();
     private readonly InputAction m_GameInputs_SingleTap;
     private readonly InputAction m_GameInputs_SingleHold;
+    private readonly InputAction m_GameInputs_MultiHold;
     private readonly InputAction m_GameInputs_TouchPosition;
+    private readonly InputAction m_GameInputs_SecondaryTouchPosition;
     private readonly InputAction m_GameInputs_Scroll;
-    private readonly InputAction m_GameInputs_Pinch;
     public struct GameInputsActions
     {
         private @PlayerControls m_Wrapper;
         public GameInputsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @SingleTap => m_Wrapper.m_GameInputs_SingleTap;
         public InputAction @SingleHold => m_Wrapper.m_GameInputs_SingleHold;
+        public InputAction @MultiHold => m_Wrapper.m_GameInputs_MultiHold;
         public InputAction @TouchPosition => m_Wrapper.m_GameInputs_TouchPosition;
+        public InputAction @SecondaryTouchPosition => m_Wrapper.m_GameInputs_SecondaryTouchPosition;
         public InputAction @Scroll => m_Wrapper.m_GameInputs_Scroll;
-        public InputAction @Pinch => m_Wrapper.m_GameInputs_Pinch;
         public InputActionMap Get() { return m_Wrapper.m_GameInputs; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -264,15 +287,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SingleHold.started += instance.OnSingleHold;
             @SingleHold.performed += instance.OnSingleHold;
             @SingleHold.canceled += instance.OnSingleHold;
+            @MultiHold.started += instance.OnMultiHold;
+            @MultiHold.performed += instance.OnMultiHold;
+            @MultiHold.canceled += instance.OnMultiHold;
             @TouchPosition.started += instance.OnTouchPosition;
             @TouchPosition.performed += instance.OnTouchPosition;
             @TouchPosition.canceled += instance.OnTouchPosition;
+            @SecondaryTouchPosition.started += instance.OnSecondaryTouchPosition;
+            @SecondaryTouchPosition.performed += instance.OnSecondaryTouchPosition;
+            @SecondaryTouchPosition.canceled += instance.OnSecondaryTouchPosition;
             @Scroll.started += instance.OnScroll;
             @Scroll.performed += instance.OnScroll;
             @Scroll.canceled += instance.OnScroll;
-            @Pinch.started += instance.OnPinch;
-            @Pinch.performed += instance.OnPinch;
-            @Pinch.canceled += instance.OnPinch;
         }
 
         private void UnregisterCallbacks(IGameInputsActions instance)
@@ -283,15 +309,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SingleHold.started -= instance.OnSingleHold;
             @SingleHold.performed -= instance.OnSingleHold;
             @SingleHold.canceled -= instance.OnSingleHold;
+            @MultiHold.started -= instance.OnMultiHold;
+            @MultiHold.performed -= instance.OnMultiHold;
+            @MultiHold.canceled -= instance.OnMultiHold;
             @TouchPosition.started -= instance.OnTouchPosition;
             @TouchPosition.performed -= instance.OnTouchPosition;
             @TouchPosition.canceled -= instance.OnTouchPosition;
+            @SecondaryTouchPosition.started -= instance.OnSecondaryTouchPosition;
+            @SecondaryTouchPosition.performed -= instance.OnSecondaryTouchPosition;
+            @SecondaryTouchPosition.canceled -= instance.OnSecondaryTouchPosition;
             @Scroll.started -= instance.OnScroll;
             @Scroll.performed -= instance.OnScroll;
             @Scroll.canceled -= instance.OnScroll;
-            @Pinch.started -= instance.OnPinch;
-            @Pinch.performed -= instance.OnPinch;
-            @Pinch.canceled -= instance.OnPinch;
         }
 
         public void RemoveCallbacks(IGameInputsActions instance)
@@ -313,8 +342,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnSingleTap(InputAction.CallbackContext context);
         void OnSingleHold(InputAction.CallbackContext context);
+        void OnMultiHold(InputAction.CallbackContext context);
         void OnTouchPosition(InputAction.CallbackContext context);
+        void OnSecondaryTouchPosition(InputAction.CallbackContext context);
         void OnScroll(InputAction.CallbackContext context);
-        void OnPinch(InputAction.CallbackContext context);
     }
 }

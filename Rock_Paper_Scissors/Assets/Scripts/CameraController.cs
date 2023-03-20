@@ -11,25 +11,35 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Vector2 zoomClamp = new Vector2(3, 10);
     [SerializeField] private float zoomSmoothing = 0.1f;
     [SerializeField] private PolygonCollider2D cameraBoundaryCollider;
+    [SerializeField] private Vector2 cameraMovementDamping = new Vector2(1, 1);
     private float cameraBoundaryMinX;
     private float cameraBoundaryMaxX;
     private float cameraBoundaryMinY;
     private float cameraBoundaryMaxY;
     private float zoomTarget;
     private InputManager inputManager;
+    private PlayerControls playerControls;
     private Camera mainCamera;
     private Vector2 startDraggingPosition;
     private Vector2 startCameraPosition;
     private Vector2 draggingVector;
+    private float pinchingStartDistance;
+    private float pinchingDistance;
+    private float pinchingStartZoomValue;
     private bool dragging = false;
+    private bool pinching = false;
 
     private void Start() 
     {
         mainCamera = Camera.main;
         inputManager = FindObjectOfType<InputManager>();
+        playerControls = inputManager.GetPlayerControls();
         inputManager.OnStartDragging += InputManager_OnStartDragging;
         inputManager.Dragging += InputManager_Dragging;
         inputManager.OnDraggingCompleted += InputManager_OnDraggingCompleted;
+        inputManager.OnStartPinching += InputManager_OnStartPinching;
+        inputManager.Pinching += InputManager_Pinching;
+        inputManager.OnPinchingCompleted += InputManager_OnPinchingCompleted;
         inputManager.OnScroll += InputManager_OnScroll;
         ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
 
@@ -38,11 +48,34 @@ public class CameraController : MonoBehaviour
         CalculateCameraBoundary();
     }
 
+    private void OnDestroy() 
+    {
+        inputManager.OnStartDragging -= InputManager_OnStartDragging;
+        inputManager.Dragging -= InputManager_Dragging;
+        inputManager.OnDraggingCompleted -= InputManager_OnDraggingCompleted;
+        inputManager.OnStartPinching -= InputManager_OnStartPinching;
+        inputManager.Pinching -= InputManager_Pinching;
+        inputManager.OnPinchingCompleted -= InputManager_OnPinchingCompleted;
+        inputManager.OnScroll -= InputManager_OnScroll;
+        ActionHandler.OnUnitSelected -= ActionHandler_OnUnitSelected;
+
+    }
+
     private void FixedUpdate() 
     {
-        if(dragging)
+        if(dragging && !pinching)
         {
+            Debug.Log("Moving Camera");
             transform.position = startCameraPosition + draggingVector;
+        }
+        else
+        {
+            // Dampen the movement from dragging before stopping. 
+            if(draggingVector.magnitude > 0.1)
+            {
+                draggingVector = new Vector2(Mathf.Lerp(draggingVector.x, 0, cameraMovementDamping.x), Mathf.Lerp(draggingVector.y, 0, cameraMovementDamping.y));
+                transform.position += (Vector3)draggingVector;
+            }
         }
 
         if(cinemachineVirtualCamera.m_Lens.OrthographicSize != zoomTarget)
@@ -58,14 +91,6 @@ public class CameraController : MonoBehaviour
     private void LateUpdate() 
     {
         ClampCameraPosition();
-    }
-
-    private void OnDestroy() 
-    {
-        inputManager.OnStartDragging -= InputManager_OnStartDragging;
-        inputManager.Dragging -= InputManager_Dragging;
-        inputManager.OnDraggingCompleted -= InputManager_OnDraggingCompleted;
-        ActionHandler.OnUnitSelected -= ActionHandler_OnUnitSelected;
     }
 
     private void InputManager_OnStartDragging(object sender, Vector2 position)
@@ -85,6 +110,27 @@ public class CameraController : MonoBehaviour
         dragging = false;
     }
 
+
+    private void InputManager_OnStartPinching(object sender, Vector2 position)
+    {
+        pinchingStartDistance = Vector2.Distance(playerControls.GameInputs.TouchPosition.ReadValue<Vector2>(), 
+                                                    playerControls.GameInputs.SecondaryTouchPosition.ReadValue<Vector2>());
+        pinchingStartZoomValue = cinemachineVirtualCamera.m_Lens.OrthographicSize;
+        pinching = true;
+    }
+
+    private void InputManager_Pinching(object sender, Vector2 position)
+    {
+        pinchingDistance = Vector2.Distance(playerControls.GameInputs.TouchPosition.ReadValue<Vector2>(), 
+                                                    playerControls.GameInputs.SecondaryTouchPosition.ReadValue<Vector2>());
+        zoomTarget = Mathf.Clamp(pinchingStartZoomValue * (pinchingStartDistance / pinchingDistance), zoomClamp.x, zoomClamp.y);
+    }
+
+    private void InputManager_OnPinchingCompleted(object sender, Vector2 position)
+    {
+        pinching = false;
+    }
+
     private void ActionHandler_OnUnitSelected(object sender, Unit unit)
     {
         transform.position = unit.transform.position;
@@ -93,7 +139,7 @@ public class CameraController : MonoBehaviour
 
     private void InputManager_OnScroll(object sender, float amount)
     {
-        zoomTarget = Mathf.Clamp(zoomTarget + amount, zoomClamp.x, zoomClamp.y) * zoomSpeed;
+        zoomTarget = Mathf.Clamp(zoomTarget + (amount * zoomSpeed), zoomClamp.x, zoomClamp.y);
     }
     //TODO add pinch zoom
 

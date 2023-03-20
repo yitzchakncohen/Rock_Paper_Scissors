@@ -583,10 +583,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cinemachineVirtualCamera: {fileID: 1222518922}
-  zoomSpeed: 1
+  zoomSpeed: 0.5
   zoomClamp: {x: 3, y: 10}
   zoomSmoothing: 0.1
   cameraBoundaryCollider: {fileID: 1937499472}
+  cameraMovementDamping: {x: 0.4, y: 0.4}
 --- !u!4 &970682499
 Transform:
   m_ObjectHideFlags: 0
