@@ -34,6 +34,7 @@ public class CameraController : MonoBehaviour
         mainCamera = Camera.main;
         inputManager = FindObjectOfType<InputManager>();
         playerControls = inputManager.GetPlayerControls();
+        
         inputManager.OnStartDragging += InputManager_OnStartDragging;
         inputManager.Dragging += InputManager_Dragging;
         inputManager.OnDraggingCompleted += InputManager_OnDraggingCompleted;

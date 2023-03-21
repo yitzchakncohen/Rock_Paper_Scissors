@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class UnitMovement : MonoBehaviour
 {
     public static event EventHandler OnMovementCompleted;
+    [SerializeField] private UnitAnimator unitAnimator;
     [SerializeField] private int moveDistance = 5;
     [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float stoppingDistance = 0.1f;
@@ -45,6 +46,7 @@ public class UnitMovement : MonoBehaviour
             else
             {
                 Vector2 moveDirection = (targetGridObjects[currentPositionIndex].transform.position - transform.position).normalized;
+                AnimateMovement(moveDirection);
                 transform.position += (Vector3)(moveDirection * movementSpeed * Time.deltaTime);
             }
         }
@@ -92,5 +94,33 @@ public class UnitMovement : MonoBehaviour
     public void ResetMovementPoints()
     {
         movementPointsRemaining = 1;
+    }
+
+    private void AnimateMovement(Vector2 moveDirection)
+    {
+        if(moveDirection.x > 0 && moveDirection.y > 0)
+        {
+            unitAnimator.MoveUpRight();
+        }
+        else if(moveDirection.x > 0 && moveDirection.y < 0)
+        {
+            unitAnimator.MoveDownRight();
+        }
+        else if(moveDirection.x > 0 && moveDirection.y == 0)
+        {
+            unitAnimator.MoveRight();
+        }
+        if(moveDirection.x < 0 && moveDirection.y > 0)
+        {
+            unitAnimator.MoveUpLeft();
+        }
+        else if(moveDirection.x < 0 && moveDirection.y < 0)
+        {
+            unitAnimator.MoveDownLeft();
+        }
+        else if(moveDirection.x < 0 && moveDirection.y == 0)
+        {
+            unitAnimator.MoveLeft();
+        }
     }
 }
