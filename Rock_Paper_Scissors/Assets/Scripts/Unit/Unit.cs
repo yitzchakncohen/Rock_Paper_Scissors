@@ -8,13 +8,13 @@ public class Unit : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private bool isFriendly = true;
     private Health health;
-    private UnitAttacking unitAttacking;
+    private UnitAttack unitAttacking;
     private UnitMovement unitMovement;
 
     private void Awake() 
     {
         health = GetComponent<Health>();
-        unitAttacking = GetComponent<UnitAttacking>();
+        unitAttacking = GetComponent<UnitAttack>();
         unitMovement = GetComponent<UnitMovement>();
     }
 
@@ -60,7 +60,7 @@ public class Unit : MonoBehaviour
         return unitMovement;
     }
 
-    public UnitAttacking GetUnitAttacking()
+    public UnitAttack GetUnitAttacking()
     {
         return unitAttacking;
     }

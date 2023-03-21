@@ -6,11 +6,14 @@ using UnityEngine;
 public class ActionHandler : MonoBehaviour
 {
     public static event EventHandler<Unit> OnUnitSelected;
+    public static EventHandler<bool> OnBusyChanged; 
     [SerializeField] private Unit selectedUnit;
     private InputManager inputManager;
     private GridManager gridManager;
     private GridUIManager gridUIManager;
     private PathFinding pathFinding;
+    private TurnManager turnManager;
+    private bool isBusy = false;
 
     private void Start() 
     {
@@ -19,24 +22,38 @@ public class ActionHandler : MonoBehaviour
         gridUIManager = FindObjectOfType<GridUIManager>();
         inputManager = FindObjectOfType<InputManager>();
         pathFinding = FindObjectOfType<PathFinding>();
+        turnManager = FindObjectOfType<TurnManager>();
 
         inputManager.OnSingleTap += InputManager_onSingleTouch;
-        UnitMovement.OnMovementCompleted += UnitMovement_OnMovementCompleted;
-        UnitAttacking.OnAttackingCompleted += UnitAttacking_OnAttackingCompleted;
+        TurnManager.OnNextTurn += TurnManager_OnNextTurn;
     }
 
     private void OnDestroy() 
     {
         inputManager.OnSingleTap -= InputManager_onSingleTouch;
-        UnitMovement.OnMovementCompleted -= UnitMovement_OnMovementCompleted;
-        UnitAttacking.OnAttackingCompleted -= UnitAttacking_OnAttackingCompleted;
     }
 
     private void InputManager_onSingleTouch(object sender, Vector2 touchPosition)
     {
+        if (!turnManager.IsPlayersTurn())
+        {
+            return;
+        }
+
+        if(isBusy)
+        {
+            return;
+        }
+
+        GridObject targetGridObject = CheckForObjectAtTouchPosition(touchPosition);
+        HandleGridObjectTouch(targetGridObject);
+    }
+
+    private GridObject CheckForObjectAtTouchPosition(Vector2 touchPosition)
+    {
         Vector3 worldPositionOfInput = Camera.main.ScreenToWorldPoint(touchPosition);
         GridObject targetGridObject = gridManager.GetGridObjectFromWorldPosition(worldPositionOfInput);
-        HandleGridObjectTouch(targetGridObject);
+        return targetGridObject;
     }
 
     private void HandleGridObjectTouch(GridObject gridObject)
@@ -47,20 +64,23 @@ public class ActionHandler : MonoBehaviour
             // If you have a unit selected, check the cell for an action.
             if(selectedUnit != gridObject.GetOccupent())
             {
-                //For friendly
                 if(gridObject.GetOccupent().IsFriendly())
                 {
-                        selectedUnit = gridObject.GetOccupent();
-                        OnUnitSelected?.Invoke(this, selectedUnit);
-                        HighlightActionGrid();
+                    //For friendly
+                    selectedUnit = gridObject.GetOccupent();
+                    OnUnitSelected?.Invoke(this, selectedUnit);
+                    HighlightActionGrid();
                 }
                 else
                 {
                     // For Enemy
                     if(selectedUnit != null)
                     {
-                        UnitAttacking unitAttacking = selectedUnit.GetUnitAttacking();
-                        unitAttacking.TryAttackUnit(gridObject.GetOccupent());
+                        UnitAttack unitAttacking = selectedUnit.GetUnitAttacking();
+                        if(unitAttacking.TryAttackUnit(gridObject.GetOccupent(), ClearBusy))
+                        {
+                            SetBusy();
+                        }
                     }
                 }
             }
@@ -71,25 +91,41 @@ public class ActionHandler : MonoBehaviour
             UnitMovement unitMovement = selectedUnit.GetComponent<UnitMovement>();
             if(!unitMovement.IsMoving())
             {
-                unitMovement.TryStartMove(gridObject);
+                if(unitMovement.TryStartMove(gridObject, ClearBusy))
+                {
+                    SetBusy();
+                }
             }
         }
     }
 
     private void HighlightActionGrid()
     {
+        gridUIManager.HideAllGridPosition();
+
+        // Not the player's turn
+        if(!turnManager.IsPlayersTurn())
+        {
+            return;
+        }
+
+        // No selected unit
+        if(selectedUnit == null)
+        {
+            return;
+        }
+
         Vector2Int unitGridPosition = gridManager.GetGridPositionFromWorldPosition(selectedUnit.transform.position);
 
         // Check unit movement
         UnitMovement unitMovement = selectedUnit.GetUnitMovement();
-        gridUIManager.HideAllGridPosition();
         if(unitMovement.GetMovementPointsRemaining() > 0)
         {
             HighlightMovePositionRange(unitGridPosition, unitMovement.GetMoveDistance());
         }
 
         // Check unit attacking
-        UnitAttacking unitAttacking = selectedUnit.GetUnitAttacking();
+        UnitAttack unitAttacking = selectedUnit.GetUnitAttacking();
         if(unitAttacking.GetAttackPointsRemaining() > 0)
         {
             HighlightAttackTargets();
@@ -133,7 +169,7 @@ public class ActionHandler : MonoBehaviour
 
     private void HighlightAttackTargets()
     {
-        UnitAttacking unitAttacking = selectedUnit.GetUnitAttacking();
+        UnitAttack unitAttacking = selectedUnit.GetUnitAttacking();
         List<Unit> validUnitTargets = unitAttacking.GetValidTargets();
 
         List<Vector2Int> validAttackPositions = new List<Vector2Int>();
@@ -145,13 +181,23 @@ public class ActionHandler : MonoBehaviour
         gridUIManager.ShowGridPositionList(validAttackPositions, GridHighlightType.Attack);
     }
 
-    private void UnitMovement_OnMovementCompleted(object sender, EventArgs e)
+    private void TurnManager_OnNextTurn(object sender, EventArgs e)
     {
         HighlightActionGrid();
+        selectedUnit = null;
+        OnUnitSelected?.Invoke(this, selectedUnit);
     }
 
-    private void UnitAttacking_OnAttackingCompleted(object sender, EventArgs e)
+    private void SetBusy()
     {
+        isBusy = true;
+        OnBusyChanged?.Invoke(this, isBusy);
+    }
+
+    private void ClearBusy()
+    {
+        isBusy = false;
+        OnBusyChanged?.Invoke(this, isBusy);
         HighlightActionGrid();
     }
 }

@@ -134,7 +134,10 @@ public class CameraController : MonoBehaviour
 
     private void ActionHandler_OnUnitSelected(object sender, Unit unit)
     {
-        transform.position = unit.transform.position;
+        if(unit != null)
+        {
+            transform.position = unit.transform.position;
+        }
     }
     
 

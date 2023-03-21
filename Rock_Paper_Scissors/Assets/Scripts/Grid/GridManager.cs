@@ -36,15 +36,13 @@ public class GridManager : MonoBehaviour
 
     private void Start() 
     {
-        UnitMovement.OnMovementCompleted += UnitMovement_OnMovementCompleted;
-        UnitAttacking.OnAttackingCompleted += UnitAttacking_OnAttackingCompleted;
+        UnitMovement.OnAnyActionCompleted += UnitMovement_OnAnyActionCompleted;
         UpdateGridOccupancy();
     }
 
     private void OnDestroy() 
     {
-        UnitMovement.OnMovementCompleted -= UnitMovement_OnMovementCompleted;
-        UnitAttacking.OnAttackingCompleted -= UnitAttacking_OnAttackingCompleted;
+        UnitMovement.OnAnyActionCompleted -= UnitMovement_OnAnyActionCompleted;
     }
 
     public Vector2Int GetGridPositionFromWorldPosition(Vector2 worldPosition)
@@ -118,13 +116,8 @@ public class GridManager : MonoBehaviour
         return false;
     }
 
-    private void UnitMovement_OnMovementCompleted(object sender, EventArgs e)
+    private void UnitMovement_OnAnyActionCompleted(object sender, EventArgs e)
     {
         UpdateGridOccupancy();
     }
-
-    private void UnitAttacking_OnAttackingCompleted(object sender, EventArgs e)
-    {
-        UpdateGridOccupancy();
-    }    
 }

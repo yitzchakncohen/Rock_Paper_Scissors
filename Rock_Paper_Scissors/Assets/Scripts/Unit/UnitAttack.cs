@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitAttacking : MonoBehaviour
+public class UnitAttack : UnitAction
 {
-    public static event EventHandler OnAttackingCompleted;
+    [SerializeField] private UnitAnimator unitAnimator;
     [SerializeField] private int attackRange = 1;
     [SerializeField] private int attackDamage = 10;
     private Unit unit;
@@ -22,8 +22,10 @@ public class UnitAttacking : MonoBehaviour
         gridManager = FindObjectOfType<GridManager>();
     }
 
-    public bool TryAttackUnit(Unit unitToAttack)
+    public bool TryAttackUnit(Unit unitToAttack, Action onActionComplete)
     {
+        this.onActionComplete = onActionComplete;
+        
         if(attackPointsRemaining <= 0)
         {
             return false;
@@ -32,8 +34,9 @@ public class UnitAttacking : MonoBehaviour
         if(GetValidTargets().Contains(unitToAttack))
         {
             unitToAttack.Damage(attackDamage);
-            OnAttackingCompleted?.Invoke(this, EventArgs.Empty);
+            AnimateAttack(unitToAttack.transform.position - transform.position);
             attackPointsRemaining -= 1;
+            ActionComplete();
             return true;
         }
         return false;
@@ -138,5 +141,33 @@ public class UnitAttacking : MonoBehaviour
     public void ResetAttackPoints()
     {
         attackPointsRemaining = 1;
+    }
+
+    private void AnimateAttack(Vector2 attackDirection)
+    {
+        if(attackDirection.x > 0 && attackDirection.y > 0)
+        {
+            unitAnimator.MoveUpRight();
+        }
+        else if(attackDirection.x > 0 && attackDirection.y < 0)
+        {
+            unitAnimator.MoveDownRight();
+        }
+        else if(attackDirection.x > 0 && attackDirection.y == 0)
+        {
+            unitAnimator.MoveRight();
+        }
+        if(attackDirection.x < 0 && attackDirection.y > 0)
+        {
+            unitAnimator.MoveUpLeft();
+        }
+        else if(attackDirection.x < 0 && attackDirection.y < 0)
+        {
+            unitAnimator.MoveDownLeft();
+        }
+        else if(attackDirection.x < 0 && attackDirection.y == 0)
+        {
+            unitAnimator.MoveLeft();
+        }
     }
 }

@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class UnitMovement : MonoBehaviour
+public class UnitMovement : UnitAction
 {
-    public static event EventHandler OnMovementCompleted;
     [SerializeField] private UnitAnimator unitAnimator;
     [SerializeField] private int moveDistance = 5;
     [SerializeField] private float movementSpeed = 5f;
@@ -54,12 +53,14 @@ public class UnitMovement : MonoBehaviour
         {
             moving = false;
             movementPointsRemaining -= 1;
-            OnMovementCompleted?.Invoke(this, EventArgs.Empty);
+            ActionComplete();
         }
     }
 
-    public bool TryStartMove(GridObject targetGridObject)
+    public bool TryStartMove(GridObject targetGridObject, Action onActionComplete)
     {
+        this.onActionComplete = onActionComplete;
+
         if(movementPointsRemaining <= 0)
         {
             return false;
