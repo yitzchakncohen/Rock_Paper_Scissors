@@ -64,8 +64,6 @@ public class UnitMovement : UnitAction
 
     public bool TryStartMove(GridObject targetGridObject, Action onActionComplete)
     {
-        this.onActionComplete = onActionComplete;
-
         if(actionPointsRemaining <= 0)
         {
             return false;
@@ -79,6 +77,7 @@ public class UnitMovement : UnitAction
         }
         currentPositionIndex = 0;
         moving = true;
+        ActionStart(onActionComplete);
         return true;
     }
 

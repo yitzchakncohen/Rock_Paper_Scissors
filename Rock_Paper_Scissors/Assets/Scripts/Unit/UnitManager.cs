@@ -42,6 +42,12 @@ public class UnitManager : MonoBehaviour
             unit.GetComponent<UnitAttack>().ResetActionPoints();
             unit.GetComponent<UnitMovement>().ResetActionPoints();
         }
+
+        foreach (Unit unit in enemyUnits)
+        {
+            unit.GetComponent<UnitAttack>().ResetActionPoints();
+            unit.GetComponent<UnitMovement>().ResetActionPoints();
+        }
     }
 
     public List<Unit> GetEnemyUnitsList()

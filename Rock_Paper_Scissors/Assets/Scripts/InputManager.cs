@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
@@ -14,13 +15,16 @@ public class InputManager : MonoBehaviour
     public event EventHandler<Vector2> Pinching;
     public event EventHandler<Vector2> OnPinchingCompleted;
     public event EventHandler<float> OnScroll;
+    private EventSystem eventSystem;
     private PlayerControls playerControls;
     private bool isDragging = false;
     private bool isPinching = false;
+    private bool mouseOverUI = false;
 
     private void Awake() 
     {
         playerControls = new PlayerControls();
+        eventSystem = EventSystem.current;
     }
 
     private void OnEnable() 
@@ -66,6 +70,8 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
+        mouseOverUI = eventSystem.IsPointerOverGameObject();
+
         if(isDragging && playerControls.GameInputs.SingleHold.phase == InputActionPhase.Performed)
         {
             Debug.Log("Dragging");
@@ -92,6 +98,11 @@ public class InputManager : MonoBehaviour
 
     private void DetectPinch()
     {
+        if(mouseOverUI)
+        {
+            return;
+        }
+        
         Debug.Log("Detect Pinch");
         isPinching = true;
         OnStartPinching?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
@@ -99,6 +110,11 @@ public class InputManager : MonoBehaviour
 
     private void DetectDrag()
     {
+        if(mouseOverUI)
+        {
+            return;
+        }
+
         Debug.Log("Detect Drag");
         isDragging = true;
         OnStartDragging?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
@@ -106,6 +122,11 @@ public class InputManager : MonoBehaviour
 
     private void DetectTap()
     {
+        if(mouseOverUI)
+        {
+            return;
+        }
+
         Debug.Log("Detect Tap");
         OnSingleTap?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
     }

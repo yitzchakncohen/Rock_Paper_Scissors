@@ -43,6 +43,7 @@ public class CameraController : MonoBehaviour
         inputManager.OnPinchingCompleted += InputManager_OnPinchingCompleted;
         inputManager.OnScroll += InputManager_OnScroll;
         ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
+        UnitAction.OnAnyActionStarted += UnitAction_OnAnyActionStarted;
 
         zoomTarget = cinemachineVirtualCamera.m_Lens.OrthographicSize;
 
@@ -139,7 +140,14 @@ public class CameraController : MonoBehaviour
             transform.position = unit.transform.position;
         }
     }
-    
+
+    private void UnitAction_OnAnyActionStarted(object sender, EventArgs e)
+    {
+        if((UnitAction)sender != null)
+        {
+            transform.position = ((UnitAction)sender).transform.position;
+        }
+    }    
 
     private void InputManager_OnScroll(object sender, float amount)
     {

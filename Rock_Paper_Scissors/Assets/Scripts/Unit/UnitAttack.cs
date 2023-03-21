@@ -45,8 +45,6 @@ public class UnitAttack : UnitAction
 
     public bool TryAttackUnit(Unit unitToAttack, Action onActionComplete)
     {
-        this.onActionComplete = onActionComplete;
-        
         if(actionPointsRemaining <= 0)
         {
             return false;
@@ -58,6 +56,7 @@ public class UnitAttack : UnitAction
             timer = 1f;
             target = unitToAttack;
             attacking = true;
+            ActionStart(onActionComplete);
             return true;
         }
         return false;
