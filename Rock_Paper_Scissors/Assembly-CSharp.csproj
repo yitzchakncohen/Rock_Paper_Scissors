@@ -55,6 +55,8 @@
      <Compile Include="Assets\Scripts\Unit\UnitManager.cs" />
      <Compile Include="Assets\Scripts\Unit\UnitAttack.cs" />
      <Compile Include="Assets\Scripts\Unit\UnitAction.cs" />
+     <Compile Include="Assets\Scripts\EnemyAI.cs" />
+     <Compile Include="Assets\Scripts\EnemyAIAction.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

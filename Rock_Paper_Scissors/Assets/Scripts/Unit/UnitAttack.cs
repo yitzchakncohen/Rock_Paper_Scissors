@@ -9,8 +9,11 @@ public class UnitAttack : UnitAction
     [SerializeField] private int attackRange = 1;
     [SerializeField] private int attackDamage = 10;
     private Unit unit;
+    private Unit target;
     private GridManager gridManager;
-    private int attackPointsRemaining = 1;
+    private float timer;
+    private bool attacking;
+
 
     private void Awake() 
     {
@@ -22,31 +25,47 @@ public class UnitAttack : UnitAction
         gridManager = FindObjectOfType<GridManager>();
     }
 
+    private void Update() 
+    {
+        if(!attacking)
+        {
+            return;
+        }
+
+        timer -= Time.deltaTime;
+        if(timer <= 0)
+        {
+            target.GetComponent<Health>().Damage(attackDamage);
+            AnimateAttack(target.transform.position - transform.position);
+            actionPointsRemaining -= 1;
+            attacking = false;
+            ActionComplete();
+        }
+    }
+
     public bool TryAttackUnit(Unit unitToAttack, Action onActionComplete)
     {
         this.onActionComplete = onActionComplete;
         
-        if(attackPointsRemaining <= 0)
+        if(actionPointsRemaining <= 0)
         {
             return false;
         }
 
-        if(GetValidTargets().Contains(unitToAttack))
+        Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(unit.transform.position);
+        if(GetValidTargets(gridPosition).Contains(unitToAttack))
         {
-            unitToAttack.Damage(attackDamage);
-            AnimateAttack(unitToAttack.transform.position - transform.position);
-            attackPointsRemaining -= 1;
-            ActionComplete();
+            timer = 1f;
+            target = unitToAttack;
+            attacking = true;
             return true;
         }
         return false;
     }
 
-    public List<Unit> GetValidTargets()
+    public List<Unit> GetValidTargets(Vector2Int gridPosition)
     {
         List<Unit> validTargetList = new List<Unit>();
-
-        Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(unit.transform.position);
 
         // Check all the targets in range.
         // Get list of grid positions in range.
@@ -133,16 +152,6 @@ public class UnitAttack : UnitAction
         return neighbourList;
     }
 
-    public int GetAttackPointsRemaining()
-    {
-        return attackPointsRemaining;
-    }
-
-    public void ResetAttackPoints()
-    {
-        attackPointsRemaining = 1;
-    }
-
     private void AnimateAttack(Vector2 attackDirection)
     {
         if(attackDirection.x > 0 && attackDirection.y > 0)
@@ -169,5 +178,45 @@ public class UnitAttack : UnitAction
         {
             unitAnimator.MoveLeft();
         }
+    }
+
+    public override EnemyAIAction GetBestEnemyAIAction()
+    {
+        EnemyAIAction bestAction = null;
+        Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(unit.transform.position);
+
+        foreach (Unit unit in GetValidTargets(gridPosition))
+        {
+            GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(unit.transform.position);
+            if(bestAction == null)
+            {
+                bestAction = new EnemyAIAction()
+                {
+                    gridObject = gridObject,
+                    actionValue = 100 + Mathf.RoundToInt((1 - unit.GetComponent<Health>().GetNormalizedHealth())*100),
+                };
+            }
+            else
+            {
+                EnemyAIAction testAction = new EnemyAIAction()
+                {
+                    gridObject = gridObject,
+                    actionValue = 100 + Mathf.RoundToInt((1 - unit.GetComponent<Health>().GetNormalizedHealth())*100),
+                }; 
+
+                // Check if this action is better.
+                if(testAction.actionValue > bestAction.actionValue)
+                {
+                    bestAction = testAction;
+                }
+            }
+        }
+
+        return bestAction;
+    }
+
+    public override bool TryTakeAction(GridObject gridObject, Action onActionComplete)
+    {
+        return TryAttackUnit(gridObject.GetOccupent(), onActionComplete);
     }
 }

@@ -15,7 +15,7 @@ public class TurnManager : MonoBehaviour
     }
 
 
-    public bool IsPlayersTurn()
+    public bool IsPlayerTurn()
     {
         return playersTurn;
     }

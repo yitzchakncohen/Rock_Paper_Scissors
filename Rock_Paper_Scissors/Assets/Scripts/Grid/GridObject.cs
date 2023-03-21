@@ -31,6 +31,7 @@ public class GridObject : MonoBehaviour
 
     public bool IsWalkable()
     {
+        // TODO can you walk over your oawn units?
         return (gridPositionOccupyingGameObject == null);
     }
 

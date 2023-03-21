@@ -26,16 +26,19 @@ public class ActionHandler : MonoBehaviour
 
         inputManager.OnSingleTap += InputManager_onSingleTouch;
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
+        Health.OnDeath += Health_OnDeath;
     }
 
     private void OnDestroy() 
     {
         inputManager.OnSingleTap -= InputManager_onSingleTouch;
+        TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
+        Health.OnDeath -= Health_OnDeath;
     }
 
     private void InputManager_onSingleTouch(object sender, Vector2 touchPosition)
     {
-        if (!turnManager.IsPlayersTurn())
+        if (!turnManager.IsPlayerTurn())
         {
             return;
         }
@@ -76,8 +79,8 @@ public class ActionHandler : MonoBehaviour
                     // For Enemy
                     if(selectedUnit != null)
                     {
-                        UnitAttack unitAttacking = selectedUnit.GetUnitAttacking();
-                        if(unitAttacking.TryAttackUnit(gridObject.GetOccupent(), ClearBusy))
+                        UnitAttack unitAttack = selectedUnit.GetComponent<UnitAttack>();
+                        if(unitAttack.TryAttackUnit(gridObject.GetOccupent(), ClearBusy))
                         {
                             SetBusy();
                         }
@@ -104,7 +107,7 @@ public class ActionHandler : MonoBehaviour
         gridUIManager.HideAllGridPosition();
 
         // Not the player's turn
-        if(!turnManager.IsPlayersTurn())
+        if(!turnManager.IsPlayerTurn())
         {
             return;
         }
@@ -118,59 +121,32 @@ public class ActionHandler : MonoBehaviour
         Vector2Int unitGridPosition = gridManager.GetGridPositionFromWorldPosition(selectedUnit.transform.position);
 
         // Check unit movement
-        UnitMovement unitMovement = selectedUnit.GetUnitMovement();
-        if(unitMovement.GetMovementPointsRemaining() > 0)
+        UnitMovement unitMovement = selectedUnit.GetComponent<UnitMovement>();
+        if(unitMovement.GetActionPointsRemaining() > 0)
         {
-            HighlightMovePositionRange(unitGridPosition, unitMovement.GetMoveDistance());
+            HighlightMovePositionRange(unitMovement, unitGridPosition);
         }
 
         // Check unit attacking
-        UnitAttack unitAttacking = selectedUnit.GetUnitAttacking();
-        if(unitAttacking.GetAttackPointsRemaining() > 0)
+        UnitAttack unitAttacking = selectedUnit.GetComponent<UnitAttack>();
+        if(unitAttacking.GetActionPointsRemaining() > 0)
         {
             HighlightAttackTargets();
         }
     }
 
-    private void HighlightMovePositionRange(Vector2Int gridPosition, int range)
+    private void HighlightMovePositionRange(UnitMovement unitMovement, Vector2Int gridPosition)
     {
-        List<Vector2Int> gridPositionList = new List<Vector2Int>();
-        for (int x = -range; x <= range; x++)
-        {
-            for (int z = -range; z <= range; z++)
-            {
-                Vector2Int testGridPosition = gridPosition + new Vector2Int(x,z);
-                
-                // Check if it's on the grid.
-                if(!gridManager.IsValidGridPosition(testGridPosition))
-                {
-                    continue;
-                }
-
-                // Check if it's within movement distance
-                pathFinding.FindPath(gridPosition, testGridPosition, out int testDistance);
-                if(testDistance > range)
-                {
-                    continue;
-                }
-
-                // Check if it's walkable
-                if(!gridManager.GetGridObject(testGridPosition).IsWalkable())
-                {
-                    continue;
-                }
-
-                gridPositionList.Add(testGridPosition);
-            }
-        }
+        List<Vector2Int> gridPositionList = unitMovement.GetValidMovementPositions(gridPosition, unitMovement.GetMoveDistance());
 
         gridUIManager.ShowGridPositionList(gridPositionList, GridHighlightType.Movement);
     }
 
     private void HighlightAttackTargets()
     {
-        UnitAttack unitAttacking = selectedUnit.GetUnitAttacking();
-        List<Unit> validUnitTargets = unitAttacking.GetValidTargets();
+        UnitAttack unitAttacking = selectedUnit.GetComponent<UnitAttack>();
+        Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(selectedUnit.transform.position);
+        List<Unit> validUnitTargets = unitAttacking.GetValidTargets(gridPosition);
 
         List<Vector2Int> validAttackPositions = new List<Vector2Int>();
         foreach (Unit unit in validUnitTargets)
@@ -186,6 +162,17 @@ public class ActionHandler : MonoBehaviour
         HighlightActionGrid();
         selectedUnit = null;
         OnUnitSelected?.Invoke(this, selectedUnit);
+    }
+
+    private void Health_OnDeath(object sender, EventArgs e)
+    {
+        StartCoroutine(OnDeathRoutine());
+    }
+
+    private IEnumerator OnDeathRoutine()
+    {
+        yield return new WaitForEndOfFrame();
+        HighlightActionGrid();
     }
 
     private void SetBusy()
