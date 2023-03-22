@@ -193,7 +193,7 @@ public class UnitAttack : UnitAction
                 bestAction = new EnemyAIAction()
                 {
                     gridObject = gridObject,
-                    actionValue = unitAttackActionBaseValue + Mathf.RoundToInt((1 - unit.GetComponent<Health>().GetNormalizedHealth())*unitAttackActionBaseValue),
+                    actionValue = unitAttackActionBaseValue + (1 - unit.GetComponent<Health>().GetNormalizedHealth())*unitAttackActionBaseValue,
                     unitAction = this,
                 };
             }
@@ -202,7 +202,7 @@ public class UnitAttack : UnitAction
                 EnemyAIAction testAction = new EnemyAIAction()
                 {
                     gridObject = gridObject,
-                    actionValue = unitAttackActionBaseValue + Mathf.RoundToInt((1 - unit.GetComponent<Health>().GetNormalizedHealth())*100),
+                    actionValue = unitAttackActionBaseValue + (1 - unit.GetComponent<Health>().GetNormalizedHealth())*100,
                     unitAction = this,
                 }; 
 

@@ -44,12 +44,10 @@ public class EnemyAI : MonoBehaviour
                     if(TryTakeEnemyAIAction(SetStateTakingTurn))
                     {
                         state = State.Busy;
-                        Debug.Log("Busy");
                     }
                     else
                     {
                         // No more enemies have actions they can take so end the turn. 
-                        Debug.Log("Next Turn");
                         turnManager.NextTurn();
                     }
                 }
@@ -96,6 +94,7 @@ public class EnemyAI : MonoBehaviour
 
         if(bestEnemeyAIAction != null)
         {
+            Debug.Log("Taking action with value: " + bestEnemeyAIAction.actionValue);
             return bestEnemeyAIAction.unitAction.TryTakeAction(bestEnemeyAIAction.gridObject, onEnemyAIActionComplete);
         }
         return false;

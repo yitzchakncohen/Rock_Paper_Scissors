@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class UnitManager : MonoBehaviour
 {
+    private GridManager gridManager;
     private List<Unit> friendlyUnits;
     private List<Unit> enemyUnits;
 
@@ -13,6 +14,7 @@ public class UnitManager : MonoBehaviour
         Health.OnDeath += Health_OnDeath;
         friendlyUnits = new List<Unit>();
         enemyUnits = new List<Unit>();
+        gridManager = FindObjectOfType<GridManager>();
     }
 
     private void Start() 
@@ -79,5 +81,23 @@ public class UnitManager : MonoBehaviour
     public List<Unit> GetFriendlyUnitsList()
     {
         return friendlyUnits;
+    }
+
+    public Unit GetClosestFriendlyUnitToPosition(Vector2Int gridPosition, out float closestUnitDistance)
+    {
+        Unit closestUnit = null;
+        closestUnitDistance = 0f;
+
+        foreach (Unit friendlyUnit in friendlyUnits)
+        {
+            float testDistance = gridManager.GetRelativeDistanceOfGridPositions(gridPosition, gridManager.GetGridPositionFromWorldPosition(friendlyUnit.transform.position));
+            if(closestUnit == null || testDistance < closestUnitDistance)
+            {
+                closestUnit = friendlyUnit;
+                closestUnitDistance = testDistance;
+            }
+        }
+
+        return closestUnit;
     }
 }

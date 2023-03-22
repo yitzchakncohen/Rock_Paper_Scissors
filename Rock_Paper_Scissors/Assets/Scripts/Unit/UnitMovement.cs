@@ -11,6 +11,7 @@ public class UnitMovement : UnitAction
     [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float stoppingDistance = 0.1f;
     private GridManager gridManager;
+    private UnitManager unitManager;
     private PathFinding pathFinding;
     private UnitAttack unitAttack;
     private List<GridObject> targetGridObjects = null;
@@ -26,6 +27,7 @@ public class UnitMovement : UnitAction
     {
         gridManager = FindObjectOfType<GridManager>();
         pathFinding = FindObjectOfType<PathFinding>();
+        unitManager = FindObjectOfType<UnitManager>();
     }
 
     private void Update() 
@@ -155,31 +157,19 @@ public class UnitMovement : UnitAction
     public override EnemyAIAction GetBestEnemyAIAction()
     {
         EnemyAIAction bestAction = null;
+        List<Vector2Int> validMovePositions = GetValidMovementPositions(gridManager.GetGridPositionFromWorldPosition(transform.position), moveDistance);
 
-        foreach (Vector2Int position in GetValidMovementPositions(gridManager.GetGridPositionFromWorldPosition(transform.position), moveDistance))
+        foreach (Vector2Int position in validMovePositions)
         {
             GridObject gridObject = gridManager.GetGridObject(position);
             List<Unit> targetList = unitAttack.GetValidTargets(position);
             int targetCountAtPosition = targetList.Count;
-            int targetCountValue = 0;
 
             // Find the average health of the units nearby.
-            float averageNormalizedHealth = 0f;
-            foreach (Unit unit in targetList)
-            {
-                averageNormalizedHealth += unit.GetComponent<Health>().GetNormalizedHealth();
-            }
-            averageNormalizedHealth = averageNormalizedHealth / targetList.Count;
-            // The health value is a number between 0 and 10;
-            int healthAmountValue = Mathf.RoundToInt(10 * (1 - averageNormalizedHealth));
-        
-            if(targetCountAtPosition > 0)
-            {
-                // 60 is the number possible adjacent hexes times 10. 
-                targetCountValue = Mathf.RoundToInt(60f/targetCountAtPosition);
-            }
+            float healthAmountValue = GetAverageNormalizedHealth(targetList);
+            float targetCountValue = GetValueByTargetCount(targetCountAtPosition);
 
-            if(bestAction == null)
+            if (bestAction == null)
             {
                 bestAction = new EnemyAIAction()
                 {
@@ -195,17 +185,72 @@ public class UnitMovement : UnitAction
                     gridObject = gridObject,
                     actionValue = targetCountValue + healthAmountValue,
                     unitAction = this,
-                }; 
+                };
 
                 // Check if this action is better.
-                if(testAction.actionValue > bestAction.actionValue)
+                if (testAction.actionValue > bestAction.actionValue)
                 {
                     bestAction = testAction;
                 }
             }
+
+            gridManager.GetGridObject(position).SetActionValue(targetCountValue + healthAmountValue);
+        }
+        
+        // If there are no units in range of any of the movement spaces, the best action value will still be 0.
+        // Instead move towards the closes enemy by setting a value from 1 to 10;
+        if(bestAction.actionValue == 0)
+        {
+            foreach (Vector2Int position in validMovePositions)
+            {
+                GridObject gridObject = gridManager.GetGridObject(position);
+
+                unitManager.GetClosestFriendlyUnitToPosition(position, out float distance);
+                if(1 + 9f/distance > bestAction.actionValue)
+                {
+                    bestAction = new EnemyAIAction()
+                    {
+                        gridObject = gridObject,
+                        actionValue = 1 + 9f/distance,
+                        unitAction = this,
+                    };
+                }
+
+                gridManager.GetGridObject(position).SetActionValue(1 + 9f/distance);
+            }
         }
 
         return bestAction;
+    }
+
+    private static float GetValueByTargetCount(int targetCountAtPosition)
+    {
+        float targetCountValue = 0;
+        if (targetCountAtPosition > 0)
+        {
+            // 60 is the number possible adjacent hexes times 10. 
+            targetCountValue = 60f / targetCountAtPosition;
+        }
+
+        return targetCountValue;
+    }
+
+    private static float GetAverageNormalizedHealth(List<Unit> targetList)
+    {
+        float healthAmountValue = 0;
+        if(targetList.Count > 0)
+        {
+            float averageNormalizedHealth = 0f;
+            foreach (Unit unit in targetList)
+            {
+                averageNormalizedHealth += unit.GetComponent<Health>().GetNormalizedHealth();
+            }
+            averageNormalizedHealth = averageNormalizedHealth / targetList.Count;
+            // The health value is a number between 0 and 10;
+            healthAmountValue = 10 * (1 - averageNormalizedHealth);
+        }
+
+        return healthAmountValue;
     }
 
     public override bool TryTakeAction(GridObject gridObject, Action onActionComplete)

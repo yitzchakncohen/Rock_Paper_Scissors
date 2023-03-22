@@ -116,8 +116,17 @@ public class GridManager : MonoBehaviour
         return false;
     }
 
+    public float GetRelativeDistanceOfGridPositions(Vector2Int positionA, Vector2Int positionB)
+    {
+        Vector2 gridSpacingInWorldSpace = new Vector2(1.5f, 0.75f);
+        Vector2 worldPositionA = new Vector2(positionA.x * gridSpacingInWorldSpace.x, positionA.y * gridSpacingInWorldSpace.y);
+        Vector2 worldPositionB = new Vector2(positionB.x * gridSpacingInWorldSpace.x, positionB.y * gridSpacingInWorldSpace.y);
+        return Vector2.Distance(worldPositionA, worldPositionB);
+    }
+
     private void UnitMovement_OnAnyActionCompleted(object sender, EventArgs e)
     {
         UpdateGridOccupancy();
     }
+    
 }

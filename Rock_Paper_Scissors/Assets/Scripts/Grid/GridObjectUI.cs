@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 
 public class GridObjectUI : MonoBehaviour
 {
+    [SerializeField] private TextMeshPro actionValueText;
     [SerializeField] private TextMeshPro gridPositionText;
     [SerializeField] private GameObject movementHighlight;
     [SerializeField] private GameObject attackHighlight;
@@ -49,6 +50,10 @@ public class GridObjectUI : MonoBehaviour
     public void SetGridPosition(Vector2 gridPosition)
     {   
         gridPositionText.text = $"x: {gridPosition.x}, y: {gridPosition.y}";
-        // gridPositionText.text = $"x: {transform.position.x}, \n y: {transform.position.y}";
+    }
+
+    public void SetActionValue(float actionValue)
+    {   
+        actionValueText.text = $"AV: {actionValue:0.00}";
     }
 }
