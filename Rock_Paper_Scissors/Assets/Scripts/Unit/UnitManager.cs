@@ -11,6 +11,8 @@ public class UnitManager : MonoBehaviour
     private void Awake() 
     {
         Health.OnDeath += Health_OnDeath;
+        friendlyUnits = new List<Unit>();
+        enemyUnits = new List<Unit>();
     }
 
     private void Start() 
@@ -54,14 +56,18 @@ public class UnitManager : MonoBehaviour
     {
         foreach (Unit unit in friendlyUnits)
         {
-            unit.GetComponent<UnitAttack>().ResetActionPoints();
-            unit.GetComponent<UnitMovement>().ResetActionPoints();
+            foreach (UnitAction unitAction in unit.GetUnitActions())
+            {
+                unitAction.ResetActionPoints();
+            }
         }
 
         foreach (Unit unit in enemyUnits)
         {
-            unit.GetComponent<UnitAttack>().ResetActionPoints();
-            unit.GetComponent<UnitMovement>().ResetActionPoints();
+            foreach (UnitAction unitAction in unit.GetUnitActions())
+            {
+                unitAction.ResetActionPoints();
+            }
         }
     }
 

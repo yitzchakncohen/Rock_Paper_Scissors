@@ -129,15 +129,15 @@ public class ActionHandler : MonoBehaviour
         Vector2Int unitGridPosition = gridManager.GetGridPositionFromWorldPosition(selectedUnit.transform.position);
 
         // Check unit movement
-        UnitMovement unitMovement = selectedUnit.GetComponent<UnitMovement>();
-        if(unitMovement.GetActionPointsRemaining() > 0)
+        if(selectedUnit.TryGetComponent<UnitMovement>(out UnitMovement unitMovement) 
+            && unitMovement.GetActionPointsRemaining() > 0)
         {
             HighlightMovePositionRange(unitMovement, unitGridPosition);
         }
 
         // Check unit attacking
-        UnitAttack unitAttacking = selectedUnit.GetComponent<UnitAttack>();
-        if(unitAttacking.GetActionPointsRemaining() > 0)
+        if(selectedUnit.TryGetComponent<UnitAttack>(out UnitAttack unitAttacking) 
+            && unitAttacking.GetActionPointsRemaining() > 0)
         {
             HighlightAttackTargets();
         }
