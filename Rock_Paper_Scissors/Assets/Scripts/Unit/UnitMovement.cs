@@ -10,7 +10,6 @@ public class UnitMovement : UnitAction
     [SerializeField] private int moveDistance = 5;
     [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float stoppingDistance = 0.1f;
-    private Grid grid;
     private GridManager gridManager;
     private PathFinding pathFinding;
     private UnitAttack unitAttack;
@@ -25,7 +24,6 @@ public class UnitMovement : UnitAction
     
     private void Start() 
     {
-        grid = FindObjectOfType<Grid>();
         gridManager = FindObjectOfType<GridManager>();
         pathFinding = FindObjectOfType<PathFinding>();
     }

@@ -5,12 +5,27 @@ using UnityEngine;
 
 public class UnitManager : MonoBehaviour
 {
-    [SerializeField] private List<Unit> friendlyUnits;
-    [SerializeField] private List<Unit> enemyUnits;
+    private List<Unit> friendlyUnits;
+    private List<Unit> enemyUnits;
 
     private void Awake() 
     {
         Health.OnDeath += Health_OnDeath;
+    }
+
+    private void Start() 
+    {
+        foreach (Unit unit in FindObjectsOfType<Unit>())
+        {
+            if(unit.IsFriendly())
+            {
+                friendlyUnits.Add(unit);
+            }
+            else
+            {
+                enemyUnits.Add(unit);
+            }
+        }
     }
 
     private void OnDestroy() 

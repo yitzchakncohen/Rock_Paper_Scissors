@@ -14,6 +14,7 @@ public class ActionHandler : MonoBehaviour
     private PathFinding pathFinding;
     private TurnManager turnManager;
     private bool isBusy = false;
+    private bool updateGridActionHighlight = false;
 
     private void Start() 
     {
@@ -26,14 +27,21 @@ public class ActionHandler : MonoBehaviour
 
         inputManager.OnSingleTap += InputManager_onSingleTouch;
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
-        Health.OnDeath += Health_OnDeath;
+    }
+
+    private void LateUpdate() 
+    {
+        if(updateGridActionHighlight)
+        {
+            UpdateGridActionHighlight();
+            updateGridActionHighlight = false;
+        }
     }
 
     private void OnDestroy() 
     {
         inputManager.OnSingleTap -= InputManager_onSingleTouch;
         TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
-        Health.OnDeath -= Health_OnDeath;
     }
 
     private void InputManager_onSingleTouch(object sender, Vector2 touchPosition)
@@ -67,16 +75,16 @@ public class ActionHandler : MonoBehaviour
             // If you have a unit selected, check the cell for an action.
             if(selectedUnit != gridObject.GetOccupent())
             {
+                // Select a friendly unit
                 if(gridObject.GetOccupent().IsFriendly())
                 {
-                    //For friendly
                     selectedUnit = gridObject.GetOccupent();
                     OnUnitSelected?.Invoke(this, selectedUnit);
-                    HighlightActionGrid();
+                    updateGridActionHighlight = true;
                 }
                 else
                 {
-                    // For Enemy
+                    // Attack an enemy unit
                     if(selectedUnit != null)
                     {
                         UnitAttack unitAttack = selectedUnit.GetComponent<UnitAttack>();
@@ -102,7 +110,7 @@ public class ActionHandler : MonoBehaviour
         }
     }
 
-    private void HighlightActionGrid()
+    private void UpdateGridActionHighlight()
     {
         gridUIManager.HideAllGridPosition();
 
@@ -159,20 +167,9 @@ public class ActionHandler : MonoBehaviour
 
     private void TurnManager_OnNextTurn(object sender, EventArgs e)
     {
-        HighlightActionGrid();
+        updateGridActionHighlight = true;
         selectedUnit = null;
         OnUnitSelected?.Invoke(this, selectedUnit);
-    }
-
-    private void Health_OnDeath(object sender, EventArgs e)
-    {
-        StartCoroutine(OnDeathRoutine());
-    }
-
-    private IEnumerator OnDeathRoutine()
-    {
-        yield return new WaitForEndOfFrame();
-        HighlightActionGrid();
     }
 
     private void SetBusy()
@@ -185,6 +182,6 @@ public class ActionHandler : MonoBehaviour
     {
         isBusy = false;
         OnBusyChanged?.Invoke(this, isBusy);
-        HighlightActionGrid();
+        updateGridActionHighlight = true;
     }
 }
