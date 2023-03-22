@@ -75,20 +75,35 @@ public class EnemyAI : MonoBehaviour
 
     private bool TryTakeEnemyAIAction(Action onEnemyAIActionComplete)
     {
+        EnemyAIAction bestEnemeyAIAction = null;
+
+        // Get the best action from each unit and see if it is the best.
         foreach (Unit enemyUnit in unitManager.GetEnemyUnitsList())
         {
-            if(TryTakeEnemyAIAction(enemyUnit, onEnemyAIActionComplete))
+            if(bestEnemeyAIAction == null)
             {
-                return true;
+                bestEnemeyAIAction = GetBestActionForUnit(enemyUnit, onEnemyAIActionComplete);
             }
+            else
+            {
+                EnemyAIAction testAction = GetBestActionForUnit(enemyUnit, onEnemyAIActionComplete);
+                if(testAction != null && testAction.actionValue > bestEnemeyAIAction.actionValue)
+                {
+                    bestEnemeyAIAction = testAction;
+                }
+            }
+        }
+
+        if(bestEnemeyAIAction != null)
+        {
+            return bestEnemeyAIAction.unitAction.TryTakeAction(bestEnemeyAIAction.gridObject, onEnemyAIActionComplete);
         }
         return false;
     }
 
-    private bool TryTakeEnemyAIAction(Unit enemyUnit, Action onEnemyAIActionComplete)
+    private EnemyAIAction GetBestActionForUnit(Unit enemyUnit, Action onEnemyAIActionComplete)
     {
         EnemyAIAction bestEnemeyAIAction = null;
-        UnitAction bestUnitAction = null;
 
         foreach (UnitAction baseAction in enemyUnit.GetUnitActions())
         {
@@ -102,7 +117,6 @@ public class EnemyAI : MonoBehaviour
             if(bestEnemeyAIAction == null)
             {
                 bestEnemeyAIAction = baseAction.GetBestEnemyAIAction();
-                bestUnitAction = baseAction;
             }
             else
             {
@@ -110,15 +124,10 @@ public class EnemyAI : MonoBehaviour
                 if(testEnemyAIAction != null && testEnemyAIAction.actionValue > bestEnemeyAIAction.actionValue)
                 {
                     bestEnemeyAIAction = testEnemyAIAction;
-                    bestUnitAction = baseAction;
                 }
             }
         }
+        return bestEnemeyAIAction;
 
-        if(bestEnemeyAIAction != null)
-        {
-            return bestUnitAction.TryTakeAction(bestEnemeyAIAction.gridObject, onEnemyAIActionComplete);
-        }
-        return false;
     }
 }

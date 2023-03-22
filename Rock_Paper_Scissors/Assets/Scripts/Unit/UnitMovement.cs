@@ -159,14 +159,33 @@ public class UnitMovement : UnitAction
         foreach (Vector2Int position in GetValidMovementPositions(gridManager.GetGridPositionFromWorldPosition(transform.position), moveDistance))
         {
             GridObject gridObject = gridManager.GetGridObject(position);
-            int targetCountAtPosition = unitAttack.GetValidTargets(position).Count;
+            List<Unit> targetList = unitAttack.GetValidTargets(position);
+            int targetCountAtPosition = targetList.Count;
+            int targetCountValue = 0;
+
+            // Find the average health of the units nearby.
+            float averageNormalizedHealth = 0f;
+            foreach (Unit unit in targetList)
+            {
+                averageNormalizedHealth += unit.GetComponent<Health>().GetNormalizedHealth();
+            }
+            averageNormalizedHealth = averageNormalizedHealth / targetList.Count;
+            // The health value is a number between 0 and 10;
+            int healthAmountValue = Mathf.RoundToInt(10 * (1 - averageNormalizedHealth));
+        
+            if(targetCountAtPosition > 0)
+            {
+                // 60 is the number possible adjacent hexes times 10. 
+                targetCountValue = Mathf.RoundToInt(60f/targetCountAtPosition);
+            }
 
             if(bestAction == null)
             {
                 bestAction = new EnemyAIAction()
                 {
                     gridObject = gridObject,
-                    actionValue = targetCountAtPosition * 10,
+                    actionValue = targetCountValue + healthAmountValue,
+                    unitAction = this,
                 };
             }
             else
@@ -174,7 +193,8 @@ public class UnitMovement : UnitAction
                 EnemyAIAction testAction = new EnemyAIAction()
                 {
                     gridObject = gridObject,
-                    actionValue = targetCountAtPosition * 10,
+                    actionValue = targetCountValue + healthAmountValue,
+                    unitAction = this,
                 }; 
 
                 // Check if this action is better.

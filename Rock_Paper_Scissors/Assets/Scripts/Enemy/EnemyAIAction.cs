@@ -5,5 +5,6 @@ using UnityEngine;
 public class EnemyAIAction
 {
     public GridObject gridObject;
+    public UnitAction unitAction;
     public int actionValue;
 }

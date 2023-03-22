@@ -13,6 +13,7 @@ public class UnitAttack : UnitAction
     private GridManager gridManager;
     private float timer;
     private bool attacking;
+    private int unitAttackActionBaseValue = 100;
 
 
     private void Awake() 
@@ -192,7 +193,8 @@ public class UnitAttack : UnitAction
                 bestAction = new EnemyAIAction()
                 {
                     gridObject = gridObject,
-                    actionValue = 100 + Mathf.RoundToInt((1 - unit.GetComponent<Health>().GetNormalizedHealth())*100),
+                    actionValue = unitAttackActionBaseValue + Mathf.RoundToInt((1 - unit.GetComponent<Health>().GetNormalizedHealth())*unitAttackActionBaseValue),
+                    unitAction = this,
                 };
             }
             else
@@ -200,7 +202,8 @@ public class UnitAttack : UnitAction
                 EnemyAIAction testAction = new EnemyAIAction()
                 {
                     gridObject = gridObject,
-                    actionValue = 100 + Mathf.RoundToInt((1 - unit.GetComponent<Health>().GetNormalizedHealth())*100),
+                    actionValue = unitAttackActionBaseValue + Mathf.RoundToInt((1 - unit.GetComponent<Health>().GetNormalizedHealth())*100),
+                    unitAction = this,
                 }; 
 
                 // Check if this action is better.
