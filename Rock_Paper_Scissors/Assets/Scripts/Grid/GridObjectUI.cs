@@ -54,6 +54,13 @@ public class GridObjectUI : MonoBehaviour
 
     public void SetActionValue(float actionValue)
     {   
-        actionValueText.text = $"AV: {actionValue:0.00}";
+        if(actionValue == 0f)
+        {
+            actionValueText.text = $"----";
+        }
+        else
+        {
+            actionValueText.text = $"AV: {actionValue:0.00}";
+        }
     }
 }

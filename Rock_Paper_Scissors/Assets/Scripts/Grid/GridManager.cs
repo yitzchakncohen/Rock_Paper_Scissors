@@ -124,9 +124,19 @@ public class GridManager : MonoBehaviour
         return Vector2.Distance(worldPositionA, worldPositionB);
     }
 
+    public void ResetActionValueTexts()
+    {
+        for (int x = 0; x < gridSize.x; x++)
+        {
+            for (int y = 0; y < gridSize.y; y++)
+            {
+                    gridObjects[x,y].SetActionValue(0);
+            }
+        }
+    }
+
     private void UnitMovement_OnAnyActionCompleted(object sender, EventArgs e)
     {
         UpdateGridOccupancy();
-    }
-    
+    }   
 }

@@ -59,6 +59,8 @@ public class UnitMovement : UnitAction
             moving = false;
             actionPointsRemaining -= 1;
             ActionComplete();
+            // TODO remove this debug statement. 
+            gridManager.ResetActionValueTexts();
         }
     }
 
