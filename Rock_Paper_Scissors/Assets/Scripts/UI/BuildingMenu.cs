@@ -15,6 +15,12 @@ public class BuildingMenu : MonoBehaviour
         BuildingButton.OnBuildingButtonPressed += BuildingButton_OnBuildingButtonPressed;
     }
 
+    private void OnDestroy() 
+    {
+        ActionHandler.OnUnitSelected -= ActionHandler_OnUnitSelected;
+        BuildingButton.OnBuildingButtonPressed -= BuildingButton_OnBuildingButtonPressed;
+    }
+
     private void BuildingButton_OnBuildingButtonPressed(object sender, BuildButtonArguments e)
     {
         buildingMenuUI.gameObject.SetActive(false);

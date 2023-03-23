@@ -44,6 +44,7 @@ public class CameraController : MonoBehaviour
         inputManager.OnScroll += InputManager_OnScroll;
         ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
         UnitAction.OnAnyActionStarted += UnitAction_OnAnyActionStarted;
+        UnitMovement.OnUnitMove += UnitMovement_OnUnitMove;
 
         zoomTarget = cinemachineVirtualCamera.m_Lens.OrthographicSize;
 
@@ -60,7 +61,7 @@ public class CameraController : MonoBehaviour
         inputManager.OnPinchingCompleted -= InputManager_OnPinchingCompleted;
         inputManager.OnScroll -= InputManager_OnScroll;
         ActionHandler.OnUnitSelected -= ActionHandler_OnUnitSelected;
-
+        UnitMovement.OnUnitMove -= UnitMovement_OnUnitMove;
     }
 
     private void FixedUpdate() 
@@ -153,7 +154,12 @@ public class CameraController : MonoBehaviour
     {
         zoomTarget = Mathf.Clamp(zoomTarget + (amount * zoomSpeed), zoomClamp.x, zoomClamp.y);
     }
-    //TODO add pinch zoom
+    
+    
+    private void UnitMovement_OnUnitMove(object sender, EventArgs e)
+    {
+        transform.position = ((UnitMovement)sender).transform.position;
+    }
 
     private void ClampCameraPosition()
     {

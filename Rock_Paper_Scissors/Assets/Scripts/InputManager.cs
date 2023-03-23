@@ -74,7 +74,7 @@ public class InputManager : MonoBehaviour
 
         if(isDragging && playerControls.GameInputs.SingleHold.phase == InputActionPhase.Performed)
         {
-            Debug.Log("Dragging");
+            // Debug.Log("Dragging");
             Dragging?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
 
             // Check for double touch
@@ -103,7 +103,7 @@ public class InputManager : MonoBehaviour
             return;
         }
         
-        Debug.Log("Detect Pinch");
+        // Debug.Log("Detect Pinch");
         isPinching = true;
         OnStartPinching?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
     }
@@ -115,7 +115,7 @@ public class InputManager : MonoBehaviour
             return;
         }
 
-        Debug.Log("Detect Drag");
+        // Debug.Log("Detect Drag");
         isDragging = true;
         OnStartDragging?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
     }
@@ -127,7 +127,7 @@ public class InputManager : MonoBehaviour
             return;
         }
 
-        Debug.Log("Detect Tap");
+        // Debug.Log("Detect Tap");
         OnSingleTap?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
     }
 

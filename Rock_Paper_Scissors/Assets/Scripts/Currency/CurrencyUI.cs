@@ -15,6 +15,11 @@ public class CurrencyUI : MonoBehaviour
         currencyBank.OnCurrencyChanged += CurrencyBank_OnCurrencyChanged;
     }
 
+    private void OnDestroy() 
+    {
+        currencyBank.OnCurrencyChanged -= CurrencyBank_OnCurrencyChanged;
+    }
+
     private void CurrencyBank_OnCurrencyChanged(object sender, int currency)
     {
         currencyText.text = "Currency: " + currency;

@@ -16,7 +16,7 @@ public class Health : MonoBehaviour
 
     public void Damage(int damageAmount)
     {
-        Debug.Log("Damage!");
+        // Debug.Log("Damage!");
         health -= damageAmount;
         CheckForDeath();
     }

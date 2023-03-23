@@ -8,6 +8,7 @@ public class Unit : MonoBehaviour
     public static event EventHandler OnUnitSpawn;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private bool isFriendly = true;
+    private int unitCost = 50;
     private UnitAction[] unitActions;
     private Health health;
 
@@ -66,4 +67,9 @@ public class Unit : MonoBehaviour
     }
 
     public float GetNormalizedHealth() => health.GetNormalizedHealth();
+
+    public int GetCost()
+    {
+        return unitCost;
+    }
 }

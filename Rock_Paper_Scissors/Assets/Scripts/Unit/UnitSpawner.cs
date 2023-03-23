@@ -9,6 +9,7 @@ public class UnitSpawner : UnitAction
     private GridManager gridManager;
     private PathFinding pathFinding;
     private InputManager inputManager;
+    private CurrencyBank currencyBank;
     bool placingUnit = false;
     private Unit unitToSpawn = null;
 
@@ -18,6 +19,7 @@ public class UnitSpawner : UnitAction
         gridManager = FindObjectOfType<GridManager>();
         pathFinding = FindObjectOfType<PathFinding>();
         inputManager = FindObjectOfType<InputManager>();
+        currencyBank = FindObjectOfType<CurrencyBank>();
         inputManager.OnSingleTap += InputManager_OnSingleTap;
         BuildingButton.OnBuildingButtonPressed += BuildingButton_OnBuildingButtonPressed;
     }
@@ -104,8 +106,11 @@ public class UnitSpawner : UnitAction
             return;
         }
 
-        Instantiate(unitToSpawn, gridManager.GetGridObject(gridPosition).transform.position, Quaternion.identity);
-        placingUnit = false;
-        ActionComplete();
+        if(currencyBank.TrySpendCurrency(unitToSpawn.GetCost()))
+        {
+            Instantiate(unitToSpawn, gridManager.GetGridObject(gridPosition).transform.position, Quaternion.identity);
+            placingUnit = false;
+            ActionComplete();
+        }
     }
 }

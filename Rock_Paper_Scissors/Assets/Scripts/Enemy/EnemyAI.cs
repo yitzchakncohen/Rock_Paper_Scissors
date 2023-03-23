@@ -94,7 +94,7 @@ public class EnemyAI : MonoBehaviour
 
         if(bestEnemeyAIAction != null)
         {
-            Debug.Log("Taking action with value: " + bestEnemeyAIAction.actionValue);
+            // Debug.Log("Taking action with value: " + bestEnemeyAIAction.actionValue);
             return bestEnemeyAIAction.unitAction.TryTakeAction(bestEnemeyAIAction.gridObject, onEnemyAIActionComplete);
         }
         return false;

@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 
 public class UnitMovement : UnitAction
 {
+    public static event EventHandler OnUnitMove;
     [SerializeField] private UnitAnimator unitAnimator;
     [SerializeField] private int moveDistance = 5;
     [SerializeField] private float movementSpeed = 5f;
@@ -52,6 +53,7 @@ public class UnitMovement : UnitAction
                 Vector2 moveDirection = (targetGridObjects[currentPositionIndex].transform.position - transform.position).normalized;
                 AnimateMovement(moveDirection);
                 transform.position += (Vector3)(moveDirection * movementSpeed * Time.deltaTime);
+                OnUnitMove?.Invoke(this, EventArgs.Empty);
             }
         }
         else

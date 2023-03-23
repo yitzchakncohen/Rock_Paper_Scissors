@@ -43,6 +43,7 @@ public class ActionHandler : MonoBehaviour
     {
         inputManager.OnSingleTap -= InputManager_onSingleTouch;
         TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
+        BuildingButton.OnBuildingButtonPressed -= BuildingButton_BuildingButtonPressed;
     }
 
     private void InputManager_onSingleTouch(object sender, Vector2 touchPosition)
