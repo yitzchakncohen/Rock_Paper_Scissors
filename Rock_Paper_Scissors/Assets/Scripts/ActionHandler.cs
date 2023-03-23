@@ -27,6 +27,7 @@ public class ActionHandler : MonoBehaviour
 
         inputManager.OnSingleTap += InputManager_onSingleTouch;
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
+        BuildingButton.OnBuildingButtonPressed += BuildingButton_BuildingButtonPressed;
     }
 
     private void LateUpdate() 
@@ -182,6 +183,12 @@ public class ActionHandler : MonoBehaviour
         }
 
         gridUIManager.ShowGridPositionList(validAttackPositions, GridHighlightType.Attack);
+    }
+
+    private void BuildingButton_BuildingButtonPressed(object sender, BuildButtonArguments arguments)
+    {
+        GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(arguments.unitSpawner.transform.position);
+        arguments.unitSpawner.TryTakeAction(gridObject , ClearBusy);
     }
 
     private void TurnManager_OnNextTurn(object sender, EventArgs e)

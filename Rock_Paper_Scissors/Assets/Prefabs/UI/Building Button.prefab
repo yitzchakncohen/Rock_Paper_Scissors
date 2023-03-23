@@ -169,7 +169,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6930254441573241755, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
       propertyPath: m_Name
-      value: Build Rock Button
+      value: Building Button
       objectReference: {fileID: 0}
     - target: {fileID: 6930254441853392362, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
       propertyPath: m_text
@@ -221,6 +221,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
+--- !u!1 &1234233693696378326 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6930254441573241755, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
+  m_PrefabInstance: {fileID: 8146401166307923533}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &804627946948452930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234233693696378326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98701df04c70c6a40b0c1ac2a355d8b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rockUnitPrefab: {fileID: 7916932273131375014, guid: 74f64e7a24cb4f74d842aadd05e320c1, type: 3}
 --- !u!224 &1234233693696378327 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6930254441573241754, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}

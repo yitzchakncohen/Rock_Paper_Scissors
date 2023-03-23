@@ -36,7 +36,7 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\BuildingMenu.cs" />
+     <Compile Include="Assets\Scripts\UI\BuildingMenu.cs" />
      <Compile Include="Assets\Scripts\Unit\UnitAnimator.cs" />
      <Compile Include="Assets\InputSystem\PlayerControls.cs" />
      <Compile Include="Assets\Scripts\Unit\UnitAction.cs" />
@@ -63,6 +63,7 @@
      <Compile Include="Assets\Scripts\PathFinding\PathFinding.cs" />
      <Compile Include="Assets\Scripts\Unit\UnitMovement.cs" />
      <Compile Include="Assets\Scripts\InputManager.cs" />
+     <Compile Include="Assets\Scripts\UI\BuildingButton.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
