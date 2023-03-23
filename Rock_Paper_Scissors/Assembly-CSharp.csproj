@@ -36,24 +36,30 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\BuildingMenu.cs" />
      <Compile Include="Assets\Scripts\Unit\UnitAnimator.cs" />
      <Compile Include="Assets\InputSystem\PlayerControls.cs" />
      <Compile Include="Assets\Scripts\Unit\UnitAction.cs" />
      <Compile Include="Assets\Scripts\Grid\GridManager.cs" />
+     <Compile Include="Assets\Scripts\Currency\CurrencyBank.cs" />
      <Compile Include="Assets\Scripts\TurnManager.cs" />
      <Compile Include="Assets\Scripts\PathFinding\PathNode.cs" />
      <Compile Include="Assets\Scripts\Unit\UnitAttack.cs" />
      <Compile Include="Assets\Scripts\Grid\GridObject.cs" />
+     <Compile Include="Assets\Scripts\Currency\CurrencyUI.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyAIAction.cs" />
      <Compile Include="Assets\Scripts\Grid\GridObjectUI.cs" />
      <Compile Include="Assets\Scripts\ActionHandler.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
+     <Compile Include="Assets\Scripts\UI\RadialLayoutGroup.cs" />
+     <Compile Include="Assets\Scripts\UI\CanvasFacingController.cs" />
      <Compile Include="Assets\Scripts\Unit\Unit.cs" />
      <Compile Include="Assets\Scripts\Grid\GridHighlightType.cs" />
      <Compile Include="Assets\Scripts\Health.cs" />
      <Compile Include="Assets\Scripts\Enemy\EnemyAI.cs" />
      <Compile Include="Assets\Scripts\Unit\UnitManager.cs" />
      <Compile Include="Assets\Scripts\Grid\GridUIManager.cs" />
+     <Compile Include="Assets\Scripts\Unit\UnitSpawner.cs" />
      <Compile Include="Assets\Scripts\PathFinding\PathFinding.cs" />
      <Compile Include="Assets\Scripts\Unit\UnitMovement.cs" />
      <Compile Include="Assets\Scripts\InputManager.cs" />
@@ -324,11 +330,14 @@
     <Reference Include="Unity.Burst.Cecil">
         <HintPath>D:\Unity Projects\Rock_Paper_Scissors_Repo\Rock_Paper_Scissors\Library\PackageCache\com.unity.burst@1.8.2\Unity.Burst.CodeGen\Unity.Burst.Cecil.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Burst.Cecil.Rocks">
-        <HintPath>D:\Unity Projects\Rock_Paper_Scissors_Repo\Rock_Paper_Scissors\Library\PackageCache\com.unity.burst@1.8.2\Unity.Burst.CodeGen\Unity.Burst.Cecil.Rocks.dll</HintPath>
+    <Reference Include="DOTween">
+        <HintPath>D:\Unity Projects\Rock_Paper_Scissors_Repo\Rock_Paper_Scissors\Assets\Plugins\Demigiant\DOTween\DOTween.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.Antlr3.Runtime">
         <HintPath>D:\Unity Projects\Rock_Paper_Scissors_Repo\Rock_Paper_Scissors\Library\PackageCache\com.unity.visualscripting@1.8.0\Runtime\VisualScripting.Flow\Dependencies\NCalc\Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst.Cecil.Rocks">
+        <HintPath>D:\Unity Projects\Rock_Paper_Scissors_Repo\Rock_Paper_Scissors\Library\PackageCache\com.unity.burst@1.8.2\Unity.Burst.CodeGen\Unity.Burst.Cecil.Rocks.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Android.Types">
         <HintPath>C:\Program Files\2021.3.20f1\Editor\Data\PlaybackEngines\AndroidPlayer\Unity.Android.Types.dll</HintPath>
@@ -869,6 +878,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{0fb3574a-b73f-e79e-7888-3dcf8f70ae57}</Project>
+      <Name>Assembly-CSharp-firstpass</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
