@@ -12,23 +12,22 @@ public class UnitManager : MonoBehaviour
     private void Awake() 
     {
         Health.OnDeath += Health_OnDeath;
+        Unit.OnUnitSpawn += Unit_OnUnitSpawn;
         friendlyUnits = new List<Unit>();
         enemyUnits = new List<Unit>();
         gridManager = FindObjectOfType<GridManager>();
     }
 
-    private void Start() 
+    private void Unit_OnUnitSpawn(object sender, EventArgs e)
     {
-        foreach (Unit unit in FindObjectsOfType<Unit>())
+        Unit unit = (Unit)sender;
+        if(unit.IsFriendly())
         {
-            if(unit.IsFriendly())
-            {
-                friendlyUnits.Add(unit);
-            }
-            else
-            {
-                enemyUnits.Add(unit);
-            }
+            friendlyUnits.Add(unit);
+        }
+        else
+        {
+            enemyUnits.Add(unit);
         }
     }
 

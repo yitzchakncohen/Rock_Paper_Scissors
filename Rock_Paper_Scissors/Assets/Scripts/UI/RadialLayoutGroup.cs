@@ -60,13 +60,13 @@ public class RadialLayoutGroup : MonoBehaviour
             if(i == children.Count - 1)
             {
                 yield return StartCoroutine(AnimateChild(children[i], zeroPositionAngle, radialPosition, radius));
-                gameObject.SetActive(false);
             }
             else
             {
                 StartCoroutine(AnimateChild(children[i], zeroPositionAngle, radialPosition, radius));
             }
         }
+        gameObject.SetActive(false);
     }
 
     private IEnumerator AnimateChild(Transform child, float tragetRadialPosition, float startingRadialPosition, float radius)
@@ -102,8 +102,10 @@ public class RadialLayoutGroup : MonoBehaviour
 
     public void AnimateMenuClosed()
     {
-        StopAllCoroutines();
-        gameObject.SetActive(true);
-        StartCoroutine(AnimateMenuClosedRoutine());
+        if(gameObject.activeSelf)
+        {
+            StopAllCoroutines();
+            StartCoroutine(AnimateMenuClosedRoutine());
+        }
     }
 }

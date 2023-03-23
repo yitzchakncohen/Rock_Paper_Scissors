@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+    public static event EventHandler OnUnitSpawn;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private bool isFriendly = true;
     private UnitAction[] unitActions;
@@ -19,6 +20,7 @@ public class Unit : MonoBehaviour
     private void Start() 
     {
         ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
+        OnUnitSpawn?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnDestroy() 

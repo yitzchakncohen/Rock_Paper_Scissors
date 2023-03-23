@@ -10,6 +10,7 @@ public class GridObjectUI : MonoBehaviour
     [SerializeField] private TextMeshPro gridPositionText;
     [SerializeField] private GameObject movementHighlight;
     [SerializeField] private GameObject attackHighlight;
+    [SerializeField] private GameObject placementHighlight;
 
     public void ShowHighlight(GridHighlightType highlightType)
     {
@@ -22,6 +23,7 @@ public class GridObjectUI : MonoBehaviour
                 attackHighlight.SetActive(true);
                 break;
             case GridHighlightType.PlaceObject:
+                placementHighlight.SetActive(true);
                 break;
         }
     }
@@ -37,6 +39,7 @@ public class GridObjectUI : MonoBehaviour
                 movementHighlight.SetActive(false);  
                 break;
             case GridHighlightType.PlaceObject:
+                placementHighlight.SetActive(false);
                 break;
         }
     }
@@ -45,6 +48,7 @@ public class GridObjectUI : MonoBehaviour
     {
         attackHighlight.SetActive(false);
         movementHighlight.SetActive(false);
+        placementHighlight.SetActive(false);
     }
 
     public void SetGridPosition(Vector2 gridPosition)

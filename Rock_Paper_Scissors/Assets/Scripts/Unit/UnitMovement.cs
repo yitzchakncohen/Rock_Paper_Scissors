@@ -116,12 +116,14 @@ public class UnitMovement : UnitAction
         }
     }
 
-    public List<Vector2Int> GetValidMovementPositions(Vector2Int gridPosition, int range)
+    public List<Vector2Int> GetValidMovementPositions()
     {
         List<Vector2Int> gridPositionList = new List<Vector2Int>();
-        for (int x = -range; x <= range; x++)
+        Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
+
+        for (int x = -moveDistance; x <= moveDistance; x++)
         {
-            for (int z = -range; z <= range; z++)
+            for (int z = -moveDistance; z <= moveDistance; z++)
             {
                 Vector2Int testGridPosition = gridPosition + new Vector2Int(x, z);
 
@@ -133,7 +135,7 @@ public class UnitMovement : UnitAction
 
                 // Check if it's within movement distance
                 pathFinding.FindPath(gridPosition, testGridPosition, out int testDistance);
-                if (testDistance > range)
+                if (testDistance > moveDistance)
                 {
                     continue;
                 }
@@ -154,7 +156,7 @@ public class UnitMovement : UnitAction
     public override EnemyAIAction GetBestEnemyAIAction()
     {
         EnemyAIAction bestAction = null;
-        List<Vector2Int> validMovePositions = GetValidMovementPositions(gridManager.GetGridPositionFromWorldPosition(transform.position), moveDistance);
+        List<Vector2Int> validMovePositions = GetValidMovementPositions();
 
         foreach (Vector2Int position in validMovePositions)
         {

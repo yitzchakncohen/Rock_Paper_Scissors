@@ -22,6 +22,7 @@ public class BuildingButton : MonoBehaviour
 
     public void ButtonPressed()
     {
+        // TODO currency check goes here.
         BuildButtonArguments arguments = new BuildButtonArguments();
         arguments.unit = rockUnitPrefab;
         arguments.unitSpawner = this.unitSpawner;

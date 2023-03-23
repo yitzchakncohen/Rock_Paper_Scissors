@@ -143,8 +143,6 @@ public class ActionHandler : MonoBehaviour
             return;
         }
 
-        Vector2Int unitGridPosition = gridManager.GetGridPositionFromWorldPosition(selectedUnit.transform.position);
-
         foreach (UnitAction unitAction in selectedUnit.GetUnitActions())
         {
             // Only show if there are action points
@@ -155,7 +153,7 @@ public class ActionHandler : MonoBehaviour
 
             if(unitAction is UnitMovement)
             {
-                HighlightMovePositionRange(unitAction as UnitMovement, unitGridPosition);
+                HighlightMovePositionRange(unitAction as UnitMovement);
             }
             else if(unitAction is UnitAttack)
             {
@@ -164,9 +162,9 @@ public class ActionHandler : MonoBehaviour
         }
     }
 
-    private void HighlightMovePositionRange(UnitMovement unitMovement, Vector2Int gridPosition)
+    private void HighlightMovePositionRange(UnitMovement unitMovement)
     {
-        List<Vector2Int> gridPositionList = unitMovement.GetValidMovementPositions(gridPosition, unitMovement.GetMoveDistance());
+        List<Vector2Int> gridPositionList = unitMovement.GetValidMovementPositions();
 
         gridUIManager.ShowGridPositionList(gridPositionList, GridHighlightType.Movement);
     }
@@ -185,9 +183,18 @@ public class ActionHandler : MonoBehaviour
         gridUIManager.ShowGridPositionList(validAttackPositions, GridHighlightType.Attack);
     }
 
+    private void HighlightPlacementTargets(UnitSpawner unitSpawner)
+    {
+        List<Vector2Int> validPlacementPositions = unitSpawner.GetValidPlacementPositions();
+        Debug.Log(validPlacementPositions.Count);
+        gridUIManager.ShowGridPositionList(validPlacementPositions, GridHighlightType.PlaceObject);
+    }
+
     private void BuildingButton_BuildingButtonPressed(object sender, BuildButtonArguments arguments)
     {
+        HighlightPlacementTargets(arguments.unitSpawner);
         GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(arguments.unitSpawner.transform.position);
+        SetBusy();
         arguments.unitSpawner.TryTakeAction(gridObject , ClearBusy);
     }
 

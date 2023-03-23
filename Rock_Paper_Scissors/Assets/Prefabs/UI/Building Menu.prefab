@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ea23a3fe7690bb4ba8c5ca3f9582817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildingMenuUI: {fileID: 4905601344462874348}
 --- !u!1 &4362263398171088426
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,12 +171,12 @@ GameObject:
   - component: {fileID: 4721943390710829849}
   - component: {fileID: 4905601344462874348}
   m_Layer: 7
-  m_Name: Button Holder
+  m_Name: Building Menu UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4721943390710829849
 RectTransform:
   m_ObjectHideFlags: 0

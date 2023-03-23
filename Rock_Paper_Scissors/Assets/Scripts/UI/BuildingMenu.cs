@@ -12,6 +12,12 @@ public class BuildingMenu : MonoBehaviour
     {
         parentUnit = GetComponentInParent<Unit>();
         ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
+        BuildingButton.OnBuildingButtonPressed += BuildingButton_OnBuildingButtonPressed;
+    }
+
+    private void BuildingButton_OnBuildingButtonPressed(object sender, BuildButtonArguments e)
+    {
+        buildingMenuUI.gameObject.SetActive(false);
     }
 
     private void ActionHandler_OnUnitSelected(object sender, Unit unit)
