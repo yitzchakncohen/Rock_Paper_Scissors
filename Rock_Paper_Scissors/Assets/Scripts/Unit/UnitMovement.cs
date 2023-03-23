@@ -8,13 +8,13 @@ public class UnitMovement : UnitAction
 {
     public static event EventHandler OnUnitMove;
     [SerializeField] private UnitAnimator unitAnimator;
-    [SerializeField] private int moveDistance = 5;
     [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float stoppingDistance = 0.1f;
     private GridManager gridManager;
     private UnitManager unitManager;
     private PathFinding pathFinding;
     private UnitAttack unitAttack;
+    private Unit unit;
     private List<GridObject> targetGridObjects = null;
     private int currentPositionIndex = 0;
     private bool moving;
@@ -22,6 +22,7 @@ public class UnitMovement : UnitAction
     private void Awake() 
     {
         unitAttack = GetComponent<UnitAttack>();
+        unit = GetComponent<Unit>();
     }
     
     private void Start() 
@@ -75,7 +76,7 @@ public class UnitMovement : UnitAction
 
         Vector2Int currentGridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
         targetGridObjects = pathFinding.FindPath(currentGridPosition, targetGridObject.GetGridPostion(), out int pathLength);
-        if(pathLength > moveDistance)
+        if(pathLength > unit.GetMoveDistance())
         {
             return false;
         }
@@ -83,11 +84,6 @@ public class UnitMovement : UnitAction
         moving = true;
         ActionStart(onActionComplete);
         return true;
-    }
-
-    public int GetMoveDistance()
-    {
-        return moveDistance;
     }
 
     private void AnimateMovement(Vector2 moveDirection)
@@ -123,9 +119,9 @@ public class UnitMovement : UnitAction
         List<Vector2Int> gridPositionList = new List<Vector2Int>();
         Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
 
-        for (int x = -moveDistance; x <= moveDistance; x++)
+        for (int x = -unit.GetMoveDistance(); x <= unit.GetMoveDistance(); x++)
         {
-            for (int z = -moveDistance; z <= moveDistance; z++)
+            for (int z = -unit.GetMoveDistance(); z <= unit.GetMoveDistance(); z++)
             {
                 Vector2Int testGridPosition = gridPosition + new Vector2Int(x, z);
 
@@ -137,7 +133,7 @@ public class UnitMovement : UnitAction
 
                 // Check if it's within movement distance
                 pathFinding.FindPath(gridPosition, testGridPosition, out int testDistance);
-                if (testDistance > moveDistance)
+                if (testDistance > unit.GetMoveDistance())
                 {
                     continue;
                 }

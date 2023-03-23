@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5513481845632908330}
   - component: {fileID: 1351772397613750487}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Unit Thumbnail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -266,7 +266,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98701df04c70c6a40b0c1ac2a355d8b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rockUnitPrefab: {fileID: 7916932273131375014, guid: 74f64e7a24cb4f74d842aadd05e320c1, type: 3}
+  unitPrefab: {fileID: 7916932273131375014, guid: 74f64e7a24cb4f74d842aadd05e320c1, type: 3}
+  unitThumbnail: {fileID: 1351772397613750487}
 --- !u!224 &1234233693696378327 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6930254441573241754, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}

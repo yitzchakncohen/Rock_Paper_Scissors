@@ -11,7 +11,9 @@ public class UnitSpawner : UnitAction
     private InputManager inputManager;
     private CurrencyBank currencyBank;
     bool placingUnit = false;
+    bool unitSpawning = false;
     private Unit unitToSpawn = null;
+    private float timer;
 
 
     private void Start() 
@@ -32,6 +34,17 @@ public class UnitSpawner : UnitAction
         }
 
         // TODO Unit preview movement?
+
+        if(unitSpawning)
+        {
+            timer -= Time.deltaTime;
+            if(timer < 0)
+            {
+                placingUnit = false;
+                unitSpawning = false;
+                ActionComplete();
+            }
+        }
     }
 
     private void BuildingButton_OnBuildingButtonPressed(object sender, BuildButtonArguments args)
@@ -109,8 +122,8 @@ public class UnitSpawner : UnitAction
         if(currencyBank.TrySpendCurrency(unitToSpawn.GetCost()))
         {
             Instantiate(unitToSpawn, gridManager.GetGridObject(gridPosition).transform.position, Quaternion.identity);
-            placingUnit = false;
-            ActionComplete();
+            timer = 0.25f;
+            unitSpawning = true;
         }
     }
 }

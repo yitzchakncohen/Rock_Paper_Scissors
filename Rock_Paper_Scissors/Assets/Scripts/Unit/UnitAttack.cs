@@ -6,8 +6,6 @@ using UnityEngine;
 public class UnitAttack : UnitAction
 {
     [SerializeField] private UnitAnimator unitAnimator;
-    [SerializeField] private int attackRange = 1;
-    [SerializeField] private int attackDamage = 10;
     private Unit unit;
     private Unit target;
     private GridManager gridManager;
@@ -36,7 +34,7 @@ public class UnitAttack : UnitAction
         timer -= Time.deltaTime;
         if(timer <= 0)
         {
-            target.Damage(attackDamage);
+            target.Damage(unit.GetUnitAttackDamage());
             AnimateAttack(target.transform.position - transform.position);
             actionPointsRemaining -= 1;
             attacking = false;
@@ -74,7 +72,7 @@ public class UnitAttack : UnitAction
 
         List<Vector2Int> newPositions = new List<Vector2Int>();
 
-        for (int i = 0; i < attackRange; i++)
+        for (int i = 0; i < unit.GetAttackRange(); i++)
         {
             newPositions.Clear();
             foreach (Vector2Int position in gridPositionsInRangeList)

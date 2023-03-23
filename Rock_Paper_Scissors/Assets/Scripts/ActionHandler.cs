@@ -187,7 +187,6 @@ public class ActionHandler : MonoBehaviour
     private void HighlightPlacementTargets(UnitSpawner unitSpawner)
     {
         List<Vector2Int> validPlacementPositions = unitSpawner.GetValidPlacementPositions();
-        Debug.Log(validPlacementPositions.Count);
         gridUIManager.ShowGridPositionList(validPlacementPositions, GridHighlightType.PlaceObject);
     }
 

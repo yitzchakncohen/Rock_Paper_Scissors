@@ -12,7 +12,8 @@ public class BuildButtonArguments : EventArgs
 
 public class BuildingButton : MonoBehaviour
 {
-    [SerializeField] private Unit rockUnitPrefab;
+    [SerializeField] private Unit unitPrefab;
+    [SerializeField] private Image unitThumbnail;
     public static event EventHandler<BuildButtonArguments> OnBuildingButtonPressed;
     private UnitSpawner unitSpawner;
     private Button button;
@@ -22,20 +23,21 @@ public class BuildingButton : MonoBehaviour
     {
         unitSpawner = GetComponentInParent<UnitSpawner>();
         button = GetComponent<Button>();
+        unitThumbnail.sprite = unitPrefab.GetUnitThumbnail();
     }
 
     private void Start() 
     {
         currencyBank = FindObjectOfType<CurrencyBank>();
-        button.interactable = (currencyBank.GetCurrencyRemaining() >= rockUnitPrefab.GetCost());      
+        button.interactable = (currencyBank.GetCurrencyRemaining() >= unitPrefab.GetCost());      
     }
 
     public void ButtonPressed()
     {
-        if(currencyBank.GetCurrencyRemaining() >= rockUnitPrefab.GetCost())
+        if(currencyBank.GetCurrencyRemaining() >= unitPrefab.GetCost())
         {
             BuildButtonArguments arguments = new BuildButtonArguments();
-            arguments.unit = rockUnitPrefab;
+            arguments.unit = unitPrefab;
             arguments.unitSpawner = this.unitSpawner;
             OnBuildingButtonPressed?.Invoke(this, arguments);
         }

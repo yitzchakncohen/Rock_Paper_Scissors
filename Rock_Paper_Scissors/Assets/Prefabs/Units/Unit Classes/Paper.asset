@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6908c85703c002a429a31ec16045e598, type: 3}
+  m_Name: Paper
+  m_EditorClassIdentifier: 
+  unitClass: 1
+  unitSprites:
+  - {fileID: 21300000, guid: 4e32b7c654cd2ba449b12fd1a34b0e65, type: 3}
+  - {fileID: 21300000, guid: 4e32b7c654cd2ba449b12fd1a34b0e65, type: 3}
+  - {fileID: 21300000, guid: 4e32b7c654cd2ba449b12fd1a34b0e65, type: 3}
+  moveDistance: 4
+  attackDamage: 10
+  attackRange: 2
+  defense: 5
+  unitCost: 50

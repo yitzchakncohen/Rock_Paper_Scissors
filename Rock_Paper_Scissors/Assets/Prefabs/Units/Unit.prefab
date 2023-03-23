@@ -170,6 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 7916932273127252849}
   isFriendly: 1
+  unitStats: {fileID: 11400000, guid: e8980aa962341bb4cafc77540294e834, type: 2}
 --- !u!114 &7916932273131375013
 MonoBehaviour:
   m_ObjectHideFlags: 0

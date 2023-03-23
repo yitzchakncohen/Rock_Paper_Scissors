@@ -8,7 +8,7 @@ public class Unit : MonoBehaviour
     public static event EventHandler OnUnitSpawn;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private bool isFriendly = true;
-    private int unitCost = 50;
+    [SerializeField] private UnitStats unitStats;
     private UnitAction[] unitActions;
     private Health health;
 
@@ -70,6 +70,26 @@ public class Unit : MonoBehaviour
 
     public int GetCost()
     {
-        return unitCost;
+        return unitStats.unitCost;
+    }
+
+    public Sprite GetUnitThumbnail()
+    {
+        return unitStats.unitSprites[0];
+    }
+
+    public int GetUnitAttackDamage()
+    {
+        return unitStats.attackDamage;
+    }
+
+    public int GetAttackRange()
+    {
+        return unitStats.attackRange;
+    }
+
+    internal int GetMoveDistance()
+    {
+        return unitStats.moveDistance;
     }
 }

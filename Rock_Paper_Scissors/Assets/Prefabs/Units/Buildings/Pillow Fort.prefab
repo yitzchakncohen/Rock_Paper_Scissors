@@ -57,17 +57,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0eced7245afd0744fae7cf25bf687c27, type: 3}
---- !u!114 &5919557737964688523 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8789966380182385447, guid: 0eced7245afd0744fae7cf25bf687c27, type: 3}
-  m_PrefabInstance: {fileID: 3159914778293004204}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ea23a3fe7690bb4ba8c5ca3f9582817, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &7526441148846352500
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -147,5 +136,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a4e42b15697cb14fb92873e58e2857a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingMenu: {fileID: 5919557737964688523}
   placementRadius: 2
