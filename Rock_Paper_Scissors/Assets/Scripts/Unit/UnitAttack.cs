@@ -36,7 +36,7 @@ public class UnitAttack : UnitAction
         timer -= Time.deltaTime;
         if(timer <= 0)
         {
-            target.GetComponent<Health>().Damage(attackDamage);
+            target.Damage(attackDamage);
             AnimateAttack(target.transform.position - transform.position);
             actionPointsRemaining -= 1;
             attacking = false;
@@ -193,7 +193,7 @@ public class UnitAttack : UnitAction
                 bestAction = new EnemyAIAction()
                 {
                     gridObject = gridObject,
-                    actionValue = unitAttackActionBaseValue + (1 - unit.GetComponent<Health>().GetNormalizedHealth())*unitAttackActionBaseValue,
+                    actionValue = unitAttackActionBaseValue + (1 - unit.GetNormalizedHealth())*unitAttackActionBaseValue,
                     unitAction = this,
                 };
             }
@@ -202,7 +202,7 @@ public class UnitAttack : UnitAction
                 EnemyAIAction testAction = new EnemyAIAction()
                 {
                     gridObject = gridObject,
-                    actionValue = unitAttackActionBaseValue + (1 - unit.GetComponent<Health>().GetNormalizedHealth())*100,
+                    actionValue = unitAttackActionBaseValue + (1 - unit.GetNormalizedHealth())*100,
                     unitAction = this,
                 }; 
 

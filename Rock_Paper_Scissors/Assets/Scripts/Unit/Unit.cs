@@ -8,10 +8,12 @@ public class Unit : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private bool isFriendly = true;
     private UnitAction[] unitActions;
+    private Health health;
 
     private void Awake() 
     {
         unitActions = GetComponents<UnitAction>();
+        health = GetComponent<Health>();
     }
 
     private void Start() 
@@ -55,4 +57,11 @@ public class Unit : MonoBehaviour
     {
         return isFriendly;
     }
+
+    public void Damage(int damageAmount)
+    {
+        health.Damage(damageAmount);
+    }
+
+    public float GetNormalizedHealth() => health.GetNormalizedHealth();
 }

@@ -78,36 +78,52 @@ public class ActionHandler : MonoBehaviour
                 // Select a friendly unit
                 if(gridObject.GetOccupent().IsFriendly())
                 {
-                    selectedUnit = gridObject.GetOccupent();
-                    OnUnitSelected?.Invoke(this, selectedUnit);
-                    updateGridActionHighlight = true;
+                    SelectUnitOccupyingGridPosition(gridObject);
                 }
                 else
                 {
-                    // Attack an enemy unit
-                    if(selectedUnit != null)
-                    {
-                        UnitAttack unitAttack = selectedUnit.GetComponent<UnitAttack>();
-                        if(unitAttack.TryAttackUnit(gridObject.GetOccupent(), ClearBusy))
-                        {
-                            SetBusy();
-                        }
-                    }
+                    TryAttackUnitOccupyingGridPosition(gridObject);
                 }
             }
         }
         else if(selectedUnit != null)
         {
-            // If the grid position is not occupied, move the selected unit there
-            UnitMovement unitMovement = selectedUnit.GetComponent<UnitMovement>();
-            if(!unitMovement.IsMoving())
+            TryMoveToGridPosition(gridObject);
+        }
+    }
+
+    private void TryMoveToGridPosition(GridObject gridObject)
+    {
+        // If the grid position is not occupied, move the selected unit there
+        if (selectedUnit.TryGetComponent<UnitMovement>(out UnitMovement unitMovement))
+        {
+            if (unitMovement.TryStartMove(gridObject, ClearBusy))
             {
-                if(unitMovement.TryStartMove(gridObject, ClearBusy))
+                SetBusy();
+            }
+        }
+    }
+
+    private void TryAttackUnitOccupyingGridPosition(GridObject gridObject)
+    {
+        // Attack an enemy unit
+        if (selectedUnit != null)
+        {
+            if (selectedUnit.TryGetComponent<UnitAttack>(out UnitAttack unitAttack))
+            {
+                if (unitAttack.TryAttackUnit(gridObject.GetOccupent(), ClearBusy))
                 {
                     SetBusy();
                 }
             }
         }
+    }
+
+    private void SelectUnitOccupyingGridPosition(GridObject gridObject)
+    {
+        selectedUnit = gridObject.GetOccupent();
+        OnUnitSelected?.Invoke(this, selectedUnit);
+        updateGridActionHighlight = true;
     }
 
     private void UpdateGridActionHighlight()
@@ -128,18 +144,22 @@ public class ActionHandler : MonoBehaviour
 
         Vector2Int unitGridPosition = gridManager.GetGridPositionFromWorldPosition(selectedUnit.transform.position);
 
-        // Check unit movement
-        if(selectedUnit.TryGetComponent<UnitMovement>(out UnitMovement unitMovement) 
-            && unitMovement.GetActionPointsRemaining() > 0)
+        foreach (UnitAction unitAction in selectedUnit.GetUnitActions())
         {
-            HighlightMovePositionRange(unitMovement, unitGridPosition);
-        }
+            // Only show if there are action points
+            if(unitAction.GetActionPointsRemaining() <= 0)
+            {
+                continue;
+            }
 
-        // Check unit attacking
-        if(selectedUnit.TryGetComponent<UnitAttack>(out UnitAttack unitAttacking) 
-            && unitAttacking.GetActionPointsRemaining() > 0)
-        {
-            HighlightAttackTargets();
+            if(unitAction is UnitMovement)
+            {
+                HighlightMovePositionRange(unitAction as UnitMovement, unitGridPosition);
+            }
+            else if(unitAction is UnitAttack)
+            {
+                HighlightAttackTargets(unitAction as UnitAttack);
+            }
         }
     }
 
@@ -150,9 +170,8 @@ public class ActionHandler : MonoBehaviour
         gridUIManager.ShowGridPositionList(gridPositionList, GridHighlightType.Movement);
     }
 
-    private void HighlightAttackTargets()
+    private void HighlightAttackTargets(UnitAttack unitAttacking)
     {
-        UnitAttack unitAttacking = selectedUnit.GetComponent<UnitAttack>();
         Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(selectedUnit.transform.position);
         List<Unit> validUnitTargets = unitAttacking.GetValidTargets(gridPosition);
 

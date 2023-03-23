@@ -835,7 +835,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 192
   gridSize: {x: 24, y: 24}
-  gridObjectPrefab: {fileID: 2336278220173126340, guid: bbcb85bda970786409d291ad44e50c1a, type: 3}
+  gridObjectPrefab: {fileID: 2336278220173126337, guid: bbcb85bda970786409d291ad44e50c1a, type: 3}
   baseTilemap: {fileID: 1486483891}
 --- !u!114 &657300196
 MonoBehaviour:

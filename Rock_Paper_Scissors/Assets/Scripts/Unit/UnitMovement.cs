@@ -88,11 +88,6 @@ public class UnitMovement : UnitAction
         return moveDistance;
     }
 
-    public bool IsMoving()
-    {
-        return moving;
-    }
-
     private void AnimateMovement(Vector2 moveDirection)
     {
         if(moveDirection.x > 0 && moveDirection.y > 0)
@@ -245,7 +240,7 @@ public class UnitMovement : UnitAction
             float averageNormalizedHealth = 0f;
             foreach (Unit unit in targetList)
             {
-                averageNormalizedHealth += unit.GetComponent<Health>().GetNormalizedHealth();
+                averageNormalizedHealth += unit.GetNormalizedHealth();
             }
             averageNormalizedHealth = averageNormalizedHealth / targetList.Count;
             // The health value is a number between 0 and 10;

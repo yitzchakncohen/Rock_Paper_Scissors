@@ -8,7 +8,7 @@ public class GridManager : MonoBehaviour
 {
     [SerializeField] private LayerMask occupancyLayerMask;
     [SerializeField] private Vector2Int gridSize;
-    [SerializeField] private GameObject gridObjectPrefab;
+    [SerializeField] private GridObject gridObjectPrefab;
     [SerializeField] private Tilemap baseTilemap;
     private Grid grid;
     private GridObject[,] gridObjects;
@@ -24,12 +24,9 @@ public class GridManager : MonoBehaviour
             for (int y = 0; y < gridSize.y; y++)
             {
                 Vector3 gridPosition = grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
-                GameObject gridGameObject = Instantiate(gridObjectPrefab, gridPosition, Quaternion.identity);
-                if(gridGameObject.TryGetComponent<GridObject>(out GridObject gridObject))
-                {
-                    gridObject.Setup(new Vector2Int(x,y));
-                    gridObjects[x,y] = gridObject;
-                }
+                GridObject gridObject = Instantiate(gridObjectPrefab, gridPosition, Quaternion.identity);
+                gridObject.Setup(new Vector2Int(x,y));
+                gridObjects[x,y] = gridObject;
             }
         }
     }
