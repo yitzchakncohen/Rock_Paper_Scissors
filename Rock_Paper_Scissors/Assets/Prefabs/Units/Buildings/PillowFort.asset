@@ -10,16 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6908c85703c002a429a31ec16045e598, type: 3}
-  m_Name: Rock
+  m_Name: PillowFort
   m_EditorClassIdentifier: 
-  unitClass: 0
+  unitClass: 3
   unitSprites:
-  - {fileID: 21300000, guid: f59e08fd4a683cc4ba3b252ccbc6ad06, type: 3}
-  - {fileID: 21300000, guid: f59e08fd4a683cc4ba3b252ccbc6ad06, type: 3}
-  - {fileID: 21300000, guid: f59e08fd4a683cc4ba3b252ccbc6ad06, type: 3}
-  moveDistance: 4
-  attackDamage: 10
-  attackRange: 1
-  defense: 5
-  unitCost: 50
-  maximumHealth: 20
+  - {fileID: 21300000, guid: c7c1653366407d64fa4954f45e5a8681, type: 3}
+  moveDistance: 0
+  attackDamage: 0
+  attackRange: 0
+  defense: 10
+  unitCost: 100
+  maximumHealth: 50

@@ -68,6 +68,11 @@ public class Unit : MonoBehaviour
 
     public float GetNormalizedHealth() => health.GetNormalizedHealth();
 
+    public int GetMaximumHealth()
+    {
+        return unitStats.maximumHealth;
+    }
+
     public int GetCost()
     {
         return unitStats.unitCost;

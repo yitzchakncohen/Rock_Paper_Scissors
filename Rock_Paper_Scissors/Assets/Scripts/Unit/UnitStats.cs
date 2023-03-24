@@ -11,4 +11,5 @@ public class UnitStats : ScriptableObject
     public int attackRange;
     public int defense;
     public int unitCost;
+    public int maximumHealth;
 }

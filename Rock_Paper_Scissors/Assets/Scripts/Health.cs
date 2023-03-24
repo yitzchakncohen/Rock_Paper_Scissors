@@ -6,18 +6,21 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     public static event EventHandler OnDeath;
-    [SerializeField] private int maxHealth = 10;
+    public event Action OnHealthChanged;
+    private Unit unit;
     private int health;
 
     private void Awake() 
     {
-        health = maxHealth;
+        unit = GetComponent<Unit>();
+        health = unit.GetMaximumHealth();
     }
 
     public void Damage(int damageAmount)
     {
         // Debug.Log("Damage!");
         health -= damageAmount;
+        OnHealthChanged?.Invoke();
         CheckForDeath();
     }
 
@@ -32,6 +35,6 @@ public class Health : MonoBehaviour
 
     public float GetNormalizedHealth()
     {
-        return (float)health / (float)maxHealth;
+        return (float)health / (float)unit.GetMaximumHealth();
     }
 }
