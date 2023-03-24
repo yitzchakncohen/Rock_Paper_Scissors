@@ -16,8 +16,11 @@ public class UnitSpawner : UnitAction
     private float timer;
 
 
-    private void Start() 
+    protected override void Start() 
     {
+        base.Start(); 
+        IsCancellableAction = true;
+
         gridManager = FindObjectOfType<GridManager>();
         pathFinding = FindObjectOfType<PathFinding>();
         inputManager = FindObjectOfType<InputManager>();
@@ -123,5 +126,12 @@ public class UnitSpawner : UnitAction
             timer = 0.25f;
             unitSpawning = true;
         }
+    }
+
+    protected override void CancelButton_OnCancelButtonPress()
+    {
+        placingUnit = false;
+        unitSpawning = false;
+        base.CancelButton_OnCancelButtonPress();
     }
 }

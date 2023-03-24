@@ -19,8 +19,10 @@ public class UnitAttack : UnitAction
         unit = GetComponent<Unit>();
     }
 
-    private void Start() 
+    protected override void Start() 
     {
+        base.Start();
+        IsCancellableAction = false;
         gridManager = FindObjectOfType<GridManager>();
     }
 
@@ -218,5 +220,10 @@ public class UnitAttack : UnitAction
     public override bool TryTakeAction(GridObject gridObject, Action onActionComplete)
     {
         return TryAttackUnit(gridObject.GetOccupent(), onActionComplete);
+    }
+
+    protected override void CancelButton_OnCancelButtonPress()
+    {
+        base.CancelButton_OnCancelButtonPress();
     }
 }

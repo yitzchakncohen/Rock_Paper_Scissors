@@ -7,10 +7,21 @@ public abstract class UnitAction : MonoBehaviour
 {
     public static event EventHandler OnAnyActionStarted;
     public static event EventHandler OnAnyActionCompleted;
+    public bool IsCancellableAction {get; protected set;}
     protected bool isActive;
     protected Action onActionComplete;
     protected int actionPointsRemaining = 1;
-    
+
+    protected virtual void Start() 
+    {
+        CancelButton.OnCancelButtonPress += CancelButton_OnCancelButtonPress;
+    }
+
+    private void OnDestroy() 
+    {
+        CancelButton.OnCancelButtonPress -= CancelButton_OnCancelButtonPress;
+    }
+
     protected void ActionStart(Action onActionComplete)
     {
         isActive = true;
@@ -39,4 +50,11 @@ public abstract class UnitAction : MonoBehaviour
         actionPointsRemaining = 1;
     }
 
+    protected virtual void CancelButton_OnCancelButtonPress()
+    {
+        if(IsCancellableAction)
+        {
+            ActionComplete();
+        }
+    }
 }
