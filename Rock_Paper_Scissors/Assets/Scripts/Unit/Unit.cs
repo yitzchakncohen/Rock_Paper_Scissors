@@ -6,9 +6,10 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     public static event EventHandler OnUnitSpawn;
+    [SerializeField] private UnitAnimator unitAnimator;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private bool isFriendly = true;
-    [SerializeField] private UnitStats unitStats;
+    [SerializeField] private UnitData unitData;
     private UnitAction[] unitActions;
     private Health health;
 
@@ -22,6 +23,11 @@ public class Unit : MonoBehaviour
     {
         ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
         OnUnitSpawn?.Invoke(this, EventArgs.Empty);
+        spriteRenderer.sprite = unitData.unitThumbnail;
+        if(unitAnimator != null)
+        {
+            unitAnimator.SetSpriteLibraryAsset(unitData.spriteLibrary);
+        }
     }
 
     private void OnDestroy() 
@@ -70,31 +76,31 @@ public class Unit : MonoBehaviour
 
     public int GetMaximumHealth()
     {
-        return unitStats.maximumHealth;
+        return unitData.maximumHealth;
     }
 
     public int GetCost()
     {
-        return unitStats.unitCost;
+        return unitData.unitCost;
     }
 
     public Sprite GetUnitThumbnail()
     {
-        return unitStats.unitSprites[0];
+        return unitData.unitThumbnail;
     }
 
     public int GetUnitAttackDamage()
     {
-        return unitStats.attackDamage;
+        return unitData.attackDamage;
     }
 
     public int GetAttackRange()
     {
-        return unitStats.attackRange;
+        return unitData.attackRange;
     }
 
     internal int GetMoveDistance()
     {
-        return unitStats.moveDistance;
+        return unitData.moveDistance;
     }
 }

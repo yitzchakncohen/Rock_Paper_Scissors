@@ -31,7 +31,6 @@ public class CancelButton : MonoBehaviour
 
     private void UnitAction_OnAnyActionStarted(object sender, EventArgs e)
     {
-        Debug.Log("On action started");
         if(((UnitAction)sender).IsCancellableAction)
         {
             button.interactable = true;

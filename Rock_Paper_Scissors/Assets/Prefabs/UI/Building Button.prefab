@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f59e08fd4a683cc4ba3b252ccbc6ad06, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d4e71f3c749f6f44a9e0f9e9f47a87bd, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -197,7 +197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6930254441573241755, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
       propertyPath: m_Name
-      value: Building Button
+      value: Build Rock Button
       objectReference: {fileID: 0}
     - target: {fileID: 6930254441853392362, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
       propertyPath: m_text

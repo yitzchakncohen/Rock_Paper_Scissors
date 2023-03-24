@@ -131,8 +131,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d337c8d85b8c79489c57bf6f5b1798b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitAnimator: {fileID: 0}
   spriteRenderer: {fileID: 465782615191543975}
   isFriendly: 1
+  unitData: {fileID: 11400000, guid: 815a1cdd83620f848a4d7536e1d1d976, type: 2}
 --- !u!114 &465782616686677386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,7 +147,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7f21129a7996cf42b423ab9e964a688, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
 --- !u!58 &465782616686677381
 CircleCollider2D:
   m_ObjectHideFlags: 0

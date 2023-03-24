@@ -61,6 +61,7 @@ public class UnitMovement : UnitAction
         }
         else
         {
+            unitAnimator.ToggleMoveAnimation(false);
             moving = false;
             actionPointsRemaining -= 1;
             ActionComplete();
@@ -114,6 +115,7 @@ public class UnitMovement : UnitAction
         {
             unitAnimator.MoveLeft();
         }
+        unitAnimator.ToggleMoveAnimation(true);
     }
 
     public List<Vector2Int> GetValidMovementPositions()

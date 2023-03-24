@@ -68,7 +68,7 @@ public class CameraController : MonoBehaviour
     {
         if(dragging && !pinching)
         {
-            Debug.Log("Moving Camera");
+            // Debug.Log("Moving Camera");
             transform.position = startCameraPosition + draggingVector;
         }
         else
