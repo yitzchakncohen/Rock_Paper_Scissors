@@ -195,7 +195,11 @@ public class ActionHandler : MonoBehaviour
         HighlightPlacementTargets(arguments.unitSpawner);
         GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(arguments.unitSpawner.transform.position);
         SetBusy();
-        arguments.unitSpawner.TryTakeAction(gridObject , ClearBusy);
+        if(arguments.unitSpawner.TryTakeAction(gridObject , ClearBusy))
+        {
+            selectedUnit = null;
+            OnUnitSelected?.Invoke(this, selectedUnit);
+        }        
     }
 
     private void TurnManager_OnNextTurn(object sender, EventArgs e)

@@ -33,8 +33,6 @@ public class UnitSpawner : UnitAction
             return;
         }
 
-        // TODO Unit preview movement?
-
         if(unitSpawning)
         {
             timer -= Time.deltaTime;
