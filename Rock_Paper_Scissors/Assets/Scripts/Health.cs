@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    public static event EventHandler OnDeath;
+    public static event EventHandler<Unit> OnDeath;
     public event Action OnHealthChanged;
     private Unit unit;
     private int health;
@@ -16,20 +16,20 @@ public class Health : MonoBehaviour
         health = unit.GetMaximumHealth();
     }
 
-    public void Damage(int damageAmount)
+    public void Damage(int damageAmount, Unit attacker)
     {
         // Debug.Log("Damage!");
         health -= damageAmount;
         OnHealthChanged?.Invoke();
-        CheckForDeath();
+        CheckForDeath(attacker);
     }
 
-    public void CheckForDeath()
+    public void CheckForDeath(Unit attacker)
     {
         if(health <= 0)
         {
             Destroy(gameObject);
-            OnDeath?.Invoke(this, EventArgs.Empty);
+            OnDeath?.Invoke(this, attacker);
         }
     }
 

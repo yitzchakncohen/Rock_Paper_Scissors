@@ -36,7 +36,7 @@ public class UnitManager : MonoBehaviour
         Health.OnDeath -= Health_OnDeath;
     }
 
-    private void Health_OnDeath(object sender, EventArgs e)
+    private void Health_OnDeath(object sender, Unit attacker)
     {
         ((Health)sender).TryGetComponent<Unit>(out Unit unit);
 

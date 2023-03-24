@@ -67,9 +67,9 @@ public class Unit : MonoBehaviour
         return isFriendly;
     }
 
-    public void Damage(int damageAmount)
+    public void Damage(int damageAmount, Unit attacker)
     {
-        health.Damage(damageAmount);
+        health.Damage(damageAmount, attacker);
     }
 
     public float GetNormalizedHealth() => health.GetNormalizedHealth();
