@@ -7,18 +7,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7916932273127252849, guid: 74f64e7a24cb4f74d842aadd05e320c1, type: 3}
+    - target: {fileID: 2290512293295891048, guid: 74f64e7a24cb4f74d842aadd05e320c1, type: 3}
       propertyPath: m_Color.b
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7916932273127252849, guid: 74f64e7a24cb4f74d842aadd05e320c1, type: 3}
+    - target: {fileID: 2290512293295891048, guid: 74f64e7a24cb4f74d842aadd05e320c1, type: 3}
       propertyPath: m_Color.g
-      value: 0.18168788
+      value: 0.054901965
+      objectReference: {fileID: 0}
+    - target: {fileID: 2290512293295891048, guid: 74f64e7a24cb4f74d842aadd05e320c1, type: 3}
+      propertyPath: m_Color.r
+      value: 0.69411767
       objectReference: {fileID: 0}
     - target: {fileID: 7916932273127252849, guid: 74f64e7a24cb4f74d842aadd05e320c1, type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4ef03faee7879534684bbd01063d65a1, type: 2}
     - target: {fileID: 7916932273131375011, guid: 74f64e7a24cb4f74d842aadd05e320c1, type: 3}
       propertyPath: m_Name
       value: Enemy

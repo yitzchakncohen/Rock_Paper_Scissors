@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UnitMaterial
+  m_Name: Unit Material
   m_Shader: {fileID: -6465566751694194690, guid: 7e9ddbaf04a53164da51ae67fde7f4fc, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -60,4 +60,5 @@ Material:
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineColor: {r: 0.9019608, g: 0.23529412, b: 0, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
+    - _TeamColor: {r: 0, g: 0.2805748, b: 1, a: 0}
   m_BuildTextureStacks: []
