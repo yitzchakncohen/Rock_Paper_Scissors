@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class RadialLayoutGroup : MonoBehaviour
 {
+    public event Action OnCloseAnimationComplete;
     private List<Transform> children = new List<Transform>();
     private RectTransform rectTransform;
     private float animationSpeed = 0.05f;
@@ -66,7 +67,7 @@ public class RadialLayoutGroup : MonoBehaviour
                 StartCoroutine(AnimateChild(children[i], zeroPositionAngle, radialPosition, radius));
             }
         }
-        gameObject.SetActive(false);
+        OnCloseAnimationComplete?.Invoke();
     }
 
     private IEnumerator AnimateChild(Transform child, float tragetRadialPosition, float startingRadialPosition, float radius)

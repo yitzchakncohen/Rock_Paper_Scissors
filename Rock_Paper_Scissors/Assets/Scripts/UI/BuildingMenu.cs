@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class BuildingMenu : MonoBehaviour
 {
-    [SerializeField] private RadialLayoutGroup buildingMenuUI;
+    [SerializeField] private Transform buildingMenuUI;
+    [SerializeField] private RadialLayoutGroup radialLayoutGroup;
     private Unit parentUnit;
 
     private void Awake() 
@@ -13,12 +14,19 @@ public class BuildingMenu : MonoBehaviour
         parentUnit = GetComponentInParent<Unit>();
         ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
         BuildingButton.OnBuildingButtonPressed += BuildingButton_OnBuildingButtonPressed;
+        radialLayoutGroup.OnCloseAnimationComplete += RadialLayoutGroup_OnCloseAnimationComplete;
     }
 
     private void OnDestroy() 
     {
         ActionHandler.OnUnitSelected -= ActionHandler_OnUnitSelected;
         BuildingButton.OnBuildingButtonPressed -= BuildingButton_OnBuildingButtonPressed;
+        radialLayoutGroup.OnCloseAnimationComplete -= RadialLayoutGroup_OnCloseAnimationComplete;
+    }
+
+    private void RadialLayoutGroup_OnCloseAnimationComplete()
+    {
+        buildingMenuUI.gameObject.SetActive(false);
     }
 
     private void BuildingButton_OnBuildingButtonPressed(object sender, BuildButtonArguments e)
@@ -32,7 +40,7 @@ public class BuildingMenu : MonoBehaviour
         {
             OpenBuildingMenu();
         }
-        else
+        else if(unit != null)
         {
             CloseBuildingMenu();
         }
@@ -41,11 +49,14 @@ public class BuildingMenu : MonoBehaviour
     public void OpenBuildingMenu()
     {
         buildingMenuUI.gameObject.SetActive(true);
-        buildingMenuUI.AnimateMenuOpen();
+        radialLayoutGroup.AnimateMenuOpen();
     }
 
     public void CloseBuildingMenu()
     {
-        buildingMenuUI.AnimateMenuClosed();       
+        if(buildingMenuUI.gameObject.activeSelf)
+        {
+            radialLayoutGroup.AnimateMenuClosed();       
+        }
     }
 }

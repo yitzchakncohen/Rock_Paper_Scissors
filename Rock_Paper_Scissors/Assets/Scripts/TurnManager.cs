@@ -5,9 +5,15 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    public static event EventHandler OnNextTurn;
+    public class OnNextTurnEventArgs : EventArgs
+    {
+        public bool IsPlayersTurn;
+        public int Turn;
+    }
+    public static event EventHandler<OnNextTurnEventArgs> OnNextTurn;
     private UnitManager unitManager;
     private bool playersTurn = true;
+    private int turn = 0;
 
     private void Start() 
     {
@@ -23,7 +29,17 @@ public class TurnManager : MonoBehaviour
     public void NextTurn()
     {
         playersTurn = !playersTurn;
+        if(playersTurn)
+        {
+            turn++;
+        }
         unitManager.ResetAllUnitActionPoints();
-        OnNextTurn?.Invoke(this, EventArgs.Empty);
+        
+        OnNextTurnEventArgs onNextTurnEventArgs = new OnNextTurnEventArgs
+        {
+            IsPlayersTurn = playersTurn,
+            Turn = turn
+        };
+        OnNextTurn?.Invoke(this, onNextTurnEventArgs);
     }
 }

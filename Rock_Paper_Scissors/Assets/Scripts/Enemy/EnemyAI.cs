@@ -57,7 +57,7 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    private void TurnManager_OnNextTurn(object sender, EventArgs e)
+    private void TurnManager_OnNextTurn(object sender, EventArgs eventArgs)
     {
         if(!turnManager.IsPlayerTurn())
         {

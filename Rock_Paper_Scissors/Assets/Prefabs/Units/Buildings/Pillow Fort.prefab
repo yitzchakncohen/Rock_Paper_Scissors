@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Building Menu
       objectReference: {fileID: 0}
+    - target: {fileID: 255271946784413323, guid: 0eced7245afd0744fae7cf25bf687c27, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5248897022908921392, guid: 0eced7245afd0744fae7cf25bf687c27, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -53,6 +57,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5248897022908921392, guid: 0eced7245afd0744fae7cf25bf687c27, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7166845921210606047, guid: 0eced7245afd0744fae7cf25bf687c27, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -27,5 +27,6 @@ public class CurrencyBank : MonoBehaviour
     public void AddCurrencyToBank(int amount)
     {
         currency += amount;
+        OnCurrencyChanged?.Invoke(this, currency);
     }
 }   

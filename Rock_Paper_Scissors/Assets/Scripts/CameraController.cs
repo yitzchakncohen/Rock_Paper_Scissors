@@ -21,8 +21,10 @@ public class CameraController : MonoBehaviour
     private PlayerControls playerControls;
     private Camera mainCamera;
     private Vector2 startDraggingPosition;
+    private Vector2 lastFrameDraggingPosition;
     private Vector2 startCameraPosition;
     private Vector2 draggingVector;
+    private Vector2 draggingVelocity;
     private float pinchingStartDistance;
     private float pinchingDistance;
     private float pinchingStartZoomValue;
@@ -45,7 +47,6 @@ public class CameraController : MonoBehaviour
         ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
         UnitAction.OnAnyActionStarted += UnitAction_OnAnyActionStarted;
         UnitMovement.OnUnitMove += UnitMovement_OnUnitMove;
-
         zoomTarget = cinemachineVirtualCamera.m_Lens.OrthographicSize;
 
         CalculateCameraBoundary();
@@ -64,30 +65,40 @@ public class CameraController : MonoBehaviour
         UnitMovement.OnUnitMove -= UnitMovement_OnUnitMove;
     }
 
-    private void FixedUpdate() 
+    private void FixedUpdate()
     {
-        if(dragging && !pinching)
+        if (dragging && !pinching)
         {
             // Debug.Log("Moving Camera");
             transform.position = startCameraPosition + draggingVector;
         }
         else
         {
-            // Dampen the movement from dragging before stopping. 
-            if(draggingVector.magnitude > 0.1)
-            {
-                draggingVector = new Vector2(Mathf.Lerp(draggingVector.x, 0, cameraMovementDamping.x), Mathf.Lerp(draggingVector.y, 0, cameraMovementDamping.y));
-                transform.position += (Vector3)draggingVector;
-            }
+            DampenDragVelocity();
         }
 
-        if(cinemachineVirtualCamera.m_Lens.OrthographicSize != zoomTarget)
+        ZoomCamera();
+    }
+
+    private void ZoomCamera()
+    {
+        if (cinemachineVirtualCamera.m_Lens.OrthographicSize != zoomTarget)
         {
             cinemachineVirtualCamera.m_Lens.OrthographicSize = Mathf.Lerp(cinemachineVirtualCamera.m_Lens.OrthographicSize, zoomTarget, zoomSmoothing);
-            if(Math.Abs(cinemachineVirtualCamera.m_Lens.OrthographicSize - zoomTarget) < 0.1)
+            if (Math.Abs(cinemachineVirtualCamera.m_Lens.OrthographicSize - zoomTarget) < 0.1)
             {
                 cinemachineVirtualCamera.m_Lens.OrthographicSize = zoomTarget;
             }
+        }
+    }
+
+    private void DampenDragVelocity()
+    {
+        // Dampen the movement from dragging before stopping. 
+        if (draggingVelocity.magnitude > 0.1)
+        {
+            draggingVelocity = new Vector2(Mathf.Lerp(draggingVelocity.x, 0, cameraMovementDamping.x), Mathf.Lerp(draggingVelocity.y, 0, cameraMovementDamping.y));
+            transform.position += (Vector3)draggingVelocity;
         }
     }
 
@@ -106,6 +117,8 @@ public class CameraController : MonoBehaviour
     private void InputManager_Dragging(object sender, Vector2 position)
     {
         draggingVector = (startDraggingPosition - (Vector2)mainCamera.ScreenToWorldPoint(position));
+        draggingVelocity = (Vector2)mainCamera.ScreenToWorldPoint(position) - lastFrameDraggingPosition;
+        lastFrameDraggingPosition = (Vector2)mainCamera.ScreenToWorldPoint(position);
     }
 
     private void InputManager_OnDraggingCompleted(object sender, Vector2 position)
