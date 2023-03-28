@@ -33,6 +33,11 @@ public class Health : MonoBehaviour
         }
     }
 
+    public int GetHealth()
+    {
+        return health;
+    }
+
     public float GetNormalizedHealth()
     {
         return (float)health / (float)unit.GetMaximumHealth();

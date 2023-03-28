@@ -6,14 +6,8 @@ using UnityEngine;
 public class UnitProgression : MonoBehaviour
 {
     public event Action OnLevelUp;
-    private Unit unit;
     private int level = 1;
     private int xp = 0;
-
-    private void Awake() 
-    {
-        unit = GetComponent<Unit>();
-    }
 
     private void Start() 
     {
@@ -22,7 +16,7 @@ public class UnitProgression : MonoBehaviour
 
     private void Health_OnDeath(object sender, Unit attacker)
     {
-        if(attacker == unit)
+        if(attacker.GetUnitProgression() == this)
         {
             GainXP(100);
         }

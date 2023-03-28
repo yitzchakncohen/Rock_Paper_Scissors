@@ -11,12 +11,14 @@ public class Unit : MonoBehaviour
     [SerializeField] private bool isFriendly = true;
     [SerializeField] private UnitData unitData;
     private UnitAction[] unitActions;
+    private UnitProgression unitProgression;
     private Health health;
 
     private void Awake() 
     {
         unitActions = GetComponents<UnitAction>();
         health = GetComponent<Health>();
+        unitProgression = GetComponent<UnitProgression>();
     }
 
     private void Start() 
@@ -91,6 +93,7 @@ public class Unit : MonoBehaviour
 
     public int GetUnitAttackDamage()
     {
+        // Todo modify with modifiers
         return unitData.attackDamage;
     }
 
@@ -102,5 +105,42 @@ public class Unit : MonoBehaviour
     internal int GetMoveDistance()
     {
         return unitData.moveDistance;
+    }
+
+    public UnitClass GetUnitClass()
+    {
+        return unitData.unitClass;
+    }
+
+    public UnitProgression GetUnitProgression()
+    {
+        return unitProgression;
+    }
+
+    public int GetLevel()
+    {
+        if(unitProgression != null)
+        {
+            return unitProgression.GetLevel();
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    public int GetHealth()
+    {
+        return health.GetHealth();
+    }
+
+    public int GetBaseAttack()
+    {
+        return unitData.attackDamage;
+    }
+
+    public int GetBaseDefense()
+    {
+        return unitData.defense;
     }
 }

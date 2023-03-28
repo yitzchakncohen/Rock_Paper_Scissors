@@ -16,14 +16,17 @@ public class WaveManager : MonoBehaviour
 
     [SerializeField] private Wave[] waves;
     [SerializeField] private Transform[] spawnPoints;
+    [SerializeField] private float showUnitsTime = 1f;
     private CurrencyBank currencyBank;
     private GridManager gridManager;
+    private CameraController cameraController;
 
     private void Start() 
     {
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
         currencyBank = FindObjectOfType<CurrencyBank>();
         gridManager = FindObjectOfType<GridManager>();
+        cameraController = FindObjectOfType<CameraController>();
         StartWave(0);
     }
 
@@ -43,6 +46,7 @@ public class WaveManager : MonoBehaviour
             {
                 currencyBank.AddCurrencyToBank(wave.CurrencyBonus);
                 SpawnUnits(wave);
+                StartCoroutine(ShowSpawnedUnits());
                 Debug.Log($"Wave spawning...");
             }
         }
@@ -91,5 +95,16 @@ public class WaveManager : MonoBehaviour
         }
 
         return spawnPositions;
+    }
+
+    private IEnumerator ShowSpawnedUnits()
+    {
+        Vector3 startingPosition = cameraController.transform.position;
+        foreach (Transform point in spawnPoints)
+        {
+            cameraController.transform.position = point.position;
+            yield return new WaitForSeconds(showUnitsTime);
+        }
+        cameraController.transform.position = startingPosition;
     }
 }

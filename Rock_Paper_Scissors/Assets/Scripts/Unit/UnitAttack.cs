@@ -36,7 +36,7 @@ public class UnitAttack : UnitAction
         timer -= Time.deltaTime;
         if(timer <= 0)
         {
-            target.Damage(unit.GetUnitAttackDamage(), unit);
+            target.Damage(unit.GetBaseAttack(), unit);
             AnimateAttack(target.transform.position - transform.position);
             actionPointsRemaining -= 1;
             attacking = false;

@@ -6,7 +6,7 @@ using UnityEngine;
 public class CurrencyBank : MonoBehaviour
 {
     public event EventHandler<int> OnCurrencyChanged;
-    private int currency = 100;
+    private int currency = 0;
 
     public bool TrySpendCurrency(int amountToSpend)
     {
