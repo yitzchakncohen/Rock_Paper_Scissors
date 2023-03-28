@@ -14,6 +14,8 @@ public class WaveManager : MonoBehaviour
         public int TurnToStartWave;
     }
 
+    public static event Action OnWaveStarted;
+    public static event Action OnWaveCompleted;
     [SerializeField] private Wave[] waves;
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private float showUnitsTime = 1f;
@@ -99,6 +101,7 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator ShowSpawnedUnits()
     {
+        OnWaveStarted?.Invoke();
         Vector3 startingPosition = cameraController.transform.position;
         foreach (Transform point in spawnPoints)
         {
@@ -106,5 +109,6 @@ public class WaveManager : MonoBehaviour
             yield return new WaitForSeconds(showUnitsTime);
         }
         cameraController.transform.position = startingPosition;
+        OnWaveCompleted?.Invoke();
     }
 }
