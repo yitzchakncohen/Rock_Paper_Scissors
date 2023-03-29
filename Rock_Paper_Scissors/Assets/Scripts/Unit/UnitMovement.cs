@@ -254,6 +254,19 @@ public class UnitMovement : UnitAction
         return healthAmountValue;
     }
 
+    public override int GetValidActionsRemaining()
+    {
+        Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(unit.transform.position);
+        if(GetValidMovementPositions().Count > 0)
+        {
+            return actionPointsRemaining;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
     public override bool TryTakeAction(GridObject gridObject, Action onActionComplete)
     {
         return TryStartMove(gridObject, onActionComplete);

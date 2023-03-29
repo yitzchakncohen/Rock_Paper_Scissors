@@ -39,6 +39,7 @@ public abstract class UnitAction : MonoBehaviour
 
     public abstract EnemyAIAction GetBestEnemyAIAction();
     public abstract bool TryTakeAction(GridObject gridObject, Action onActionComplete);
+    public abstract int GetValidActionsRemaining();
 
     public int GetActionPointsRemaining()
     {

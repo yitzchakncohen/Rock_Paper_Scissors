@@ -128,6 +128,18 @@ public class UnitSpawner : UnitAction
         }
     }
 
+    public override int GetValidActionsRemaining()
+    {
+        if(currencyBank.GetCurrencyRemaining() > 50)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
     protected override void CancelButton_OnCancelButtonPress()
     {
         placingUnit = false;

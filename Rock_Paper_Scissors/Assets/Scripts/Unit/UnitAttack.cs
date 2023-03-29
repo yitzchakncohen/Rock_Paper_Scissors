@@ -36,7 +36,7 @@ public class UnitAttack : UnitAction
         timer -= Time.deltaTime;
         if(timer <= 0)
         {
-            target.Damage(unit.GetBaseAttack(), unit);
+            target.Damage(unit.GetUnitAttackDamage(), unit);
             AnimateAttack(target.transform.position - transform.position);
             actionPointsRemaining -= 1;
             attacking = false;
@@ -215,6 +215,19 @@ public class UnitAttack : UnitAction
         }
 
         return bestAction;
+    }
+
+    public override int GetValidActionsRemaining()
+    {
+        Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(unit.transform.position);
+        if(GetValidTargets(gridPosition).Count > 0)
+        {
+            return actionPointsRemaining;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     public override bool TryTakeAction(GridObject gridObject, Action onActionComplete)

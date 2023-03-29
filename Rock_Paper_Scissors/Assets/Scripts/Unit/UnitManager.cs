@@ -99,4 +99,19 @@ public class UnitManager : MonoBehaviour
 
         return closestUnit;
     }
+
+    public int GetFriendlyAvaliableActionsRemaining()
+    {
+        int actionPoints = 0;
+
+        foreach (Unit friendlyUnit in friendlyUnits)
+        {
+            foreach (UnitAction unitAction in friendlyUnit.GetUnitActions())
+            {
+                actionPoints += unitAction.GetValidActionsRemaining();
+            }
+        }
+
+        return actionPoints;
+    }
 }
