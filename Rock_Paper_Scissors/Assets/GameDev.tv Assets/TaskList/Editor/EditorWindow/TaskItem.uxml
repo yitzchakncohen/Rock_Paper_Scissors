@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/GameDev.tv%20Assets/TaskList/Editor/EditorWindow/TaskItem.uss?fileID=7433441132597879392&amp;guid=9118eb7895a099c438f87046d591104d&amp;type=3#TaskItem" />
+    <ui:VisualElement name="taskItem" style="flex-direction: row; justify-content: space-between;">
+        <ui:Toggle name="taskToggle" />
+        <ui:Label text="Label" display-tooltip-when-elided="true" name="taskLabel" style="width: 85%;" />
+        <ui:Button text="X" display-tooltip-when-elided="true" name="removeButton" style="font-size: 8px; width: 15px;" />
+    </ui:VisualElement>
+</ui:UXML>

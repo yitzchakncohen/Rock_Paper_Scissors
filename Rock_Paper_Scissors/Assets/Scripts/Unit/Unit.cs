@@ -91,12 +91,6 @@ public class Unit : MonoBehaviour
         return unitData.unitThumbnail;
     }
 
-    public int GetUnitAttackDamage()
-    {
-        // Todo modify with modifiers
-        return unitData.attackDamage;
-    }
-
     public int GetAttackRange()
     {
         return unitData.attackRange;
@@ -140,6 +134,16 @@ public class Unit : MonoBehaviour
     }
 
     public int GetBaseDefense()
+    {
+        return unitData.defense;
+    }
+
+    public int GetModifiedAttack()
+    {
+        return unitData.attackDamage;
+    }
+
+    public int GetModifiedDefense()
     {
         return unitData.defense;
     }
