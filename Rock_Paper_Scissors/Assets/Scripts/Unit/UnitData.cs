@@ -9,9 +9,9 @@ public class UnitData : ScriptableObject
     public Sprite unitThumbnail;
     public SpriteLibraryAsset spriteLibrary;
     public int moveDistance;
-    public int attackDamage;
+    public int[] attackDamage;
     public int attackRange;
-    public int defense;
+    public int[] defense;
     public int unitCost;
-    public int maximumHealth;
+    public int[] maximumHealth;
 }

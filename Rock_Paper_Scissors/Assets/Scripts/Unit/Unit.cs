@@ -78,7 +78,7 @@ public class Unit : MonoBehaviour
 
     public int GetMaximumHealth()
     {
-        return unitData.maximumHealth;
+        return unitData.maximumHealth[unitProgression.GetLevel() - 1];
     }
 
     public int GetCost()
@@ -130,21 +130,22 @@ public class Unit : MonoBehaviour
 
     public int GetBaseAttack()
     {
-        return unitData.attackDamage;
+        return unitData.attackDamage[0];
     }
 
     public int GetBaseDefense()
     {
-        return unitData.defense;
+        return unitData.defense[0];
     }
 
     public int GetModifiedAttack()
     {
-        return unitData.attackDamage;
+        return unitData.attackDamage[unitProgression.GetLevel() - 1];
     }
 
     public int GetModifiedDefense()
     {
-        return unitData.defense;
+        return unitData.defense[unitProgression.GetLevel() - 1];
     }
+
 }
