@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,7 @@ public class BuildingButton : MonoBehaviour
 {
     [SerializeField] private Unit unitPrefab;
     [SerializeField] private Image unitThumbnail;
+    [SerializeField] private TextMeshProUGUI unitCostText;
     public static event EventHandler<BuildButtonArguments> OnBuildingButtonPressed;
     private UnitSpawner unitSpawner;
     private Button button;
@@ -24,6 +26,7 @@ public class BuildingButton : MonoBehaviour
         unitSpawner = GetComponentInParent<UnitSpawner>();
         button = GetComponent<Button>();
         unitThumbnail.sprite = unitPrefab.GetUnitThumbnail();
+        unitCostText.text = unitPrefab.GetCost().ToString();
     }
 
     private void Start() 
