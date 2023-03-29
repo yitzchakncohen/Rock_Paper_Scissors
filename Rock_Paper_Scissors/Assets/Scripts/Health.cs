@@ -8,11 +8,28 @@ public class Health : MonoBehaviour
     public static event EventHandler<Unit> OnDeath;
     public event Action OnHealthChanged;
     private Unit unit;
+    private UnitProgression unitProgression;
     private int health;
 
     private void Awake() 
     {
         unit = GetComponent<Unit>();
+    }
+    
+    private void Start() 
+    {
+        unitProgression = unit.GetUnitProgression();
+        unitProgression.OnLevelUp += UnitProgression_OnLevelUp;        
+        health = unit.GetMaximumHealth();
+    }
+
+    private void OnDestroy() 
+    {
+        unitProgression.OnLevelUp -= UnitProgression_OnLevelUp;
+    }
+
+    private void UnitProgression_OnLevelUp()
+    {
         health = unit.GetMaximumHealth();
     }
 
