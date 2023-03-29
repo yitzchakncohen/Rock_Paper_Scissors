@@ -9,10 +9,10 @@ public class InputManager : MonoBehaviour
 {
     public event EventHandler<Vector2> OnSingleTap;
     public event EventHandler<Vector2> OnStartDragging;
-    public event EventHandler<Vector2> Dragging;
+    public event EventHandler<Vector2> OnDragging;
     public event EventHandler<Vector2> OnDraggingCompleted;
     public event EventHandler<Vector2> OnStartPinching;
-    public event EventHandler<Vector2> Pinching;
+    public event EventHandler<Vector2> OnPinching;
     public event EventHandler<Vector2> OnPinchingCompleted;
     public event EventHandler<float> OnScroll;
     private EventSystem eventSystem;
@@ -75,12 +75,12 @@ public class InputManager : MonoBehaviour
         if(isDragging && playerControls.GameInputs.SingleHold.phase == InputActionPhase.Performed)
         {
             // Debug.Log("Dragging");
-            Dragging?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
+            OnDragging?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
 
             // Check for double touch
             if(isPinching && playerControls.GameInputs.MultiHold.phase == InputActionPhase.Performed)
             {
-                Pinching?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
+                OnPinching?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
             }
             else
             {

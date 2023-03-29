@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 8114415440366524639}
   - component: {fileID: 6771805092166254588}
   m_Layer: 6
-  m_Name: Unit
+  m_Name: Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

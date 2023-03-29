@@ -6,7 +6,7 @@ using UnityEngine;
 public class ActionHandler : MonoBehaviour
 {
     public static event EventHandler<Unit> OnUnitSelected;
-    public static EventHandler<bool> OnBusyChanged; 
+    public static EventHandler<bool> BusyUpdated; 
     [SerializeField] private Unit selectedUnit;
     private InputManager inputManager;
     private GridManager gridManager;
@@ -212,13 +212,13 @@ public class ActionHandler : MonoBehaviour
     private void SetBusy()
     {
         isBusy = true;
-        OnBusyChanged?.Invoke(this, isBusy);
+        BusyUpdated?.Invoke(this, isBusy);
     }
 
     private void ClearBusy()
     {
         isBusy = false;
-        OnBusyChanged?.Invoke(this, isBusy);
+        BusyUpdated?.Invoke(this, isBusy);
         updateGridActionHighlight = true;
     }
 }

@@ -38,10 +38,10 @@ public class CameraController : MonoBehaviour
         playerControls = inputManager.GetPlayerControls();
         
         inputManager.OnStartDragging += InputManager_OnStartDragging;
-        inputManager.Dragging += InputManager_Dragging;
+        inputManager.OnDragging += InputManager_Dragging;
         inputManager.OnDraggingCompleted += InputManager_OnDraggingCompleted;
         inputManager.OnStartPinching += InputManager_OnStartPinching;
-        inputManager.Pinching += InputManager_Pinching;
+        inputManager.OnPinching += InputManager_Pinching;
         inputManager.OnPinchingCompleted += InputManager_OnPinchingCompleted;
         inputManager.OnScroll += InputManager_OnScroll;
         ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
@@ -55,10 +55,10 @@ public class CameraController : MonoBehaviour
     private void OnDestroy() 
     {
         inputManager.OnStartDragging -= InputManager_OnStartDragging;
-        inputManager.Dragging -= InputManager_Dragging;
+        inputManager.OnDragging -= InputManager_Dragging;
         inputManager.OnDraggingCompleted -= InputManager_OnDraggingCompleted;
         inputManager.OnStartPinching -= InputManager_OnStartPinching;
-        inputManager.Pinching -= InputManager_Pinching;
+        inputManager.OnPinching -= InputManager_Pinching;
         inputManager.OnPinchingCompleted -= InputManager_OnPinchingCompleted;
         inputManager.OnScroll -= InputManager_OnScroll;
         ActionHandler.OnUnitSelected -= ActionHandler_OnUnitSelected;

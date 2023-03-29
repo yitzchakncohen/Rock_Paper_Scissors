@@ -640,9 +640,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8150637869110327706}
     m_Modifications:
+    - target: {fileID: 804627946948452930, guid: dfd9d4824a9329741aff63054b1fe6e4, type: 3}
+      propertyPath: unitPrefab
+      value: 
+      objectReference: {fileID: 8801933791107242397, guid: 81bd6be0bf9452a4490ac0dce9d9af4b, type: 3}
     - target: {fileID: 1234233693696378326, guid: dfd9d4824a9329741aff63054b1fe6e4, type: 3}
       propertyPath: m_Name
-      value: Build Rock Button (1)
+      value: Build Scissors Button
       objectReference: {fileID: 0}
     - target: {fileID: 1234233693696378327, guid: dfd9d4824a9329741aff63054b1fe6e4, type: 3}
       propertyPath: m_Pivot.x
