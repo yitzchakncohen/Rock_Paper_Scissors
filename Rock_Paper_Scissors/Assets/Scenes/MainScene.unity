@@ -1688,7 +1688,7 @@ MonoBehaviour:
   zoomClamp: {x: 3, y: 8}
   zoomSmoothing: 0.1
   cameraBoundaryCollider: {fileID: 1937499472}
-  cameraMovementDamping: {x: 0.4, y: 0.4}
+  cameraMovementDamping: {x: 0.05, y: 0.05}
 --- !u!4 &970682499
 Transform:
   m_ObjectHideFlags: 0

@@ -24,7 +24,7 @@ public class CameraController : MonoBehaviour
     private Vector2 lastFrameDraggingPosition;
     private Vector2 startCameraPosition;
     private Vector2 draggingVector;
-    private Vector2 draggingVelocity;
+    private Vector2 cameraVelocity;
     private float pinchingStartDistance;
     private float pinchingDistance;
     private float pinchingStartZoomValue;
@@ -69,8 +69,9 @@ public class CameraController : MonoBehaviour
     {
         if (dragging && !pinching)
         {
-            // Debug.Log("Moving Camera");
-            transform.position = startCameraPosition + draggingVector;
+            Vector2 movementVector = new Vector2(draggingVector.x * (mainCamera.orthographicSize*mainCamera.aspect) /Screen.width,
+                                                    draggingVector.y * (mainCamera.orthographicSize) /Screen.height)*2f;
+            transform.position = startCameraPosition + movementVector;
         }
         else
         {
@@ -95,10 +96,10 @@ public class CameraController : MonoBehaviour
     private void DampenDragVelocity()
     {
         // Dampen the movement from dragging before stopping. 
-        if (draggingVelocity.magnitude > 0.1)
+        if (cameraVelocity.magnitude > 0.1)
         {
-            draggingVelocity = new Vector2(Mathf.Lerp(draggingVelocity.x, 0, cameraMovementDamping.x), Mathf.Lerp(draggingVelocity.y, 0, cameraMovementDamping.y));
-            transform.position += (Vector3)draggingVelocity;
+            cameraVelocity = new Vector2(Mathf.Lerp(cameraVelocity.x, 0, cameraMovementDamping.x), Mathf.Lerp(cameraVelocity.y, 0, cameraMovementDamping.y));
+            transform.position += (Vector3)cameraVelocity;
         }
     }
 
@@ -110,15 +111,15 @@ public class CameraController : MonoBehaviour
     private void InputManager_OnStartDragging(object sender, Vector2 position)
     {
         startCameraPosition = transform.position;
-        startDraggingPosition = mainCamera.ScreenToWorldPoint(position);
+        startDraggingPosition = position;
         dragging = true;
     }
 
     private void InputManager_Dragging(object sender, Vector2 position)
     {
-        draggingVector = (startDraggingPosition - (Vector2)mainCamera.ScreenToWorldPoint(position));
-        draggingVelocity = (Vector2)mainCamera.ScreenToWorldPoint(position) - lastFrameDraggingPosition;
-        lastFrameDraggingPosition = (Vector2)mainCamera.ScreenToWorldPoint(position);
+        draggingVector = startDraggingPosition - position;
+        cameraVelocity = (Vector2)transform.position - lastFrameDraggingPosition;
+        lastFrameDraggingPosition = (Vector2)transform.position;
     }
 
     private void InputManager_OnDraggingCompleted(object sender, Vector2 position)
@@ -178,6 +179,17 @@ public class CameraController : MonoBehaviour
     {
         float horizontalBorder = cinemachineVirtualCamera.m_Lens.OrthographicSize * mainCamera.aspect;
         float verticalBorder = cinemachineVirtualCamera.m_Lens.OrthographicSize;
+
+        // If the camera is clamped reset the camera velocity
+        if(Math.Clamp(transform.position.x, cameraBoundaryMinX+horizontalBorder, cameraBoundaryMaxX-horizontalBorder) == cameraBoundaryMinX+horizontalBorder
+                        || Math.Clamp(transform.position.x, cameraBoundaryMinX+horizontalBorder, cameraBoundaryMaxX-horizontalBorder) == cameraBoundaryMaxX-horizontalBorder
+                        || Math.Clamp(transform.position.y, cameraBoundaryMinY+verticalBorder, cameraBoundaryMaxY-verticalBorder) == cameraBoundaryMinY+verticalBorder
+                        || Math.Clamp(transform.position.y, cameraBoundaryMinY+verticalBorder, cameraBoundaryMaxY-verticalBorder) == cameraBoundaryMaxY-verticalBorder)
+                        {
+                            cameraVelocity = Vector2.zero;
+                        }
+
+        // Clamp the camera position
         Vector2 clampedPosition = new Vector2(
             Math.Clamp(transform.position.x, cameraBoundaryMinX+horizontalBorder, cameraBoundaryMaxX-horizontalBorder),
             Math.Clamp(transform.position.y, cameraBoundaryMinY+verticalBorder, cameraBoundaryMaxY-verticalBorder)
