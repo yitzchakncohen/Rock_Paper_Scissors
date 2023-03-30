@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class UnitSpawner : UnitAction
 {
+    [SerializeField] private Unit[] spawnableUnits;
     [SerializeField] private int placementRadius = 2;
     private GridManager gridManager;
     private PathFinding pathFinding;
@@ -130,7 +131,9 @@ public class UnitSpawner : UnitAction
 
     public override int GetValidActionsRemaining()
     {
-        if(currencyBank.GetCurrencyRemaining() > 50)
+        int minimumPrice = GetMinimumUnitCost();
+
+        if (currencyBank.GetCurrencyRemaining() > minimumPrice)
         {
             return 1;
         }
@@ -138,6 +141,25 @@ public class UnitSpawner : UnitAction
         {
             return 0;
         }
+    }
+
+    private int GetMinimumUnitCost()
+    {
+        // Arbitrarily large starting number
+        int minimumPrice = 10000;
+        foreach (Unit unit in spawnableUnits)
+        {
+            if (unit.GetCost() < minimumPrice)
+            {
+                minimumPrice = unit.GetCost();
+            }
+        }
+        return minimumPrice;
+    }
+
+    public Unit[] GetSpawnableUnits()
+    {
+        return spawnableUnits;
     }
 
     protected override void CancelButton_OnCancelButtonPress()

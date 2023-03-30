@@ -7,11 +7,29 @@ public class BuildingMenu : MonoBehaviour
 {
     [SerializeField] private Transform buildingMenuUI;
     [SerializeField] private RadialLayoutGroup radialLayoutGroup;
+    [SerializeField] private BuildingButton buildingButtonPrefab;
     private Unit parentUnit;
+    private UnitSpawner unitSpawner;
 
     private void Awake() 
     {
         parentUnit = GetComponentInParent<Unit>();
+        unitSpawner = parentUnit.GetComponent<UnitSpawner>();
+        if(unitSpawner == null)
+        {
+            Debug.Log("This building menu is not attached to a unit spawner.");
+        }else
+        {
+            foreach (Transform child in radialLayoutGroup.transform)
+            {
+                Destroy(child.gameObject);
+            }
+            foreach (Unit unit in unitSpawner.GetSpawnableUnits())
+            {
+                BuildingButton buildingButton = Instantiate(buildingButtonPrefab, radialLayoutGroup.transform);
+                buildingButton.Setup(unit);
+            }
+        }
         ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
         BuildingButton.OnBuildingButtonPressed += BuildingButton_OnBuildingButtonPressed;
         radialLayoutGroup.OnCloseAnimationComplete += RadialLayoutGroup_OnCloseAnimationComplete;

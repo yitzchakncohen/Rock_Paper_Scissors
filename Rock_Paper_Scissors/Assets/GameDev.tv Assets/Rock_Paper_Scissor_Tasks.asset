@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: Rock_Paper_Scissor_Tasks
   m_EditorClassIdentifier: 
   tasks:
-  - Text: Add paper
-    Completed: 0
-  - Text: Complete paper sprites
-    Completed: 0
-  - Text: Integrate progression
-    Completed: 0
-  - Text: Progression stat multipliers
-    Completed: 0
   - Text: Class type combat modifiers
     Completed: 0
   - Text: Combat balancing
     Completed: 0
+  - Text: Progression stat multipliers
+    Completed: 1
+  - Text: Integrate progression
+    Completed: 1
+  - Text: Complete paper sprites
+    Completed: 1
+  - Text: Add paper
+    Completed: 1

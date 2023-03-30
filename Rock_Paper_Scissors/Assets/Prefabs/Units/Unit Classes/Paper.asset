@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7e8d6b7018f9b7468f94ff771886656, type: 3}
   m_Name: Paper
   m_EditorClassIdentifier: 
-  unitClass: 0
-  unitThumbnail: {fileID: 0}
-  spriteLibrary: {fileID: 0}
+  unitClass: 1
+  unitThumbnail: {fileID: 21300000, guid: 65f0368c4e1ca9c4dba888a3418bd717, type: 3}
+  spriteLibrary: {fileID: 7108339969198208228, guid: fd4a3c372d043fd418635202f2428cd6, type: 3}
   moveDistance: 6
   attackDamage: 0a0000000f00000014000000
   attackRange: 3
   defense: 020000000400000006000000
-  unitCost: 0
+  unitCost: 40
   maximumHealth: 14000000190000001e000000

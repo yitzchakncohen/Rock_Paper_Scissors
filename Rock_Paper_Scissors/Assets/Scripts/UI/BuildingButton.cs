@@ -13,9 +13,9 @@ public class BuildButtonArguments : EventArgs
 
 public class BuildingButton : MonoBehaviour
 {
-    [SerializeField] private Unit unitPrefab;
     [SerializeField] private Image unitThumbnail;
     [SerializeField] private TextMeshProUGUI unitCostText;
+    private Unit unitPrefab;
     public static event EventHandler<BuildButtonArguments> OnBuildingButtonPressed;
     private UnitSpawner unitSpawner;
     private Button button;
@@ -23,16 +23,21 @@ public class BuildingButton : MonoBehaviour
 
     private void Awake() 
     {
-        unitSpawner = GetComponentInParent<UnitSpawner>();
-        button = GetComponent<Button>();
-        unitThumbnail.sprite = unitPrefab.GetUnitThumbnail();
-        unitCostText.text = unitPrefab.GetCost().ToString();
+        button = GetComponent<Button>();        
     }
 
     private void Start() 
     {
         currencyBank = FindObjectOfType<CurrencyBank>();
         button.interactable = (currencyBank.GetCurrencyRemaining() >= unitPrefab.GetCost());      
+    }
+
+    public void Setup(Unit unit) 
+    {
+        unitPrefab = unit;
+        unitSpawner = GetComponentInParent<UnitSpawner>();
+        unitThumbnail.sprite = unitPrefab.GetUnitThumbnail();
+        unitCostText.text = unitPrefab.GetCost().ToString();
     }
 
     public void ButtonPressed()

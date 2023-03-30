@@ -13,7 +13,7 @@ public class HealthBar : MonoBehaviour
     {
         health = GetComponentInParent<Health>();
         health.OnHealthChanged += Health_OnHealthChanged;
-        Health_OnHealthChanged();
+        healthBarImage.fillAmount = 1f;
     }
 
     private void Health_OnHealthChanged()

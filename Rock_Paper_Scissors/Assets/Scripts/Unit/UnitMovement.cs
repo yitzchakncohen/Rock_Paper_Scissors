@@ -256,7 +256,6 @@ public class UnitMovement : UnitAction
 
     public override int GetValidActionsRemaining()
     {
-        Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(unit.transform.position);
         if(GetValidMovementPositions().Count > 0)
         {
             return actionPointsRemaining;
