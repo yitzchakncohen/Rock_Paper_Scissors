@@ -28,25 +28,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ""id"": ""2b75fd33-a5c8-4878-a66d-d560ad9f51f7"",
             ""actions"": [
                 {
-                    ""name"": ""SingleTap"",
-                    ""type"": ""Button"",
+                    ""name"": ""SingleTouch"",
+                    ""type"": ""Value"",
                     ""id"": ""7c2ac2aa-20a9-4ce0-af7c-04faa936bcb2"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Tap"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""SingleHold"",
-                    ""type"": ""Value"",
-                    ""id"": ""574f412a-9ad5-470a-9621-9af149447742"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.2)"",
+                    ""interactions"": """",
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""MultiHold"",
+                    ""name"": ""MultiTouch"",
                     ""type"": ""Value"",
                     ""id"": ""ebe3c9e4-c8cf-4f1c-844a-f5f0a3d03cd1"",
                     ""expectedControlType"": ""Button"",
@@ -90,18 +81,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SingleTap"",
+                    ""action"": ""SingleTouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""bf737c76-4a1a-4709-a917-f3465334f5d8"",
-                    ""path"": ""<Touchscreen>/primaryTouch/tap"",
+                    ""path"": ""<Touchscreen>/primaryTouch/press"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SingleTap"",
+                    ""action"": ""SingleTouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -124,28 +115,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""TouchPosition"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""70624bca-6633-41f2-9624-459e601d2a8a"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""SingleHold"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""0468d8a5-bcb4-4b38-b88e-b6c737d38a7b"",
-                    ""path"": ""<Touchscreen>/Press"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""SingleHold"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -178,7 +147,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MultiHold"",
+                    ""action"": ""MultiTouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -189,9 +158,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
 }");
         // GameInputs
         m_GameInputs = asset.FindActionMap("GameInputs", throwIfNotFound: true);
-        m_GameInputs_SingleTap = m_GameInputs.FindAction("SingleTap", throwIfNotFound: true);
-        m_GameInputs_SingleHold = m_GameInputs.FindAction("SingleHold", throwIfNotFound: true);
-        m_GameInputs_MultiHold = m_GameInputs.FindAction("MultiHold", throwIfNotFound: true);
+        m_GameInputs_SingleTouch = m_GameInputs.FindAction("SingleTouch", throwIfNotFound: true);
+        m_GameInputs_MultiTouch = m_GameInputs.FindAction("MultiTouch", throwIfNotFound: true);
         m_GameInputs_TouchPosition = m_GameInputs.FindAction("TouchPosition", throwIfNotFound: true);
         m_GameInputs_SecondaryTouchPosition = m_GameInputs.FindAction("SecondaryTouchPosition", throwIfNotFound: true);
         m_GameInputs_Scroll = m_GameInputs.FindAction("Scroll", throwIfNotFound: true);
@@ -256,9 +224,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     // GameInputs
     private readonly InputActionMap m_GameInputs;
     private List<IGameInputsActions> m_GameInputsActionsCallbackInterfaces = new List<IGameInputsActions>();
-    private readonly InputAction m_GameInputs_SingleTap;
-    private readonly InputAction m_GameInputs_SingleHold;
-    private readonly InputAction m_GameInputs_MultiHold;
+    private readonly InputAction m_GameInputs_SingleTouch;
+    private readonly InputAction m_GameInputs_MultiTouch;
     private readonly InputAction m_GameInputs_TouchPosition;
     private readonly InputAction m_GameInputs_SecondaryTouchPosition;
     private readonly InputAction m_GameInputs_Scroll;
@@ -266,9 +233,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         private @PlayerControls m_Wrapper;
         public GameInputsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @SingleTap => m_Wrapper.m_GameInputs_SingleTap;
-        public InputAction @SingleHold => m_Wrapper.m_GameInputs_SingleHold;
-        public InputAction @MultiHold => m_Wrapper.m_GameInputs_MultiHold;
+        public InputAction @SingleTouch => m_Wrapper.m_GameInputs_SingleTouch;
+        public InputAction @MultiTouch => m_Wrapper.m_GameInputs_MultiTouch;
         public InputAction @TouchPosition => m_Wrapper.m_GameInputs_TouchPosition;
         public InputAction @SecondaryTouchPosition => m_Wrapper.m_GameInputs_SecondaryTouchPosition;
         public InputAction @Scroll => m_Wrapper.m_GameInputs_Scroll;
@@ -281,15 +247,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_GameInputsActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_GameInputsActionsCallbackInterfaces.Add(instance);
-            @SingleTap.started += instance.OnSingleTap;
-            @SingleTap.performed += instance.OnSingleTap;
-            @SingleTap.canceled += instance.OnSingleTap;
-            @SingleHold.started += instance.OnSingleHold;
-            @SingleHold.performed += instance.OnSingleHold;
-            @SingleHold.canceled += instance.OnSingleHold;
-            @MultiHold.started += instance.OnMultiHold;
-            @MultiHold.performed += instance.OnMultiHold;
-            @MultiHold.canceled += instance.OnMultiHold;
+            @SingleTouch.started += instance.OnSingleTouch;
+            @SingleTouch.performed += instance.OnSingleTouch;
+            @SingleTouch.canceled += instance.OnSingleTouch;
+            @MultiTouch.started += instance.OnMultiTouch;
+            @MultiTouch.performed += instance.OnMultiTouch;
+            @MultiTouch.canceled += instance.OnMultiTouch;
             @TouchPosition.started += instance.OnTouchPosition;
             @TouchPosition.performed += instance.OnTouchPosition;
             @TouchPosition.canceled += instance.OnTouchPosition;
@@ -303,15 +266,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(IGameInputsActions instance)
         {
-            @SingleTap.started -= instance.OnSingleTap;
-            @SingleTap.performed -= instance.OnSingleTap;
-            @SingleTap.canceled -= instance.OnSingleTap;
-            @SingleHold.started -= instance.OnSingleHold;
-            @SingleHold.performed -= instance.OnSingleHold;
-            @SingleHold.canceled -= instance.OnSingleHold;
-            @MultiHold.started -= instance.OnMultiHold;
-            @MultiHold.performed -= instance.OnMultiHold;
-            @MultiHold.canceled -= instance.OnMultiHold;
+            @SingleTouch.started -= instance.OnSingleTouch;
+            @SingleTouch.performed -= instance.OnSingleTouch;
+            @SingleTouch.canceled -= instance.OnSingleTouch;
+            @MultiTouch.started -= instance.OnMultiTouch;
+            @MultiTouch.performed -= instance.OnMultiTouch;
+            @MultiTouch.canceled -= instance.OnMultiTouch;
             @TouchPosition.started -= instance.OnTouchPosition;
             @TouchPosition.performed -= instance.OnTouchPosition;
             @TouchPosition.canceled -= instance.OnTouchPosition;
@@ -340,9 +300,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     public GameInputsActions @GameInputs => new GameInputsActions(this);
     public interface IGameInputsActions
     {
-        void OnSingleTap(InputAction.CallbackContext context);
-        void OnSingleHold(InputAction.CallbackContext context);
-        void OnMultiHold(InputAction.CallbackContext context);
+        void OnSingleTouch(InputAction.CallbackContext context);
+        void OnMultiTouch(InputAction.CallbackContext context);
         void OnTouchPosition(InputAction.CallbackContext context);
         void OnSecondaryTouchPosition(InputAction.CallbackContext context);
         void OnScroll(InputAction.CallbackContext context);

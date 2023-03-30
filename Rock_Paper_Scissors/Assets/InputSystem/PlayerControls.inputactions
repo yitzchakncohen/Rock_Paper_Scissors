@@ -6,25 +6,16 @@
             "id": "2b75fd33-a5c8-4878-a66d-d560ad9f51f7",
             "actions": [
                 {
-                    "name": "SingleTap",
-                    "type": "Button",
+                    "name": "SingleTouch",
+                    "type": "Value",
                     "id": "7c2ac2aa-20a9-4ce0-af7c-04faa936bcb2",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Tap",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SingleHold",
-                    "type": "Value",
-                    "id": "574f412a-9ad5-470a-9621-9af149447742",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Hold(duration=0.2)",
+                    "interactions": "",
                     "initialStateCheck": true
                 },
                 {
-                    "name": "MultiHold",
+                    "name": "MultiTouch",
                     "type": "Value",
                     "id": "ebe3c9e4-c8cf-4f1c-844a-f5f0a3d03cd1",
                     "expectedControlType": "Button",
@@ -68,18 +59,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SingleTap",
+                    "action": "SingleTouch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "bf737c76-4a1a-4709-a917-f3465334f5d8",
-                    "path": "<Touchscreen>/primaryTouch/tap",
+                    "path": "<Touchscreen>/primaryTouch/press",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SingleTap",
+                    "action": "SingleTouch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -102,28 +93,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "TouchPosition",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "70624bca-6633-41f2-9624-459e601d2a8a",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SingleHold",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0468d8a5-bcb4-4b38-b88e-b6c737d38a7b",
-                    "path": "<Touchscreen>/Press",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SingleHold",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -156,7 +125,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MultiHold",
+                    "action": "MultiTouch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

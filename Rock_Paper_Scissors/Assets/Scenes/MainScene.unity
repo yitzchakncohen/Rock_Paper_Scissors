@@ -18044,6 +18044,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b81219be32147a14aa473d38e905d524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugging: 0
+  dragThresholdDistance: 30
 --- !u!1 &1937499469
 GameObject:
   m_ObjectHideFlags: 0
