@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: Rock_Paper_Scissor_Tasks
   m_EditorClassIdentifier: 
   tasks:
+  - Text: Spawn Animations
+    Completed: 0
   - Text: Get Currency when enemy is defeated
     Completed: 0
-  - Text: Update UI
+  - Text: main menu
     Completed: 0
-  - Text: Spawn Animations
+  - Text: Update UI
     Completed: 0
   - Text: Draw Glue Traps
     Completed: 0
@@ -25,7 +27,7 @@ MonoBehaviour:
     Completed: 0
   - Text: Create Glue Traps
     Completed: 0
-  - Text: main menu
+  - Text: Level up animation
     Completed: 0
   - Text: Draw tiles
     Completed: 0
@@ -33,12 +35,16 @@ MonoBehaviour:
     Completed: 0
   - Text: Create Towers
     Completed: 0
-  - Text: Combat balancing
-    Completed: 0
   - Text: Draw enviroment
     Completed: 0
-  - Text: Class factored into EnemyAI
+  - Text: Combat balancing
     Completed: 0
+  - Text: Attack Animations
+    Completed: 1
+  - Text: Class factored into EnemyAI
+    Completed: 1
+  - Text: Integrate progression
+    Completed: 1
   - Text: Add paper
     Completed: 1
   - Text: Class type combat modifiers
@@ -47,11 +53,5 @@ MonoBehaviour:
     Completed: 1
   - Text: Progression stat multipliers
     Completed: 1
-  - Text: Attack Animations
-    Completed: 1
   - Text: Complete paper sprites
     Completed: 1
-  - Text: Integrate progression
-    Completed: 1
-  - Text: Level up animation
-    Completed: 0

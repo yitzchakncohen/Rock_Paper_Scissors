@@ -164,11 +164,10 @@ public class UnitMovement : UnitAction
         {
             GridObject gridObject = gridManager.GetGridObject(position);
             List<Unit> targetList = unitAttack.GetValidTargets(position);
-            int targetCountAtPosition = targetList.Count;
 
             // Find the average health of the units nearby.
             float healthAmountValue = GetAverageNormalizedHealth(targetList);
-            float targetCountValue = GetValueByTargetCount(targetCountAtPosition);
+            float targetCountValue = GetValueFromTargetList(targetList);
 
             if (bestAction == null)
             {
@@ -224,13 +223,19 @@ public class UnitMovement : UnitAction
         return bestAction;
     }
 
-    private static float GetValueByTargetCount(int targetCountAtPosition)
+    private float GetValueFromTargetList(List<Unit> targetList)
     {
         float targetCountValue = 0;
-        if (targetCountAtPosition > 0)
+        if (targetList.Count > 0)
         {
             // 60 is the number possible adjacent hexes times 10. 
-            targetCountValue = 60f / targetCountAtPosition;
+            targetCountValue = 60f / targetList.Count;
+        }
+
+        foreach (Unit unit in targetList)
+        {
+            // Add or substract 1 if there is a combat advantage over the unit.
+            targetCountValue += CombatModifiers.UnitHasAdvantage(this.unit.GetUnitClass(), unit.GetUnitClass());
         }
 
         return targetCountValue;

@@ -15,6 +15,7 @@ public class UnitAttack : UnitAction
     private Vector3 attackStartPosition;
     private bool attacking;
     private int unitAttackActionBaseValue = 100;
+    private int classAdvantageMultiplier = 10;
 
 
     private void Awake() 
@@ -201,7 +202,9 @@ public class UnitAttack : UnitAction
                 bestAction = new EnemyAIAction()
                 {
                     gridObject = gridObject,
-                    actionValue = unitAttackActionBaseValue + (1 - unit.GetNormalizedHealth())*unitAttackActionBaseValue,
+                    actionValue = unitAttackActionBaseValue 
+                                    + (1 - unit.GetNormalizedHealth())*unitAttackActionBaseValue 
+                                    + CombatModifiers.UnitHasAdvantage(this.unit.GetUnitClass(), unit.GetUnitClass())*classAdvantageMultiplier,
                     unitAction = this,
                 };
             }
@@ -210,7 +213,9 @@ public class UnitAttack : UnitAction
                 EnemyAIAction testAction = new EnemyAIAction()
                 {
                     gridObject = gridObject,
-                    actionValue = unitAttackActionBaseValue + (1 - unit.GetNormalizedHealth())*100,
+                    actionValue = unitAttackActionBaseValue 
+                                    + (1 - unit.GetNormalizedHealth())*unitAttackActionBaseValue
+                                    + CombatModifiers.UnitHasAdvantage(this.unit.GetUnitClass(), unit.GetUnitClass())*classAdvantageMultiplier,
                     unitAction = this,
                 }; 
 
