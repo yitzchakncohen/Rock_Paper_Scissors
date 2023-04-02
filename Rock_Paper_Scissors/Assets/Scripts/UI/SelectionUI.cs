@@ -27,10 +27,10 @@ public class SelectionUI : MonoBehaviour
             background.SetActive(true);
             this.unit.text = unit.GetUnitClass().ToString();
             level.text = $"Level: {unit.GetLevel().ToString()}";
-            health.text = $"<sprite=0>: {unit.GetHealth().ToString()} / {unit.GetMaximumHealth().ToString()}";
-            attack.text = $"<sprite=2>: {unit.GetBaseAttack()}";
-            range.text = $"<sprite=3>: {unit.GetAttackRange()}";
-            defense.text = $"<sprite=1>: {unit.GetBaseDefense()}";
+            health.text = $" <sprite=0> {unit.GetHealth().ToString()}/{unit.GetMaximumHealth().ToString()}";
+            attack.text = $" <sprite=2> {unit.GetBaseAttack()}";
+            range.text = $" <sprite=3> {unit.GetAttackRange()}";
+            defense.text = $" <sprite=1> {unit.GetBaseDefense()}";
         }
         else
         {
