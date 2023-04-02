@@ -62,6 +62,7 @@ public class CameraController : MonoBehaviour
         inputManager.OnPinchingCompleted -= InputManager_OnPinchingCompleted;
         inputManager.OnScroll -= InputManager_OnScroll;
         ActionHandler.OnUnitSelected -= ActionHandler_OnUnitSelected;
+        UnitAction.OnAnyActionStarted -= UnitAction_OnAnyActionStarted;
         UnitMovement.OnUnitMove -= UnitMovement_OnUnitMove;
     }
 
@@ -158,7 +159,11 @@ public class CameraController : MonoBehaviour
 
     private void UnitAction_OnAnyActionStarted(object sender, EventArgs e)
     {
-        if((UnitAction)sender != null)
+        if(sender as UnitAttack != null)
+        {
+            transform.position = ((UnitAttack)sender).GetTarget().transform.position;
+        }
+        else if(sender as UnitAction != null)
         {
             transform.position = ((UnitAction)sender).transform.position;
         }

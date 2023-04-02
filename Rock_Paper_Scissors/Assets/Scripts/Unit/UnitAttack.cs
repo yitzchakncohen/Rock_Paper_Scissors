@@ -6,10 +6,13 @@ using UnityEngine;
 public class UnitAttack : UnitAction
 {
     [SerializeField] private UnitAnimator unitAnimator;
+    [SerializeField] private AnimationCurve attackAnimationCurve;
     private Unit unit;
     private Unit target;
     private GridManager gridManager;
     private float timer;
+    private float attackAnimationTime = 0.6f;
+    private Vector3 attackStartPosition;
     private bool attacking;
     private int unitAttackActionBaseValue = 100;
 
@@ -33,12 +36,12 @@ public class UnitAttack : UnitAction
             return;
         }
 
-        timer -= Time.deltaTime;
-        if(timer <= 0)
+        timer += Time.deltaTime;
+        AnimateAttack(target.transform.position - transform.position);
+        if(timer >= attackAnimationTime)
         {
             int damageAmount = CombatModifiers.GetDamage(unit, target);
             target.Damage(damageAmount, unit);
-            AnimateAttack(target.transform.position - transform.position);
             actionPointsRemaining -= 1;
             attacking = false;
             ActionComplete();
@@ -55,7 +58,8 @@ public class UnitAttack : UnitAction
         Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(unit.transform.position);
         if(GetValidTargets(gridPosition).Contains(unitToAttack))
         {
-            timer = 1f;
+            timer = 0f;
+            attackStartPosition = transform.position;
             target = unitToAttack;
             attacking = true;
             ActionStart(onActionComplete);
@@ -155,6 +159,9 @@ public class UnitAttack : UnitAction
 
     private void AnimateAttack(Vector2 attackDirection)
     {
+        float normalizedAnimationTime = timer/attackAnimationTime;
+        transform.position = attackStartPosition + (target.transform.position - attackStartPosition)*attackAnimationCurve.Evaluate(normalizedAnimationTime);
+
         if(attackDirection.x > 0 && attackDirection.y > 0)
         {
             unitAnimator.MoveUpRight();
@@ -234,6 +241,11 @@ public class UnitAttack : UnitAction
     public override bool TryTakeAction(GridObject gridObject, Action onActionComplete)
     {
         return TryAttackUnit(gridObject.GetOccupent(), onActionComplete);
+    }
+
+    public Unit GetTarget()
+    {
+        return target;
     }
 
     protected override void CancelButton_OnCancelButtonPress()

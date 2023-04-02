@@ -9,11 +9,14 @@ public class Health : MonoBehaviour
     public event Action OnHealthChanged;
     private Unit unit;
     private UnitProgression unitProgression;
+    private UnitAnimator unitAnimator;
     private int health;
+    private float deathAnimationTime = 0.6f;
 
     private void Awake() 
     {
         unit = GetComponent<Unit>();
+        unitAnimator = GetComponentInChildren<UnitAnimator>();
     }
     
     private void Start() 
@@ -31,6 +34,7 @@ public class Health : MonoBehaviour
     private void UnitProgression_OnLevelUp()
     {
         health = unit.GetMaximumHealth();
+        OnHealthChanged?.Invoke();
     }
 
     public void Damage(int damageAmount, Unit attacker)
@@ -45,9 +49,15 @@ public class Health : MonoBehaviour
     {
         if(health <= 0)
         {
-            Destroy(gameObject);
-            OnDeath?.Invoke(this, attacker);
+            StartCoroutine(OnDeathRoutine(attacker));
         }
+    }
+
+    private IEnumerator OnDeathRoutine(Unit attacker)
+    {
+        yield return unitAnimator.StartCoroutine(unitAnimator.DeathAnimationRoutine(deathAnimationTime));
+        Destroy(gameObject);
+        OnDeath?.Invoke(this, attacker);
     }
 
     public int GetHealth()

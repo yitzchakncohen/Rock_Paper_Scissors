@@ -8,6 +8,7 @@ public class UnitAnimator : MonoBehaviour
 {
     [SerializeField] private UnitProgression unitProgression;
     [SerializeField] private SpriteResolver spriteResolver;
+    [SerializeField] private SpriteRenderer spriteRenderer;
     private SpriteLibrary spriteLibrary;
     private Animator animator;
 
@@ -71,6 +72,17 @@ public class UnitAnimator : MonoBehaviour
     public void ToggleMoveAnimation(bool isMoving)
     {
         animator.SetBool("Move", isMoving);
+    }
+
+    public IEnumerator DeathAnimationRoutine(float animationTime)
+    {
+        float timer = animationTime;
+        while(timer > 0)
+        {
+            timer -= Time.deltaTime;
+            spriteRenderer.material.SetFloat("_DissolveValue", timer/animationTime);
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     private string GetLevel()
