@@ -69,4 +69,9 @@ public class Health : MonoBehaviour
     {
         return (float)health / (float)unit.GetMaximumHealth();
     }
+
+    public Unit GetUnit()
+    {
+        return unit;
+    }
 }

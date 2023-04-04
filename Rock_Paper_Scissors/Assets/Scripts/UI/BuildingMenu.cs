@@ -10,6 +10,7 @@ public class BuildingMenu : MonoBehaviour
     [SerializeField] private BuildingButton buildingButtonPrefab;
     private Unit parentUnit;
     private UnitSpawner unitSpawner;
+    private float lastFrameZoom;
 
     private void Awake() 
     {
@@ -33,6 +34,20 @@ public class BuildingMenu : MonoBehaviour
         ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
         BuildingButton.OnBuildingButtonPressed += BuildingButton_OnBuildingButtonPressed;
         radialLayoutGroup.OnCloseAnimationComplete += RadialLayoutGroup_OnCloseAnimationComplete;
+    }
+
+    private void Start() 
+    {
+        lastFrameZoom = Camera.main.orthographicSize;
+    }
+
+    private void Update() 
+    {
+        if(lastFrameZoom != Camera.main.orthographicSize)
+        {
+            transform.localScale = transform.localScale * Camera.main.orthographicSize/lastFrameZoom;
+            lastFrameZoom = Camera.main.orthographicSize;
+        }
     }
 
     private void OnDestroy() 

@@ -28,6 +28,8 @@ public class PathFinding : MonoBehaviour
 
     public List<GridObject> FindPath(Vector2Int startGridPosition, Vector2Int endGridPosition, out int pathLength)
     {
+        // float startTime = Time.realtimeSinceStartup;
+
         List<PathNode> openList = new List<PathNode>();
         List<PathNode> closedList = new List<PathNode>();
 
@@ -100,6 +102,7 @@ public class PathFinding : MonoBehaviour
 
         // No path found
         pathLength = 0;
+        // Debug.Log("Find Path, time to run: " + (Time.realtimeSinceStartup - startTime));
         return null;
     }
 

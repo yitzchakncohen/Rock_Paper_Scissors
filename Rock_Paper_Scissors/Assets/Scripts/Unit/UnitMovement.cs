@@ -135,15 +135,15 @@ public class UnitMovement : UnitAction
                     continue;
                 }
 
-                // Check if it's within movement distance
-                pathFinding.FindPath(gridPosition, testGridPosition, out int testDistance);
-                if (testDistance > unit.GetMoveDistance())
+                // Check if it's walkable
+                if (!gridManager.GetGridObject(testGridPosition).IsWalkable())
                 {
                     continue;
                 }
 
-                // Check if it's walkable
-                if (!gridManager.GetGridObject(testGridPosition).IsWalkable())
+                // Check if it's within movement distance
+                pathFinding.FindPath(gridPosition, testGridPosition, out int testDistance);
+                if (testDistance > unit.GetMoveDistance())
                 {
                     continue;
                 }
@@ -274,6 +274,11 @@ public class UnitMovement : UnitAction
     public override bool TryTakeAction(GridObject gridObject, Action onActionComplete)
     {
         return TryStartMove(gridObject, onActionComplete);
+    }
+
+    public Unit GetUnit()
+    {
+        return unit;
     }
 
     protected override void CancelButton_OnCancelButtonPress()

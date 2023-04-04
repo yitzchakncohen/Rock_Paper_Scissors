@@ -253,6 +253,11 @@ public class UnitAttack : UnitAction
         return target;
     }
 
+    public Unit GetUnit()
+    {
+        return unit;
+    }
+
     protected override void CancelButton_OnCancelButtonPress()
     {
         base.CancelButton_OnCancelButtonPress();

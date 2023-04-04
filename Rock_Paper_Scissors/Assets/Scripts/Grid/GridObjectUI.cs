@@ -11,6 +11,16 @@ public class GridObjectUI : MonoBehaviour
     [SerializeField] private GameObject movementHighlight;
     [SerializeField] private GameObject attackHighlight;
     [SerializeField] private GameObject placementHighlight;
+    [SerializeField] private bool debugging = false;
+
+    private void Awake() 
+    {
+        if(!debugging)
+        {
+            actionValueText.enabled = false;
+            gridPositionText.enabled = false;
+        }
+    }
 
     public void ShowHighlight(GridHighlightType highlightType)
     {
@@ -53,18 +63,24 @@ public class GridObjectUI : MonoBehaviour
 
     public void SetGridPosition(Vector2 gridPosition)
     {   
-        gridPositionText.text = $"x: {gridPosition.x}, y: {gridPosition.y}";
+        if(debugging)
+        {
+            gridPositionText.text = $"x: {gridPosition.x}, y: {gridPosition.y}";
+        }
     }
 
     public void SetActionValue(float actionValue)
     {   
-        if(actionValue == 0f)
+        if(debugging)
         {
-            actionValueText.text = $"----";
-        }
-        else
-        {
-            actionValueText.text = $"AV: {actionValue:0.00}";
+            if(actionValue == 0f)
+            {
+                actionValueText.text = $"----";
+            }
+            else
+            {
+                actionValueText.text = $"AV: {actionValue:0.00}";
+            }
         }
     }
 }

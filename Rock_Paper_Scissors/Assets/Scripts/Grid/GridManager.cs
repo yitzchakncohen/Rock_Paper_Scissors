@@ -33,13 +33,17 @@ public class GridManager : MonoBehaviour
 
     private void Start() 
     {
-        UnitMovement.OnAnyActionCompleted += UnitMovement_OnAnyActionCompleted;
+        UnitAction.OnAnyActionCompleted += UnitAction_OnAnyActionCompleted;
+        Health.OnDeath += Health_OnDeath;
+        Unit.OnUnitSpawn += Unit_OnUnitSpawn;
         UpdateGridOccupancy();
     }
 
     private void OnDestroy() 
     {
-        UnitMovement.OnAnyActionCompleted -= UnitMovement_OnAnyActionCompleted;
+        UnitAction.OnAnyActionCompleted -= UnitAction_OnAnyActionCompleted;
+        Health.OnDeath -= Health_OnDeath;
+        Unit.OnUnitSpawn -= Unit_OnUnitSpawn;
     }
 
     public Vector2Int GetGridPositionFromWorldPosition(Vector2 worldPosition)
@@ -132,8 +136,50 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    private void UnitMovement_OnAnyActionCompleted(object sender, EventArgs e)
+    private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
     {
-        UpdateGridOccupancy();
+        // UpdateGridOccupancy();
+        Unit unit = null;
+        if(sender as UnitMovement)
+        {
+            unit = ((UnitMovement)sender).GetUnit();
+        }
+
+        if(unit != null)
+        {
+            for (int x = 0; x < gridSize.x; x++)
+            {
+                for (int y = 0; y < gridSize.y; y++)
+                {
+                    if(gridObjects[x, y].GetOccupent() == unit)
+                    {
+                        gridObjects[x, y].SetOccupent(null);
+                    }
+                }
+            }
+
+            GetGridObjectFromWorldPosition(unit.transform.position).SetOccupent(unit);
+        }
+    }
+
+    private void Health_OnDeath(object sender, Unit e)
+    {
+        Unit unit = ((Health)sender).GetUnit();
+        for (int x = 0; x < gridSize.x; x++)
+        {
+            for (int y = 0; y < gridSize.y; y++)
+            {
+                if(gridObjects[x, y].GetOccupent() == unit)
+                {
+                    gridObjects[x, y].SetOccupent(null);
+                }
+            }
+        }
     }   
+
+    private void Unit_OnUnitSpawn(object sender, EventArgs e)
+    {
+        Unit unit = sender as Unit;
+        GetGridObjectFromWorldPosition(unit.transform.position).SetOccupent(unit);
+    }
 }
