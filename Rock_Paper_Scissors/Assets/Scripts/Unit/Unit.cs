@@ -128,6 +128,11 @@ public class Unit : MonoBehaviour
         return health.GetHealth();
     }
 
+    public UnitAnimator GetUnitAnimator()
+    {
+        return unitAnimator;
+    }
+
     public int GetBaseAttack()
     {
         return unitData.attackDamage[0];

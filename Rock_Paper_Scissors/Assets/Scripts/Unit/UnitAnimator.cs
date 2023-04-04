@@ -9,6 +9,7 @@ public class UnitAnimator : MonoBehaviour
     [SerializeField] private UnitProgression unitProgression;
     [SerializeField] private SpriteResolver spriteResolver;
     [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private GameObject spawnFXPrefab;
     private SpriteLibrary spriteLibrary;
     private Animator animator;
 
@@ -83,6 +84,19 @@ public class UnitAnimator : MonoBehaviour
             spriteRenderer.material.SetFloat("_DissolveValue", timer/animationTime);
             yield return new WaitForEndOfFrame();
         }
+    }
+
+    public IEnumerator SpawnAnimationRoutine(float animationTime)
+    {
+        GameObject spawnFX = Instantiate(spawnFXPrefab, transform.position, Quaternion.identity);
+        float timer = 0;
+        while(timer < animationTime)
+        {
+            timer += Time.deltaTime;
+            spriteRenderer.material.SetFloat("_DissolveValue", timer/animationTime);
+            yield return new WaitForEndOfFrame();
+        }
+        Destroy(spawnFX);
     }
 
     private string GetLevel()

@@ -86,15 +86,15 @@ public class UnitSpawner : UnitAction
                     continue;
                 }
 
-                // Check if it's within movement distance
-                pathFinding.FindPath(gridPosition, testGridPosition, out int testDistance);
-                if (testDistance > placementRadius)
+                // Check if it's walkable
+                if (!gridManager.GetGridObject(testGridPosition).IsWalkable())
                 {
                     continue;
                 }
 
-                // Check if it's walkable
-                if (!gridManager.GetGridObject(testGridPosition).IsWalkable())
+                // Check if it's within movement distance
+                pathFinding.FindPath(gridPosition, testGridPosition, out int testDistance);
+                if (testDistance > placementRadius)
                 {
                     continue;
                 }
@@ -123,8 +123,9 @@ public class UnitSpawner : UnitAction
 
         if(currencyBank.TrySpendCurrency(unitToSpawn.GetCost()))
         {
-            Instantiate(unitToSpawn, gridManager.GetGridObject(gridPosition).transform.position, Quaternion.identity);
+            Unit unit = Instantiate(unitToSpawn, gridManager.GetGridObject(gridPosition).transform.position, Quaternion.identity);
             timer = 0.25f;
+            StartCoroutine(unit.GetUnitAnimator().SpawnAnimationRoutine(timer));
             unitSpawning = true;
         }
     }
