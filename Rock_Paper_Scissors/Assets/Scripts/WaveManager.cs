@@ -109,7 +109,7 @@ public class WaveManager : MonoBehaviour
 
         unitsSpawnedThisWave.Sort(delegate(Unit unitA, Unit unitB)
         {
-            if(unitA.transform.position.y > unitB.transform.position.y)
+            if(unitA.transform.position.y > unitB.transform.position.y + 4)
             {
                 if(unitA.transform.position.x > unitB.transform.position.x)
                 {
@@ -121,7 +121,7 @@ public class WaveManager : MonoBehaviour
                 }
                 return -1;
             }
-            else if(unitA.transform.position.y < unitB.transform.position.y)
+            else if(unitA.transform.position.y < unitB.transform.position.y - 4)
             {
                 if(unitA.transform.position.x > unitB.transform.position.x)
                 {

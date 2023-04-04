@@ -13,6 +13,8 @@ public class ActionHandler : MonoBehaviour
     private GridUIManager gridUIManager;
     private PathFinding pathFinding;
     private TurnManager turnManager;
+    private UnitManager unitManager;
+    private Queue<Unit> unitQueue = new Queue<Unit>();
     private bool isBusy = false;
     private bool updateGridActionHighlight = false;
 
@@ -24,11 +26,15 @@ public class ActionHandler : MonoBehaviour
         inputManager = FindObjectOfType<InputManager>();
         pathFinding = FindObjectOfType<PathFinding>();
         turnManager = FindObjectOfType<TurnManager>();
+        unitManager = FindObjectOfType<UnitManager>();
 
         inputManager.OnSingleTap += InputManager_onSingleTouch;
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
         BuildingButton.OnBuildingButtonPressed += BuildingButton_BuildingButtonPressed;
         Health.OnDeath += Health_OnDeath;
+        Unit.OnUnitSpawn += Unit_OnUnitSpawn;
+
+        ResetUnitQueue();
     }
 
     private void LateUpdate() 
@@ -46,6 +52,7 @@ public class ActionHandler : MonoBehaviour
         TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
         BuildingButton.OnBuildingButtonPressed -= BuildingButton_BuildingButtonPressed;
         Health.OnDeath -= Health_OnDeath;
+        Unit.OnUnitSpawn -= Unit_OnUnitSpawn;
     }
 
     private void InputManager_onSingleTouch(object sender, Vector2 touchPosition)
@@ -208,12 +215,31 @@ public class ActionHandler : MonoBehaviour
     {
         updateGridActionHighlight = true;
         selectedUnit = null;
+        ResetUnitQueue();
         OnUnitSelected?.Invoke(this, selectedUnit);
+    }
+
+    private void ResetUnitQueue()
+    {
+        unitQueue.Clear();
+        foreach (Unit unit in unitManager.GetFriendlyUnitsList())
+        {
+            unitQueue.Enqueue(unit);
+        }
     }
 
     private void Health_OnDeath(object sender, Unit e)
     {
         updateGridActionHighlight = true;
+    }
+
+    private void Unit_OnUnitSpawn(object sender, EventArgs e)
+    {
+        Unit unit = sender as Unit;
+        if(unit != null && unit.IsFriendly())
+        {
+            unitQueue.Enqueue(unit);
+        }
     }
 
     private void SetBusy()
@@ -227,5 +253,41 @@ public class ActionHandler : MonoBehaviour
         isBusy = false;
         BusyUpdated?.Invoke(this, isBusy);
         updateGridActionHighlight = true;
+    }
+
+    public void SelectNextAvaliableUnit()
+    {
+        Unit nextAvaliableUnit = null;
+        nextAvaliableUnit = FindNextAvaliableUnit(nextAvaliableUnit);
+        for (int i = 0; i < unitQueue.Count; i++)
+        {
+            if(unitQueue.Peek() == nextAvaliableUnit)
+            {
+                unitQueue.Enqueue(unitQueue.Dequeue());  
+                break;
+            }
+            else
+            {
+                unitQueue.Enqueue(unitQueue.Dequeue());            
+            }
+        }
+    }
+
+    private Unit FindNextAvaliableUnit(Unit nextAvaliableUnit)
+    {
+        foreach (Unit unit in unitQueue)
+        {
+            foreach (UnitAction unitAction in unit.GetUnitActions())
+            {
+                if (unitAction.GetValidActionsRemaining() > 0)
+                {
+                    selectedUnit = unit;
+                    OnUnitSelected?.Invoke(this, unit);
+                    updateGridActionHighlight = true;
+                    return unit;
+                }
+            }
+        }
+        return null;
     }
 }
