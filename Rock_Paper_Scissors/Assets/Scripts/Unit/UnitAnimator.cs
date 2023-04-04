@@ -10,6 +10,7 @@ public class UnitAnimator : MonoBehaviour
     [SerializeField] private SpriteResolver spriteResolver;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private GameObject spawnFXPrefab;
+    [SerializeField] private GameObject healthBar;
     private SpriteLibrary spriteLibrary;
     private Animator animator;
 
@@ -88,6 +89,7 @@ public class UnitAnimator : MonoBehaviour
 
     public IEnumerator SpawnAnimationRoutine(float animationTime)
     {
+        HideUnit();
         GameObject spawnFX = Instantiate(spawnFXPrefab, transform.position, Quaternion.identity);
         float timer = 0;
         while(timer < animationTime)
@@ -97,6 +99,13 @@ public class UnitAnimator : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         Destroy(spawnFX);
+        healthBar.gameObject.SetActive(true);
+    }
+
+    public void HideUnit()
+    {
+        spriteRenderer.material.SetFloat("_DissolveValue", 0f);
+        healthBar.gameObject.SetActive(false);
     }
 
     private string GetLevel()

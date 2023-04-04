@@ -22,6 +22,7 @@ public class WaveManager : MonoBehaviour
     private CurrencyBank currencyBank;
     private GridManager gridManager;
     private CameraController cameraController;
+    private List<Unit> unitsSpawnedThisWave = new List<Unit>();
 
     private void Start() 
     {
@@ -65,13 +66,15 @@ public class WaveManager : MonoBehaviour
         }
 
         // Spawn the units in random locations near the spawn points.
+        unitsSpawnedThisWave.Clear();
         foreach (Unit unit in wave.UnitsToSpawn)
         {
             if(spawnPositions.Count() > 0)
             {
                 int spawnPositionIndex = UnityEngine.Random.Range(0, spawnPositions.Count());
                 Vector2Int spawnPosition = spawnPositions[spawnPositionIndex];
-                Instantiate(unit, gridManager.GetGridObject(spawnPosition).transform.position, Quaternion.identity);
+                Unit spawnedUnit = Instantiate(unit, gridManager.GetGridObject(spawnPosition).transform.position, Quaternion.identity);
+                unitsSpawnedThisWave.Add(spawnedUnit);
                 spawnPositions.Remove(spawnPosition);
             }
         }
@@ -103,10 +106,47 @@ public class WaveManager : MonoBehaviour
     {
         OnWaveStarted?.Invoke();
         Vector3 startingPosition = cameraController.transform.position;
-        foreach (Transform point in spawnPoints)
+
+        unitsSpawnedThisWave.Sort(delegate(Unit unitA, Unit unitB)
         {
-            cameraController.transform.position = point.position;
-            yield return new WaitForSeconds(showUnitsTime);
+            if(unitA.transform.position.y > unitB.transform.position.y)
+            {
+                if(unitA.transform.position.x > unitB.transform.position.x)
+                {
+                    return -3;
+                }
+                else if(unitA.transform.position.x < unitB.transform.position.x)
+                {
+                    return -2;
+                }
+                return -1;
+            }
+            else if(unitA.transform.position.y < unitB.transform.position.y)
+            {
+                if(unitA.transform.position.x > unitB.transform.position.x)
+                {
+                    return 1;
+                }
+                else if(unitA.transform.position.x < unitB.transform.position.x)
+                {
+                    return 2;
+                }
+                return 3;
+            }
+            return 0;
+        });
+        
+        // Hide all the units.
+        foreach (Unit unit in unitsSpawnedThisWave)
+        {
+            unit.GetUnitAnimator().HideUnit();
+        }
+
+        // Show the units one at a time.
+        foreach (Unit unit in unitsSpawnedThisWave)
+        {
+            cameraController.transform.position = unit.transform.position;
+            yield return StartCoroutine(unit.GetUnitAnimator().SpawnAnimationRoutine(showUnitsTime));
         }
         cameraController.transform.position = startingPosition;
         OnWaveCompleted?.Invoke();
