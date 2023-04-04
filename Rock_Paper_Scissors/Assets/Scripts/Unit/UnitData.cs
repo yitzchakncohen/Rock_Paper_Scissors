@@ -14,4 +14,5 @@ public class UnitData : ScriptableObject
     public int[] defense;
     public int unitCost;
     public int[] maximumHealth;
+    public int unitDefeatedReward;
 }

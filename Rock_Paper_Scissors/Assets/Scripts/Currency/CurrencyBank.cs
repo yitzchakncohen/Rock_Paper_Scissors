@@ -8,6 +8,11 @@ public class CurrencyBank : MonoBehaviour
     public event EventHandler<int> OnCurrencyChanged;
     private int currency = 0;
 
+    private void Start() 
+    {
+        Health.OnDeath += Health_OnDeath;
+    }
+
     public bool TrySpendCurrency(int amountToSpend)
     {
         if(amountToSpend <= currency)
@@ -28,5 +33,15 @@ public class CurrencyBank : MonoBehaviour
     {
         currency += amount;
         OnCurrencyChanged?.Invoke(this, currency);
+    }
+
+    private void Health_OnDeath(object sender, Unit e)
+    {
+        Unit unit = ((Health)sender).GetUnit();
+        if(!unit.IsFriendly())
+        {
+            currency += unit.GetUnitDefeatedReward();
+            OnCurrencyChanged?.Invoke(this, currency);
+        }
     }
 }   

@@ -148,4 +148,8 @@ public class Unit : MonoBehaviour
         return unitData.defense[unitProgression.GetLevel() - 1];
     }
 
+    public int GetUnitDefeatedReward()
+    {
+        return unitData.unitDefeatedReward;
+    }
 }

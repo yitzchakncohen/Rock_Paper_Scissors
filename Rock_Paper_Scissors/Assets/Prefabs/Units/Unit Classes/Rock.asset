@@ -21,3 +21,4 @@ MonoBehaviour:
   defense: 020000000400000006000000
   unitCost: 50
   maximumHealth: 14000000190000001e000000
+  unitDefeatedReward: 10

@@ -28,6 +28,7 @@ public class ActionHandler : MonoBehaviour
         inputManager.OnSingleTap += InputManager_onSingleTouch;
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
         BuildingButton.OnBuildingButtonPressed += BuildingButton_BuildingButtonPressed;
+        Health.OnDeath += Health_OnDeath;
     }
 
     private void LateUpdate() 
@@ -44,6 +45,7 @@ public class ActionHandler : MonoBehaviour
         inputManager.OnSingleTap -= InputManager_onSingleTouch;
         TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
         BuildingButton.OnBuildingButtonPressed -= BuildingButton_BuildingButtonPressed;
+        Health.OnDeath -= Health_OnDeath;
     }
 
     private void InputManager_onSingleTouch(object sender, Vector2 touchPosition)
@@ -207,6 +209,11 @@ public class ActionHandler : MonoBehaviour
         updateGridActionHighlight = true;
         selectedUnit = null;
         OnUnitSelected?.Invoke(this, selectedUnit);
+    }
+
+    private void Health_OnDeath(object sender, Unit e)
+    {
+        updateGridActionHighlight = true;
     }
 
     private void SetBusy()
