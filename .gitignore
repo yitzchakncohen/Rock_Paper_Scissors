@@ -1,3 +1,6 @@
 Temp/
 Library/
 Build/
+Logs/
+*.csproj
+*.csproj

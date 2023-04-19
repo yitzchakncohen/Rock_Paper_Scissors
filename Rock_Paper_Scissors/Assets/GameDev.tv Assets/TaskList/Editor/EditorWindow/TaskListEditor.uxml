@@ -1,0 +1,32 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <Style src="project://database/Assets/GameDev.tv%20Assets/TaskList/Editor/EditorWindow/TaskListEditor.uss?fileID=7433441132597879392&amp;guid=4fbec6b4126bf15448b7a7d813ce5402&amp;type=3#TaskListEditor" />
+    <ui:VisualElement name="LoadingTasks" class="section">
+        <uie:ObjectField label="Load Saved Tasks:" name="savedTasksObjectField" />
+        <ui:Button text="Load Tasks" display-tooltip-when-elided="true" name="loadTasksButton" class="button" />
+    </ui:VisualElement>
+    <ui:VisualElement name="AddingTasks" class="section">
+        <ui:Label text="Add New Task" display-tooltip-when-elided="true" name="AddTasksHeader" class="sectionTitle" />
+        <ui:VisualElement name="horizontalFlexBox" class="horizontalFlex" style="margin-left: 20px; margin-right: 20px;">
+            <ui:TextField picking-mode="Ignore" name="taskText" text="New Task..." style="width: 80%;" />
+            <ui:Button text="Add" display-tooltip-when-elided="true" name="addTaskButton" style="width: 18%; background-color: rgb(4, 156, 76);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="SearchingTasks" class="section">
+        <ui:Label text="Search" display-tooltip-when-elided="true" name="searchHeader" class="sectionTitle" />
+        <uie:ToolbarSearchField focusable="true" name="searchBox" style="width: 80%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="DisplayingTasks" class="section expand">
+        <ui:Label text="Current Tasks" display-tooltip-when-elided="true" name="displayingTasksLabel" class="sectionTitle" />
+        <ui:ScrollView name="taskList" class="border expand" />
+    </ui:VisualElement>
+    <ui:VisualElement name="TrackingTasks" class="section">
+        <ui:Button text="Save Progress" display-tooltip-when-elided="true" name="saveProgressButton" class="button" />
+    </ui:VisualElement>
+    <ui:VisualElement name="Progress" class="section">
+        <ui:Label text="Progress" display-tooltip-when-elided="true" name="progressHeader" class="sectionTitle" />
+        <ui:ProgressBar value="0" title="0%" name="taskProgressBar" high-value="1" style="margin-left: 20px; margin-right: 20px;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="Notifications" class="section border">
+        <ui:Label text="Load a task list to get started..." display-tooltip-when-elided="true" name="notificationLabel" style="margin-left: 2px; margin-right: 2px; margin-top: 2px; margin-bottom: 2px;" />
+    </ui:VisualElement>
+</ui:UXML>
