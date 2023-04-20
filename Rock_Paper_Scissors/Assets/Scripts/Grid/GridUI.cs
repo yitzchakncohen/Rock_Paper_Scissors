@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RockPaperScissors.Grids
 {
-    public class GridUIManager : MonoBehaviour
+    public class GridUI : MonoBehaviour
     {
         private GridManager gridManager;
         

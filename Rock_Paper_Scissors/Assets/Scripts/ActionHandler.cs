@@ -14,7 +14,7 @@ public class ActionHandler : MonoBehaviour
     [SerializeField] private Unit selectedUnit;
     private InputManager inputManager;
     private GridManager gridManager;
-    private GridUIManager gridUIManager;
+    private GridUI gridUIManager;
     private PathFinding pathFinding;
     private TurnManager turnManager;
     private UnitManager unitManager;
@@ -26,7 +26,7 @@ public class ActionHandler : MonoBehaviour
     {
         inputManager = FindObjectOfType<InputManager>();
         gridManager = FindObjectOfType<GridManager>();
-        gridUIManager = FindObjectOfType<GridUIManager>();
+        gridUIManager = FindObjectOfType<GridUI>();
         inputManager = FindObjectOfType<InputManager>();
         pathFinding = FindObjectOfType<PathFinding>();
         turnManager = FindObjectOfType<TurnManager>();
