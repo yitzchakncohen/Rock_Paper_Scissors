@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using RockPaperScissors.Grids;
 using RockPaperScissors.PathFindings;
+using RockPaperScissors.UI;
 using RockPaperScissors.Units;
 using UnityEngine;
 
@@ -33,6 +34,7 @@ public class ActionHandler : MonoBehaviour
 
         inputManager.OnSingleTap += InputManager_onSingleTouch;
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
+        BuildingButton.OnBuildingButtonPressed += BuildingButton_BuildingButtonPressed;
         UnitHealth.OnDeath += Health_OnDeath;
         Unit.OnUnitSpawn += Unit_OnUnitSpawn;
 
@@ -52,6 +54,7 @@ public class ActionHandler : MonoBehaviour
     {
         inputManager.OnSingleTap -= InputManager_onSingleTouch;
         TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
+        BuildingButton.OnBuildingButtonPressed -= BuildingButton_BuildingButtonPressed;
         UnitHealth.OnDeath -= Health_OnDeath;
         Unit.OnUnitSpawn -= Unit_OnUnitSpawn;
     }
@@ -196,12 +199,12 @@ public class ActionHandler : MonoBehaviour
         gridUIManager.ShowGridPositionList(validPlacementPositions, GridHighlightType.PlaceObject);
     }
 
-    public void BuildingButtonPressed(UnitSpawner unitSpawner)
+    private void BuildingButton_BuildingButtonPressed(object sender, BuildButtonArguments arguments)
     {
-        HighlightPlacementTargets(unitSpawner);
-        GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(unitSpawner.transform.position);
+        HighlightPlacementTargets(arguments.unitSpawner);
+        GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(arguments.unitSpawner.transform.position);
         SetBusy();
-        if(unitSpawner.TryTakeAction(gridObject , ClearBusy))
+        if(arguments.unitSpawner.TryTakeAction(gridObject , ClearBusy))
         {
             selectedUnit = null;
             OnUnitSelected?.Invoke(this, selectedUnit);
