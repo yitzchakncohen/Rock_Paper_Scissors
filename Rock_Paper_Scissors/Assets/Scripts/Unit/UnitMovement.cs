@@ -91,29 +91,30 @@ public class UnitMovement : UnitAction
 
     private void AnimateMovement(Vector2 moveDirection)
     {
+        int level = unit.GetUnitProgression().GetLevel();
         if(moveDirection.x > 0 && moveDirection.y > 0)
         {
-            unitAnimator.MoveUpRight();
+            unitAnimator.MoveUpRight(level);
         }
         else if(moveDirection.x > 0 && moveDirection.y < 0)
         {
-            unitAnimator.MoveDownRight();
+            unitAnimator.MoveDownRight(level);
         }
         else if(moveDirection.x > 0 && moveDirection.y == 0)
         {
-            unitAnimator.MoveRight();
+            unitAnimator.MoveRight(level);
         }
         if(moveDirection.x < 0 && moveDirection.y > 0)
         {
-            unitAnimator.MoveUpLeft();
+            unitAnimator.MoveUpLeft(level);
         }
         else if(moveDirection.x < 0 && moveDirection.y < 0)
         {
-            unitAnimator.MoveDownLeft();
+            unitAnimator.MoveDownLeft(level);
         }
         else if(moveDirection.x < 0 && moveDirection.y == 0)
         {
-            unitAnimator.MoveLeft();
+            unitAnimator.MoveLeft(level);
         }
         unitAnimator.ToggleMoveAnimation(true);
     }

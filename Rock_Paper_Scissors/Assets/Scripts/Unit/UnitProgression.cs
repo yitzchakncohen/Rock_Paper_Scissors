@@ -6,11 +6,13 @@ using UnityEngine;
 public class UnitProgression : MonoBehaviour
 {
     public event Action OnLevelUp;
+    private UnitAnimator unitAnimator;
     private int level = 1;
     private int xp = 0;
 
     private void Start() 
     {
+        unitAnimator = FindObjectOfType<UnitAnimator>();
         Health.OnDeath += Health_OnDeath;
     }
 
@@ -34,6 +36,7 @@ public class UnitProgression : MonoBehaviour
         {
             level = Math.Clamp(level + 1, 1, 3);
             OnLevelUp?.Invoke();
+            unitAnimator.AnimateLevelUp(level);
         }
     }
 

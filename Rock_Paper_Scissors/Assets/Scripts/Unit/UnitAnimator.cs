@@ -6,7 +6,6 @@ using UnityEngine.U2D.Animation;
 
 public class UnitAnimator : MonoBehaviour
 {
-    [SerializeField] private UnitProgression unitProgression;
     [SerializeField] private SpriteResolver spriteResolver;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private GameObject spawnFXPrefab;
@@ -20,54 +19,44 @@ public class UnitAnimator : MonoBehaviour
         spriteLibrary = GetComponent<SpriteLibrary>();
     }
 
-    private void Start() 
-    {
-        unitProgression.OnLevelUp += UnitProgression_OnLevelUp;
-    }
-
-    private void OnDestroy() 
-    {
-        unitProgression.OnLevelUp -= UnitProgression_OnLevelUp;
-    }
-
     public void SetSpriteLibraryAsset(SpriteLibraryAsset spriteLibraryAsset)
     {
         spriteLibrary.spriteLibraryAsset = spriteLibraryAsset;
     }
 
-    public void MoveLeft()
+    public void MoveLeft(int level)
     {
-        spriteResolver.SetCategoryAndLabel("Left", GetLevel());
+        spriteResolver.SetCategoryAndLabel("Left", GetLevel(level));
         // animator.SetTrigger("Left");
     }
 
-    public void MoveRight()
+    public void MoveRight(int level)
     {
-        spriteResolver.SetCategoryAndLabel("Right", GetLevel());
+        spriteResolver.SetCategoryAndLabel("Right", GetLevel(level));
         // animator.SetTrigger("Right");
     }
 
-    public void MoveUpLeft()
+    public void MoveUpLeft(int level)
     {
-        spriteResolver.SetCategoryAndLabel("UpLeft", GetLevel());
+        spriteResolver.SetCategoryAndLabel("UpLeft", GetLevel(level));
         // animator.SetTrigger("Up_Left");
     }
 
-    public void MoveUpRight()
+    public void MoveUpRight(int level)
     {
-        spriteResolver.SetCategoryAndLabel("UpRight", GetLevel());
+        spriteResolver.SetCategoryAndLabel("UpRight", GetLevel(level));
         // animator.SetTrigger("Up_Right");
     }
 
-    public void MoveDownLeft()
+    public void MoveDownLeft(int level)
     {
-        spriteResolver.SetCategoryAndLabel("DownLeft", GetLevel());
+        spriteResolver.SetCategoryAndLabel("DownLeft", GetLevel(level));
         // animator.SetTrigger("Down_Left");
     }
 
-    public void MoveDownRight()
+    public void MoveDownRight(int level)
     {
-        spriteResolver.SetCategoryAndLabel("DownRight", GetLevel());
+        spriteResolver.SetCategoryAndLabel("DownRight", GetLevel(level));
         // animator.SetTrigger("Down_Right");
     }
 
@@ -108,18 +97,13 @@ public class UnitAnimator : MonoBehaviour
         healthBar.gameObject.SetActive(false);
     }
 
-    private string GetLevel()
+    private string GetLevel(int level)
     {
-        return $"Level {unitProgression.GetLevel()}";
+        return $"Level {level}";
     }
 
-    private void UnitProgression_OnLevelUp()
+    public void AnimateLevelUp(int level)
     {
-        AnimateLevelUp();
-    }
-
-    private void AnimateLevelUp()
-    {
-        MoveLeft();
+        MoveLeft(level);
     }
 }

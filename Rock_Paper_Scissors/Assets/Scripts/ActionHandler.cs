@@ -83,19 +83,15 @@ public class ActionHandler : MonoBehaviour
         // Check if the grid position is occupied. 
         if(gridObject.GetOccupent() != null)
         {
-            // // If you have a unit selected, check the cell for an action.
-            // if(selectedUnit != gridObject.GetOccupent())
-            // {
-                // Select a friendly unit
-                if(gridObject.GetOccupent().IsFriendly())
-                {
-                    SelectUnitOccupyingGridPosition(gridObject);
-                }
-                else
-                {
-                    TryAttackUnitOccupyingGridPosition(gridObject);
-                }
-            // }
+            // Select a friendly unit
+            if(gridObject.GetOccupent().IsFriendly())
+            {
+                SelectUnitOccupyingGridPosition(gridObject);
+            }
+            else
+            {
+                TryAttackUnitOccupyingGridPosition(gridObject);
+            }
         }
         else if(selectedUnit != null)
         {

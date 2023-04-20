@@ -160,32 +160,33 @@ public class UnitAttack : UnitAction
 
     private void AnimateAttack(Vector2 attackDirection)
     {
+        int level = unit.GetUnitProgression().GetLevel();
         float normalizedAnimationTime = timer/attackAnimationTime;
         transform.position = attackStartPosition + (target.transform.position - attackStartPosition)*attackAnimationCurve.Evaluate(normalizedAnimationTime);
 
         if(attackDirection.x > 0 && attackDirection.y > 0)
         {
-            unitAnimator.MoveUpRight();
+            unitAnimator.MoveUpRight(level);
         }
         else if(attackDirection.x > 0 && attackDirection.y < 0)
         {
-            unitAnimator.MoveDownRight();
+            unitAnimator.MoveDownRight(level);
         }
         else if(attackDirection.x > 0 && attackDirection.y == 0)
         {
-            unitAnimator.MoveRight();
+            unitAnimator.MoveRight(level);
         }
         if(attackDirection.x < 0 && attackDirection.y > 0)
         {
-            unitAnimator.MoveUpLeft();
+            unitAnimator.MoveUpLeft(level);
         }
         else if(attackDirection.x < 0 && attackDirection.y < 0)
         {
-            unitAnimator.MoveDownLeft();
+            unitAnimator.MoveDownLeft(level);
         }
         else if(attackDirection.x < 0 && attackDirection.y == 0)
         {
-            unitAnimator.MoveLeft();
+            unitAnimator.MoveLeft(level);
         }
     }
 

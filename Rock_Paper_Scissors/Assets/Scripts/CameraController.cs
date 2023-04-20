@@ -23,6 +23,7 @@ public class CameraController : MonoBehaviour
     private Vector2 startDraggingPosition;
     private Vector2 lastFrameDraggingPosition;
     private Vector2 startCameraPosition;
+    private Vector2 waveStartCameraPosition;
     private Vector2 draggingVector;
     private Vector2 cameraVelocity;
     private float pinchingStartDistance;
@@ -47,6 +48,9 @@ public class CameraController : MonoBehaviour
         ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
         UnitAction.OnAnyActionStarted += UnitAction_OnAnyActionStarted;
         UnitMovement.OnUnitMove += UnitMovement_OnUnitMove;
+        WaveManager.OnWaveUnitSpawn += WaveManager_OnWaveUnitSpawn;
+        WaveManager.OnWaveStarted += WaveManager_OnWaveStarted;
+        WaveManager.OnWaveCompleted += WaveManager_OnWaveCompleted;
         zoomTarget = cinemachineVirtualCamera.m_Lens.OrthographicSize;
 
         CalculateCameraBoundary();
@@ -64,6 +68,9 @@ public class CameraController : MonoBehaviour
         ActionHandler.OnUnitSelected -= ActionHandler_OnUnitSelected;
         UnitAction.OnAnyActionStarted -= UnitAction_OnAnyActionStarted;
         UnitMovement.OnUnitMove -= UnitMovement_OnUnitMove;
+        WaveManager.OnWaveUnitSpawn -= WaveManager_OnWaveUnitSpawn;
+        WaveManager.OnWaveStarted -= WaveManager_OnWaveStarted;
+        WaveManager.OnWaveCompleted -= WaveManager_OnWaveCompleted;
     }
 
     private void FixedUpdate()
@@ -179,6 +186,22 @@ public class CameraController : MonoBehaviour
     {
         transform.position = ((UnitMovement)sender).transform.position;
     }
+
+    private void WaveManager_OnWaveUnitSpawn(Unit unit)
+    {
+        transform.position = unit.transform.position;
+    }
+
+    private void WaveManager_OnWaveStarted()
+    {
+        waveStartCameraPosition = transform.position;
+    }
+
+    private void WaveManager_OnWaveCompleted()
+    {
+        transform.position = waveStartCameraPosition;
+    }
+
 
     private void ClampCameraPosition()
     {
