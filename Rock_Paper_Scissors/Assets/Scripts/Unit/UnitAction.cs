@@ -1,12 +1,11 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using RockPaperScissors.Grids;
 using RockPaperScissors.UI;
 using UnityEngine;
 
 namespace RockPaperScissors.Units
 {
+    // Base action class which the unit actions inherit from.
     public abstract class UnitAction : MonoBehaviour
     {
         public static event EventHandler OnAnyActionStarted;
@@ -41,9 +40,13 @@ namespace RockPaperScissors.Units
             OnAnyActionCompleted?.Invoke(this, EventArgs.Empty);
         }
 
-        public abstract EnemyAIAction GetBestEnemyAIAction();
-        public abstract bool TryTakeAction(GridObject gridObject, Action onActionComplete);
-        public abstract int GetValidActionsRemaining();
+        protected virtual void CancelButton_OnCancelButtonPress()
+        {
+            if(IsCancellableAction)
+            {
+                ActionComplete();
+            }
+        }
 
         public int GetActionPointsRemaining()
         {
@@ -55,12 +58,8 @@ namespace RockPaperScissors.Units
             actionPointsRemaining = 1;
         }
 
-        protected virtual void CancelButton_OnCancelButtonPress()
-        {
-            if(IsCancellableAction)
-            {
-                ActionComplete();
-            }
-        }
+        public abstract EnemyAIAction GetBestEnemyAIAction();
+        public abstract bool TryTakeAction(GridObject gridObject, Action onActionComplete);
+        public abstract int GetValidActionsRemaining();
     }
 }

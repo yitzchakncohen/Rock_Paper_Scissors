@@ -69,6 +69,7 @@ namespace RockPaperScissors.Units
                 moving = false;
                 actionPointsRemaining -= 1;
                 ActionComplete();
+                
                 // TODO remove this debug statement. 
                 gridManager.ResetActionValueTexts();
             }
@@ -83,10 +84,14 @@ namespace RockPaperScissors.Units
 
             Vector2Int currentGridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
             targetGridObjects = pathFinding.FindPath(currentGridPosition, targetGridObject.GetGridPostion(), out int pathLength);
+
+            // Check if position is within movement range
             if(pathLength > unit.GetMoveDistance())
             {
                 return false;
             }
+
+            // Start Move
             currentPositionIndex = 0;
             moving = true;
             ActionStart(onActionComplete);
