@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum UnitClass
+namespace RockPaperScissors.Units
 {
-    Rock,
-    Paper,
-    Scissors,
-    PillowFort
+    public enum UnitClass
+    {
+        Rock,
+        Paper,
+        Scissors,
+        PillowFort
+    }
 }

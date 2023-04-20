@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using RockPaperScissors.Grids;
+using RockPaperScissors.Units;
 using UnityEngine;
 
 public class WaveManager : MonoBehaviour
@@ -16,12 +18,12 @@ public class WaveManager : MonoBehaviour
 
     public static event Action OnWaveStarted;
     public static event Action OnWaveCompleted;
+    public static event Action<Unit> OnWaveUnitSpawn;
     [SerializeField] private Wave[] waves;
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private float showUnitsTime = 1f;
     private CurrencyBank currencyBank;
     private GridManager gridManager;
-    private CameraController cameraController;
     private List<Unit> unitsSpawnedThisWave = new List<Unit>();
 
     private void Start() 
@@ -29,7 +31,6 @@ public class WaveManager : MonoBehaviour
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
         currencyBank = FindObjectOfType<CurrencyBank>();
         gridManager = FindObjectOfType<GridManager>();
-        cameraController = FindObjectOfType<CameraController>();
         StartWave(0);
     }
 
@@ -105,7 +106,6 @@ public class WaveManager : MonoBehaviour
     private IEnumerator ShowSpawnedUnits()
     {
         OnWaveStarted?.Invoke();
-        Vector3 startingPosition = cameraController.transform.position;
 
         unitsSpawnedThisWave.Sort(delegate(Unit unitA, Unit unitB)
         {
@@ -145,10 +145,9 @@ public class WaveManager : MonoBehaviour
         // Show the units one at a time.
         foreach (Unit unit in unitsSpawnedThisWave)
         {
-            cameraController.transform.position = unit.transform.position;
+            OnWaveUnitSpawn?.Invoke(unit);
             yield return StartCoroutine(unit.GetUnitAnimator().SpawnAnimationRoutine(showUnitsTime));
         }
-        cameraController.transform.position = startingPosition;
         OnWaveCompleted?.Invoke();
     }
 }

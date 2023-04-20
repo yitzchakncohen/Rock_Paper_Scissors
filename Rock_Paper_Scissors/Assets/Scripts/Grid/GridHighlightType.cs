@@ -1,6 +1,9 @@
-public enum GridHighlightType
+namespace RockPaperScissors.Grids
 {
-    Movement,
-    Attack,
-    PlaceObject,
+    public enum GridHighlightType
+    {
+        Movement,
+        Attack,
+        PlaceObject,
+    }    
 }

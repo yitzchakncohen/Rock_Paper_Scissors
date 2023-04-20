@@ -1,6 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RockPaperScissors.Grids;
+using RockPaperScissors.PathFindings;
+using RockPaperScissors.UI;
+using RockPaperScissors.Units;
 using UnityEngine;
 
 public class ActionHandler : MonoBehaviour
@@ -10,7 +14,7 @@ public class ActionHandler : MonoBehaviour
     [SerializeField] private Unit selectedUnit;
     private InputManager inputManager;
     private GridManager gridManager;
-    private GridUIManager gridUIManager;
+    private GridUI gridUIManager;
     private PathFinding pathFinding;
     private TurnManager turnManager;
     private UnitManager unitManager;
@@ -22,7 +26,7 @@ public class ActionHandler : MonoBehaviour
     {
         inputManager = FindObjectOfType<InputManager>();
         gridManager = FindObjectOfType<GridManager>();
-        gridUIManager = FindObjectOfType<GridUIManager>();
+        gridUIManager = FindObjectOfType<GridUI>();
         inputManager = FindObjectOfType<InputManager>();
         pathFinding = FindObjectOfType<PathFinding>();
         turnManager = FindObjectOfType<TurnManager>();
@@ -31,7 +35,7 @@ public class ActionHandler : MonoBehaviour
         inputManager.OnSingleTap += InputManager_onSingleTouch;
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
         BuildingButton.OnBuildingButtonPressed += BuildingButton_BuildingButtonPressed;
-        Health.OnDeath += Health_OnDeath;
+        UnitHealth.OnDeath += Health_OnDeath;
         Unit.OnUnitSpawn += Unit_OnUnitSpawn;
 
         ResetUnitQueue();
@@ -51,7 +55,7 @@ public class ActionHandler : MonoBehaviour
         inputManager.OnSingleTap -= InputManager_onSingleTouch;
         TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
         BuildingButton.OnBuildingButtonPressed -= BuildingButton_BuildingButtonPressed;
-        Health.OnDeath -= Health_OnDeath;
+        UnitHealth.OnDeath -= Health_OnDeath;
         Unit.OnUnitSpawn -= Unit_OnUnitSpawn;
     }
 
@@ -83,19 +87,15 @@ public class ActionHandler : MonoBehaviour
         // Check if the grid position is occupied. 
         if(gridObject.GetOccupent() != null)
         {
-            // // If you have a unit selected, check the cell for an action.
-            // if(selectedUnit != gridObject.GetOccupent())
-            // {
-                // Select a friendly unit
-                if(gridObject.GetOccupent().IsFriendly())
-                {
-                    SelectUnitOccupyingGridPosition(gridObject);
-                }
-                else
-                {
-                    TryAttackUnitOccupyingGridPosition(gridObject);
-                }
-            // }
+            // Select a friendly unit
+            if(gridObject.GetOccupent().IsFriendly())
+            {
+                SelectUnitOccupyingGridPosition(gridObject);
+            }
+            else
+            {
+                TryAttackUnitOccupyingGridPosition(gridObject);
+            }
         }
         else if(selectedUnit != null)
         {

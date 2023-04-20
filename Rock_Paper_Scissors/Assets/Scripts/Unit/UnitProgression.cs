@@ -3,42 +3,48 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitProgression : MonoBehaviour
+namespace RockPaperScissors.Units
 {
-    public event Action OnLevelUp;
-    private int level = 1;
-    private int xp = 0;
-
-    private void Start() 
+    public class UnitProgression : MonoBehaviour
     {
-        Health.OnDeath += Health_OnDeath;
-    }
+        public event Action OnLevelUp;
+        private UnitAnimator unitAnimator;
+        private int level = 1;
+        private int xp = 0;
 
-    private void Health_OnDeath(object sender, Unit attacker)
-    {
-        if(attacker.GetUnitProgression() == this)
+        private void Start() 
         {
-            GainXP(100);
+            unitAnimator = FindObjectOfType<UnitAnimator>();
+            UnitHealth.OnDeath += Health_OnDeath;
         }
-    }
 
-    private void GainXP(int amount)
-    {
-        xp += amount;
-        CheckForLevelUp();
-    }
-
-    private void CheckForLevelUp()
-    {
-        if(xp % 100 == 0)
+        private void Health_OnDeath(object sender, Unit attacker)
         {
-            level = Math.Clamp(level + 1, 1, 3);
-            OnLevelUp?.Invoke();
+            if(attacker.GetUnitProgression() == this)
+            {
+                GainXP(100);
+            }
         }
-    }
 
-    public int GetLevel()
-    {
-        return level;
+        private void GainXP(int amount)
+        {
+            xp += amount;
+            CheckForLevelUp();
+        }
+
+        private void CheckForLevelUp()
+        {
+            if(xp % 100 == 0)
+            {
+                level = Math.Clamp(level + 1, 1, 3);
+                OnLevelUp?.Invoke();
+                unitAnimator.AnimateLevelUp(level);
+            }
+        }
+
+        public int GetLevel()
+        {
+            return level;
+        }
     }
 }

@@ -1,53 +1,55 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using RockPaperScissors.Units;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BuildButtonArguments : EventArgs
+namespace RockPaperScissors.UI
 {
-    public Unit unit {get; set;}
-    public UnitSpawner unitSpawner {get; set;}
-}
-
-public class BuildingButton : MonoBehaviour
-{
-    [SerializeField] private Image unitThumbnail;
-    [SerializeField] private TextMeshProUGUI unitCostText;
-    private Unit unitPrefab;
-    public static event EventHandler<BuildButtonArguments> OnBuildingButtonPressed;
-    private UnitSpawner unitSpawner;
-    private Button button;
-    private CurrencyBank currencyBank;
-
-    private void Awake() 
+    public class BuildButtonArguments : EventArgs
     {
-        button = GetComponent<Button>();        
+        public Unit unit {get; set;}
+        public UnitSpawner unitSpawner {get; set;}
     }
 
-    private void Start() 
+    public class BuildingButton : MonoBehaviour
     {
-        currencyBank = FindObjectOfType<CurrencyBank>();
-        button.interactable = (currencyBank.GetCurrencyRemaining() >= unitPrefab.GetCost());      
-    }
+        [SerializeField] private Image unitThumbnail;
+        [SerializeField] private TextMeshProUGUI unitCostText;
+        private Unit unitPrefab;
+        public static event EventHandler<BuildButtonArguments> OnBuildingButtonPressed;
+        private UnitSpawner unitSpawner;
+        private Button button;
+        private CurrencyBank currencyBank;
 
-    public void Setup(Unit unit) 
-    {
-        unitPrefab = unit;
-        unitSpawner = GetComponentInParent<UnitSpawner>();
-        unitThumbnail.sprite = unitPrefab.GetUnitThumbnail();
-        unitCostText.text = unitPrefab.GetCost().ToString();
-    }
-
-    public void ButtonPressed()
-    {
-        if(currencyBank.GetCurrencyRemaining() >= unitPrefab.GetCost())
+        private void Awake() 
         {
-            BuildButtonArguments arguments = new BuildButtonArguments();
-            arguments.unit = unitPrefab;
-            arguments.unitSpawner = this.unitSpawner;
-            OnBuildingButtonPressed?.Invoke(this, arguments);
+            button = GetComponent<Button>();        
+        }
+
+        private void Start() 
+        {
+            currencyBank = FindObjectOfType<CurrencyBank>();
+            button.interactable = (currencyBank.GetCurrencyRemaining() >= unitPrefab.GetCost());      
+        }
+
+        public void Setup(Unit unit) 
+        {
+            unitPrefab = unit;
+            unitSpawner = GetComponentInParent<UnitSpawner>();
+            unitThumbnail.sprite = unitPrefab.GetUnitThumbnail();
+            unitCostText.text = unitPrefab.GetCost().ToString();
+        }
+
+        public void ButtonPressed()
+        {
+            if(currencyBank.GetCurrencyRemaining() >= unitPrefab.GetCost())
+            {
+                BuildButtonArguments arguments = new BuildButtonArguments();
+                arguments.unit = unitPrefab;
+                arguments.unitSpawner = this.unitSpawner;
+                OnBuildingButtonPressed?.Invoke(this, arguments);
+            }
         }
     }
 }

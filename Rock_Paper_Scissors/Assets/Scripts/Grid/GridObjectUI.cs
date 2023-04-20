@@ -1,85 +1,86 @@
-using System.Collections;
-using System.Collections.Generic;
+using RockPaperScissors.Grids;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class GridObjectUI : MonoBehaviour
+namespace RockPaperScissors.UI
 {
-    [SerializeField] private TextMeshPro actionValueText;
-    [SerializeField] private TextMeshPro gridPositionText;
-    [SerializeField] private GameObject movementHighlight;
-    [SerializeField] private GameObject attackHighlight;
-    [SerializeField] private GameObject placementHighlight;
-    [SerializeField] private bool debugging = false;
-
-    private void Awake() 
+    public class GridObjectUI : MonoBehaviour
     {
-        if(!debugging)
-        {
-            actionValueText.enabled = false;
-            gridPositionText.enabled = false;
-        }
-    }
+        [SerializeField] private TextMeshPro actionValueText;
+        [SerializeField] private TextMeshPro gridPositionText;
+        [SerializeField] private GameObject movementHighlight;
+        [SerializeField] private GameObject attackHighlight;
+        [SerializeField] private GameObject placementHighlight;
+        [SerializeField] private bool debugging = false;
 
-    public void ShowHighlight(GridHighlightType highlightType)
-    {
-        switch(highlightType)
+        private void Awake() 
         {
-            case GridHighlightType.Movement:
-                movementHighlight.SetActive(true);
-                break;
-            case GridHighlightType.Attack:
-                attackHighlight.SetActive(true);
-                break;
-            case GridHighlightType.PlaceObject:
-                placementHighlight.SetActive(true);
-                break;
-        }
-    }
-
-    public void HideHighlight(GridHighlightType highlightType)
-    {
-        switch(highlightType)
-        {
-            case GridHighlightType.Movement:
-                attackHighlight.SetActive(false);
-                break;
-            case GridHighlightType.Attack:
-                movementHighlight.SetActive(false);  
-                break;
-            case GridHighlightType.PlaceObject:
-                placementHighlight.SetActive(false);
-                break;
-        }
-    }
-
-    public void HideAllHighlights()
-    {
-        attackHighlight.SetActive(false);
-        movementHighlight.SetActive(false);
-        placementHighlight.SetActive(false);
-    }
-
-    public void SetGridPosition(Vector2 gridPosition)
-    {   
-        if(debugging)
-        {
-            gridPositionText.text = $"x: {gridPosition.x}, y: {gridPosition.y}";
-        }
-    }
-
-    public void SetActionValue(float actionValue)
-    {   
-        if(debugging)
-        {
-            if(actionValue == 0f)
+            if(!debugging)
             {
-                actionValueText.text = $"----";
+                actionValueText.enabled = false;
+                gridPositionText.enabled = false;
             }
-            else
+        }
+
+        public void ShowHighlight(GridHighlightType highlightType)
+        {
+            switch(highlightType)
             {
-                actionValueText.text = $"AV: {actionValue:0.00}";
+                case GridHighlightType.Movement:
+                    movementHighlight.SetActive(true);
+                    break;
+                case GridHighlightType.Attack:
+                    attackHighlight.SetActive(true);
+                    break;
+                case GridHighlightType.PlaceObject:
+                    placementHighlight.SetActive(true);
+                    break;
+            }
+        }
+
+        public void HideHighlight(GridHighlightType highlightType)
+        {
+            switch(highlightType)
+            {
+                case GridHighlightType.Movement:
+                    attackHighlight.SetActive(false);
+                    break;
+                case GridHighlightType.Attack:
+                    movementHighlight.SetActive(false);  
+                    break;
+                case GridHighlightType.PlaceObject:
+                    placementHighlight.SetActive(false);
+                    break;
+            }
+        }
+
+        public void HideAllHighlights()
+        {
+            attackHighlight.SetActive(false);
+            movementHighlight.SetActive(false);
+            placementHighlight.SetActive(false);
+        }
+
+        public void SetGridPosition(Vector2 gridPosition)
+        {   
+            if(debugging)
+            {
+                gridPositionText.text = $"x: {gridPosition.x}, y: {gridPosition.y}";
+            }
+        }
+
+        public void SetActionValue(float actionValue)
+        {   
+            if(debugging)
+            {
+                if(actionValue == 0f)
+                {
+                    actionValueText.text = $"----";
+                }
+                else
+                {
+                    actionValueText.text = $"AV: {actionValue:0.00}";
+                }
             }
         }
     }

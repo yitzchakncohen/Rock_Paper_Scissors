@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RockPaperScissors.Units;
 using UnityEngine;
 
 public class CurrencyBank : MonoBehaviour
@@ -10,7 +11,7 @@ public class CurrencyBank : MonoBehaviour
 
     private void Start() 
     {
-        Health.OnDeath += Health_OnDeath;
+        UnitHealth.OnDeath += Health_OnDeath;
     }
 
     public bool TrySpendCurrency(int amountToSpend)
@@ -37,7 +38,7 @@ public class CurrencyBank : MonoBehaviour
 
     private void Health_OnDeath(object sender, Unit e)
     {
-        Unit unit = ((Health)sender).GetUnit();
+        Unit unit = ((UnitHealth)sender).GetUnit();
         if(!unit.IsFriendly())
         {
             currency += unit.GetUnitDefeatedReward();

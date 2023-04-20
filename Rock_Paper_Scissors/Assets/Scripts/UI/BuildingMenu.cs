@@ -1,95 +1,96 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using RockPaperScissors.Units;
 using UnityEngine;
 
-public class BuildingMenu : MonoBehaviour
+namespace RockPaperScissors.UI
 {
-    [SerializeField] private Transform buildingMenuUI;
-    [SerializeField] private RadialLayoutGroup radialLayoutGroup;
-    [SerializeField] private BuildingButton buildingButtonPrefab;
-    private Unit parentUnit;
-    private UnitSpawner unitSpawner;
-    private float lastFrameZoom;
-
-    private void Awake() 
+    public class BuildingMenu : MonoBehaviour
     {
-        parentUnit = GetComponentInParent<Unit>();
-        unitSpawner = parentUnit.GetComponent<UnitSpawner>();
-        if(unitSpawner == null)
+        [SerializeField] private Transform buildingMenuUI;
+        [SerializeField] private RadialLayoutGroup radialLayoutGroup;
+        [SerializeField] private BuildingButton buildingButtonPrefab;
+        private Unit parentUnit;
+        private UnitSpawner unitSpawner;
+        private float lastFrameZoom;
+
+        private void Awake() 
         {
-            Debug.Log("This building menu is not attached to a unit spawner.");
-        }else
-        {
-            foreach (Transform child in radialLayoutGroup.transform)
+            parentUnit = GetComponentInParent<Unit>();
+            unitSpawner = parentUnit.GetComponent<UnitSpawner>();
+            if(unitSpawner == null)
             {
-                Destroy(child.gameObject);
-            }
-            foreach (Unit unit in unitSpawner.GetSpawnableUnits())
+                Debug.Log("This building menu is not attached to a unit spawner.");
+            }else
             {
-                BuildingButton buildingButton = Instantiate(buildingButtonPrefab, radialLayoutGroup.transform);
-                buildingButton.Setup(unit);
+                foreach (Transform child in radialLayoutGroup.transform)
+                {
+                    Destroy(child.gameObject);
+                }
+                foreach (Unit unit in unitSpawner.GetSpawnableUnits())
+                {
+                    BuildingButton buildingButton = Instantiate(buildingButtonPrefab, radialLayoutGroup.transform);
+                    buildingButton.Setup(unit);
+                }
             }
+            ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
+            BuildingButton.OnBuildingButtonPressed += BuildingButton_OnBuildingButtonPressed;
+            radialLayoutGroup.OnCloseAnimationComplete += RadialLayoutGroup_OnCloseAnimationComplete;
         }
-        ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
-        BuildingButton.OnBuildingButtonPressed += BuildingButton_OnBuildingButtonPressed;
-        radialLayoutGroup.OnCloseAnimationComplete += RadialLayoutGroup_OnCloseAnimationComplete;
-    }
 
-    private void Start() 
-    {
-        lastFrameZoom = Camera.main.orthographicSize;
-    }
-
-    private void Update() 
-    {
-        if(lastFrameZoom != Camera.main.orthographicSize)
+        private void Start() 
         {
-            transform.localScale = transform.localScale * Camera.main.orthographicSize/lastFrameZoom;
             lastFrameZoom = Camera.main.orthographicSize;
         }
-    }
 
-    private void OnDestroy() 
-    {
-        ActionHandler.OnUnitSelected -= ActionHandler_OnUnitSelected;
-        BuildingButton.OnBuildingButtonPressed -= BuildingButton_OnBuildingButtonPressed;
-        radialLayoutGroup.OnCloseAnimationComplete -= RadialLayoutGroup_OnCloseAnimationComplete;
-    }
-
-    private void RadialLayoutGroup_OnCloseAnimationComplete()
-    {
-        buildingMenuUI.gameObject.SetActive(false);
-    }
-
-    private void BuildingButton_OnBuildingButtonPressed(object sender, BuildButtonArguments e)
-    {
-        buildingMenuUI.gameObject.SetActive(false);
-    }
-
-    private void ActionHandler_OnUnitSelected(object sender, Unit unit)
-    {
-        if(unit == parentUnit)
+        private void Update() 
         {
-            OpenBuildingMenu();
+            if(lastFrameZoom != Camera.main.orthographicSize)
+            {
+                transform.localScale = transform.localScale * Camera.main.orthographicSize/lastFrameZoom;
+                lastFrameZoom = Camera.main.orthographicSize;
+            }
         }
-        else if(unit != null)
+
+        private void OnDestroy() 
         {
-            CloseBuildingMenu();
+            ActionHandler.OnUnitSelected -= ActionHandler_OnUnitSelected;
+            BuildingButton.OnBuildingButtonPressed -= BuildingButton_OnBuildingButtonPressed;
+            radialLayoutGroup.OnCloseAnimationComplete -= RadialLayoutGroup_OnCloseAnimationComplete;
         }
-    }
 
-    public void OpenBuildingMenu()
-    {
-        buildingMenuUI.gameObject.SetActive(true);
-        radialLayoutGroup.AnimateMenuOpen();
-    }
-
-    public void CloseBuildingMenu()
-    {
-        if(buildingMenuUI.gameObject.activeSelf)
+        private void RadialLayoutGroup_OnCloseAnimationComplete()
         {
-            radialLayoutGroup.AnimateMenuClosed();       
+            buildingMenuUI.gameObject.SetActive(false);
+        }
+
+        private void BuildingButton_OnBuildingButtonPressed(object sender, BuildButtonArguments e)
+        {
+            buildingMenuUI.gameObject.SetActive(false);
+        }
+
+        private void ActionHandler_OnUnitSelected(object sender, Unit unit)
+        {
+            if(unit == parentUnit)
+            {
+                OpenBuildingMenu();
+            }
+            else if(unit != null)
+            {
+                CloseBuildingMenu();
+            }
+        }
+
+        public void OpenBuildingMenu()
+        {
+            buildingMenuUI.gameObject.SetActive(true);
+            radialLayoutGroup.AnimateMenuOpen();
+        }
+
+        public void CloseBuildingMenu()
+        {
+            if(buildingMenuUI.gameObject.activeSelf)
+            {
+                radialLayoutGroup.AnimateMenuClosed();       
+            }
         }
     }
 }
