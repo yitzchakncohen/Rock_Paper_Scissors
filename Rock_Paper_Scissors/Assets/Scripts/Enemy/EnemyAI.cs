@@ -1,7 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using RockPaperScissors.Units;
+using RockPaperScissors.Grids;
 using UnityEngine;
 
 public class EnemyAI : MonoBehaviour

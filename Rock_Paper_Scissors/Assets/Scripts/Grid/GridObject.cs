@@ -1,49 +1,51 @@
-using System.Collections;
-using System.Collections.Generic;
+using RockPaperScissors.UI;
 using RockPaperScissors.Units;
 using UnityEngine;
 
-public class GridObject : MonoBehaviour
+namespace RockPaperScissors.Grids
 {
-    private Vector2Int gridPosition;
-    private GridObjectUI gridObjectUI;
-    private Unit gridPositionOccupyingGameObject = null;
-
-    private void Awake() 
+    public class GridObject : MonoBehaviour
     {
-        gridObjectUI = GetComponent<GridObjectUI>();
+        private Vector2Int gridPosition;
+        private GridObjectUI gridObjectUI;
+        private Unit gridPositionOccupyingGameObject = null;
+
+        private void Awake() 
+        {
+            gridObjectUI = GetComponent<GridObjectUI>();
+        }
+
+        public void Setup(Vector2Int gridPosition) 
+        {
+            this.gridPosition = gridPosition;
+            gridObjectUI.SetGridPosition(gridPosition);
+        }
+
+        public Vector2Int GetGridPostion()
+        {
+            return gridPosition;
+        }
+
+        public bool IsWalkable()
+        {
+            // TODO can you walk over your oawn units?
+            return (gridPositionOccupyingGameObject == null);
+        }
+
+        public void SetOccupent(Unit occupent)
+        {
+            gridPositionOccupyingGameObject = occupent;
+        }
+
+        public Unit GetOccupent()
+        {
+            return gridPositionOccupyingGameObject;
+        }
+
+        public void ShowHighlight(GridHighlightType highlightType) => gridObjectUI.ShowHighlight(highlightType);
+
+        public void HideHighlight(GridHighlightType highlightType) => gridObjectUI.HideHighlight(highlightType);
+        public void HideAllHighlights() => gridObjectUI.HideAllHighlights();
+        public void SetActionValue(float actionValue) => gridObjectUI.SetActionValue(actionValue);
     }
-
-    public void Setup(Vector2Int gridPosition) 
-    {
-        this.gridPosition = gridPosition;
-        gridObjectUI.SetGridPosition(gridPosition);
-    }
-
-    public Vector2Int GetGridPostion()
-    {
-        return gridPosition;
-    }
-
-    public bool IsWalkable()
-    {
-        // TODO can you walk over your oawn units?
-        return (gridPositionOccupyingGameObject == null);
-    }
-
-    public void SetOccupent(Unit occupent)
-    {
-        gridPositionOccupyingGameObject = occupent;
-    }
-
-    public Unit GetOccupent()
-    {
-        return gridPositionOccupyingGameObject;
-    }
-
-    public void ShowHighlight(GridHighlightType highlightType) => gridObjectUI.ShowHighlight(highlightType);
-
-    public void HideHighlight(GridHighlightType highlightType) => gridObjectUI.HideHighlight(highlightType);
-    public void HideAllHighlights() => gridObjectUI.HideAllHighlights();
-    public void SetActionValue(float actionValue) => gridObjectUI.SetActionValue(actionValue);
 }

@@ -1,33 +1,36 @@
-using System.Collections;
 using System.Collections.Generic;
+using RockPaperScissors.Grids;
 using UnityEngine;
 
-public class GridUIManager : MonoBehaviour
+namespace RockPaperScissors.Grids
 {
-    private GridManager gridManager;
-    
-    private void Awake() 
+    public class GridUIManager : MonoBehaviour
     {
-        gridManager = GetComponent<GridManager>();
-    }
-
-    public void HideAllGridPosition()
-    {
-        for (int x = 0; x < gridManager.GetGridSize().x; x++)
+        private GridManager gridManager;
+        
+        private void Awake() 
         {
-            for (int y = 0; y < gridManager.GetGridSize().y; y++)
+            gridManager = GetComponent<GridManager>();
+        }
+
+        public void HideAllGridPosition()
+        {
+            for (int x = 0; x < gridManager.GetGridSize().x; x++)
             {
-                Vector2Int gridPosition = new Vector2Int(x,y);
-                gridManager.GetGridObject(gridPosition).HideAllHighlights();
+                for (int y = 0; y < gridManager.GetGridSize().y; y++)
+                {
+                    Vector2Int gridPosition = new Vector2Int(x,y);
+                    gridManager.GetGridObject(gridPosition).HideAllHighlights();
+                }
             }
         }
-    }
 
-    public void ShowGridPositionList(List<Vector2Int> gridPositionList, GridHighlightType highlightType)
-    {
-        foreach (Vector2Int gridPosition in gridPositionList)
+        public void ShowGridPositionList(List<Vector2Int> gridPositionList, GridHighlightType highlightType)
         {
-            gridManager.GetGridObject(gridPosition).ShowHighlight(highlightType);
+            foreach (Vector2Int gridPosition in gridPositionList)
+            {
+                gridManager.GetGridObject(gridPosition).ShowHighlight(highlightType);
+            }
         }
     }
 }

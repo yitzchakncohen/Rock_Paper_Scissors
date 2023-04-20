@@ -1,82 +1,84 @@
-using System.Collections;
-using System.Collections.Generic;
+using RockPaperScissors.Grids;
 using UnityEngine;
 
-public class PathNode
+namespace RockPaperScissors.PathFindings
 {
-    private GridObject gridObject;
-    private int gCost;
-    private int hCost;
-    private int fCost;
-    private PathNode cameFromPathNode;
-
-    public PathNode(GridObject gridObject)
+    public class PathNode
     {
-        this.gridObject = gridObject;
-    }
+        private GridObject gridObject;
+        private int gCost;
+        private int hCost;
+        private int fCost;
+        private PathNode cameFromPathNode;
 
-    public override string ToString()
-    {
-        return gridObject.ToString();
-    }
+        public PathNode(GridObject gridObject)
+        {
+            this.gridObject = gridObject;
+        }
 
-    public int GetGCost()
-    {
-        return gCost;
-    }
+        public override string ToString()
+        {
+            return gridObject.ToString();
+        }
 
-    public int GetHCost()
-    {
-        return hCost;
-    }
+        public int GetGCost()
+        {
+            return gCost;
+        }
 
-    public int GetFCost()
-    {
-        return fCost;
-    }
+        public int GetHCost()
+        {
+            return hCost;
+        }
 
-    public void SetGCost(int gCost)
-    {
-        this.gCost = gCost;
-    }
+        public int GetFCost()
+        {
+            return fCost;
+        }
 
-    public void SetHCost(int hCost)
-    {
-        this.hCost = hCost;
-    }
+        public void SetGCost(int gCost)
+        {
+            this.gCost = gCost;
+        }
 
-    public void CalculateFCost()
-    {
-        fCost = gCost + hCost;
-    }
+        public void SetHCost(int hCost)
+        {
+            this.hCost = hCost;
+        }
 
-    public void ResetCameFromPathNode()
-    {
-        cameFromPathNode = null;
-    }
+        public void CalculateFCost()
+        {
+            fCost = gCost + hCost;
+        }
 
-    public void SetCameFromPathNode(PathNode pathNode)
-    {
-        cameFromPathNode = pathNode;
-    }
+        public void ResetCameFromPathNode()
+        {
+            cameFromPathNode = null;
+        }
 
-    public PathNode GetCameFromPathNode()
-    {
-        return cameFromPathNode;
-    }
+        public void SetCameFromPathNode(PathNode pathNode)
+        {
+            cameFromPathNode = pathNode;
+        }
 
-    public Vector2Int GetGridPosition()
-    {
-        return gridObject.GetGridPostion();
-    }
+        public PathNode GetCameFromPathNode()
+        {
+            return cameFromPathNode;
+        }
 
-    public Vector3 GetWorldPosition()
-    {
-        return gridObject.transform.position;
-    }
+        public Vector2Int GetGridPosition()
+        {
+            return gridObject.GetGridPostion();
+        }
 
-    public bool IsWalkable()
-    {
-        return gridObject.IsWalkable();
+        public Vector3 GetWorldPosition()
+        {
+            return gridObject.transform.position;
+        }
+
+        public bool IsWalkable()
+        {
+            return gridObject.IsWalkable();
+        }
     }
 }
