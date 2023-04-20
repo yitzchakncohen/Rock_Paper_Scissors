@@ -7,11 +7,11 @@ using UnityEngine.UI;
 public class HealthBar : MonoBehaviour
 {
     [SerializeField] private Image healthBarImage; 
-    private Health health;
+    private UnitHealth health;
 
     private void Start() 
     {
-        health = GetComponentInParent<Health>();
+        health = GetComponentInParent<UnitHealth>();
         health.OnHealthChanged += Health_OnHealthChanged;
         healthBarImage.fillAmount = 1f;
     }

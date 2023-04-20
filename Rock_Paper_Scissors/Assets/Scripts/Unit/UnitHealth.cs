@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Health : MonoBehaviour
+public class UnitHealth : MonoBehaviour
 {
     public static event EventHandler<Unit> OnDeath;
     public event Action OnHealthChanged;

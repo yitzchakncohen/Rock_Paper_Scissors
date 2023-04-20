@@ -31,7 +31,7 @@ public class ActionHandler : MonoBehaviour
         inputManager.OnSingleTap += InputManager_onSingleTouch;
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
         BuildingButton.OnBuildingButtonPressed += BuildingButton_BuildingButtonPressed;
-        Health.OnDeath += Health_OnDeath;
+        UnitHealth.OnDeath += Health_OnDeath;
         Unit.OnUnitSpawn += Unit_OnUnitSpawn;
 
         ResetUnitQueue();
@@ -51,7 +51,7 @@ public class ActionHandler : MonoBehaviour
         inputManager.OnSingleTap -= InputManager_onSingleTouch;
         TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
         BuildingButton.OnBuildingButtonPressed -= BuildingButton_BuildingButtonPressed;
-        Health.OnDeath -= Health_OnDeath;
+        UnitHealth.OnDeath -= Health_OnDeath;
         Unit.OnUnitSpawn -= Unit_OnUnitSpawn;
     }
 

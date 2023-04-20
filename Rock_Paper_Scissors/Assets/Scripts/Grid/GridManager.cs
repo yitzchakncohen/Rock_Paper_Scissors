@@ -34,7 +34,7 @@ public class GridManager : MonoBehaviour
     private void Start() 
     {
         UnitAction.OnAnyActionCompleted += UnitAction_OnAnyActionCompleted;
-        Health.OnDeath += Health_OnDeath;
+        UnitHealth.OnDeath += Health_OnDeath;
         Unit.OnUnitSpawn += Unit_OnUnitSpawn;
         UpdateGridOccupancy();
     }
@@ -42,7 +42,7 @@ public class GridManager : MonoBehaviour
     private void OnDestroy() 
     {
         UnitAction.OnAnyActionCompleted -= UnitAction_OnAnyActionCompleted;
-        Health.OnDeath -= Health_OnDeath;
+        UnitHealth.OnDeath -= Health_OnDeath;
         Unit.OnUnitSpawn -= Unit_OnUnitSpawn;
     }
 
@@ -164,7 +164,7 @@ public class GridManager : MonoBehaviour
 
     private void Health_OnDeath(object sender, Unit e)
     {
-        Unit unit = ((Health)sender).GetUnit();
+        Unit unit = ((UnitHealth)sender).GetUnit();
         for (int x = 0; x < gridSize.x; x++)
         {
             for (int y = 0; y < gridSize.y; y++)

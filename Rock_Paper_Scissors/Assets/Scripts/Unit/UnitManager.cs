@@ -11,7 +11,7 @@ public class UnitManager : MonoBehaviour
 
     private void Awake() 
     {
-        Health.OnDeath += Health_OnDeath;
+        UnitHealth.OnDeath += Health_OnDeath;
         Unit.OnUnitSpawn += Unit_OnUnitSpawn;
         friendlyUnits = new List<Unit>();
         enemyUnits = new List<Unit>();
@@ -33,12 +33,12 @@ public class UnitManager : MonoBehaviour
 
     private void OnDestroy() 
     {
-        Health.OnDeath -= Health_OnDeath;
+        UnitHealth.OnDeath -= Health_OnDeath;
     }
 
     private void Health_OnDeath(object sender, Unit attacker)
     {
-        ((Health)sender).TryGetComponent<Unit>(out Unit unit);
+        ((UnitHealth)sender).TryGetComponent<Unit>(out Unit unit);
 
         if(unit != null)
         {

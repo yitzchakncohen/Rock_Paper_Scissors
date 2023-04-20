@@ -122,7 +122,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b89337cfd82b2344a58f5635f78cdaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitProgression: {fileID: 6771805092166254588}
   spriteResolver: {fileID: 6010512229393153931}
   spriteRenderer: {fileID: 7916932273127252849}
   spawnFXPrefab: {fileID: 677667518724008983, guid: 8f90d32b29cd80f4f8977f828d5da67a, type: 3}
@@ -296,7 +295,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7916932273131375011}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7f21129a7996cf42b423ab9e964a688, type: 3}
+  m_Script: {fileID: 11500000, guid: fa2a016e94088f44b94d2bc6bdc7cd58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &6771805092166254588

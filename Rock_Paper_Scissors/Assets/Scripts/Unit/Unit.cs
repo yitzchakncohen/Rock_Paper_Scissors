@@ -12,12 +12,12 @@ public class Unit : MonoBehaviour
     [SerializeField] private UnitData unitData;
     private UnitAction[] unitActions;
     private UnitProgression unitProgression;
-    private Health health;
+    private UnitHealth health;
 
     private void Awake() 
     {
         unitActions = GetComponents<UnitAction>();
-        health = GetComponent<Health>();
+        health = GetComponent<UnitHealth>();
         unitProgression = GetComponent<UnitProgression>();
     }
 

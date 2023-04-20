@@ -13,7 +13,7 @@ public class UnitProgression : MonoBehaviour
     private void Start() 
     {
         unitAnimator = FindObjectOfType<UnitAnimator>();
-        Health.OnDeath += Health_OnDeath;
+        UnitHealth.OnDeath += Health_OnDeath;
     }
 
     private void Health_OnDeath(object sender, Unit attacker)
