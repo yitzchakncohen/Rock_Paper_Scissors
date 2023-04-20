@@ -3,75 +3,78 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitHealth : MonoBehaviour
+namespace RockPaperScissors.Unit
 {
-    public static event EventHandler<Unit> OnDeath;
-    public event Action OnHealthChanged;
-    private Unit unit;
-    private UnitProgression unitProgression;
-    private UnitAnimator unitAnimator;
-    private int health;
-    private float deathAnimationTime = 0.6f;
+    public class UnitHealth : MonoBehaviour
+    {
+        public static event EventHandler<Unit> OnDeath;
+        public event Action OnHealthChanged;
+        private Unit unit;
+        private UnitProgression unitProgression;
+        private UnitAnimator unitAnimator;
+        private int health;
+        private float deathAnimationTime = 0.6f;
 
-    private void Awake() 
-    {
-        unit = GetComponent<Unit>();
-        unitAnimator = GetComponentInChildren<UnitAnimator>();
-    }
-    
-    private void Start() 
-    {
-        unitProgression = unit.GetUnitProgression();
-        unitProgression.OnLevelUp += UnitProgression_OnLevelUp;        
-        health = unit.GetMaximumHealth();
-    }
-
-    private void OnDestroy() 
-    {
-        unitProgression.OnLevelUp -= UnitProgression_OnLevelUp;
-    }
-
-    private void UnitProgression_OnLevelUp()
-    {
-        health = unit.GetMaximumHealth();
-        OnHealthChanged?.Invoke();
-    }
-
-    public void Damage(int damageAmount, Unit attacker)
-    {
-        // Debug.Log("Damage!");
-        health -= damageAmount;
-        OnHealthChanged?.Invoke();
-        CheckForDeath(attacker);
-    }
-
-    public void CheckForDeath(Unit attacker)
-    {
-        if(health <= 0)
+        private void Awake() 
         {
-            StartCoroutine(OnDeathRoutine(attacker));
+            unit = GetComponent<Unit>();
+            unitAnimator = GetComponentInChildren<UnitAnimator>();
         }
-    }
+        
+        private void Start() 
+        {
+            unitProgression = unit.GetUnitProgression();
+            unitProgression.OnLevelUp += UnitProgression_OnLevelUp;        
+            health = unit.GetMaximumHealth();
+        }
 
-    private IEnumerator OnDeathRoutine(Unit attacker)
-    {
-        yield return unitAnimator.StartCoroutine(unitAnimator.DeathAnimationRoutine(deathAnimationTime));
-        Destroy(gameObject);
-        OnDeath?.Invoke(this, attacker);
-    }
+        private void OnDestroy() 
+        {
+            unitProgression.OnLevelUp -= UnitProgression_OnLevelUp;
+        }
 
-    public int GetHealth()
-    {
-        return health;
-    }
+        private void UnitProgression_OnLevelUp()
+        {
+            health = unit.GetMaximumHealth();
+            OnHealthChanged?.Invoke();
+        }
 
-    public float GetNormalizedHealth()
-    {
-        return (float)health / (float)unit.GetMaximumHealth();
-    }
+        public void Damage(int damageAmount, Unit attacker)
+        {
+            // Debug.Log("Damage!");
+            health -= damageAmount;
+            OnHealthChanged?.Invoke();
+            CheckForDeath(attacker);
+        }
 
-    public Unit GetUnit()
-    {
-        return unit;
+        public void CheckForDeath(Unit attacker)
+        {
+            if(health <= 0)
+            {
+                StartCoroutine(OnDeathRoutine(attacker));
+            }
+        }
+
+        private IEnumerator OnDeathRoutine(Unit attacker)
+        {
+            yield return unitAnimator.StartCoroutine(unitAnimator.DeathAnimationRoutine(deathAnimationTime));
+            Destroy(gameObject);
+            OnDeath?.Invoke(this, attacker);
+        }
+
+        public int GetHealth()
+        {
+            return health;
+        }
+
+        public float GetNormalizedHealth()
+        {
+            return (float)health / (float)unit.GetMaximumHealth();
+        }
+
+        public Unit GetUnit()
+        {
+            return unit;
+        }
     }
 }

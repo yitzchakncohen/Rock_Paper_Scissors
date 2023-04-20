@@ -3,115 +3,118 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitManager : MonoBehaviour
+namespace RockPaperScissors.Unit
 {
-    private GridManager gridManager;
-    private List<Unit> friendlyUnits;
-    private List<Unit> enemyUnits;
-
-    private void Awake() 
+    public class UnitManager : MonoBehaviour
     {
-        UnitHealth.OnDeath += Health_OnDeath;
-        Unit.OnUnitSpawn += Unit_OnUnitSpawn;
-        friendlyUnits = new List<Unit>();
-        enemyUnits = new List<Unit>();
-        gridManager = FindObjectOfType<GridManager>();
-    }
+        private GridManager gridManager;
+        private List<Unit> friendlyUnits;
+        private List<Unit> enemyUnits;
 
-    private void Unit_OnUnitSpawn(object sender, EventArgs e)
-    {
-        Unit unit = (Unit)sender;
-        if(unit.IsFriendly())
+        private void Awake() 
         {
-            friendlyUnits.Add(unit);
+            UnitHealth.OnDeath += Health_OnDeath;
+            Unit.OnUnitSpawn += Unit_OnUnitSpawn;
+            friendlyUnits = new List<Unit>();
+            enemyUnits = new List<Unit>();
+            gridManager = FindObjectOfType<GridManager>();
         }
-        else
+
+        private void Unit_OnUnitSpawn(object sender, EventArgs e)
         {
-            enemyUnits.Add(unit);
-        }
-    }
-
-    private void OnDestroy() 
-    {
-        UnitHealth.OnDeath -= Health_OnDeath;
-    }
-
-    private void Health_OnDeath(object sender, Unit attacker)
-    {
-        ((UnitHealth)sender).TryGetComponent<Unit>(out Unit unit);
-
-        if(unit != null)
-        {
-            if(friendlyUnits.Contains(unit))
+            Unit unit = (Unit)sender;
+            if(unit.IsFriendly())
             {
-                friendlyUnits.Remove(unit);
+                friendlyUnits.Add(unit);
             }
-            else if(enemyUnits.Contains(unit))
+            else
             {
-                enemyUnits.Remove(unit);
-            }
-        }
-    }
-
-    public void ResetAllUnitActionPoints()
-    {
-        foreach (Unit unit in friendlyUnits)
-        {
-            foreach (UnitAction unitAction in unit.GetUnitActions())
-            {
-                unitAction.ResetActionPoints();
+                enemyUnits.Add(unit);
             }
         }
 
-        foreach (Unit unit in enemyUnits)
+        private void OnDestroy() 
         {
-            foreach (UnitAction unitAction in unit.GetUnitActions())
-            {
-                unitAction.ResetActionPoints();
-            }
+            UnitHealth.OnDeath -= Health_OnDeath;
         }
-    }
 
-    public List<Unit> GetEnemyUnitsList()
-    {
-        return enemyUnits;
-    }
-
-    public List<Unit> GetFriendlyUnitsList()
-    {
-        return friendlyUnits;
-    }
-
-    public Unit GetClosestFriendlyUnitToPosition(Vector2Int gridPosition, out float closestUnitDistance)
-    {
-        Unit closestUnit = null;
-        closestUnitDistance = 0f;
-
-        foreach (Unit friendlyUnit in friendlyUnits)
+        private void Health_OnDeath(object sender, Unit attacker)
         {
-            float testDistance = gridManager.GetRelativeDistanceOfGridPositions(gridPosition, gridManager.GetGridPositionFromWorldPosition(friendlyUnit.transform.position));
-            if(closestUnit == null || testDistance < closestUnitDistance)
+            ((UnitHealth)sender).TryGetComponent<Unit>(out Unit unit);
+
+            if(unit != null)
             {
-                closestUnit = friendlyUnit;
-                closestUnitDistance = testDistance;
+                if(friendlyUnits.Contains(unit))
+                {
+                    friendlyUnits.Remove(unit);
+                }
+                else if(enemyUnits.Contains(unit))
+                {
+                    enemyUnits.Remove(unit);
+                }
             }
         }
 
-        return closestUnit;
-    }
-
-    public int GetFriendlyAvaliableActionsRemaining()
-    {
-        int actionPoints = 0;
-
-        foreach (Unit friendlyUnit in friendlyUnits)
+        public void ResetAllUnitActionPoints()
         {
-            foreach (UnitAction unitAction in friendlyUnit.GetUnitActions())
+            foreach (Unit unit in friendlyUnits)
             {
-                actionPoints += unitAction.GetValidActionsRemaining();
+                foreach (UnitAction unitAction in unit.GetUnitActions())
+                {
+                    unitAction.ResetActionPoints();
+                }
+            }
+
+            foreach (Unit unit in enemyUnits)
+            {
+                foreach (UnitAction unitAction in unit.GetUnitActions())
+                {
+                    unitAction.ResetActionPoints();
+                }
             }
         }
 
-        return actionPoints;
+        public List<Unit> GetEnemyUnitsList()
+        {
+            return enemyUnits;
+        }
+
+        public List<Unit> GetFriendlyUnitsList()
+        {
+            return friendlyUnits;
+        }
+
+        public Unit GetClosestFriendlyUnitToPosition(Vector2Int gridPosition, out float closestUnitDistance)
+        {
+            Unit closestUnit = null;
+            closestUnitDistance = 0f;
+
+            foreach (Unit friendlyUnit in friendlyUnits)
+            {
+                float testDistance = gridManager.GetRelativeDistanceOfGridPositions(gridPosition, gridManager.GetGridPositionFromWorldPosition(friendlyUnit.transform.position));
+                if(closestUnit == null || testDistance < closestUnitDistance)
+                {
+                    closestUnit = friendlyUnit;
+                    closestUnitDistance = testDistance;
+                }
+            }
+
+            return closestUnit;
+        }
+
+        public int GetFriendlyAvaliableActionsRemaining()
+        {
+            int actionPoints = 0;
+
+            foreach (Unit friendlyUnit in friendlyUnits)
+            {
+                foreach (UnitAction unitAction in friendlyUnit.GetUnitActions())
+                {
+                    actionPoints += unitAction.GetValidActionsRemaining();
+                }
+            }
+
+            return actionPoints;
+        }
     }
 }
