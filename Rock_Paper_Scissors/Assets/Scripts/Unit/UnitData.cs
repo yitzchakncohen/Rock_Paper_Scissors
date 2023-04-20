@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
 
-namespace RockPaperScissors.Unit
+namespace RockPaperScissors.Units
 {
     [CreateAssetMenu(fileName = "UnitStats", menuName = "Rock_Paper_Scissors/UnitStats", order = 0)]
     public class UnitData : ScriptableObject 

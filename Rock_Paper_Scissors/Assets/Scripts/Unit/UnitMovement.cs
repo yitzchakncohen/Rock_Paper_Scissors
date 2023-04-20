@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace RockPaperScissors.Unit
+namespace RockPaperScissors.Units
 {
     public class UnitMovement : UnitAction
     {

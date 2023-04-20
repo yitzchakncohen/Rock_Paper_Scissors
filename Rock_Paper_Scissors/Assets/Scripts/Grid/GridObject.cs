@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using RockPaperScissors.Unit;
+using RockPaperScissors.Units;
 using UnityEngine;
 
 public class GridObject : MonoBehaviour

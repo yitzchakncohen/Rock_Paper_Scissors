@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
 
-namespace RockPaperScissors.Unit
+namespace RockPaperScissors.Units
 {
     public class UnitAnimator : MonoBehaviour
     {

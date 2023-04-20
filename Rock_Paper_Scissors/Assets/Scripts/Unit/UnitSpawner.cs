@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RockPaperScissors.UI;
 using UnityEngine;
 
-namespace RockPaperScissors.Unit
+namespace RockPaperScissors.Units
 {
     public class UnitSpawner : UnitAction
     {

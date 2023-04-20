@@ -1,24 +1,24 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using RockPaperScissors.Unit;
+using RockPaperScissors.Units;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthBar : MonoBehaviour
+namespace RockPaperScissors.UI
 {
-    [SerializeField] private Image healthBarImage; 
-    private UnitHealth health;
-
-    private void Start() 
+    public class HealthBar : MonoBehaviour
     {
-        health = GetComponentInParent<UnitHealth>();
-        health.OnHealthChanged += Health_OnHealthChanged;
-        healthBarImage.fillAmount = 1f;
-    }
+        [SerializeField] private Image healthBarImage; 
+        private UnitHealth health;
 
-    private void Health_OnHealthChanged()
-    {
-        healthBarImage.fillAmount = health.GetNormalizedHealth();
-    }
+        private void Start() 
+        {
+            health = GetComponentInParent<UnitHealth>();
+            health.OnHealthChanged += Health_OnHealthChanged;
+            healthBarImage.fillAmount = 1f;
+        }
+
+        private void Health_OnHealthChanged()
+        {
+            healthBarImage.fillAmount = health.GetNormalizedHealth();
+        }
+    }    
 }

@@ -1,41 +1,42 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using RockPaperScissors.Unit;
+using RockPaperScissors.Units;
 using UnityEngine;
 
-public class NextButtonUI : MonoBehaviour
+namespace RockPaperScissors.UI
 {
-    [SerializeField] private GameObject highlight;
-    private UnitManager unitManager;
-
-    private void Start() 
+    public class NextButtonUI : MonoBehaviour
     {
-        unitManager = FindObjectOfType<UnitManager>();
-        TurnManager.OnNextTurn += TurnManager_OnNextTurn;
-        UnitAction.OnAnyActionCompleted += UnitAction_OnAnyActionCompleted;
-    }
+        [SerializeField] private GameObject highlight;
+        private UnitManager unitManager;
 
-    private void OnDestroy() 
-    {
-        TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
-        UnitAction.OnAnyActionCompleted -= UnitAction_OnAnyActionCompleted;
-    }
-
-    private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
-    {
-        if(unitManager.GetFriendlyAvaliableActionsRemaining() <= 0)
+        private void Start() 
         {
-            highlight.SetActive(true);
+            unitManager = FindObjectOfType<UnitManager>();
+            TurnManager.OnNextTurn += TurnManager_OnNextTurn;
+            UnitAction.OnAnyActionCompleted += UnitAction_OnAnyActionCompleted;
         }
-        else
+
+        private void OnDestroy() 
+        {
+            TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
+            UnitAction.OnAnyActionCompleted -= UnitAction_OnAnyActionCompleted;
+        }
+
+        private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
+        {
+            if(unitManager.GetFriendlyAvaliableActionsRemaining() <= 0)
+            {
+                highlight.SetActive(true);
+            }
+            else
+            {
+                highlight.SetActive(false);
+            }
+        }
+
+        private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs e)
         {
             highlight.SetActive(false);
         }
-    }
-
-    private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs e)
-    {
-        highlight.SetActive(false);
     }
 }

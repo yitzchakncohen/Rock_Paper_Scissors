@@ -1,19 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CanvasFacingController : MonoBehaviour
+namespace RockPaperScissors.UI
 {
-    private Transform mainCameraTransform;
-
-    private void Start() 
+    public class CanvasFacingController : MonoBehaviour
     {
-        mainCameraTransform = Camera.main.transform;
-    }
+        private Transform mainCameraTransform;
 
-    private void LateUpdate() 
-    {
-        transform.LookAt(mainCameraTransform);
-        transform.forward = -transform.forward;
+        private void Start() 
+        {
+            mainCameraTransform = Camera.main.transform;
+        }
+
+        private void LateUpdate() 
+        {
+            transform.LookAt(mainCameraTransform);
+            transform.forward = -transform.forward;
+        }
     }
 }

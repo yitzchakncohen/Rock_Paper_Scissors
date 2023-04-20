@@ -1,7 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using RockPaperScissors.Unit;
+using RockPaperScissors.UI;
+using RockPaperScissors.Units;
 using UnityEngine;
 
 public class ActionHandler : MonoBehaviour
