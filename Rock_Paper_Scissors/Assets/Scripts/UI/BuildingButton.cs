@@ -18,6 +18,7 @@ namespace RockPaperScissors.UI
         [SerializeField] private TextMeshProUGUI unitCostText;
         private Unit unitPrefab;
         public static event EventHandler<BuildButtonArguments> OnBuildingButtonPressed;
+        private ActionHandler actionHandler;
         private UnitSpawner unitSpawner;
         private Button button;
         private CurrencyBank currencyBank;
@@ -30,6 +31,7 @@ namespace RockPaperScissors.UI
         private void Start() 
         {
             currencyBank = FindObjectOfType<CurrencyBank>();
+            actionHandler = FindObjectOfType<ActionHandler>();
             button.interactable = (currencyBank.GetCurrencyRemaining() >= unitPrefab.GetCost());      
         }
 
@@ -49,6 +51,7 @@ namespace RockPaperScissors.UI
                 arguments.unit = unitPrefab;
                 arguments.unitSpawner = this.unitSpawner;
                 OnBuildingButtonPressed?.Invoke(this, arguments);
+                actionHandler.BuildingButtonPressed(unitSpawner);
             }
         }
     }
