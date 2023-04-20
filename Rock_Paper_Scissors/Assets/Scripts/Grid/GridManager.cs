@@ -141,10 +141,7 @@ namespace RockPaperScissors.Grids
         {
             // UpdateGridOccupancy();
             Unit unit = null;
-            if(sender as UnitMovement)
-            {
-                unit = ((UnitMovement)sender).GetUnit();
-            }
+            unit = ((UnitAction)sender).GetComponent<Unit>();
 
             if(unit != null)
             {
