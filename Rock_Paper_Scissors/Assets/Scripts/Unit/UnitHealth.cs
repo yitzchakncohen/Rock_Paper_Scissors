@@ -57,7 +57,14 @@ namespace RockPaperScissors.Units
 
         private IEnumerator OnDeathRoutine(Unit attacker)
         {
-            yield return unitAnimator.StartCoroutine(unitAnimator.DeathAnimationRoutine(deathAnimationTime));
+            if(unitAnimator != null)
+            {
+                yield return unitAnimator.StartCoroutine(unitAnimator.DeathAnimationRoutine(deathAnimationTime));                
+            }
+            else
+            {
+                Debug.Log("No animator on this unit.");
+            }
             Destroy(gameObject);
             OnDeath?.Invoke(this, attacker);
         }

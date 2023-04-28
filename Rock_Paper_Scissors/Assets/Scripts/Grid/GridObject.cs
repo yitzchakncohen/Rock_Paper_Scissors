@@ -61,6 +61,19 @@ namespace RockPaperScissors.Grids
             return gridPositionOccupyingTower;
         }
 
+        public Unit GetCombatTarget()
+        {
+            if(gridPositionOccupyingUnit != null)
+            {
+                return gridPositionOccupyingUnit;
+            }
+            if(gridPositionOccupyingTower != null)
+            {
+                return gridPositionOccupyingTower;
+            }
+            return null;
+        }
+
         public void ShowHighlight(GridHighlightType highlightType) => gridObjectUI.ShowHighlight(highlightType);
 
         public void HideHighlight(GridHighlightType highlightType) => gridObjectUI.HideHighlight(highlightType);

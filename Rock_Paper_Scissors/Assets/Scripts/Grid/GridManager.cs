@@ -179,6 +179,10 @@ namespace RockPaperScissors.Grids
                     {
                         gridObjects[x, y].SetOccupentUnit(null);
                     }
+                    else if(gridObjects[x, y].GetOccupentTower() == unit)
+                    {
+                        gridObjects[x, y].SetOccupentTower(null);
+                    }
                 }
             }
         }   

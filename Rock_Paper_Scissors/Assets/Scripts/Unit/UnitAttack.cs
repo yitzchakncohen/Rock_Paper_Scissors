@@ -61,7 +61,9 @@ namespace RockPaperScissors.Units
 
         private void CompleteAttack()
         {
-            int damageAmount = CombatModifiers.GetDamage(unit, target);
+            GridObject gridObjectAttacking = gridManager.GetGridObjectFromWorldPosition(target.transform.position);
+            bool isTargetInTower = gridObjectAttacking.GetOccupentTower() != null;
+            int damageAmount = CombatModifiers.GetDamage(unit, target, isTargetInTower);
             target.Damage(damageAmount, unit);
             actionPointsRemaining -= 1;
             attacking = false;
@@ -158,8 +160,10 @@ namespace RockPaperScissors.Units
             if(GetValidTargets(gridPosition).Contains(unitToAttack))
             {
                 StartAttack(unitToAttack, onActionComplete);
+                Debug.Log("Attacking: " + unitToAttack.gameObject.name);
                 return true;
             }
+            Debug.Log("Failed to attack: " + unitToAttack);
             return false;
         }
 
@@ -205,9 +209,9 @@ namespace RockPaperScissors.Units
             foreach (Vector2Int position in gridPositionsInRangeList)
             {
                 GridObject gridObject = gridManager.GetGridObject(position);
-                if(gridObject.GetOccupentUnit() != null && gridObject.GetOccupentUnit().IsFriendly() != unit.IsFriendly())
+                if(gridObject.GetCombatTarget() != null && gridObject.GetCombatTarget().IsFriendly() != unit.IsFriendly())
                 {
-                    validTargetList.Add(gridObject.GetOccupentUnit());
+                    validTargetList.Add(gridObject.GetCombatTarget());
                 }
             }
 
@@ -274,7 +278,7 @@ namespace RockPaperScissors.Units
 
         public override bool TryTakeAction(GridObject gridObject, Action onActionComplete)
         {
-            return TryAttackUnit(gridObject.GetOccupentUnit(), onActionComplete);
+            return TryAttackUnit(gridObject.GetCombatTarget(), onActionComplete);
         }
 
         public Unit GetTarget()

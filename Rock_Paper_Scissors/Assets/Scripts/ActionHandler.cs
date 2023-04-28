@@ -84,12 +84,14 @@ public class ActionHandler : MonoBehaviour
 
     private void HandleGridObjectTouch(GridObject gridObject)
     {
-        Unit gridOccupent = gridObject.GetOccupentUnit();
+        Unit gridOccupentUnit = gridObject.GetOccupentUnit();
+        Unit gridOccupentTower = gridObject.GetOccupentTower(); 
+        
         // Check if the grid position is occupied by a Unit
-        if(gridOccupent != null)
+        if(gridOccupentUnit != null)
         {
             // Select a friendly unit
-            if(gridOccupent.IsFriendly())
+            if(gridOccupentUnit.IsFriendly())
             {
                 SelectUnitOccupyingGridPosition(gridObject);
             }
@@ -97,8 +99,21 @@ public class ActionHandler : MonoBehaviour
             {
                 TryAttackUnitOccupyingGridPosition(gridObject);
             }
+            return;
         }
-        else if(selectedUnit != null)
+        
+        // Check if the grid position is occupied by a Tower
+        if(gridOccupentTower != null)
+        {
+            // If it is not friendly, attack the tower.
+            if(!gridOccupentTower.IsFriendly())
+            {
+                TryAttackUnitOccupyingGridPosition(gridObject);
+                return;
+            }
+        } 
+        
+        if(selectedUnit != null)
         {
             TryMoveToGridPosition(gridObject);
         }
@@ -123,7 +138,7 @@ public class ActionHandler : MonoBehaviour
         {
             if (selectedUnit.TryGetComponent<UnitAttack>(out UnitAttack unitAttack))
             {
-                if (unitAttack.TryAttackUnit(gridObject.GetOccupentUnit(), ClearBusy))
+                if (unitAttack.TryAttackUnit(gridObject.GetCombatTarget(), ClearBusy))
                 {
                     SetBusy();
                 }

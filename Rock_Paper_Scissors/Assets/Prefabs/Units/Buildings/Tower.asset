@@ -20,5 +20,5 @@ MonoBehaviour:
   attackRange: 0
   defense: 000000000000000000000000
   unitCost: 100
-  maximumHealth: 640000006400000064000000
+  maximumHealth: 0a0000000a0000000a000000
   unitDefeatedReward: 0
