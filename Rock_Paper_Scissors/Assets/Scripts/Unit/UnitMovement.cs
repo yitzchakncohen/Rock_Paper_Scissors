@@ -81,7 +81,7 @@ namespace RockPaperScissors.Units
             }
 
             Vector2Int currentGridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
-            targetGridObjects = pathFinding.FindPath(currentGridPosition, targetGridObject.GetGridPostion(), out int pathLength);
+            targetGridObjects = pathFinding.FindPath(currentGridPosition, targetGridObject.GetGridPostion(), out int pathLength, unit.IsFriendly());
 
             // Check if position is within movement range
             if(pathLength > unit.GetMoveDistance())
@@ -144,13 +144,13 @@ namespace RockPaperScissors.Units
                     }
 
                     // Check if it's walkable
-                    if (!gridManager.GetGridObject(testGridPosition).IsWalkable())
+                    if (!gridManager.GetGridObject(testGridPosition).IsWalkable(unit.IsFriendly()))
                     {
                         continue;
                     }
 
                     // Check if it's within movement distance
-                    pathFinding.FindPath(gridPosition, testGridPosition, out int testDistance);
+                    pathFinding.FindPath(gridPosition, testGridPosition, out int testDistance, unit.IsFriendly());
                     if (testDistance > unit.GetMoveDistance())
                     {
                         continue;

@@ -84,11 +84,12 @@ public class ActionHandler : MonoBehaviour
 
     private void HandleGridObjectTouch(GridObject gridObject)
     {
-        // Check if the grid position is occupied. 
-        if(gridObject.GetOccupent() != null)
+        Unit gridOccupent = gridObject.GetOccupentUnit();
+        // Check if the grid position is occupied by a Unit
+        if(gridOccupent != null)
         {
             // Select a friendly unit
-            if(gridObject.GetOccupent().IsFriendly())
+            if(gridOccupent.IsFriendly())
             {
                 SelectUnitOccupyingGridPosition(gridObject);
             }
@@ -122,7 +123,7 @@ public class ActionHandler : MonoBehaviour
         {
             if (selectedUnit.TryGetComponent<UnitAttack>(out UnitAttack unitAttack))
             {
-                if (unitAttack.TryAttackUnit(gridObject.GetOccupent(), ClearBusy))
+                if (unitAttack.TryAttackUnit(gridObject.GetOccupentUnit(), ClearBusy))
                 {
                     SetBusy();
                 }
@@ -132,7 +133,7 @@ public class ActionHandler : MonoBehaviour
 
     private void SelectUnitOccupyingGridPosition(GridObject gridObject)
     {
-        selectedUnit = gridObject.GetOccupent();
+        selectedUnit = gridObject.GetOccupentUnit();
         OnUnitSelected?.Invoke(this, selectedUnit);
         updateGridActionHighlight = true;
     }

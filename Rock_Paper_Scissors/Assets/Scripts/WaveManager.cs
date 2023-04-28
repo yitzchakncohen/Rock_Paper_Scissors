@@ -93,7 +93,7 @@ public class WaveManager : MonoBehaviour
             {
                 Vector2Int testPosition = new Vector2Int(spawnPosition.x + x, spawnPosition.y + y);
                 if(gridManager.IsValidGridPosition(testPosition)
-                    && gridManager.GetGridObject(testPosition).IsWalkable())
+                    && gridManager.GetGridObject(testPosition).IsWalkable(false))
                 {
                     spawnPositions.Add(testPosition);
                 }

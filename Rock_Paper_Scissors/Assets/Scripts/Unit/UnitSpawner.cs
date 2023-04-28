@@ -92,13 +92,13 @@ namespace RockPaperScissors.Units
                     }
 
                     // Check if it's walkable
-                    if (!gridManager.GetGridObject(testGridPosition).IsWalkable())
+                    if (!gridManager.GetGridObject(testGridPosition).IsWalkable(unitToSpawn.IsFriendly()))
                     {
                         continue;
                     }
 
                     // Check if it's within movement distance
-                    pathFinding.FindPath(gridPosition, testGridPosition, out int testDistance);
+                    pathFinding.FindPath(gridPosition, testGridPosition, out int testDistance, unitToSpawn.IsFriendly());
                     if (testDistance > placementRadius)
                     {
                         continue;

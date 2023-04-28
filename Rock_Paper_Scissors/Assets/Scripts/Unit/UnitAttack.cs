@@ -205,9 +205,9 @@ namespace RockPaperScissors.Units
             foreach (Vector2Int position in gridPositionsInRangeList)
             {
                 GridObject gridObject = gridManager.GetGridObject(position);
-                if(gridObject.GetOccupent() != null && gridObject.GetOccupent().IsFriendly() != unit.IsFriendly())
+                if(gridObject.GetOccupentUnit() != null && gridObject.GetOccupentUnit().IsFriendly() != unit.IsFriendly())
                 {
-                    validTargetList.Add(gridObject.GetOccupent());
+                    validTargetList.Add(gridObject.GetOccupentUnit());
                 }
             }
 
@@ -274,7 +274,7 @@ namespace RockPaperScissors.Units
 
         public override bool TryTakeAction(GridObject gridObject, Action onActionComplete)
         {
-            return TryAttackUnit(gridObject.GetOccupent(), onActionComplete);
+            return TryAttackUnit(gridObject.GetOccupentUnit(), onActionComplete);
         }
 
         public Unit GetTarget()
