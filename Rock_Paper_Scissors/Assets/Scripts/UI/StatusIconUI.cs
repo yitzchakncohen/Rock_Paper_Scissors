@@ -50,7 +50,7 @@ namespace RockPaperScissors.UI
         private void CheckForTowerOccupency(Unit updatedUnit)
         {
             GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(updatedUnit.transform.position);
-            if (gridObject.GetOccupentTower() != null)
+            if (gridObject.GetOccupentBuilding() != null)
             {
                 buildingOccupiedIcon.SetActive(true);
             }

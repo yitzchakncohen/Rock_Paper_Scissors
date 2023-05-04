@@ -9,7 +9,7 @@ namespace RockPaperScissors.Grids
         private Vector2Int gridPosition;
         private GridObjectUI gridObjectUI;
         private Unit gridPositionOccupyingUnit = null;
-        private Unit gridPositionOccupyingTower = null;
+        private Unit gridPositionOccupyingBuilding = null;
 
         private void Awake() 
         {
@@ -30,13 +30,21 @@ namespace RockPaperScissors.Grids
         public bool IsWalkable(bool isFriendly)
         {
             // Grid position empty
-            if(gridPositionOccupyingUnit == null && gridPositionOccupyingTower == null) {return true;}
+            if(gridPositionOccupyingUnit == null && gridPositionOccupyingBuilding == null) {return true;}
             
             // Grid position has unit
             // TODO can you walk over your own units?            
             if(gridPositionOccupyingUnit != null) {return false;}
 
-            if(gridPositionOccupyingTower != null && isFriendly == gridPositionOccupyingTower.IsFriendly()) {return true;}
+            if(gridPositionOccupyingBuilding != null && isFriendly == gridPositionOccupyingBuilding.IsFriendly())
+            {
+                // Which types of buildings can you walk over?
+                if(gridPositionOccupyingBuilding.GetUnitClass() == UnitClass.Tower)
+                {
+                    return true;
+                }
+                return false;
+            }
 
             return false;
         }
@@ -51,14 +59,14 @@ namespace RockPaperScissors.Grids
             return gridPositionOccupyingUnit;
         }
 
-        public void SetOccupentTower(Unit occupent)
+        public void SetOccupentBuilding(Unit occupent)
         {
-            gridPositionOccupyingTower = occupent;
+            gridPositionOccupyingBuilding = occupent;
         }
 
-        public Unit GetOccupentTower()
+        public Unit GetOccupentBuilding()
         {
-            return gridPositionOccupyingTower;
+            return gridPositionOccupyingBuilding;
         }
 
         public Unit GetCombatTarget()
@@ -67,9 +75,9 @@ namespace RockPaperScissors.Grids
             {
                 return gridPositionOccupyingUnit;
             }
-            if(gridPositionOccupyingTower != null)
+            if(gridPositionOccupyingBuilding != null)
             {
-                return gridPositionOccupyingTower;
+                return gridPositionOccupyingBuilding;
             }
             return null;
         }

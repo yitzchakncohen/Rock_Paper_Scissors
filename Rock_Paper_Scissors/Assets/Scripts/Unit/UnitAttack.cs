@@ -62,7 +62,7 @@ namespace RockPaperScissors.Units
         private void CompleteAttack()
         {
             GridObject gridObjectAttacking = gridManager.GetGridObjectFromWorldPosition(target.transform.position);
-            bool isTargetInTower = gridObjectAttacking.GetOccupentTower() != null;
+            bool isTargetInTower = gridObjectAttacking.GetOccupentBuilding() != null;
             int damageAmount = CombatModifiers.GetDamage(unit, target, isTargetInTower);
             target.Damage(damageAmount, unit);
             actionPointsRemaining -= 1;

@@ -1187,6 +1187,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1075015695678614337, guid: de102ff297a1a7d4bb4befe5fbf75ad2, type: 3}
+      propertyPath: placementRadius
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2422441622648363140, guid: de102ff297a1a7d4bb4befe5fbf75ad2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

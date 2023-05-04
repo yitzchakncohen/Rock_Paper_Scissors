@@ -90,16 +90,16 @@ namespace RockPaperScissors.Grids
                 {
                     RaycastHit2D[] hits = Physics2D.RaycastAll(gridObjects[x,y].transform.position, Vector2.up, raycastDistance, occupancyLayerMask);
                     gridObjects[x,y].SetOccupentUnit(null);
-                    gridObjects[x,y].SetOccupentTower(null);
+                    gridObjects[x,y].SetOccupentBuilding(null);
                     foreach (RaycastHit2D hit in hits)
                     {
                         // If the object is a unit set as occupent
                         hit.collider.TryGetComponent<Unit>(out Unit unit);
                         {
-                            // Check if the unit is a Tower
-                            if(unit.GetUnitClass() == UnitClass.Tower)
+                            // Check if the unit is a Building
+                            if(unit.GetUnitClass() == UnitClass.Tower || unit.GetUnitClass() == UnitClass.PillowFort)
                             {
-                                gridObjects[x,y].SetOccupentTower(unit);
+                                gridObjects[x,y].SetOccupentBuilding(unit);
                             }
                             else
                             {
@@ -177,9 +177,9 @@ namespace RockPaperScissors.Grids
                     {
                         gridObjects[x, y].SetOccupentUnit(null);
                     }
-                    else if(gridObjects[x, y].GetOccupentTower() == unit)
+                    else if(gridObjects[x, y].GetOccupentBuilding() == unit)
                     {
-                        gridObjects[x, y].SetOccupentTower(null);
+                        gridObjects[x, y].SetOccupentBuilding(null);
                     }
                 }
             }
@@ -194,7 +194,7 @@ namespace RockPaperScissors.Grids
             }
             else if(unit.GetUnitClass() == UnitClass.Tower)
             {
-                GetGridObjectFromWorldPosition(unit.transform.position).SetOccupentTower(unit);
+                GetGridObjectFromWorldPosition(unit.transform.position).SetOccupentBuilding(unit);
             }
         }
     }    
