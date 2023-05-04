@@ -138,37 +138,6 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 815a1cdd83620f848a4d7536e1d1d976, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3864733ff52e50c44a345fc32f3a663c, type: 3}
---- !u!1 &5098432101437719214 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3364767964145019610, guid: 3864733ff52e50c44a345fc32f3a663c, type: 3}
-  m_PrefabInstance: {fileID: 7526441148846352500}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7927884053592000721 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 465782615191543973, guid: 3864733ff52e50c44a345fc32f3a663c, type: 3}
-  m_PrefabInstance: {fileID: 7526441148846352500}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7213277959849808008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7927884053592000721}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b89337cfd82b2344a58f5635f78cdaf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteResolver: {fileID: 0}
-  spriteRenderer: {fileID: 7927884053592000723}
-  spawnFXPrefab: {fileID: 0}
-  healthBar: {fileID: 5098432101437719214}
---- !u!212 &7927884053592000723 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 465782615191543975, guid: 3864733ff52e50c44a345fc32f3a663c, type: 3}
-  m_PrefabInstance: {fileID: 7526441148846352500}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7927884055322289660 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 465782616686677384, guid: 3864733ff52e50c44a345fc32f3a663c, type: 3}
@@ -195,4 +164,5 @@ MonoBehaviour:
   - {fileID: 7916932273131375014, guid: 74f64e7a24cb4f74d842aadd05e320c1, type: 3}
   - {fileID: 8339777860477816141, guid: 65f7e2059aa2d734e976f8bff1bf0712, type: 3}
   - {fileID: 8801933791107242397, guid: 81bd6be0bf9452a4490ac0dce9d9af4b, type: 3}
+  - {fileID: 2715817389625404827, guid: c477b10fc6ef1b94d8860e3a1f446ef8, type: 3}
   placementRadius: 2

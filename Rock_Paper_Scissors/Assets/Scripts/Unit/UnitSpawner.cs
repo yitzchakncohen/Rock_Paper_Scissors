@@ -91,8 +91,14 @@ namespace RockPaperScissors.Units
                         continue;
                     }
 
-                    // Check if it's walkable
-                    if (!gridManager.GetGridObject(testGridPosition).IsWalkable(unitToSpawn.IsFriendly()))
+                    // Check if it's walkable for units
+                    if (unitToSpawn.GetUnitClass() != UnitClass.Tower && !gridManager.GetGridObject(testGridPosition).IsWalkable(unitToSpawn.IsFriendly()))
+                    {
+                        continue;
+                    }
+
+                    // Check if it has a building already for buildings
+                    if (unitToSpawn.GetUnitClass() == UnitClass.Tower && gridManager.GetGridObject(testGridPosition).GetOccupentTower() != null)
                     {
                         continue;
                     }

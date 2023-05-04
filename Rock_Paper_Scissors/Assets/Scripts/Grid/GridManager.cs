@@ -88,8 +88,10 @@ namespace RockPaperScissors.Grids
             {
                 for (int y = 0; y < gridSize.y; y++)
                 {
-                    RaycastHit2D hit = Physics2D.Raycast(gridObjects[x,y].transform.position, Vector2.up, raycastDistance, occupancyLayerMask);
-                    if(hit.collider != null)
+                    RaycastHit2D[] hits = Physics2D.RaycastAll(gridObjects[x,y].transform.position, Vector2.up, raycastDistance, occupancyLayerMask);
+                    gridObjects[x,y].SetOccupentUnit(null);
+                    gridObjects[x,y].SetOccupentTower(null);
+                    foreach (RaycastHit2D hit in hits)
                     {
                         // If the object is a unit set as occupent
                         hit.collider.TryGetComponent<Unit>(out Unit unit);
@@ -104,10 +106,6 @@ namespace RockPaperScissors.Grids
                                 gridObjects[x,y].SetOccupentUnit(unit);
                             }
                         }
-                    }
-                    else
-                    {
-                        gridObjects[x,y].SetOccupentUnit(null);
                     }
                 }
             }
@@ -190,7 +188,14 @@ namespace RockPaperScissors.Grids
         private void Unit_OnUnitSpawn(object sender, EventArgs e)
         {
             Unit unit = sender as Unit;
-            GetGridObjectFromWorldPosition(unit.transform.position).SetOccupentUnit(unit);
+            if(unit.GetUnitClass() != UnitClass.Tower && unit.GetUnitClass() != UnitClass.PillowFort)
+            {
+                GetGridObjectFromWorldPosition(unit.transform.position).SetOccupentUnit(unit);
+            }
+            else if(unit.GetUnitClass() == UnitClass.Tower)
+            {
+                GetGridObjectFromWorldPosition(unit.transform.position).SetOccupentTower(unit);
+            }
         }
     }    
 }

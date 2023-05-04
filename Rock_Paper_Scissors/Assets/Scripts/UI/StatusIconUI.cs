@@ -15,8 +15,15 @@ namespace RockPaperScissors.UI
 
         void Start()
         {
+            Unit.OnUnitSpawn += Unit_OnUnitSpawn;            
             UnitAction.OnAnyActionCompleted += UnitAction_OnAnyActionCompleted;
             gridManager = FindObjectOfType<GridManager>();
+        }
+
+        private void OnDestroy() 
+        {
+            UnitAction.OnAnyActionCompleted -= UnitAction_OnAnyActionCompleted;
+            Unit.OnUnitSpawn -= Unit_OnUnitSpawn;
         }
 
         private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
@@ -26,16 +33,30 @@ namespace RockPaperScissors.UI
                 Unit updatedUnit = ((UnitMovement)sender).GetUnit();
                 if(updatedUnit == unit)
                 {
-                    GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(updatedUnit.transform.position);
-                    if(gridObject.GetOccupentTower() != null)
-                    {
-                        buildingOccupiedIcon.SetActive(true);
-                    }
-                    else
-                    {
-                        buildingOccupiedIcon.SetActive(false);
-                    }
+                    CheckForTowerOccupency(updatedUnit);
                 }
+            }
+        }
+
+        private void Unit_OnUnitSpawn(object sender, EventArgs e)
+        {
+            Unit spawnedUnit = (Unit)sender;
+            if(spawnedUnit == unit)
+            {
+                CheckForTowerOccupency(spawnedUnit);
+            }
+        }
+        
+        private void CheckForTowerOccupency(Unit updatedUnit)
+        {
+            GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(updatedUnit.transform.position);
+            if (gridObject.GetOccupentTower() != null)
+            {
+                buildingOccupiedIcon.SetActive(true);
+            }
+            else
+            {
+                buildingOccupiedIcon.SetActive(false);
             }
         }
     }
