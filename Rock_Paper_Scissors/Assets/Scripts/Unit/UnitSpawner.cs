@@ -78,12 +78,13 @@ namespace RockPaperScissors.Units
         {
             List<Vector2Int> gridPositionList = new List<Vector2Int>();
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
+            Debug.Log($"Spawner at position { gridPosition}");
 
-            for (int x = -placementRadius; x <= placementRadius; x++)
+            for (int x = -placementRadius-1; x <= placementRadius+1; x++)
             {
-                for (int z = -placementRadius; z <= placementRadius; z++)
+                for (int y = -placementRadius-1; y <= placementRadius+1; y++)
                 {
-                    Vector2Int testGridPosition = gridPosition + new Vector2Int(x, z);
+                    Vector2Int testGridPosition = gridPosition + new Vector2Int(x, y);
 
                     // Check if it's on the grid.
                     if (!gridManager.IsValidGridPosition(testGridPosition))
@@ -91,14 +92,28 @@ namespace RockPaperScissors.Units
                         continue;
                     }
 
-                    // Check if it's walkable
-                    if (!gridManager.GetGridObject(testGridPosition).IsWalkable())
+                    // Check if it's walkable for units
+                    if (unitToSpawn.GetUnitClass() != UnitClass.Tower 
+                        && !gridManager.GetGridObject(testGridPosition).IsWalkable(unitToSpawn.IsFriendly()))
+                    {
+                        continue;
+                    }
+
+                    // Check if it has a building already for buildings
+                    if (unitToSpawn.GetUnitClass() == UnitClass.Tower 
+                        && gridManager.GetGridObject(testGridPosition).GetOccupentBuilding() != null )
                     {
                         continue;
                     }
 
                     // Check if it's within movement distance
-                    pathFinding.FindPath(gridPosition, testGridPosition, out int testDistance);
+
+                    // Check from the edge of the unit spawner instead of the middle to create a valid path.
+                    // Find the closest spot on the edge
+                    Vector2Int pathTestPostion = GetPositionOnEdge(gridPosition, x, y);
+
+                    pathFinding.FindPath(pathTestPostion, testGridPosition, out int testDistance, unitToSpawn.IsFriendly());
+                    // Debug.Log($"{pathTestPostion} to {testGridPosition}, path length {testDistance}");
                     if (testDistance > placementRadius)
                     {
                         continue;
@@ -109,6 +124,50 @@ namespace RockPaperScissors.Units
             }
 
             return gridPositionList;
+        }
+
+        private static Vector2Int GetPositionOnEdge(Vector2Int gridPosition, int x, int y)
+        {
+            Vector2Int edgePosition = new Vector2Int(0,0);
+
+            // Left and right
+            if(y == 0 && x != 0)
+            {
+                edgePosition = new Vector2Int(x/Math.Abs(x),0);
+            }
+
+            // If y is not zero check if this is an odd row in the grid.
+            bool oddRow = gridPosition.y % 2 == 1;
+
+            // Up/down + right/left
+            if(y != 0)
+            {   
+                if(oddRow)
+                {
+                    if(x <= 0)
+                    {
+                        edgePosition = new Vector2Int(0,y/Math.Abs(y));
+                    }
+                    else
+                    {
+                        edgePosition = new Vector2Int(x/Math.Abs(x),y/Math.Abs(y));
+                    }
+                }
+                else
+                {
+                    if(x <= 0)
+                    {
+                        edgePosition = new Vector2Int(-1,y/Math.Abs(y));
+                    }
+                    else
+                    {
+                        edgePosition = new Vector2Int(x/Math.Abs(x)-1,y/Math.Abs(y));
+                    }
+                }
+            }
+
+            Vector2Int pathTestPostion = gridPosition + edgePosition;
+            return pathTestPostion;
         }
 
         private void InputManager_OnSingleTap(object sender, Vector2 touchPosition)

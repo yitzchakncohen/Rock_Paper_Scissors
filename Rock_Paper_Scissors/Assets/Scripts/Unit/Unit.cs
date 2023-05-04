@@ -30,7 +30,14 @@ namespace RockPaperScissors.Units
             spriteRenderer.sprite = unitData.unitThumbnail;
             if(unitAnimator != null)
             {
-                unitAnimator.SetSpriteLibraryAsset(unitData.spriteLibrary);
+                if(unitData.spriteLibrary != null)
+                {
+                    unitAnimator.SetSpriteLibraryAsset(unitData.spriteLibrary);
+                }
+                else
+                {
+                    Debug.Log($"Unit {gameObject.name}, is missing a sprite library");
+                }
             }
         }
 

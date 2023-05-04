@@ -28,7 +28,7 @@ namespace RockPaperScissors.PathFindings
             } 
         }
 
-        public List<GridObject> FindPath(Vector2Int startGridPosition, Vector2Int endGridPosition, out int pathLength)
+        public List<GridObject> FindPath(Vector2Int startGridPosition, Vector2Int endGridPosition, out int pathLength, bool isFriendly)
         {
             // float startTime = Time.realtimeSinceStartup;
 
@@ -79,7 +79,7 @@ namespace RockPaperScissors.PathFindings
                         continue;
                     }
 
-                    if(!neighbourNode.IsWalkable())
+                    if(!neighbourNode.IsWalkable(isFriendly))
                     {
                         closedList.Add(neighbourNode);
                         continue;
@@ -197,19 +197,19 @@ namespace RockPaperScissors.PathFindings
             return gridPositionList;
         }
 
-        public bool IsWalkableGridPosition(Vector2Int gridPosition)
+        public bool IsWalkableGridPosition(Vector2Int gridPosition, bool isFriendly)
         {
-            return gridManager.GetGridObject(gridPosition).IsWalkable();
+            return gridManager.GetGridObject(gridPosition).IsWalkable(isFriendly);
         }
 
-        public bool HasPath(Vector2Int startGridPosition, Vector2Int endGridPosition)
+        public bool HasPath(Vector2Int startGridPosition, Vector2Int endGridPosition, bool isFriendly)
         {
-            return FindPath(startGridPosition, endGridPosition, out int pathLength) != null;
+            return FindPath(startGridPosition, endGridPosition, out int pathLength, isFriendly) != null;
         }
 
-        public int GetPathLength(Vector2Int startGridPosition, Vector2Int endGridPosition)
+        public int GetPathLength(Vector2Int startGridPosition, Vector2Int endGridPosition, bool isFriendly)
         {
-            FindPath(startGridPosition, endGridPosition, out int pathLength);
+            FindPath(startGridPosition, endGridPosition, out int pathLength, isFriendly);
             return pathLength;
         }
     }

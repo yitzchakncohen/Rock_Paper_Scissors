@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class CombatModifiers
 {
-    public static int GetDamage(Unit attackingUnit, Unit defendingUnit)
+    public static int GetDamage(Unit attackingUnit, Unit defendingUnit, bool defendingUnitInTower)
     {
         int damage = attackingUnit.GetModifiedAttack();
 
-        damage = damage - defendingUnit.GetModifiedDefense();
+        damage = damage - defendingUnit.GetModifiedDefense() * GetInTowerModifier(defendingUnitInTower);
 
         damage = (int)(damage * GetModiferByClasses(attackingUnit.GetUnitClass(), defendingUnit.GetUnitClass()));
 
@@ -75,6 +75,19 @@ public class CombatModifiers
             case 0:
             default:
                 return 1f;
+        }
+    }
+
+    private static int GetInTowerModifier(bool defendingUnitInTower)
+    {
+        int inTowerDefenseModifier = 2;
+        if(defendingUnitInTower)
+        {
+            return inTowerDefenseModifier;
+        }
+        else
+        {
+            return 1;
         }
     }
 }

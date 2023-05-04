@@ -1187,6 +1187,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1075015695678614337, guid: de102ff297a1a7d4bb4befe5fbf75ad2, type: 3}
+      propertyPath: placementRadius
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2422441622648363140, guid: de102ff297a1a7d4bb4befe5fbf75ad2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2422441622648363140, guid: de102ff297a1a7d4bb4befe5fbf75ad2, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2422441622648363140, guid: de102ff297a1a7d4bb4befe5fbf75ad2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2422441622648363140, guid: de102ff297a1a7d4bb4befe5fbf75ad2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7927884055322289660, guid: de102ff297a1a7d4bb4befe5fbf75ad2, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -1234,6 +1254,18 @@ PrefabInstance:
     - target: {fileID: 7927884055322289661, guid: de102ff297a1a7d4bb4befe5fbf75ad2, type: 3}
       propertyPath: m_Name
       value: Pillow Fort
+      objectReference: {fileID: 0}
+    - target: {fileID: 8746689848185047474, guid: de102ff297a1a7d4bb4befe5fbf75ad2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8746689848185047474, guid: de102ff297a1a7d4bb4befe5fbf75ad2, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8746689848185047474, guid: de102ff297a1a7d4bb4befe5fbf75ad2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de102ff297a1a7d4bb4befe5fbf75ad2, type: 3}
@@ -2358,7 +2390,7 @@ MonoBehaviour:
     - {fileID: 8909835649686224163, guid: e547fb81a099d9544a36bdf74adf9d3d, type: 3}
     - {fileID: 8909835649686224163, guid: e547fb81a099d9544a36bdf74adf9d3d, type: 3}
     - {fileID: 8909835649686224163, guid: e547fb81a099d9544a36bdf74adf9d3d, type: 3}
-    CurrencyBonus: 200
+    CurrencyBonus: 2000
     TurnToStartWave: 0
   - UnitsToSpawn:
     - {fileID: 3659614332370105537, guid: 3a99c9f8d3b8b3d41b1531669fd2f659, type: 3}
