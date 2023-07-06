@@ -78,6 +78,11 @@ namespace RockPaperScissors.Units
             return isFriendly;
         }
 
+        public bool IsMoveable()
+        {
+            return GetComponent<UnitMovement>();
+        }
+
         public void Damage(int damageAmount, Unit attacker)
         {
             health.Damage(damageAmount, attacker);
