@@ -1,23 +1,19 @@
-using System;
-using RockPaperScissors.Units;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace RockPaperScissors.UI
 {
-    public class NextButtonUI : MonoBehaviour
+    public class NextActionButton : MonoBehaviour
     {
-        [SerializeField] private GameObject highlight;
         private Button button;
-        private UnitManager unitManager;
 
         private void Start() 
         {
-            unitManager = FindObjectOfType<UnitManager>();
             TurnManager.OnNextTurn += TurnManager_OnNextTurn;
             WaveManager.OnWaveCompleted += WaveManager_OnWaveCompleted;
             WaveManager.OnWaveStarted += WaveManager_OnWaveStarted;
-            UnitAction.OnAnyActionCompleted += UnitAction_OnAnyActionCompleted;
             button = GetComponent<Button>();
             button.interactable = false;
         }
@@ -25,26 +21,12 @@ namespace RockPaperScissors.UI
         private void OnDestroy() 
         {
             TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
-            UnitAction.OnAnyActionCompleted -= UnitAction_OnAnyActionCompleted;
             WaveManager.OnWaveCompleted -= WaveManager_OnWaveCompleted;
             WaveManager.OnWaveStarted -= WaveManager_OnWaveStarted;
         }
 
-        private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
-        {
-            if(unitManager.GetFriendlyAvaliableActionsRemaining() <= 0)
-            {
-                highlight.SetActive(true);
-            }
-            else
-            {
-                highlight.SetActive(false);
-            }
-        }
-
         private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs e)
         {
-            highlight.SetActive(false);
             if(e.IsPlayersTurn)
             {
                 button.interactable = true;
