@@ -10,6 +10,7 @@ namespace RockPaperScissors.Grids
         [SerializeField] private LayerMask occupancyLayerMask;
         [SerializeField] private Vector2Int gridSize;
         [SerializeField] private GridObject gridObjectPrefab;
+        [SerializeField] private GameObject borderTilePrefab;
         [SerializeField] private Tilemap baseTilemap;
         private Grid grid;
         private GridObject[,] gridObjects;
@@ -20,14 +21,22 @@ namespace RockPaperScissors.Grids
             gridObjects = new GridObject[gridSize.x, gridSize.y];
 
             // Setup the grid
-            for (int x = 0; x < gridSize.x; x++)
+            for (int x = -2; x <= gridSize.x + 1; x++)
             {
-                for (int y = 0; y < gridSize.y; y++)
+                for (int y = -2; y <= gridSize.y + 1; y++)
                 {
-                    Vector3 gridPosition = grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
-                    GridObject gridObject = Instantiate(gridObjectPrefab, gridPosition, Quaternion.identity);
-                    gridObject.Setup(new Vector2Int(x,y));
-                    gridObjects[x,y] = gridObject;
+                    if(x <= -1 || x >= gridSize.x || y <= -1 || y >= gridSize.y)
+                    {
+                        Vector3 gridPosition = grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
+                        GameObject gridObject = Instantiate(borderTilePrefab, gridPosition, Quaternion.identity);
+                    }
+                    else
+                    {
+                        Vector3 gridPosition = grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
+                        GridObject gridObject = Instantiate(gridObjectPrefab, gridPosition, Quaternion.identity);
+                        gridObject.Setup(new Vector2Int(x,y));
+                        gridObjects[x,y] = gridObject;
+                    }
                 }
             }
         }

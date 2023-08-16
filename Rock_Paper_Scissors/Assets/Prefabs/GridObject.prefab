@@ -351,6 +351,7 @@ GameObject:
   - component: {fileID: 2336278220173126339}
   - component: {fileID: 2336278220173126337}
   - component: {fileID: 2336278220173126338}
+  - component: {fileID: 840419501246024633}
   m_Layer: 0
   m_Name: GridObject
   m_TagString: Untagged
@@ -409,7 +410,23 @@ MonoBehaviour:
   attackHighlight: {fileID: 7665185849016466686}
   placementHighlight: {fileID: 8397986420930348906}
   debugging: 0
-  hex: {fileID: 2336278219118792881}
+--- !u!114 &840419501246024633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2336278220173126340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0069b7944a5d7a8438a24741689913ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 2336278219118792881}
+  minColorValue: 100
+  maxColorValue: 170
+  greenOffset: 40
+  blueOffset: 80
 --- !u!1 &6945299842260029225
 GameObject:
   m_ObjectHideFlags: 0
