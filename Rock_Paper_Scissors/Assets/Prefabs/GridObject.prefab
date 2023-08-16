@@ -423,8 +423,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 2336278219118792881}
-  minColorValue: 100
-  maxColorValue: 170
+  minColorValue: 140
+  maxColorValue: 190
   greenOffset: 40
   blueOffset: 80
 --- !u!1 &6945299842260029225
