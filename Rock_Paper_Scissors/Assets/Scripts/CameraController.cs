@@ -13,6 +13,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float zoomSmoothing = 0.1f;
     [SerializeField] private PolygonCollider2D cameraBoundaryCollider;
     [SerializeField] private Vector2 cameraMovementDamping = new Vector2(1, 1);
+    [SerializeField] private float cameraDampeningDistance = 1f;
+    [SerializeField] private float cameraDampeningMaxValue = 1.5f;
     private float cameraBoundaryMinX;
     private float cameraBoundaryMaxX;
     private float cameraBoundaryMinY;
@@ -21,6 +23,7 @@ public class CameraController : MonoBehaviour
     private InputManager inputManager;
     private PlayerControls playerControls;
     private Camera mainCamera;
+    private CinemachineTransposer cinemachineFramingTransposer;
     private Vector2 startDraggingPosition;
     private Vector2 lastFrameDraggingPosition;
     private Vector2 startCameraPosition;
@@ -37,6 +40,7 @@ public class CameraController : MonoBehaviour
     {
         mainCamera = Camera.main;
         inputManager = FindObjectOfType<InputManager>();
+        cinemachineFramingTransposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
         playerControls = inputManager.GetPlayerControls();
         
         inputManager.OnStartDragging += InputManager_OnStartDragging;
@@ -88,6 +92,26 @@ public class CameraController : MonoBehaviour
         }
 
         ZoomCamera();
+        UpdateCameraDampening();
+    }
+
+    private void LateUpdate() 
+    {
+        ClampCameraPosition();
+    }
+
+    private void UpdateCameraDampening()
+    {
+        if(Vector2.Distance(cinemachineVirtualCamera.transform.position, transform.position) > cameraDampeningDistance)
+        {
+            cinemachineFramingTransposer.m_XDamping = 1f;
+            cinemachineFramingTransposer.m_YDamping = 1f;
+        }
+        else
+        {
+            cinemachineFramingTransposer.m_XDamping = cameraDampeningMaxValue;
+            cinemachineFramingTransposer.m_YDamping = cameraDampeningMaxValue;
+        }
     }
 
     private void ZoomCamera()
@@ -110,11 +134,6 @@ public class CameraController : MonoBehaviour
             cameraVelocity = new Vector2(Mathf.Lerp(cameraVelocity.x, 0, cameraMovementDamping.x), Mathf.Lerp(cameraVelocity.y, 0, cameraMovementDamping.y));
             transform.position += (Vector3)cameraVelocity;
         }
-    }
-
-    private void LateUpdate() 
-    {
-        ClampCameraPosition();
     }
 
     private void InputManager_OnStartDragging(object sender, Vector2 position)

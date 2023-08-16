@@ -1971,6 +1971,8 @@ MonoBehaviour:
   zoomSmoothing: 0.1
   cameraBoundaryCollider: {fileID: 1937499472}
   cameraMovementDamping: {x: 0.05, y: 0.05}
+  cameraDampeningDistance: 2
+  cameraDampeningMaxValue: 1.5
 --- !u!4 &970682499
 Transform:
   m_ObjectHideFlags: 0
