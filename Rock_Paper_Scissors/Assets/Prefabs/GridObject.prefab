@@ -408,7 +408,7 @@ MonoBehaviour:
   movementHighlight: {fileID: 83775994389141774}
   attackHighlight: {fileID: 7665185849016466686}
   placementHighlight: {fileID: 8397986420930348906}
-  debugging: 1
+  debugging: 0
 --- !u!1 &6945299842260029225
 GameObject:
   m_ObjectHideFlags: 0

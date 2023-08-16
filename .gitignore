@@ -4,3 +4,4 @@ Build/
 Logs/
 *.csproj
 *.csproj
+*.log

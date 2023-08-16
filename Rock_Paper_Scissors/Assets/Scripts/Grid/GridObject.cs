@@ -39,7 +39,7 @@ namespace RockPaperScissors.Grids
             if(gridPositionOccupyingBuilding != null && isFriendly == gridPositionOccupyingBuilding.IsFriendly())
             {
                 // Which types of buildings can you walk over?
-                if(gridPositionOccupyingBuilding.GetUnitClass() == UnitClass.Tower)
+                if(gridPositionOccupyingBuilding.GetUnitClass() == UnitClass.PillowOutpost)
                 {
                     return true;
                 }

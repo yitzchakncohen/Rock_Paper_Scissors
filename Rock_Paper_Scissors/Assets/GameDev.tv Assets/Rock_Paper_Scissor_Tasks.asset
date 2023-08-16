@@ -13,65 +13,69 @@ MonoBehaviour:
   m_Name: Rock_Paper_Scissor_Tasks
   m_EditorClassIdentifier: 
   tasks:
-  - Text: Tower Spawn Radius?
-    Completed: 0
-  - Text: Draw tiles
-    Completed: 0
-  - Text: Combat balancing
-    Completed: 0
-  - Text: Level up animation
-    Completed: 0
-  - Text: Add xp to Unit UI
-    Completed: 0
   - Text: Saving and loading
-    Completed: 0
-  - Text: Draw enviroment
-    Completed: 0
-  - Text: Fast Forward Button
-    Completed: 0
-  - Text: Draw Towers
-    Completed: 0
-  - Text: main menu
-    Completed: 0
-  - Text: Create Glue Traps
-    Completed: 0
-  - Text: Update UI
-    Completed: 0
-  - Text: Smooth the camera movement
-    Completed: 0
-  - Text: Draw Glue Traps
     Completed: 0
   - Text: Create progression xp per level
     Completed: 0
-  - Text: Replace raycast with more performant solution
-    Completed: 1
-  - Text: Unit defense bonus icon
-    Completed: 1
-  - Text: Attack Animations
-    Completed: 1
-  - Text: Create Towers
-    Completed: 1
-  - Text: Integrate progression
-    Completed: 1
-  - Text: Class factored into EnemyAI
-    Completed: 1
+  - Text: Draw Glue Traps
+    Completed: 0
+  - Text: Smooth the camera movement
+    Completed: 0
+  - Text: Create Glue Traps
+    Completed: 0
+  - Text: main menu
+    Completed: 0
+  - Text: Update UI
+    Completed: 0
+  - Text: Info tooltip in building menu
+    Completed: 0
+  - Text: Draw enviroment
+    Completed: 0
+  - Text: Add xp to Unit UI
+    Completed: 0
+  - Text: Level up animation
+    Completed: 0
+  - Text: Combat balancing
+    Completed: 0
+  - Text: Draw tiles
+    Completed: 0
+  - Text: Fast Forward Button
+    Completed: 0
+  - Text: Tower Spawn Radius?
+    Completed: 0
   - Text: Class type combat modifiers
     Completed: 1
   - Text: Optimize for large grid size
     Completed: 1
-  - Text: Adjust Tile Scale
+  - Text: Spawn Animation
+    Completed: 1
+  - Text: Complete paper sprites
+    Completed: 1
+  - Text: Progression stat multipliers
+    Completed: 1
+  - Text: Integrate progression
     Completed: 1
   - Text: Death Animations
     Completed: 1
   - Text: Get Currency when enemy is defeated
     Completed: 1
-  - Text: Progression stat multipliers
+  - Text: Create Towers
     Completed: 1
-  - Text: Complete paper sprites
-    Completed: 1
-  - Text: Spawn Animation
+  - Text: Attack Animations
     Completed: 1
   - Text: Add paper
     Completed: 1
+  - Text: Adjust Tile Scale
+    Completed: 1
+  - Text: Replace raycast with more performant solution
+    Completed: 1
   - Text: Disable next turn and next action buttons when it's not your turn
+    Completed: 1
+  - Text: Draw Towers
+    Completed: 1
+  - Text: Class factored into EnemyAI
+    Completed: 1
+  - Text: Unit defense bonus icon
+    Completed: 1
+  - Text: Building Team Colour Flags
     Completed: 0

@@ -10,6 +10,6 @@ namespace RockPaperScissors.Units
         Paper,
         Scissors,
         PillowFort,
-        Tower
+        PillowOutpost
     }
 }

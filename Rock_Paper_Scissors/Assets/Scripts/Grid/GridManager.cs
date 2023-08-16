@@ -97,7 +97,7 @@ namespace RockPaperScissors.Grids
                         hit.collider.TryGetComponent<Unit>(out Unit unit);
                         {
                             // Check if the unit is a Building
-                            if(unit.GetUnitClass() == UnitClass.Tower || unit.GetUnitClass() == UnitClass.PillowFort)
+                            if(unit.GetUnitClass() == UnitClass.PillowOutpost || unit.GetUnitClass() == UnitClass.PillowFort)
                             {
                                 gridObjects[x,y].SetOccupentBuilding(unit);
                             }
@@ -188,11 +188,11 @@ namespace RockPaperScissors.Grids
         private void Unit_OnUnitSpawn(object sender, EventArgs e)
         {
             Unit unit = sender as Unit;
-            if(unit.GetUnitClass() != UnitClass.Tower && unit.GetUnitClass() != UnitClass.PillowFort)
+            if(unit.GetUnitClass() != UnitClass.PillowOutpost && unit.GetUnitClass() != UnitClass.PillowFort)
             {
                 GetGridObjectFromWorldPosition(unit.transform.position).SetOccupentUnit(unit);
             }
-            else if(unit.GetUnitClass() == UnitClass.Tower)
+            else if(unit.GetUnitClass() == UnitClass.PillowOutpost)
             {
                 GetGridObjectFromWorldPosition(unit.transform.position).SetOccupentBuilding(unit);
             }

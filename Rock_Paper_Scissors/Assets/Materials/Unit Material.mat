@@ -61,5 +61,5 @@ Material:
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineColor: {r: 0.9019608, g: 0.23529412, b: 0, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
-    - _TeamColor: {r: 0, g: 0.2805748, b: 1, a: 0}
+    - _TeamColor: {r: 0, g: 0.2805748, b: 1, a: 1}
   m_BuildTextureStacks: []
