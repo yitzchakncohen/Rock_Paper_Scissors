@@ -12,6 +12,7 @@ namespace RockPaperScissors.UI
         [SerializeField] private GameObject attackHighlight;
         [SerializeField] private GameObject placementHighlight;
         [SerializeField] private bool debugging = false;
+        [SerializeField] private SpriteRenderer hex;
 
         private void Awake() 
         {
@@ -20,6 +21,10 @@ namespace RockPaperScissors.UI
                 actionValueText.enabled = false;
                 gridPositionText.enabled = false;
             }
+
+            float randomColourNumber = Random.Range(100, 170);
+            Color hexColor = new Color(randomColourNumber / 255f, (randomColourNumber + 40f ) / 255f, (randomColourNumber + 80f) / 255f);
+            hex.color = hexColor;
         }
 
         public void ShowHighlight(GridHighlightType highlightType)
