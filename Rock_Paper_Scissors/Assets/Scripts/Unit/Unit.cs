@@ -142,6 +142,11 @@ namespace RockPaperScissors.Units
             return health.GetHealth();
         }
 
+        public bool IsDead()
+        {
+            return health.IsDead();
+        }
+
         public UnitAnimator GetUnitAnimator()
         {
             return unitAnimator;

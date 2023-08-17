@@ -16,6 +16,7 @@ namespace RockPaperScissors.Units
         private float timer;
         private float attackAnimationTime = 0.6f;
         private Vector3 attackStartPosition;
+        private Vector3 attackTargetPosition;
         private bool attacking;
         private int unitAttackActionBaseValue = 100;
         private int classAdvantageMultiplier = 10;
@@ -40,7 +41,7 @@ namespace RockPaperScissors.Units
                 return;
             }
 
-            AnimateAttack(target.transform.position - transform.position);
+            AnimateAttack(attackTargetPosition - transform.position);
 
             // Check the attack timer to ensure the animation is complete, then compelte the attack.
             timer += Time.deltaTime;
@@ -54,6 +55,7 @@ namespace RockPaperScissors.Units
         {
             timer = 0f;
             attackStartPosition = transform.position;
+            attackTargetPosition = unitToAttack.transform.position;
             target = unitToAttack;
             attacking = true;
             ActionStart(onActionComplete);
@@ -118,7 +120,7 @@ namespace RockPaperScissors.Units
             int level = unit.GetUnitProgression().GetLevel();
             float normalizedAnimationTime = timer/attackAnimationTime;
             // Animate the attack by moving the unit towards the unit it is attacking. 
-            transform.position = attackStartPosition + (target.transform.position - attackStartPosition)*attackAnimationCurve.Evaluate(normalizedAnimationTime);
+            transform.position = attackStartPosition + (attackTargetPosition - attackStartPosition)*attackAnimationCurve.Evaluate(normalizedAnimationTime);
 
             // Update the sprite via the animator.
             if(attackDirection.x > 0 && attackDirection.y > 0)
@@ -209,7 +211,9 @@ namespace RockPaperScissors.Units
             foreach (Vector2Int position in gridPositionsInRangeList)
             {
                 GridObject gridObject = gridManager.GetGridObject(position);
-                if(gridObject.GetCombatTarget() != null && gridObject.GetCombatTarget().IsFriendly() != unit.IsFriendly())
+                if(gridObject.GetCombatTarget() != null 
+                    && gridObject.GetCombatTarget().IsFriendly() != unit.IsFriendly()
+                    && !gridObject.GetCombatTarget().IsDead())
                 {
                     validTargetList.Add(gridObject.GetCombatTarget());
                 }
