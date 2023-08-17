@@ -1040,6 +1040,7 @@ GameObject:
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
   - component: {fileID: 519420033}
+  - component: {fileID: 519420034}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1115,7 +1116,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 3
+  orthographic size: 2.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1180,6 +1181,29 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &519420034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c88f5cead0c0b2a4eb05b5900433f8d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ComponentVersion: 1
+  m_AssetsPPU: 32
+  m_RefResolutionX: 640
+  m_RefResolutionY: 320
+  m_CropFrame: 2
+  m_GridSnapping: 0
+  m_UpscaleRT: 0
+  m_PixelSnapping: 0
+  m_CropFrameX: 0
+  m_CropFrameY: 0
+  m_StretchFill: 0
 --- !u!1001 &535566546
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1973,7 +1997,7 @@ MonoBehaviour:
   cameraBoundaryCollider: {fileID: 1937499472}
   cameraMovementDamping: {x: 0.05, y: 0.05}
   cameraDampeningDistance: 2
-  cameraDampeningMaxValue: 1.5
+  cameraDampeningMaxValue: 1
 --- !u!4 &970682499
 Transform:
   m_ObjectHideFlags: 0
@@ -2703,6 +2727,7 @@ GameObject:
   - component: {fileID: 1222518923}
   - component: {fileID: 1222518922}
   - component: {fileID: 1222518924}
+  - component: {fileID: 1222518925}
   m_Layer: 0
   m_Name: Cinemachine Virtual Camera
   m_TagString: Untagged
@@ -2779,6 +2804,18 @@ MonoBehaviour:
   m_BoundingShape2D: {fileID: 1937499472}
   m_Damping: 0.5
   m_MaxWindowSize: -1
+--- !u!114 &1222518925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1222518921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a8a05de0ac134f4f9d01bef6b9da077, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1303871074
 GameObject:
   m_ObjectHideFlags: 0
