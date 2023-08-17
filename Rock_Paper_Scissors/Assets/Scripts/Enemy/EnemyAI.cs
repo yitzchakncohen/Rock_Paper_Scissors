@@ -2,6 +2,7 @@ using System;
 using RockPaperScissors.Units;
 using RockPaperScissors.Grids;
 using UnityEngine;
+using System.Threading.Tasks;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class EnemyAI : MonoBehaviour
     private UnitManager unitManager;
     private EnemyAIAction nextAction = null;
     private bool nextActionFound = false;
+    private bool findingNextAction = false;
     private float timer;
 
     private void Awake() 
@@ -40,14 +42,18 @@ public class EnemyAI : MonoBehaviour
         {
             case State.Waiting:
                 break;
-            case State.FindingAction:   
+            case State.FindingAction: 
+                Debug.Log("AI searching for action...");
                 if(nextActionFound)
                 {
                     state = State.TakingTurn;
                 }
                 else
                 {
-                    FindNextAction();
+                    if(!findingNextAction)
+                    {
+                        FindNextAction();
+                    }
                 }
                 break;
             case State.TakingTurn:
@@ -86,29 +92,32 @@ public class EnemyAI : MonoBehaviour
         state = State.FindingAction;
     }
 
-    private void FindNextAction()
+    private async void FindNextAction()
     {
-        nextAction = GetBestEnemyAction();
+        findingNextAction = true;
+        
+        nextAction = await GetBestEnemyAction();
 
+        findingNextAction = false;
         nextActionFound = true;
     }
 
     private bool TryTakeEnemyAIAction(Action onEnemyAIActionComplete)
     {
-        float startTime = Time.realtimeSinceStartup;
+        // float startTime = Time.realtimeSinceStartup;
 
         if (nextAction != null)
         {
             // Debug.Log("Taking action with value: " + bestEnemeyAIAction.actionValue);
-            Debug.Log("Action Found: " + (Time.realtimeSinceStartup - startTime) * 1000f);
+            // Debug.Log("Action Found: " + (Time.realtimeSinceStartup - startTime) * 1000f);
             return nextAction.unitAction.TryTakeAction(nextAction.gridObject, onEnemyAIActionComplete);
         }
 
-        Debug.Log("No Action Found: " + (Time.realtimeSinceStartup - startTime) * 1000f);
+        // Debug.Log("No Action Found: " + (Time.realtimeSinceStartup - startTime) * 1000f);
         return false;
     }
 
-    private EnemyAIAction GetBestEnemyAction()
+    private async Task<EnemyAIAction>GetBestEnemyAction()
     {
         EnemyAIAction bestEnemeyAIAction = null;
 
@@ -127,6 +136,8 @@ public class EnemyAI : MonoBehaviour
                     bestEnemeyAIAction = testAction;
                 }
             }
+
+            await Task.Yield();
         }
 
         return bestEnemeyAIAction;
