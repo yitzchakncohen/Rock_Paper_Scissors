@@ -32,7 +32,15 @@ namespace RockPaperScissors.UI
 
         private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
         {
-            if(unitManager.GetFriendlyAvaliableActionsRemaining() <= 0)
+            CheckActionsRemainingAsync();
+        }
+
+        private async void CheckActionsRemainingAsync()
+        {
+            float startTime = Time.realtimeSinceStartup;
+
+            int actionsRemaining = await unitManager.GetFriendlyAvaliableActionsRemaining();
+            if(actionsRemaining <= 0)
             {
                 highlight.SetActive(true);
             }
@@ -40,6 +48,8 @@ namespace RockPaperScissors.UI
             {
                 highlight.SetActive(false);
             }
+
+            Debug.Log("NextButtonUI Action Complete Time: " + (Time.realtimeSinceStartup - startTime)*1000f);
         }
 
         private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs e)

@@ -24,10 +24,14 @@ namespace RockPaperScissors.UI
 
         private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
         {
+            // float startTime = Time.realtimeSinceStartup;
+
             if(((UnitAction)sender).IsCancellableAction)
             {
                 button.interactable = false;
             }
+
+            // Debug.Log("CancelButton Action Complete Time: " + (Time.realtimeSinceStartup - startTime)*1000f);
         }
 
         private void UnitAction_OnAnyActionStarted(object sender, EventArgs e)

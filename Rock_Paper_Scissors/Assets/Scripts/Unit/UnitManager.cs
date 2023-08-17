@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using RockPaperScissors.Grids;
 using UnityEngine;
 
@@ -103,7 +104,7 @@ namespace RockPaperScissors.Units
             return closestUnit;
         }
 
-        public int GetFriendlyAvaliableActionsRemaining()
+        public async Task<int> GetFriendlyAvaliableActionsRemaining()
         {
             int actionPoints = 0;
 
@@ -112,6 +113,7 @@ namespace RockPaperScissors.Units
                 foreach (UnitAction unitAction in friendlyUnit.GetUnitActions())
                 {
                     actionPoints += unitAction.GetValidActionsRemaining();
+                    await Task.Yield();
                 }
             }
 

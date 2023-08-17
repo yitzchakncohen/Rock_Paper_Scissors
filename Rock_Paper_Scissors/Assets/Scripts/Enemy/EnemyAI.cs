@@ -73,6 +73,8 @@ public class EnemyAI : MonoBehaviour
 
     private bool TryTakeEnemyAIAction(Action onEnemyAIActionComplete)
     {
+        float startTime = Time.realtimeSinceStartup;
+
         EnemyAIAction bestEnemeyAIAction = null;
 
         // Get the best action from each unit and see if it is the best.
@@ -95,8 +97,11 @@ public class EnemyAI : MonoBehaviour
         if(bestEnemeyAIAction != null)
         {
             // Debug.Log("Taking action with value: " + bestEnemeyAIAction.actionValue);
+            Debug.Log("Action Found: " + (Time.realtimeSinceStartup - startTime)*1000f);
             return bestEnemeyAIAction.unitAction.TryTakeAction(bestEnemeyAIAction.gridObject, onEnemyAIActionComplete);
         }
+
+        Debug.Log("No Action Found: " + (Time.realtimeSinceStartup - startTime)*1000f);
         return false;
     }
 

@@ -153,26 +153,35 @@ namespace RockPaperScissors.Grids
 
         private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
         {
-            UpdateGridOccupancy();
             // TODO more efficient occupency update
-            // Unit unit = null;
-            // unit = ((UnitAction)sender).GetComponent<Unit>();
+            // UpdateGridOccupancy();
 
-            // if(unit != null)
-            // {
-            //     for (int x = 0; x < gridSize.x; x++)
-            //     {
-            //         for (int y = 0; y < gridSize.y; y++)
-            //         {
-            //             if(gridObjects[x, y].GetOccupent() == unit)
-            //             {
-            //                 gridObjects[x, y].SetOccupent(null);
-            //             }
-            //         }
-            //     }
+            // Death and Spawning already handled
 
-            //     GetGridObjectFromWorldPosition(unit.transform.position).SetOccupent(unit);
-            // }
+            // float startTime = Time.realtimeSinceStartup;
+
+            // Movement
+            if(sender.GetType() == typeof(UnitMovement))
+            {
+                // Remove from existing grid location
+                Unit unit = ((UnitMovement)sender).GetComponent<Unit>();
+                for (int x = 0; x < gridSize.x; x++)
+                {
+                    for (int y = 0; y < gridSize.y; y++)
+                    {
+                        if(gridObjects[x, y].GetOccupentUnit() == unit)
+                        {
+                            gridObjects[x, y].SetOccupentUnit(null);
+                        }
+                    }
+                }
+
+                // Add to new grid location.
+                GridObject gridObject = GetGridObjectFromWorldPosition(unit.transform.position);
+                gridObject.SetOccupentUnit(unit);
+            }
+
+            // Debug.Log("GridManager Action Complete Time: " + (Time.realtimeSinceStartup - startTime)*1000f);
         }
 
         private void Health_OnDeath(object sender, Unit e)
