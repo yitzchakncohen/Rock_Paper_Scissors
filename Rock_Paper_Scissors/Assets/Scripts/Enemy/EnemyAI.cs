@@ -8,6 +8,7 @@ public class EnemyAI : MonoBehaviour
     private enum State 
     {
         Waiting,
+        FindingAction,
         TakingTurn, 
         Busy,
     }
@@ -15,6 +16,8 @@ public class EnemyAI : MonoBehaviour
     private State state;
     private TurnManager turnManager;
     private UnitManager unitManager;
+    private EnemyAIAction nextAction = null;
+    private bool nextActionFound = false;
     private float timer;
 
     private void Awake() 
@@ -36,6 +39,16 @@ public class EnemyAI : MonoBehaviour
         switch (state)
         {
             case State.Waiting:
+                break;
+            case State.FindingAction:   
+                if(nextActionFound)
+                {
+                    state = State.TakingTurn;
+                }
+                else
+                {
+                    FindNextAction();
+                }
                 break;
             case State.TakingTurn:
                 timer-= Time.deltaTime;
@@ -61,51 +74,65 @@ public class EnemyAI : MonoBehaviour
     {
         if(!turnManager.IsPlayerTurn())
         {
-            state = State.TakingTurn;
+            nextActionFound = false;
+            state = State.FindingAction;
         }
     }
 
     private void SetStateTakingTurn()
     {
         timer = 0.5f;
-        state = State.TakingTurn;
+        nextActionFound = false;
+        state = State.FindingAction;
+    }
+
+    private void FindNextAction()
+    {
+        nextAction = GetBestEnemyAction();
+
+        nextActionFound = true;
     }
 
     private bool TryTakeEnemyAIAction(Action onEnemyAIActionComplete)
     {
         float startTime = Time.realtimeSinceStartup;
 
+        if (nextAction != null)
+        {
+            // Debug.Log("Taking action with value: " + bestEnemeyAIAction.actionValue);
+            Debug.Log("Action Found: " + (Time.realtimeSinceStartup - startTime) * 1000f);
+            return nextAction.unitAction.TryTakeAction(nextAction.gridObject, onEnemyAIActionComplete);
+        }
+
+        Debug.Log("No Action Found: " + (Time.realtimeSinceStartup - startTime) * 1000f);
+        return false;
+    }
+
+    private EnemyAIAction GetBestEnemyAction()
+    {
         EnemyAIAction bestEnemeyAIAction = null;
 
         // Get the best action from each unit and see if it is the best.
         foreach (Unit enemyUnit in unitManager.GetEnemyUnitsList())
         {
-            if(bestEnemeyAIAction == null)
+            if (bestEnemeyAIAction == null)
             {
-                bestEnemeyAIAction = GetBestActionForUnit(enemyUnit, onEnemyAIActionComplete);
+                bestEnemeyAIAction = GetBestActionForUnit(enemyUnit);
             }
             else
             {
-                EnemyAIAction testAction = GetBestActionForUnit(enemyUnit, onEnemyAIActionComplete);
-                if(testAction != null && testAction.actionValue > bestEnemeyAIAction.actionValue)
+                EnemyAIAction testAction = GetBestActionForUnit(enemyUnit);
+                if (testAction != null && testAction.actionValue > bestEnemeyAIAction.actionValue)
                 {
                     bestEnemeyAIAction = testAction;
                 }
             }
         }
 
-        if(bestEnemeyAIAction != null)
-        {
-            // Debug.Log("Taking action with value: " + bestEnemeyAIAction.actionValue);
-            Debug.Log("Action Found: " + (Time.realtimeSinceStartup - startTime)*1000f);
-            return bestEnemeyAIAction.unitAction.TryTakeAction(bestEnemeyAIAction.gridObject, onEnemyAIActionComplete);
-        }
-
-        Debug.Log("No Action Found: " + (Time.realtimeSinceStartup - startTime)*1000f);
-        return false;
+        return bestEnemeyAIAction;
     }
 
-    private EnemyAIAction GetBestActionForUnit(Unit enemyUnit, Action onEnemyAIActionComplete)
+    private EnemyAIAction GetBestActionForUnit(Unit enemyUnit)
     {
         EnemyAIAction bestEnemeyAIAction = null;
 
