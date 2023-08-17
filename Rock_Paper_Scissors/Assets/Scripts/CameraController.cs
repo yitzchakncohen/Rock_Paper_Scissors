@@ -14,6 +14,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private PolygonCollider2D cameraBoundaryCollider;
     [SerializeField] private Vector2 cameraMovementDamping = new Vector2(1, 1);
     [SerializeField] private float cameraDampeningDistance = 1f;
+    [SerializeField] private float cameraDampeningOffDistance = 0.5f;
     [SerializeField] private float cameraDampeningMaxValue = 1.5f;
     private float cameraBoundaryMinX;
     private float cameraBoundaryMaxX;
@@ -92,12 +93,12 @@ public class CameraController : MonoBehaviour
         }
 
         ZoomCamera();
-        UpdateCameraDampening();
     }
 
     private void LateUpdate() 
     {
         ClampCameraPosition();
+        UpdateCameraDampening();
     }
 
     private void UpdateCameraDampening()
@@ -106,6 +107,11 @@ public class CameraController : MonoBehaviour
         {
             cinemachineFramingTransposer.m_XDamping = 1f;
             cinemachineFramingTransposer.m_YDamping = 1f;
+        }
+        else if(Vector2.Distance(cinemachineVirtualCamera.transform.position, transform.position) < cameraDampeningOffDistance)
+        {
+            cinemachineFramingTransposer.m_XDamping = 0f;
+            cinemachineFramingTransposer.m_YDamping = 0f;
         }
         else
         {

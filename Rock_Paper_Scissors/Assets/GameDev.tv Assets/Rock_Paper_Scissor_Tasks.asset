@@ -81,3 +81,7 @@ MonoBehaviour:
     Completed: 1
   - Text: Replace currency (with marbles?)
     Completed: 0
+  - Text: Lock camera zooms for pixel perfect
+    Completed: 0
+  - Text: 'Letterboxing '
+    Completed: 0
