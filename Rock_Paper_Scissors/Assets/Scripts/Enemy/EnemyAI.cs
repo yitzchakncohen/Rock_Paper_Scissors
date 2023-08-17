@@ -43,7 +43,7 @@ public class EnemyAI : MonoBehaviour
             case State.Waiting:
                 break;
             case State.FindingAction: 
-                Debug.Log("AI searching for action...");
+                // Debug.Log("AI searching for action...");
                 if(nextActionFound)
                 {
                     state = State.TakingTurn;
@@ -126,25 +126,25 @@ public class EnemyAI : MonoBehaviour
         {
             if (bestEnemeyAIAction == null)
             {
-                bestEnemeyAIAction = GetBestActionForUnit(enemyUnit);
+                bestEnemeyAIAction = await GetBestActionForUnit(enemyUnit);
             }
             else
             {
-                EnemyAIAction testAction = GetBestActionForUnit(enemyUnit);
+                EnemyAIAction testAction = await GetBestActionForUnit(enemyUnit);
                 if (testAction != null && testAction.actionValue > bestEnemeyAIAction.actionValue)
                 {
                     bestEnemeyAIAction = testAction;
                 }
             }
-
-            await Task.Yield();
         }
 
         return bestEnemeyAIAction;
     }
 
-    private EnemyAIAction GetBestActionForUnit(Unit enemyUnit)
+    private async Task<EnemyAIAction> GetBestActionForUnit(Unit enemyUnit)
     {
+        await Task.Yield();
+
         EnemyAIAction bestEnemeyAIAction = null;
 
         foreach (UnitAction baseAction in enemyUnit.GetUnitActions())
@@ -163,6 +163,7 @@ public class EnemyAI : MonoBehaviour
             else
             {
                 EnemyAIAction testEnemyAIAction = baseAction.GetBestEnemyAIAction();
+
                 if(testEnemyAIAction != null && testEnemyAIAction.actionValue > bestEnemeyAIAction.actionValue)
                 {
                     bestEnemeyAIAction = testEnemyAIAction;

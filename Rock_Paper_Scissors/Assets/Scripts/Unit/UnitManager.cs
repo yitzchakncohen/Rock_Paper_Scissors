@@ -113,8 +113,9 @@ namespace RockPaperScissors.Units
                 foreach (UnitAction unitAction in friendlyUnit.GetUnitActions())
                 {
                     actionPoints += unitAction.GetValidActionsRemaining();
-                    await Task.Yield();
                 }
+
+                await Task.Delay((int)(Time.deltaTime*1000));
             }
 
             return actionPoints;
