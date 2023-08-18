@@ -233,15 +233,15 @@ public class ActionHandler : MonoBehaviour
         gridUIManager.ShowGridPositionList(validAttackPositions, GridHighlightType.Attack);
     }
 
-    private void HighlightPlacementTargets(UnitSpawner unitSpawner)
+    private void HighlightPlacementTargets(UnitSpawner unitSpawner, Unit unitToSpawn)
     {
-        List<Vector2Int> validPlacementPositions = unitSpawner.GetValidPlacementPositions();
+        List<Vector2Int> validPlacementPositions = unitSpawner.GetValidPlacementPositions(unitToSpawn);
         gridUIManager.ShowGridPositionList(validPlacementPositions, GridHighlightType.PlaceObject);
     }
 
     private void BuildingButton_BuildingButtonPressed(object sender, BuildButtonArguments arguments)
     {
-        HighlightPlacementTargets(arguments.unitSpawner);
+        HighlightPlacementTargets(arguments.unitSpawner, arguments.unit);
         GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(arguments.unitSpawner.transform.position);
         SetBusy();
         if(arguments.unitSpawner.TryTakeAction(gridObject , ClearBusy))

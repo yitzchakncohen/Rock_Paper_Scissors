@@ -74,11 +74,11 @@ namespace RockPaperScissors.Units
             return true;
         }
 
-        public List<Vector2Int> GetValidPlacementPositions()
+        public List<Vector2Int> GetValidPlacementPositions(Unit unitToSpawn)
         {
             List<Vector2Int> gridPositionList = new List<Vector2Int>();
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
-            Debug.Log($"Spawner at position { gridPosition}");
+            // Debug.Log($"Spawner at position { gridPosition}");
 
             for (int x = -placementRadius-1; x <= placementRadius+1; x++)
             {
@@ -180,7 +180,7 @@ namespace RockPaperScissors.Units
             Vector3 worldPositionOfInput = Camera.main.ScreenToWorldPoint(touchPosition);
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(worldPositionOfInput);
 
-            if(!GetValidPlacementPositions().Contains(gridPosition))
+            if(!GetValidPlacementPositions(unitToSpawn).Contains(gridPosition))
             {
                 return;
             }
