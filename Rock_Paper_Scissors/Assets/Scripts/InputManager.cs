@@ -23,6 +23,7 @@ public class InputManager : MonoBehaviour
     private bool isDragging = false;
     private bool isPinching = false;
     private bool mouseOverUI = false;
+    private bool touchOverUI = false;
     private Vector2 touchStartPosition;
 
     private void Awake() 
@@ -58,6 +59,14 @@ public class InputManager : MonoBehaviour
     private void Update() 
     {
         mouseOverUI = eventSystem.IsPointerOverGameObject();
+        touchOverUI = false;
+        foreach (Touch touch in Input.touches)
+        {
+            if(eventSystem.IsPointerOverGameObject(touch.fingerId))
+            {
+                touchOverUI = true;
+            }
+        }
 
         if(isTouching)
         {
@@ -88,7 +97,7 @@ public class InputManager : MonoBehaviour
 
     private void PlayerControls_GameInputs_SingleTouch_started(InputAction.CallbackContext obj)
     {
-        if(mouseOverUI)
+        if(mouseOverUI || touchOverUI)
         {
             return;
         }
@@ -100,11 +109,15 @@ public class InputManager : MonoBehaviour
 
     private void PlayerControls_GameInputs_SingleTouch_canceled(InputAction.CallbackContext obj)
     {
+
         float travelDisance = Vector2.Distance(playerControls.GameInputs.TouchPosition.ReadValue<Vector2>(), touchStartPosition);
         if(travelDisance < dragThresholdDistance && !isPinching)
         {
             if(debugging){Debug.Log("Single Tap...");}
-            OnSingleTap?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());
+            if(!mouseOverUI && !touchOverUI)
+            {
+                OnSingleTap?.Invoke(this, playerControls.GameInputs.TouchPosition.ReadValue<Vector2>());                
+            }
         }
         isTouching = false;
         isDragging = false;
