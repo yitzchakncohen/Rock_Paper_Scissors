@@ -11,6 +11,7 @@ namespace RockPaperScissors.UI
         private List<Transform> children = new List<Transform>();
         private RectTransform rectTransform;
         private float animationSpeed = 0.05f;
+        [SerializeField] private float animationRate = 8f;
         private float zeroPositionAngle = 90f;
 
         private void Awake()
@@ -82,6 +83,7 @@ namespace RockPaperScissors.UI
 
             do
             {
+                animationSpeed = animationRate * Time.deltaTime;
                 currentRadialPosition = Mathf.Lerp(currentRadialPosition, tragetRadialPosition, animationSpeed);
                 float xPosition = Mathf.Cos(currentRadialPosition * Mathf.Deg2Rad) * radius;
                 float yPosition = Mathf.Sin(currentRadialPosition * Mathf.Deg2Rad) * radius;
