@@ -42,37 +42,47 @@ public class EnemyAI : MonoBehaviour
         {
             case State.Waiting:
                 break;
-            case State.FindingAction: 
-                // Debug.Log("AI searching for action...");
-                if(nextActionFound)
-                {
-                    state = State.TakingTurn;
-                }
-                else
-                {
-                    if(!findingNextAction)
-                    {
-                        FindNextAction();
-                    }
-                }
+            case State.FindingAction:
+                FindAction();
                 break;
             case State.TakingTurn:
-                timer-= Time.deltaTime;
-                if(timer <= 0f)
-                {
-                    if(TryTakeEnemyAIAction(SetStateTakingTurn))
-                    {
-                        state = State.Busy;
-                    }
-                    else
-                    {
-                        // No more enemies have actions they can take so end the turn. 
-                        turnManager.NextTurn();
-                    }
-                }
+                TakeAction();
                 break;
             case State.Busy:
                 break;
+        }
+    }
+
+    private void FindAction()
+    {
+        // Debug.Log("AI searching for action...");
+        if (nextActionFound)
+        {
+            state = State.TakingTurn;
+        }
+        else
+        {
+            if (!findingNextAction)
+            {
+                FindNextAction();
+            }
+        }
+    }
+    
+    private void TakeAction()
+    {
+        timer -= Time.deltaTime;
+        if (timer <= 0f)
+        {
+            if (TryTakeEnemyAIAction(SetStateTakingTurn))
+            {
+                state = State.Busy;
+            }
+            else
+            {
+                // No more enemies have actions they can take so end the turn. 
+                turnManager.NextTurn();
+            }
         }
     }
 
