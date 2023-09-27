@@ -1,6 +1,5 @@
 using System;
 using RockPaperScissors.Units;
-using RockPaperScissors.Grids;
 using UnityEngine;
 using System.Threading.Tasks;
 
@@ -8,10 +7,10 @@ public class EnemyAI : MonoBehaviour
 {
     private enum State 
     {
-        Waiting,
+        WaitingForTurn,
         FindingAction,
         TakingTurn, 
-        Busy,
+        BusyTakingAction,
     }
 
     private State state;
@@ -24,7 +23,7 @@ public class EnemyAI : MonoBehaviour
 
     private void Awake() 
     {
-        state = State.Waiting;
+        state = State.WaitingForTurn;
     }
 
     private void Start() 
@@ -40,7 +39,7 @@ public class EnemyAI : MonoBehaviour
 
         switch (state)
         {
-            case State.Waiting:
+            case State.WaitingForTurn:
                 break;
             case State.FindingAction:
                 FindAction();
@@ -48,7 +47,7 @@ public class EnemyAI : MonoBehaviour
             case State.TakingTurn:
                 TakeAction();
                 break;
-            case State.Busy:
+            case State.BusyTakingAction:
                 break;
         }
     }
@@ -74,9 +73,9 @@ public class EnemyAI : MonoBehaviour
         timer -= Time.deltaTime;
         if (timer <= 0f)
         {
-            if (TryTakeEnemyAIAction(SetStateTakingTurn))
+            if (TryTakeEnemyAIAction(CompleteAction))
             {
-                state = State.Busy;
+                state = State.BusyTakingAction;
             }
             else
             {
@@ -95,7 +94,7 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    private void SetStateTakingTurn()
+    private void CompleteAction()
     {
         timer = 0.5f;
         nextActionFound = false;
@@ -181,6 +180,5 @@ public class EnemyAI : MonoBehaviour
             }
         }
         return bestEnemeyAIAction;
-
     }
 }

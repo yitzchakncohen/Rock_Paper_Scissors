@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "dPeD2nxCOIdQ6GX6mMpVHIRiC6laGwRM8CweO39/NpqFFIWcQyeRTENEgnYTr7aH/YqUgl+HXKulYJ6pJ9hbjw==",
+  "dgSpecHash": "kAPdmhojY5hwy88zscdnWoH3FLs7QC/M1O0qTX5tVbQOeqlLQ9YqzVWyvkijQExiNuFklbMb4LoMyHiJQpP9GA==",
   "success": true,
-  "projectFilePath": "d:\\Unity Projects\\Rock_Paper_Scissors_Repo\\Rock_Paper_Scissors\\Assembly-CSharp.csproj",
+  "projectFilePath": "d:\\Unity Projects\\Rock_Paper_Scissors_Repo\\Rock_Paper_Scissors\\Assembly-CSharp-firstpass.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
