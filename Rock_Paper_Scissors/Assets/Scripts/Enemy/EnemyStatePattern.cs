@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using RockPaperScissors.Units;
 using UnityEngine;
@@ -53,12 +52,12 @@ public class WaitingForTurnState : EnemyState
 
     public void CompleteAction(EnemyStateContext context)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public void EndTurn(EnemyStateContext context)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 }
 
@@ -68,7 +67,7 @@ public class FindingActionState : EnemyState
     
     public void StartTurn(EnemyStateContext context)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public void FindAction(EnemyStateContext context, UnitManager unitManager)
@@ -85,19 +84,19 @@ public class FindingActionState : EnemyState
 
     public void CompleteAction(EnemyStateContext context)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public void EndTurn(EnemyStateContext context)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     private async void FindNextAction(EnemyStateContext context)
     {
         EnemyAIAction nextAction = await GetBestEnemyAction();
 
-        context.SetState(new TakingActionState());
+        context.SetState(new TakingActionState(nextAction));
     }
 
     private async Task<EnemyAIAction>GetBestEnemyAction()
@@ -163,14 +162,19 @@ public class TakingActionState : EnemyState
     private TurnManager turnManager;
     private float timer = 0.5f;
 
+    public TakingActionState(EnemyAIAction nextAction)
+    {
+        this.nextAction = nextAction;
+    }
+
+    public void StartTurn(EnemyStateContext context)
+    {
+        throw new NotImplementedException();
+    }
+
     public void CompleteAction(EnemyStateContext context)
     {
         context.SetState(new FindingActionState());
-    }
-
-    public void EndTurn(EnemyStateContext context)
-    {
-        turnManager.NextTurn();
     }
 
     public void FindAction(EnemyStateContext context, UnitManager unitManager)
@@ -178,21 +182,15 @@ public class TakingActionState : EnemyState
         throw new NotImplementedException();
     }
 
-    public void StartTurn(EnemyStateContext context)
-    {
-        throw new System.NotImplementedException();
-    }
-
     public void TakeAction(EnemyStateContext context, Action CompleteAction)
     {
         timer -= Time.deltaTime;
         if (timer <= 0f)
         {
-            TakingActionState takingActionState = new TakingActionState();
 
             if (TryTakeEnemyAIAction(CompleteAction))
             {
-                context.SetState(takingActionState);
+                // Action successfully taken
             }
             else
             {
@@ -200,6 +198,11 @@ public class TakingActionState : EnemyState
                 EndTurn(context);
             }
         }
+    }
+
+    public void EndTurn(EnemyStateContext context)
+    {
+        turnManager.NextTurn();
     }
 
     private bool TryTakeEnemyAIAction(Action onEnemyAIActionComplete)
