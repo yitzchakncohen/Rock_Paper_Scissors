@@ -10,7 +10,7 @@ namespace RockPaperScissors.Units
     {
         [SerializeField] private UnitAnimator unitAnimator;
         [SerializeField] private AnimationCurve attackAnimationCurve;
-        [SerializeField] private float cameraSnapDelay = 0.5f;
+        private float cameraSnapDelay = 0.2f;
         private Unit unit;
         private Unit target;
         private GridManager gridManager;

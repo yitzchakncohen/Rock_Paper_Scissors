@@ -13,7 +13,7 @@ namespace RockPaperScissors.Units
         [SerializeField] private UnitAnimator unitAnimator;
         [SerializeField] private float movementSpeed = 5f;
         [SerializeField] private float stoppingDistance = 0.1f;
-        [SerializeField] private float cameraSnapDelay = 0.5f;
+        private float cameraSnapDelay = 0.2f;
         private GridManager gridManager;
         private UnitManager unitManager;
         private PathFinding pathFinding;
