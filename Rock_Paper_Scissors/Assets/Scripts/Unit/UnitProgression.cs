@@ -7,7 +7,6 @@ namespace RockPaperScissors.Units
 {
     public class UnitProgression : MonoBehaviour
     {
-        [SerializeField] private ParticleSystem levelUpFX;
         public event Action OnLevelUp;
         private UnitAnimator unitAnimator;
         private int level = 1;
@@ -39,7 +38,6 @@ namespace RockPaperScissors.Units
             {
                 level = Math.Clamp(level + 1, 1, 3);
                 OnLevelUp?.Invoke();
-                levelUpFX.Play();
                 unitAnimator.AnimateLevelUp(level);
             }
         }
