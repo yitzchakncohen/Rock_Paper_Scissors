@@ -13,47 +13,47 @@ MonoBehaviour:
   m_Name: Rock_Paper_Scissor_Tasks
   m_EditorClassIdentifier: 
   tasks:
-  - Text: Building Team Colour Flags
-    Completed: 0
-  - Text: Tower Spawn Radius?
-    Completed: 0
-  - Text: Draw Glue Traps
-    Completed: 0
   - Text: 'Letterboxing '
-    Completed: 0
-  - Text: Level up animation
     Completed: 0
   - Text: Info tooltip in building menu
     Completed: 0
-  - Text: Create progression xp per level
-    Completed: 0
   - Text: Update UI
+    Completed: 0
+  - Text: Create progression xp per level
     Completed: 0
   - Text: Create Glue Traps
     Completed: 0
+  - Text: Level up animation
+    Completed: 0
+  - Text: Draw Glue Traps
+    Completed: 0
   - Text: Generic Obstacles
     Completed: 0
-  - Text: Coin Particle FX
+  - Text: Tower Spawn Radius?
     Completed: 0
-  - Text: Wait for animations to finish for enemy AI algorithms
-    Completed: 0
-  - Text: Move Radius Icon.UI
-    Completed: 0
-  - Text: main menu
+  - Text: Building Team Colour Flags
     Completed: 0
   - Text: Show Attack Range
     Completed: 0
-  - Text: Saving and loading
+  - Text: Replace currency (with marbles?)
     Completed: 0
-  - Text: Combat balancing
-    Completed: 0
-  - Text: Add xp to Unit UI
+  - Text: Coin Particle FX
     Completed: 0
   - Text: Fast Forward Button
     Completed: 0
-  - Text: Replace currency (with marbles?)
+  - Text: Add xp to Unit UI
     Completed: 0
-  - Text: Draw tiles
+  - Text: Combat balancing
+    Completed: 0
+  - Text: Wait for animations to finish for enemy AI algorithms
+    Completed: 0
+  - Text: main menu
+    Completed: 0
+  - Text: Saving and loading
+    Completed: 0
+  - Text: Death Animations
+    Completed: 1
+  - Text: Spawn Animation
     Completed: 1
   - Text: Replace raycast with more performant solution
     Completed: 1
@@ -69,13 +69,9 @@ MonoBehaviour:
     Completed: 1
   - Text: Progression stat multipliers
     Completed: 1
-  - Text: Death Animations
+  - Text: Currency Icons
     Completed: 1
-  - Text: Attack Animations
-    Completed: 1
-  - Text: Get Currency when enemy is defeated
-    Completed: 1
-  - Text: Class type combat modifiers
+  - Text: Draw tiles
     Completed: 1
   - Text: Adjust Tile Scale
     Completed: 1
@@ -91,7 +87,11 @@ MonoBehaviour:
     Completed: 1
   - Text: Class factored into EnemyAI
     Completed: 1
-  - Text: Spawn Animation
+  - Text: Attack Animations
     Completed: 1
-  - Text: Currency Icons
+  - Text: Move Radius Icon.UI
+    Completed: 1
+  - Text: Get Currency when enemy is defeated
+    Completed: 1
+  - Text: Class type combat modifiers
     Completed: 1
