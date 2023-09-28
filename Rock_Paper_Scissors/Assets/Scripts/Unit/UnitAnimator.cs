@@ -28,36 +28,48 @@ namespace RockPaperScissors.Units
 
         public void MoveLeft(int level)
         {
+            if(spriteResolver == null) { return; }
+
             spriteResolver.SetCategoryAndLabel("Left", GetLevel(level));
             // animator.SetTrigger("Left");
         }
 
         public void MoveRight(int level)
         {
+            if(spriteResolver == null) { return; }
+
             spriteResolver.SetCategoryAndLabel("Right", GetLevel(level));
             // animator.SetTrigger("Right");
         }
 
         public void MoveUpLeft(int level)
         {
+            if(spriteResolver == null) { return; }
+
             spriteResolver.SetCategoryAndLabel("UpLeft", GetLevel(level));
             // animator.SetTrigger("Up_Left");
         }
 
         public void MoveUpRight(int level)
         {
+            if(spriteResolver == null) { return; }
+
             spriteResolver.SetCategoryAndLabel("UpRight", GetLevel(level));
             // animator.SetTrigger("Up_Right");
         }
 
         public void MoveDownLeft(int level)
         {
+            if(spriteResolver == null) { return; }
+
             spriteResolver.SetCategoryAndLabel("DownLeft", GetLevel(level));
             // animator.SetTrigger("Down_Left");
         }
 
         public void MoveDownRight(int level)
         {
+            if(spriteResolver == null) { return; }
+
             spriteResolver.SetCategoryAndLabel("DownRight", GetLevel(level));
             // animator.SetTrigger("Down_Right");
         }
