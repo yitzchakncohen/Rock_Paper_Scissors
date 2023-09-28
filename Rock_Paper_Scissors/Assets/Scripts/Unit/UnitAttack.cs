@@ -10,6 +10,7 @@ namespace RockPaperScissors.Units
     {
         [SerializeField] private UnitAnimator unitAnimator;
         [SerializeField] private AnimationCurve attackAnimationCurve;
+        [SerializeField] private float cameraSnapDelay = 0.5f;
         private Unit unit;
         private Unit target;
         private GridManager gridManager;
@@ -47,7 +48,7 @@ namespace RockPaperScissors.Units
             timer += Time.deltaTime;
             if(timer >= attackAnimationTime)
             {
-                CompleteAttack();
+                StartCoroutine(CompleteAttack());
             }
         }
 
@@ -61,7 +62,7 @@ namespace RockPaperScissors.Units
             ActionStart(onActionComplete);
         }
 
-        private void CompleteAttack()
+        private IEnumerator CompleteAttack()
         {
             GridObject gridObjectAttacking = gridManager.GetGridObjectFromWorldPosition(target.transform.position);
             bool isTargetInTower = gridObjectAttacking.GetOccupentBuilding() != null;
@@ -69,6 +70,9 @@ namespace RockPaperScissors.Units
             target.Damage(damageAmount, unit);
             actionPointsRemaining -= 1;
             attacking = false;
+
+            // Wait to complete the action until the camera has snapped to the new location.
+            yield return new WaitForSeconds(cameraSnapDelay);
             ActionComplete();
         }
 
@@ -162,10 +166,10 @@ namespace RockPaperScissors.Units
             if(GetValidTargets(gridPosition).Contains(unitToAttack))
             {
                 StartAttack(unitToAttack, onActionComplete);
-                Debug.Log("Attacking: " + unitToAttack.gameObject.name);
+                // Debug.Log("Attacking: " + unitToAttack.gameObject.name);
                 return true;
             }
-            Debug.Log("Failed to attack: " + unitToAttack);
+            // Debug.Log("Failed to attack: " + unitToAttack);
             return false;
         }
 

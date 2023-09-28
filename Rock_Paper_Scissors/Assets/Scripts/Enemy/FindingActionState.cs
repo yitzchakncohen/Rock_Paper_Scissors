@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using RockPaperScissors.Units;
+using UnityEngine;
 
 public class FindingActionState : EnemyState
 {
@@ -64,7 +65,6 @@ public class FindingActionState : EnemyState
                 }
             }
         }
-
         return bestEnemeyAIAction;
     }
 
@@ -76,6 +76,8 @@ public class FindingActionState : EnemyState
 
         foreach (UnitAction baseAction in enemyUnit.GetUnitActions())
         {
+            // float startTime = Time.realtimeSinceStartup;
+
             if(baseAction.GetActionPointsRemaining() <= 0)
             {
                 // Enemy cannot afford this action
@@ -96,6 +98,15 @@ public class FindingActionState : EnemyState
                     bestEnemeyAIAction = testEnemyAIAction;
                 }
             }
+            
+            // if(baseAction is UnitAttack)
+            // {
+            //     Debug.Log("Attack Action Found: " + (Time.realtimeSinceStartup - startTime) * 1000f);
+            // }
+            // else
+            // {
+            //     Debug.Log("Move Action Found: " + (Time.realtimeSinceStartup - startTime) * 1000f);
+            // }
         }
         return bestEnemeyAIAction;
     }
