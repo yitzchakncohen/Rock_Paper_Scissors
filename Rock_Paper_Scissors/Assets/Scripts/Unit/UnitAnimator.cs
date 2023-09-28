@@ -11,14 +11,17 @@ namespace RockPaperScissors.Units
         [SerializeField] private SpriteResolver spriteResolver;
         [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] private GameObject spawnFXPrefab;
+        [SerializeField] private ParticleSystem levelUpFX;
         [SerializeField] private GameObject healthBar;
         private SpriteLibrary spriteLibrary;
         private Animator animator;
+        private UnitShaderController unitShaderController;
 
         private void Awake() 
         {
             animator = GetComponent<Animator>();
             spriteLibrary = GetComponent<SpriteLibrary>();
+            unitShaderController = GetComponent<UnitShaderController>();
         }
 
         public void SetSpriteLibraryAsset(SpriteLibraryAsset spriteLibraryAsset)
@@ -116,9 +119,11 @@ namespace RockPaperScissors.Units
             return $"Level {level}";
         }
 
-        public void AnimateLevelUp(int level)
+        public IEnumerator AnimateLevelUp(int level)
         {
+            yield return StartCoroutine(unitShaderController.AnimateLevelUp());
             MoveLeft(level);
+            levelUpFX.Play();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace RockPaperScissors.Units
     {
         public static event EventHandler OnUnitSpawn;
         [SerializeField] private UnitAnimator unitAnimator;
-        [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private UnitShaderController unitShaderController;
         [SerializeField] private bool isFriendly = true;
         [SerializeField] private UnitData unitData;
         private UnitAction[] unitActions;
@@ -27,7 +27,7 @@ namespace RockPaperScissors.Units
         {
             ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
             OnUnitSpawn?.Invoke(this, EventArgs.Empty);
-            spriteRenderer.sprite = unitData.unitThumbnail;
+            unitShaderController.SetupSprite(unitData.unitThumbnail);
             if(unitAnimator != null)
             {
                 if(unitData.spriteLibrary != null)
@@ -50,27 +50,17 @@ namespace RockPaperScissors.Units
         {
             if(selectedUnit == this)
             {
-                SetOutlineOn();
+                unitShaderController.SetOutlineOn();
             }
             else
             {
-                SetOutlineOff();
+                unitShaderController.SetOutlineOff();
             }
         }
 
         public UnitAction[] GetUnitActions()
         {
             return unitActions;
-        }
-
-        public void SetOutlineOn()
-        {
-            spriteRenderer.material.SetInt("_OutlineOn", 1);
-        }
-
-        public void SetOutlineOff()
-        {
-            spriteRenderer.material.SetInt("_OutlineOn", 0);
         }
 
         public bool IsFriendly()

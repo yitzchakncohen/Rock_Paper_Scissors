@@ -38,7 +38,7 @@ namespace RockPaperScissors.Units
             {
                 level = Math.Clamp(level + 1, 1, 3);
                 OnLevelUp?.Invoke();
-                unitAnimator.AnimateLevelUp(level);
+                StartCoroutine(unitAnimator.AnimateLevelUp(level));
             }
         }
 
