@@ -217,7 +217,7 @@ namespace RockPaperScissors.Units
             
             // If there are no units in range of any of the movement spaces, the best action value will still be 0.
             // Instead move towards the closes enemy by setting a value from 1 to 10;
-            float startTime = Time.realtimeSinceStartup;
+            // float startTime = Time.realtimeSinceStartup;
             if(bestAction.actionValue == 0)
             {
                 Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
@@ -242,7 +242,7 @@ namespace RockPaperScissors.Units
                 }
             }
 
-            Debug.Log("Get Closest Friendly: " + (Time.realtimeSinceStartup - startTime) * 1000f);
+            // Debug.Log("Get Closest Friendly: " + (Time.realtimeSinceStartup - startTime) * 1000f);
             return bestAction;
         }
 

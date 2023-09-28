@@ -98,7 +98,7 @@ public class FindingActionState : EnemyState
                     bestEnemeyAIAction = testEnemyAIAction;
                 }
             }
-            
+
             // if(baseAction is UnitAttack)
             // {
             //     Debug.Log("Attack Action Found: " + (Time.realtimeSinceStartup - startTime) * 1000f);
