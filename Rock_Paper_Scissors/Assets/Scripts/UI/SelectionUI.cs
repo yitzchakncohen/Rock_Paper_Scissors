@@ -13,6 +13,8 @@ namespace RockPaperScissors.UI
         [SerializeField] private TextMeshProUGUI attack;
         [SerializeField] private TextMeshProUGUI range;
         [SerializeField] private TextMeshProUGUI defense;
+        [SerializeField] private TextMeshProUGUI movement;
+
         
         private void Start() 
         {
@@ -31,6 +33,7 @@ namespace RockPaperScissors.UI
                 attack.text = $" <sprite=2> {unit.GetBaseAttack()}";
                 range.text = $" <sprite=3> {unit.GetAttackRange()}";
                 defense.text = $" <sprite=1> {unit.GetBaseDefense()}";
+                movement.text = $" <sprite=4> {unit.GetMoveDistance()}";
             }
             else
             {
