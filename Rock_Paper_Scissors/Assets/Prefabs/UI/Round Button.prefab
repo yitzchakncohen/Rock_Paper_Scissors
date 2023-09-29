@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6930254441573241752}
   - component: {fileID: 6930254441573241753}
   m_Layer: 5
-  m_Name: NextTurnButton
+  m_Name: Round Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
