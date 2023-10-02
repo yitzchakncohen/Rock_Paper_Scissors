@@ -59,7 +59,14 @@ namespace RockPaperScissors.Units
                 {
                     Vector2 moveDirection = (targetGridObjects[currentPositionIndex].transform.position - transform.position).normalized;
                     AnimateMovement(moveDirection);
-                    transform.position += (Vector3)(moveDirection * movementSpeed * Time.deltaTime);
+                    if((moveDirection * movementSpeed * Time.deltaTime).magnitude > Vector2.Distance(targetGridObjects[currentPositionIndex].transform.position, transform.position))
+                    {
+                        transform.position = targetGridObjects[currentPositionIndex].transform.position;
+                    }
+                    else
+                    {
+                        transform.position += (Vector3)(moveDirection * movementSpeed * Time.deltaTime);
+                    }
                     OnUnitMove?.Invoke(this, EventArgs.Empty);
                 }
             }

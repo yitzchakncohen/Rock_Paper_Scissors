@@ -1,6 +1,5 @@
 using System.Collections;
 using Unity.VisualScripting;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace RockPaperScissors.Units

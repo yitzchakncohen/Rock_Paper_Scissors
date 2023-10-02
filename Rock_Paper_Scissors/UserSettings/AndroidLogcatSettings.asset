@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "R5CR92W1AAR",
         "name": "com.DefaultCompany.Rock_Paper_Scissors",
-        "processId": 1948,
+        "processId": 18173,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -90,6 +90,24 @@
             "deviceId": "R5CR92W1AAR",
             "name": "com.DefaultCompany.Rock_Paper_Scissors",
             "processId": 1948,
+            "exited": false
+        },
+        {
+            "deviceId": "R5CR92W1AAR",
+            "name": "com.DefaultCompany.Rock_Paper_Scissors",
+            "processId": 9966,
+            "exited": false
+        },
+        {
+            "deviceId": "R5CR92W1AAR",
+            "name": "com.DefaultCompany.Rock_Paper_Scissors",
+            "processId": 17113,
+            "exited": false
+        },
+        {
+            "deviceId": "R5CR92W1AAR",
+            "name": "com.DefaultCompany.Rock_Paper_Scissors",
+            "processId": 18173,
             "exited": false
         }
     ],
