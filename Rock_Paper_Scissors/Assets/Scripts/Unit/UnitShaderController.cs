@@ -26,12 +26,11 @@ namespace RockPaperScissors.Units
         public IEnumerator AnimateLevelUp()
         {   
             float timer = levelUpAnimationTime;
-            float animationValue = 0;
 
             while(timer > 0)
             {
                 timer -= Time.deltaTime;
-                animationValue = 1 - (timer/levelUpAnimationTime);
+                float animationValue = 1 - (timer/levelUpAnimationTime);
                 spriteRenderer.material.SetFloat("_LevelUpValue", animationValue);
 
                 yield return null;

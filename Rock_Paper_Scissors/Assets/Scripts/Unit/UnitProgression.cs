@@ -14,7 +14,7 @@ namespace RockPaperScissors.Units
 
         private void Start() 
         {
-            unitAnimator = FindObjectOfType<UnitAnimator>();
+            unitAnimator = GetComponent<UnitAnimator>();
             UnitHealth.OnDeath += Health_OnDeath;
         }
 

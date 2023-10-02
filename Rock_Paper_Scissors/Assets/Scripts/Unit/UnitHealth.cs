@@ -52,11 +52,11 @@ namespace RockPaperScissors.Units
             if(IsDead())
             {
                 OnDeath?.Invoke(this, attacker);
-                StartCoroutine(OnDeathRoutine(attacker));
+                StartCoroutine(OnDeathRoutine());
             }
         }
 
-        private IEnumerator OnDeathRoutine(Unit attacker)
+        private IEnumerator OnDeathRoutine()
         {
             if(unitAnimator != null)
             {
