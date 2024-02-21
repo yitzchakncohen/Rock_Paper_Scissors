@@ -105,6 +105,8 @@
     <Compile Include="Assets\Scripts\SaveSystem\SaveManager.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\ISaveInterface.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\SaveUnitData.cs" />
+    <Compile Include="Assets\Scripts\SaveSystem\SaveCurrencyBankData.cs" />
+    <Compile Include="Assets\Scripts\SaveSystem\SaveTurnManagerData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
