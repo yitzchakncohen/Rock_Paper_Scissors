@@ -17,9 +17,6 @@ namespace RockPaperScissors.Units
         private UnitAction[] unitActions;
         private UnitProgression unitProgression;
         private UnitHealth health;
-        private Vector2Int unitGridPosition;
-        private int attackActionPoints = 0;
-        private int moveActionPoints = 0;
 
         private void Awake() 
         {
@@ -185,6 +182,11 @@ namespace RockPaperScissors.Units
                 FacingDirection = unitAnimator.GetCurrentDirection()
             };
 
+            foreach (UnitAction unitAction in GetUnitActions())
+            {
+                unitAction.SaveAction(saveUnitData);
+            }
+
             return saveUnitData;
         }
 
@@ -196,6 +198,10 @@ namespace RockPaperScissors.Units
             unitProgression.SetXP(loadData.UnitXP);
             isFriendly = loadData.IsFriendly;
             unitAnimator.SetFacingDirection(loadData.FacingDirection, unitProgression.GetLevel());
+            foreach (UnitAction unitAction in GetUnitActions())
+            {
+                unitAction.LoadAction(loadData);
+            }
         }
     }
 }

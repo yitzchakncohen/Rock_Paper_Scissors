@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RockPaperScissors.SaveSystem;
 using RockPaperScissors.Units;
 using UnityEngine;
 
-public class CurrencyBank : MonoBehaviour
+public class CurrencyBank : MonoBehaviour, ISaveInterface<SaveCurrencyBankData>
 {
     public event EventHandler<int> OnCurrencyChanged;
     private int currency = 0;
@@ -44,5 +45,20 @@ public class CurrencyBank : MonoBehaviour
             currency += unit.GetUnitDefeatedReward();
             OnCurrencyChanged?.Invoke(this, currency);
         }
+    }
+
+    public SaveCurrencyBankData Save()
+    {
+        SaveCurrencyBankData bankData = new SaveCurrencyBankData
+        {
+            Currency = currency
+        };
+
+        return bankData;
+    }
+
+    public void Load(SaveCurrencyBankData loadData)
+    {
+        currency = loadData.Currency;
     }
 }   

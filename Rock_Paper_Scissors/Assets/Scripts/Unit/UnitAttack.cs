@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using RockPaperScissors.Grids;
+using RockPaperScissors.SaveSystem;
 using UnityEngine;
 
 namespace RockPaperScissors.Units
@@ -302,6 +303,16 @@ namespace RockPaperScissors.Units
         protected override void CancelButton_OnCancelButtonPress()
         {
             base.CancelButton_OnCancelButtonPress();
+        }
+
+        public override void LoadAction(SaveUnitData loadData)
+        {
+            actionPointsRemaining = loadData.AttackActionPointsRemaining;
+        }
+
+        public override void SaveAction(SaveUnitData saveData)
+        {
+            saveData.AttackActionPointsRemaining = actionPointsRemaining;
         }
     }
 }

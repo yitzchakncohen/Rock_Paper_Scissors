@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using RockPaperScissors.Grids;
 using RockPaperScissors.PathFindings;
+using RockPaperScissors.SaveSystem;
 using RockPaperScissors.UI;
 using UnityEngine;
 
@@ -232,6 +233,14 @@ namespace RockPaperScissors.Units
             placingUnit = false;
             unitSpawning = false;
             base.CancelButton_OnCancelButtonPress();
+        }
+
+        public override void LoadAction(SaveUnitData loadData)
+        {
+        }
+
+        public override void SaveAction(SaveUnitData saveData)
+        {
         }
     }
 }

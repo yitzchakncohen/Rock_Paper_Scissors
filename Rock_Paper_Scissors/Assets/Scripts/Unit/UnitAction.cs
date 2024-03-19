@@ -1,5 +1,6 @@
 using System;
 using RockPaperScissors.Grids;
+using RockPaperScissors.SaveSystem;
 using RockPaperScissors.UI;
 using UnityEngine;
 
@@ -61,5 +62,7 @@ namespace RockPaperScissors.Units
         public abstract EnemyAIAction GetBestEnemyAIAction();
         public abstract bool TryTakeAction(GridObject gridObject, Action onActionComplete);
         public abstract int GetValidActionsRemaining();
+        public abstract void LoadAction(SaveUnitData loadData);
+        public abstract void SaveAction(SaveUnitData saveData);
     }
 }
