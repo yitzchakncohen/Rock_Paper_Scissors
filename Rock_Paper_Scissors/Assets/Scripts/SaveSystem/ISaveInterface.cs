@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ISaveInterface<T>
+namespace RockPaperScissors.SaveSystem
 {
-    public T Save();
-    public void Load(T loadData);
+    public interface ISaveInterface<T>
+    {
+        public T Save();
+        public void Load(T loadData);
+    }
 }

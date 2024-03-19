@@ -16,6 +16,7 @@ namespace RockPaperScissors.Units
         private SpriteLibrary spriteLibrary;
         private Animator animator;
         private UnitShaderController unitShaderController;
+        private Direction currentFacingDirection;
 
         private void Awake() 
         {
@@ -35,6 +36,7 @@ namespace RockPaperScissors.Units
 
             spriteResolver.SetCategoryAndLabel("Left", GetLevel(level));
             // animator.SetTrigger("Left");
+            currentFacingDirection = Direction.West;
         }
 
         public void MoveRight(int level)
@@ -43,6 +45,7 @@ namespace RockPaperScissors.Units
 
             spriteResolver.SetCategoryAndLabel("Right", GetLevel(level));
             // animator.SetTrigger("Right");
+            currentFacingDirection = Direction.East;
         }
 
         public void MoveUpLeft(int level)
@@ -51,6 +54,7 @@ namespace RockPaperScissors.Units
 
             spriteResolver.SetCategoryAndLabel("UpLeft", GetLevel(level));
             // animator.SetTrigger("Up_Left");
+            currentFacingDirection = Direction.NorthWest;
         }
 
         public void MoveUpRight(int level)
@@ -59,6 +63,7 @@ namespace RockPaperScissors.Units
 
             spriteResolver.SetCategoryAndLabel("UpRight", GetLevel(level));
             // animator.SetTrigger("Up_Right");
+            currentFacingDirection = Direction.NorthEast;
         }
 
         public void MoveDownLeft(int level)
@@ -67,6 +72,7 @@ namespace RockPaperScissors.Units
 
             spriteResolver.SetCategoryAndLabel("DownLeft", GetLevel(level));
             // animator.SetTrigger("Down_Left");
+            currentFacingDirection = Direction.SouthWest;
         }
 
         public void MoveDownRight(int level)
@@ -75,6 +81,7 @@ namespace RockPaperScissors.Units
 
             spriteResolver.SetCategoryAndLabel("DownRight", GetLevel(level));
             // animator.SetTrigger("Down_Right");
+            currentFacingDirection = Direction.SouthEast;
         }
 
         public void ToggleMoveAnimation(bool isMoving)
@@ -122,8 +129,39 @@ namespace RockPaperScissors.Units
         public IEnumerator AnimateLevelUp(int level)
         {
             yield return StartCoroutine(unitShaderController.AnimateLevelUp());
-            MoveLeft(level);
+            SetFacingDirection(currentFacingDirection, level);
             levelUpFX.Play();
+        }
+
+        public Direction GetCurrentDirection()
+        {
+            return currentFacingDirection;
+        }
+
+        public void SetFacingDirection(Direction facingDirection, int level)
+        {
+            switch (facingDirection)
+            {
+                case Direction.NorthEast:
+                    MoveUpRight(level);
+                    break;
+                case Direction.NorthWest:
+                    MoveUpRight(level);
+                    break;
+                case Direction.SouthEast:
+                    MoveDownRight(level);
+                    break;
+                case Direction.SouthWest:
+                    MoveDownLeft(level);
+                    break;
+                case Direction.East:
+                    MoveRight(level);
+                    break;
+                case Direction.West:
+                default:
+                    MoveLeft(level);
+                    break;
+            }
         }
     }
 }

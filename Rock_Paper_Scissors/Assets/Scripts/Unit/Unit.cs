@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RockPaperScissors.Grids;
+using RockPaperScissors.SaveSystem;
 using UnityEngine;
 
 namespace RockPaperScissors.Units
 {
-    public class Unit : MonoBehaviour
+    public class Unit : MonoBehaviour, ISaveInterface<SaveUnitData>
     {
         public static event EventHandler OnUnitSpawn;
         [SerializeField] private UnitAnimator unitAnimator;
@@ -15,6 +17,9 @@ namespace RockPaperScissors.Units
         private UnitAction[] unitActions;
         private UnitProgression unitProgression;
         private UnitHealth health;
+        private Vector2Int unitGridPosition;
+        private int attackActionPoints = 0;
+        private int moveActionPoints = 0;
 
         private void Awake() 
         {
@@ -165,6 +170,32 @@ namespace RockPaperScissors.Units
         public int GetUnitDefeatedReward()
         {
             return unitData.unitDefeatedReward;
+        }
+
+        public SaveUnitData Save()
+        {
+            
+            SaveUnitData saveUnitData = new SaveUnitData
+            {
+                UnitData = unitData,
+                UnitLevel = GetLevel(),
+                UnitHealth = GetHealth(),
+                UnitXP = unitProgression.GetXP(),
+                IsFriendly = isFriendly,
+                FacingDirection = unitAnimator.GetCurrentDirection()
+            };
+
+            return saveUnitData;
+        }
+
+        public void Load(SaveUnitData loadData)
+        {
+            unitData = loadData.UnitData;
+            unitProgression.SetLevel(loadData.UnitLevel);
+            health.SetHealth(loadData.UnitHealth);
+            unitProgression.SetXP(loadData.UnitXP);
+            isFriendly = loadData.IsFriendly;
+            unitAnimator.SetFacingDirection(loadData.FacingDirection, unitProgression.GetLevel());
         }
     }
 }

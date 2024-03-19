@@ -42,9 +42,25 @@ namespace RockPaperScissors.Units
             }
         }
 
+        public int GetXP()
+        {
+            return xp;
+        }
+
         public int GetLevel()
         {
             return level;
+        }
+
+        
+        public void SetXP(int xp)
+        {
+            this.xp = xp;
+        }
+
+        public void SetLevel(int level)
+        {
+            this.level = level;
         }
     }
 }

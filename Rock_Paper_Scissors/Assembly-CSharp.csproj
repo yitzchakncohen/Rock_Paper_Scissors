@@ -50,10 +50,11 @@
     <UnityVersion>2021.3.28f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\yitzc\.vscode\extensions\visualstudiotoolsforunity.vstuc-0.9.4\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\yitzc\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.0.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\UI\HealthBar.cs" />
+    <Compile Include="Assets\Scripts\SaveSystem\SaveManager.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitHealth.cs" />
     <Compile Include="Assets\Scripts\UI\CancelButton.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyStatePattern.cs" />
@@ -67,10 +68,12 @@
     <Compile Include="Assets\Scripts\Unit\UnitProgression.cs" />
     <Compile Include="Assets\Scripts\UI\FastForwardButton.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitAction.cs" />
+    <Compile Include="Assets\Scripts\SaveSystem\SaveTurnManagerData.cs" />
     <Compile Include="Assets\Scripts\UI\StatusIconUI.cs" />
     <Compile Include="Assets\Scripts\Grid\GridManager.cs" />
     <Compile Include="Assets\Scripts\Currency\CurrencyBank.cs" />
     <Compile Include="Assets\Scripts\TurnManager.cs" />
+    <Compile Include="Assets\Scripts\SaveSystem\SaveCurrencyBankData.cs" />
     <Compile Include="Assets\Scripts\PathFinding\PathNode.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitAttack.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitData.cs" />
@@ -83,8 +86,10 @@
     <Compile Include="Assets\Scripts\Unit\UnitClass.cs" />
     <Compile Include="Assets\Scripts\Grid\GridObjectUI.cs" />
     <Compile Include="Assets\Scripts\Grid\GridUI.cs" />
+    <Compile Include="Assets\Scripts\SaveSystem\ISaveInterface.cs" />
     <Compile Include="Assets\Scripts\ActionHandler.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Scripts\SaveSystem\SaveUnitData.cs" />
     <Compile Include="Assets\Scripts\UI\RadialLayoutGroup.cs" />
     <Compile Include="Assets\Scripts\Enemy\WaitingForTurnState.cs" />
     <Compile Include="Assets\Scripts\UI\RandomColourVariation.cs" />
@@ -102,11 +107,6 @@
     <Compile Include="Assets\Scripts\Unit\UnitMovement.cs" />
     <Compile Include="Assets\Scripts\Enemy\FindingActionState.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
-    <Compile Include="Assets\Scripts\SaveSystem\SaveManager.cs" />
-    <Compile Include="Assets\Scripts\SaveSystem\ISaveInterface.cs" />
-    <Compile Include="Assets\Scripts\SaveSystem\SaveUnitData.cs" />
-    <Compile Include="Assets\Scripts\SaveSystem\SaveCurrencyBankData.cs" />
-    <Compile Include="Assets\Scripts\SaveSystem\SaveTurnManagerData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

@@ -73,6 +73,10 @@ namespace RockPaperScissors.Units
         {
             return health;
         }
+        public void SetHealth(int health)
+        {
+            this.health = health;
+        }
 
         public bool IsDead()
         {

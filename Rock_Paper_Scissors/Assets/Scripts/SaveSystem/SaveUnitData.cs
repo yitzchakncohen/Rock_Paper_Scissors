@@ -3,21 +3,28 @@ using System.Collections.Generic;
 using RockPaperScissors.Units;
 using UnityEngine;
 
-public struct SaveUnitData
+namespace RockPaperScissors.SaveSystem
 {
-    public UnitClass UnitClass;
-    public int Level;
-    public int ActionPointsRemaining; 
-    public int UnitHealth;
-    public Vector2Int GridPosition;
-    public bool IsFriendly;
-    public Direction FacingDirection;
+    public struct SaveUnitData
+    {
+        public UnitData UnitData;
+        public int UnitLevel;
+        public int AttackActionPointsRemaining; 
+        public int MoveActionPointsRemaining; 
+        public int UnitHealth;
+        public int UnitXP;
+        public Vector2Int GridPosition;
+        public bool IsFriendly;
+        public Direction FacingDirection;
+    }
 }
 
 public enum Direction
 {
-    North,
-    South,
+    NorthWest,
+    NorthEast,
+    SouthWest,
+    SouthEast,
     East,
     West
 }

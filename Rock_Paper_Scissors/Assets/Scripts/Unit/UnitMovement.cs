@@ -289,6 +289,11 @@ namespace RockPaperScissors.Units
             return healthAmountValue;
         }
 
+        private Vector2Int GetCurrentGridPosition()
+        {
+            return gridManager.GetGridPositionFromWorldPosition(this.transform.position);
+        }
+
         public override int GetValidActionsRemaining()
         {
             if(GetValidMovementPositions().Count > 0)
