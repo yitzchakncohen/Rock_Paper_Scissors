@@ -28,7 +28,23 @@ namespace RockPaperScissors.SaveSystem
 
             foreach (var unit in FindObjectsOfType<Unit>())
             {
-                string json = JsonUtility.ToJson(unit.Save());
+                // Get Unit location
+                SaveUnitData saveUnitData = unit.Save();
+                saveUnitData.GridPosition = gridManager.GetGridPositionFromWorldPosition(unit.transform.position);
+                // Get Unit action points
+                foreach (var action in unit.GetUnitActions())
+                {
+                    if(action is UnitAttack)
+                    {
+                        saveUnitData.AttackActionPointsRemaining = action.GetActionPointsRemaining();
+                    }
+                    else if(action is UnitMovement)
+                    {
+                        saveUnitData.MoveActionPointsRemaining = action.GetActionPointsRemaining();
+                    }
+                }
+
+                string json = JsonUtility.ToJson(saveUnitData);
                 jsonStrings.Add(json);
                 Debug.Log(json);
             }

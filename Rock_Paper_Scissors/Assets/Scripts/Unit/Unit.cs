@@ -174,7 +174,7 @@ namespace RockPaperScissors.Units
             
             SaveUnitData saveUnitData = new SaveUnitData
             {
-                UnitData = unitData,
+                UnitClass = unitData.unitClass,
                 UnitLevel = GetLevel(),
                 UnitHealth = GetHealth(),
                 UnitXP = unitProgression.GetXP(),
@@ -192,7 +192,6 @@ namespace RockPaperScissors.Units
 
         public void Load(SaveUnitData loadData)
         {
-            unitData = loadData.UnitData;
             unitProgression.SetLevel(loadData.UnitLevel);
             health.SetHealth(loadData.UnitHealth);
             unitProgression.SetXP(loadData.UnitXP);

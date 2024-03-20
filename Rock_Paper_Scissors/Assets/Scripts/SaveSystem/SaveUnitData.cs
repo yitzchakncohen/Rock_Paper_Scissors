@@ -9,7 +9,8 @@ namespace RockPaperScissors.SaveSystem
     {
         // GridPosition for spawning purposes
         public Vector2Int GridPosition;
-        public UnitData UnitData;
+        // Spawn unit of correct class
+        public UnitClass UnitClass;
         public int UnitLevel;
         public int AttackActionPointsRemaining; 
         public int MoveActionPointsRemaining; 

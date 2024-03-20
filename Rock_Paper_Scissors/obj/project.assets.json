@@ -1,49 +1,11 @@
 {
   "version": 3,
   "targets": {
-    ".NETStandard,Version=v2.1": {
-      "Assembly-CSharp/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.1",
-        "dependencies": {
-          "Assembly-CSharp-firstpass": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/Assembly-CSharp.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Assembly-CSharp.dll": {}
-        }
-      },
-      "Assembly-CSharp-firstpass/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.1",
-        "compile": {
-          "bin/placeholder/Assembly-CSharp-firstpass.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Assembly-CSharp-firstpass.dll": {}
-        }
-      }
-    }
+    ".NETStandard,Version=v2.1": {}
   },
-  "libraries": {
-    "Assembly-CSharp/1.0.0": {
-      "type": "project",
-      "path": "Assembly-CSharp.csproj",
-      "msbuildProject": "Assembly-CSharp.csproj"
-    },
-    "Assembly-CSharp-firstpass/1.0.0": {
-      "type": "project",
-      "path": "Assembly-CSharp-firstpass.csproj",
-      "msbuildProject": "Assembly-CSharp-firstpass.csproj"
-    }
-  },
+  "libraries": {},
   "projectFileDependencyGroups": {
-    ".NETStandard,Version=v2.1": [
-      "Assembly-CSharp >= 1.0.0",
-      "Assembly-CSharp-firstpass >= 1.0.0"
-    ]
+    ".NETStandard,Version=v2.1": []
   },
   "packageFolders": {
     "C:\\Users\\yitzc\\.nuget\\packages\\": {}
@@ -51,9 +13,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Unity Projects\\Rock_Paper_Scissors_Repo\\Rock_Paper_Scissors\\Assembly-CSharp-Editor.csproj",
-      "projectName": "Assembly-CSharp-Editor",
-      "projectPath": "D:\\Unity Projects\\Rock_Paper_Scissors_Repo\\Rock_Paper_Scissors\\Assembly-CSharp-Editor.csproj",
+      "projectUniqueName": "D:\\Unity Projects\\Rock_Paper_Scissors_Repo\\Rock_Paper_Scissors\\Assembly-CSharp-firstpass.csproj",
+      "projectName": "Assembly-CSharp-firstpass",
+      "projectPath": "D:\\Unity Projects\\Rock_Paper_Scissors_Repo\\Rock_Paper_Scissors\\Assembly-CSharp-firstpass.csproj",
       "packagesPath": "C:\\Users\\yitzc\\.nuget\\packages\\",
       "outputPath": "D:\\Unity Projects\\Rock_Paper_Scissors_Repo\\Rock_Paper_Scissors\\obj\\",
       "projectStyle": "PackageReference",
@@ -71,14 +33,7 @@
       "frameworks": {
         "netstandard2.1": {
           "targetAlias": "netstandard2.1",
-          "projectReferences": {
-            "D:\\Unity Projects\\Rock_Paper_Scissors_Repo\\Rock_Paper_Scissors\\Assembly-CSharp-firstpass.csproj": {
-              "projectPath": "D:\\Unity Projects\\Rock_Paper_Scissors_Repo\\Rock_Paper_Scissors\\Assembly-CSharp-firstpass.csproj"
-            },
-            "D:\\Unity Projects\\Rock_Paper_Scissors_Repo\\Rock_Paper_Scissors\\Assembly-CSharp.csproj": {
-              "projectPath": "D:\\Unity Projects\\Rock_Paper_Scissors_Repo\\Rock_Paper_Scissors\\Assembly-CSharp.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {
