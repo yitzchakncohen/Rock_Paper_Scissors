@@ -12,10 +12,10 @@ namespace RockPaperScissors.SaveSystem
     public class SaveManager : MonoBehaviour
     {
         private const string SAVE_DIRECTORY = "/Saves/";
-        [SerializeField] private List<Unit> listOfFriendlyUnitTypes;
-        [SerializeField] private List<Unit> listOfEnemyUnitTypes;
-        private Dictionary<UnitClass, Unit> dictionaryOfFriendlyUnitTypes;
-        private Dictionary<UnitClass, Unit> dictionaryOfEnemyUnitTypes;
+        [SerializeField] private List<Unit> listOfFriendlyUnitTypes = new List<Unit>();
+        [SerializeField] private List<Unit> listOfEnemyUnitTypes = new List<Unit>();
+        private Dictionary<UnitClass, Unit> dictionaryOfFriendlyUnitTypes = new Dictionary<UnitClass, Unit>();
+        private Dictionary<UnitClass, Unit> dictionaryOfEnemyUnitTypes = new Dictionary<UnitClass, Unit>();
         private GridManager gridManager;
         private TurnManager turnManager;
         private CurrencyBank currencyBank;
@@ -116,30 +116,38 @@ namespace RockPaperScissors.SaveSystem
         {
             if(unitData.IsFriendly)
             {
+                Unit spawnedUnit = null;
                 foreach (KeyValuePair<UnitClass, Unit> unit in dictionaryOfFriendlyUnitTypes)
                 {
                     if(unitData.UnitClass == unit.Key)
                     {
                         Vector2Int spawnPosition = unitData.GridPosition;
-                        Unit spawnedUnit = Instantiate(unit.Value, gridManager.GetGridObject(spawnPosition).transform.position, Quaternion.identity);
+                        spawnedUnit = Instantiate(unit.Value, gridManager.GetGridObject(spawnPosition).transform.position, Quaternion.identity);
                         spawnedUnit.Load(unitData);
                         break;
                     }
                 }
-                Debug.LogError("Cannot load Unit, unit class not found");
+                if(spawnedUnit == null)
+                {
+                    Debug.LogError("Cannot load Frinedly Unit, " + unitData.UnitClass.ToString() + " class not found.");
+                }
             }
             else
             {
+                Unit spawnedUnit = null;
                 foreach (KeyValuePair<UnitClass, Unit> unit in dictionaryOfEnemyUnitTypes)
                 {
                     if(unitData.UnitClass == unit.Key)
                     {
                         Vector2Int spawnPosition = unitData.GridPosition;
-                        Unit spawnedUnit = Instantiate(unit.Value, gridManager.GetGridObject(spawnPosition).transform.position, Quaternion.identity);
+                        spawnedUnit = Instantiate(unit.Value, gridManager.GetGridObject(spawnPosition).transform.position, Quaternion.identity);
                         spawnedUnit.Load(unitData);
                         break;
                     }
-                    Debug.LogError("Cannot load Unit, unit class not found");
+                }
+                if(spawnedUnit == null)
+                {
+                    Debug.LogError("Cannot load Enemy Unit, " + unitData.UnitClass.ToString() + " class not found.");
                 }
             }
         }

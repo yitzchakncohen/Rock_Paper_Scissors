@@ -60,5 +60,6 @@ public class CurrencyBank : MonoBehaviour, ISaveInterface<SaveCurrencyBankData>
     public void Load(SaveCurrencyBankData loadData)
     {
         currency = loadData.Currency;
+        OnCurrencyChanged?.Invoke(this, currency);
     }
 }   
