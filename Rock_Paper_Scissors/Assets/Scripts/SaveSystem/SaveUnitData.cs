@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace RockPaperScissors.SaveSystem
 {
+    [System.Serializable]
     public struct SaveUnitData
     {
         // GridPosition for spawning purposes
@@ -21,6 +22,7 @@ namespace RockPaperScissors.SaveSystem
     }
 }
 
+[System.Serializable]
 public enum Direction
 {
     NorthWest,

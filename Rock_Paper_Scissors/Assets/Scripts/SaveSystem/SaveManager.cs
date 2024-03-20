@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using RockPaperScissors.Grids;
 using RockPaperScissors.Units;
 using UnityEngine;
@@ -8,6 +11,11 @@ namespace RockPaperScissors.SaveSystem
 {
     public class SaveManager : MonoBehaviour
     {
+        private const string SAVE_DIRECTORY = "/Saves/";
+        [SerializeField] private List<Unit> listOfFriendlyUnitTypes;
+        [SerializeField] private List<Unit> listOfEnemyUnitTypes;
+        private Dictionary<UnitClass, Unit> dictionaryOfFriendlyUnitTypes;
+        private Dictionary<UnitClass, Unit> dictionaryOfEnemyUnitTypes;
         private GridManager gridManager;
         private TurnManager turnManager;
         private CurrencyBank currencyBank;
@@ -17,6 +25,25 @@ namespace RockPaperScissors.SaveSystem
             gridManager = FindObjectOfType<GridManager>();
             turnManager = FindObjectOfType<TurnManager>();
             currencyBank =FindObjectOfType<CurrencyBank>();
+
+            if(!Directory.Exists(Application.dataPath + SAVE_DIRECTORY))
+            {
+                Directory.CreateDirectory(Application.dataPath + SAVE_DIRECTORY);
+            }
+
+            SetupUnitDictionaries();
+        }
+
+        private void SetupUnitDictionaries()
+        {
+            foreach (Unit unit in listOfFriendlyUnitTypes)
+            {
+                dictionaryOfFriendlyUnitTypes.Add(unit.GetUnitClass(), unit);
+            }
+            foreach (Unit unit in listOfEnemyUnitTypes)
+            {
+                dictionaryOfEnemyUnitTypes.Add(unit.GetUnitClass(), unit);
+            }
         }
 
         [ContextMenu("Save Game")]
@@ -24,7 +51,7 @@ namespace RockPaperScissors.SaveSystem
         {
             // TODO add saving indicator
 
-            List<string> jsonStrings = new List<string>();
+            List<SaveUnitData> SaveUnitDataList = new List<SaveUnitData>();
 
             foreach (var unit in FindObjectsOfType<Unit>())
             {
@@ -44,22 +71,77 @@ namespace RockPaperScissors.SaveSystem
                     }
                 }
 
-                string json = JsonUtility.ToJson(saveUnitData);
-                jsonStrings.Add(json);
-                Debug.Log(json);
+                SaveUnitDataList.Add(saveUnitData);
             }
+            
 
-            string currencyBankJson = JsonUtility.ToJson(currencyBank.Save());
-            jsonStrings.Add(currencyBankJson);
+            SaveCurrencyBankData currencyBankData = currencyBank.Save();
+            SaveTurnManagerData turnManagerData = turnManager.Save();
 
-            string turnManagerJson = JsonUtility.ToJson(turnManager.Save());
-            jsonStrings.Add(turnManagerJson);
+            SaveObject saveObject = new SaveObject
+            {
+                SaveCurrencyBankData = currencyBankData,
+                SaveTurnManagerData = turnManagerData,
+                UnitList = SaveUnitDataList
+            };
+
+            string json = JsonUtility.ToJson(saveObject);
+            File.WriteAllText(Application.dataPath + SAVE_DIRECTORY + "save.txt", json);
         }
 
         [ContextMenu("Load Game")]
         public void LoadGame()
         {
             // TODO add loading indicator
+
+            if(File.Exists(Application.dataPath + SAVE_DIRECTORY + "save.txt"))
+            {
+                string saveString = File.ReadAllText(Application.dataPath + SAVE_DIRECTORY + "save.txt");
+                SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
+
+                turnManager.Load(saveObject.SaveTurnManagerData);
+                currencyBank.Load(saveObject.SaveCurrencyBankData);
+                foreach (SaveUnitData unitData in saveObject.UnitList)
+                {
+                    SpawnUnitByClassandTeam(unitData);
+                }
+            }
+            else
+            {
+                Debug.LogError("No save file found.");
+            }
+        }
+
+        private void SpawnUnitByClassandTeam(SaveUnitData unitData)
+        {
+            if(unitData.IsFriendly)
+            {
+                foreach (KeyValuePair<UnitClass, Unit> unit in dictionaryOfFriendlyUnitTypes)
+                {
+                    if(unitData.UnitClass == unit.Key)
+                    {
+                        Vector2Int spawnPosition = unitData.GridPosition;
+                        Unit spawnedUnit = Instantiate(unit.Value, gridManager.GetGridObject(spawnPosition).transform.position, Quaternion.identity);
+                        spawnedUnit.Load(unitData);
+                        break;
+                    }
+                }
+                Debug.LogError("Cannot load Unit, unit class not found");
+            }
+            else
+            {
+                foreach (KeyValuePair<UnitClass, Unit> unit in dictionaryOfEnemyUnitTypes)
+                {
+                    if(unitData.UnitClass == unit.Key)
+                    {
+                        Vector2Int spawnPosition = unitData.GridPosition;
+                        Unit spawnedUnit = Instantiate(unit.Value, gridManager.GetGridObject(spawnPosition).transform.position, Quaternion.identity);
+                        spawnedUnit.Load(unitData);
+                        break;
+                    }
+                    Debug.LogError("Cannot load Unit, unit class not found");
+                }
+            }
         }
     }
 }

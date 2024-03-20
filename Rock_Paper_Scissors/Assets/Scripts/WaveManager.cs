@@ -24,7 +24,6 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private float showUnitsTime = 1f;
     private CurrencyBank currencyBank;
     private GridManager gridManager;
-    private List<Unit> unitsSpawnedThisWave = new List<Unit>();
 
     private void Start() 
     {
@@ -44,20 +43,22 @@ public class WaveManager : MonoBehaviour
 
     private void StartWave(int turn)
     {
+        List<Unit> unitsSpawnedThisWave = new List<Unit>();
         foreach (Wave wave in waves)
         {
             if(wave.TurnToStartWave == turn)
             {
                 currencyBank.AddCurrencyToBank(wave.CurrencyBonus);
-                SpawnUnits(wave);
-                StartCoroutine(ShowSpawnedUnits());
+                unitsSpawnedThisWave = SpawnUnits(wave);
+                StartCoroutine(ShowSpawnedUnits(unitsSpawnedThisWave));
                 Debug.Log($"Wave spawning...");
             }
         }
     }
 
-    private void SpawnUnits(Wave wave)
+    private List<Unit> SpawnUnits(Wave wave)
     {
+        List<Unit> unitsSpawnedThisWave = new List<Unit>();
         // Create a list of valid spawn points
         int radius = wave.UnitsToSpawn.Length / 3;
         List<Vector2Int> spawnPositions = new List<Vector2Int>();
@@ -67,7 +68,6 @@ public class WaveManager : MonoBehaviour
         }
 
         // Spawn the units in random locations near the spawn points.
-        unitsSpawnedThisWave.Clear();
         foreach (Unit unit in wave.UnitsToSpawn)
         {
             if(spawnPositions.Count() > 0)
@@ -79,6 +79,7 @@ public class WaveManager : MonoBehaviour
                 spawnPositions.Remove(spawnPosition);
             }
         }
+        return unitsSpawnedThisWave;
     }
 
     private List<Vector2Int> GetValidSpawnGridPositionsForSpawnPoint(Vector3 spawnPoint,  int radius)
@@ -103,7 +104,7 @@ public class WaveManager : MonoBehaviour
         return spawnPositions;
     }
 
-    private IEnumerator ShowSpawnedUnits()
+    private IEnumerator ShowSpawnedUnits(List<Unit> unitsSpawnedThisWave)
     {
         OnWaveStarted?.Invoke();
 
