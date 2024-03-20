@@ -93,6 +93,7 @@ namespace RockPaperScissors.SaveSystem
         public void LoadGame()
         {
             // TODO add loading indicator
+            // TODO clear all grid objects and delete all units. 
 
             if(File.Exists(Application.dataPath + SAVE_DIRECTORY + "save.txt"))
             {
@@ -110,6 +111,7 @@ namespace RockPaperScissors.SaveSystem
             {
                 Debug.LogError("No save file found.");
             }
+            gridManager.UpdateGridOccupancy();
         }
 
         private void SpawnUnitByClassandTeam(SaveUnitData unitData)
