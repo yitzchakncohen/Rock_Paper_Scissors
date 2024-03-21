@@ -1,12 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using RockPaperScissors.Grids;
 using RockPaperScissors.PathFindings;
 using RockPaperScissors.UI;
 using RockPaperScissors.Units;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class ActionHandler : MonoBehaviour
 {
@@ -16,7 +14,6 @@ public class ActionHandler : MonoBehaviour
     private InputManager inputManager;
     private GridManager gridManager;
     private GridUI gridUIManager;
-    private PathFinding pathFinding;
     private TurnManager turnManager;
     private UnitManager unitManager;
     private Queue<Unit> unitQueue = new Queue<Unit>();
@@ -29,7 +26,6 @@ public class ActionHandler : MonoBehaviour
         gridManager = FindObjectOfType<GridManager>();
         gridUIManager = FindObjectOfType<GridUI>();
         inputManager = FindObjectOfType<InputManager>();
-        pathFinding = FindObjectOfType<PathFinding>();
         turnManager = FindObjectOfType<TurnManager>();
         unitManager = FindObjectOfType<UnitManager>();
 
