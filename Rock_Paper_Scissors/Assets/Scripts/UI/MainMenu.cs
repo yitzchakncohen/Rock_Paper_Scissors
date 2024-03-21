@@ -11,5 +11,10 @@ namespace RockPaperScissors.UI
         {
             SceneManager.LoadScene(1);
         }
+
+        public void ContinueGame()
+        {
+            
+        }
     }
 }
