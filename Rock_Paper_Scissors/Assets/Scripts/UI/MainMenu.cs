@@ -8,12 +8,12 @@ namespace RockPaperScissors.UI
     {
         public void StartGame()
         {
-            
+            ApplicationManager.Instance.StartNewGame();
         }
 
         public void ContinueGame()
         {
-            
+            ApplicationManager.Instance.ContinueGame();
         }
     }
 }

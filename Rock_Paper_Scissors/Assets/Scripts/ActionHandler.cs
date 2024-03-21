@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using RockPaperScissors.Grids;
-using RockPaperScissors.PathFindings;
 using RockPaperScissors.UI;
 using RockPaperScissors.Units;
 using UnityEngine;
