@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using RockPaperScissors.SaveSystem;
+using RockPaperScissors.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -24,6 +26,20 @@ namespace RockPaperScissors
             {
                 Destroy(gameObject);
             }
+        }
+
+        private void Start() 
+        {
+            MainMenu.OnStartGameButtonPress += MainMenu_OnStartGameButtonPress;
+            MainMenu.OnContinueGameButtonPress += MainMenu_OnContinueGameButtonPress;
+            SaveButton.OnSaveButtonPress += SaveButton_OnSaveButtonPress;
+        }
+
+        private void OnDisable() 
+        {
+            MainMenu.OnStartGameButtonPress -= MainMenu_OnStartGameButtonPress;
+            MainMenu.OnContinueGameButtonPress -= MainMenu_OnContinueGameButtonPress;
+            SaveButton.OnSaveButtonPress -= SaveButton_OnSaveButtonPress;
         }
 
         public void StartNewGame()
@@ -63,6 +79,22 @@ namespace RockPaperScissors
 
             SaveManager saveManager = FindObjectOfType<SaveManager>();
             saveManager.LoadGame();
+        }
+
+        private void MainMenu_OnContinueGameButtonPress()
+        {
+            ContinueGame();
+        }
+
+        private void MainMenu_OnStartGameButtonPress()
+        {
+            StartNewGame();
+        }
+
+        private void SaveButton_OnSaveButtonPress()
+        {
+            SaveManager saveManager = FindObjectOfType<SaveManager>();
+            saveManager.SaveGame();
         }
     }
 
