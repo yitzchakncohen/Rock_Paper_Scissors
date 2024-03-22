@@ -23,13 +23,6 @@ namespace RockPaperScissors.Units
             unitActions = GetComponents<UnitAction>();
             health = GetComponent<UnitHealth>();
             unitProgression = GetComponent<UnitProgression>();
-        }
-
-        private void Start() 
-        {
-            ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
-            OnUnitSpawn?.Invoke(this, EventArgs.Empty);
-            unitShaderController.SetupSprite(unitData.unitThumbnail);
             if(unitAnimator != null)
             {
                 if(unitData.spriteLibrary != null)
@@ -41,6 +34,13 @@ namespace RockPaperScissors.Units
                     Debug.Log($"Unit {gameObject.name}, is missing a sprite library");
                 }
             }
+        }
+
+        private void Start() 
+        {
+            ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
+            OnUnitSpawn?.Invoke(this, EventArgs.Empty);
+            unitShaderController.SetupSprite(unitData.unitThumbnail);
         }
 
         private void OnDestroy() 
@@ -196,11 +196,18 @@ namespace RockPaperScissors.Units
             health.SetHealth(loadData.UnitHealth);
             unitProgression.SetXP(loadData.UnitXP);
             isFriendly = loadData.IsFriendly;
-            unitAnimator.SetFacingDirection(loadData.FacingDirection, unitProgression.GetLevel());
             foreach (UnitAction unitAction in GetUnitActions())
             {
                 unitAction.LoadAction(loadData);
             }
+            unitAnimator.SetFacingDirection(loadData.FacingDirection, unitProgression.GetLevel());
+            StartCoroutine(UpdateAnimatorRoutine());
+        }
+
+        private IEnumerator UpdateAnimatorRoutine()
+        {
+            yield return new WaitForEndOfFrame();
+            unitAnimator.UpdateSprite();
         }
     }
 }

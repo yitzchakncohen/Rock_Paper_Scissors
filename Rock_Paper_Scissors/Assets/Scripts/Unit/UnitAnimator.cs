@@ -16,18 +16,29 @@ namespace RockPaperScissors.Units
         private SpriteLibrary spriteLibrary;
         private Animator animator;
         private UnitShaderController unitShaderController;
-        private Direction currentFacingDirection;
+        private Direction currentFacingDirection = Direction.SouthWest;
 
         private void Awake() 
         {
             animator = GetComponent<Animator>();
-            spriteLibrary = GetComponent<SpriteLibrary>();
             unitShaderController = GetComponent<UnitShaderController>();
         }
 
-        public void SetSpriteLibraryAsset(SpriteLibraryAsset spriteLibraryAsset)
+        public void SetSpriteLibraryAsset(SpriteLibraryAsset spriteLibraryAsset) 
         {
+            if (spriteLibrary == null)
+            {
+                spriteLibrary = GetComponent<SpriteLibrary>();
+            }
             spriteLibrary.spriteLibraryAsset = spriteLibraryAsset;
+        }
+
+        public void UpdateSprite()
+        {
+            if (spriteResolver != null)
+            {
+                spriteResolver.ResolveSpriteToSpriteRenderer();
+            }
         }
 
         public void MoveLeft(int level)
@@ -142,24 +153,24 @@ namespace RockPaperScissors.Units
         {
             switch (facingDirection)
             {
+                case Direction.East:
+                    MoveRight(level);
+                    break;
+                case Direction.West:
+                    MoveLeft(level);
+                    break;
                 case Direction.NorthEast:
                     MoveUpRight(level);
                     break;
                 case Direction.NorthWest:
-                    MoveUpRight(level);
+                    MoveUpLeft(level);
                     break;
                 case Direction.SouthEast:
                     MoveDownRight(level);
                     break;
                 case Direction.SouthWest:
-                    MoveDownLeft(level);
-                    break;
-                case Direction.East:
-                    MoveRight(level);
-                    break;
-                case Direction.West:
                 default:
-                    MoveLeft(level);
+                    MoveDownLeft(level);
                     break;
             }
         }
