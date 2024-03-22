@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\Unit\UnitAction.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\SaveTurnManagerData.cs" />
     <Compile Include="Assets\Scripts\UI\StatusIconUI.cs" />
+    <Compile Include="Assets\Scripts\ApplicationManager.cs" />
     <Compile Include="Assets\Scripts\Grid\GridManager.cs" />
     <Compile Include="Assets\Scripts\Currency\CurrencyBank.cs" />
     <Compile Include="Assets\Scripts\TurnManager.cs" />
@@ -108,7 +109,7 @@
     <Compile Include="Assets\Scripts\Unit\UnitMovement.cs" />
     <Compile Include="Assets\Scripts\Enemy\FindingActionState.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
-    <Compile Include="Assets\Scripts\ApplicationManager.cs" />
+    <Compile Include="Assets\Scripts\UI\SaveButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
