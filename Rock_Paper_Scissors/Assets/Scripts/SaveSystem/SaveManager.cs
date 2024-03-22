@@ -12,6 +12,8 @@ namespace RockPaperScissors.SaveSystem
     public class SaveManager : MonoBehaviour
     {
         private const string SAVE_DIRECTORY = "/Saves/";
+        public static event Action OnSaveCompleted; 
+        public static event Action OnLoadCompleted; 
         [SerializeField] private List<Unit> listOfFriendlyUnitTypes = new List<Unit>();
         [SerializeField] private List<Unit> listOfEnemyUnitTypes = new List<Unit>();
         private Dictionary<UnitClass, Unit> dictionaryOfFriendlyUnitTypes = new Dictionary<UnitClass, Unit>();
@@ -49,6 +51,11 @@ namespace RockPaperScissors.SaveSystem
         [ContextMenu("Save Game")]
         public void SaveGame()
         {
+            StartCoroutine(SaveGameAsync());
+        }
+
+        private IEnumerator SaveGameAsync()
+        {
             // TODO add saving indicator
 
             List<SaveUnitData> SaveUnitDataList = new List<SaveUnitData>();
@@ -61,11 +68,11 @@ namespace RockPaperScissors.SaveSystem
                 // Get Unit action points
                 foreach (var action in unit.GetUnitActions())
                 {
-                    if(action is UnitAttack)
+                    if (action is UnitAttack)
                     {
                         saveUnitData.AttackActionPointsRemaining = action.GetActionPointsRemaining();
                     }
-                    else if(action is UnitMovement)
+                    else if (action is UnitMovement)
                     {
                         saveUnitData.MoveActionPointsRemaining = action.GetActionPointsRemaining();
                     }
@@ -73,7 +80,7 @@ namespace RockPaperScissors.SaveSystem
 
                 SaveUnitDataList.Add(saveUnitData);
             }
-            
+
 
             SaveCurrencyBankData currencyBankData = currencyBank.Save();
             SaveTurnManagerData turnManagerData = turnManager.Save();
@@ -87,15 +94,24 @@ namespace RockPaperScissors.SaveSystem
 
             string json = JsonUtility.ToJson(saveObject);
             File.WriteAllText(Application.dataPath + SAVE_DIRECTORY + "save.txt", json);
+
+            yield return null;
+
+            OnSaveCompleted?.Invoke();
         }
 
         [ContextMenu("Load Game")]
         public void LoadGame()
         {
+            StartCoroutine(LoadGameAsync());
+        }
+
+        private IEnumerator LoadGameAsync()
+        {
             // TODO add loading indicator
             // TODO clear all grid objects and delete all units. 
 
-            if(File.Exists(Application.dataPath + SAVE_DIRECTORY + "save.txt"))
+            if (File.Exists(Application.dataPath + SAVE_DIRECTORY + "save.txt"))
             {
                 string saveString = File.ReadAllText(Application.dataPath + SAVE_DIRECTORY + "save.txt");
                 SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
@@ -112,6 +128,10 @@ namespace RockPaperScissors.SaveSystem
                 Debug.LogError("No save file found.");
             }
             gridManager.UpdateGridOccupancy();
+
+            yield return null;
+
+            OnLoadCompleted?.Invoke();
         }
 
         private void SpawnUnitByClassandTeam(SaveUnitData unitData)

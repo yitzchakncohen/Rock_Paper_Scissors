@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RockPaperScissors.SaveSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,15 +17,30 @@ namespace RockPaperScissors.UI
             button = GetComponent<Button>();
         }
 
+        private void OnEnable() 
+        {
+            SaveManager.OnSaveCompleted += SaveManager_OnSaveCompleted;
+        }
+
+        private void OnDisable() 
+        {
+            SaveManager.OnSaveCompleted -= SaveManager_OnSaveCompleted;
+        }
+
         public void SaveButtonPress()
         {
             OnSaveButtonPress?.Invoke();
             button.interactable = false;
         }
 
-        public void SavingComplete()
+        private void SavingComplete()
         {
             button.interactable = true;
+        }
+
+        private void SaveManager_OnSaveCompleted()
+        {
+            SavingComplete();
         }
     }
 }

@@ -15,11 +15,17 @@ namespace RockPaperScissors.UI
             button = GetComponent<Button>();
         }
 
-        private void Start() 
+        private void OnEnable() 
         {
             UnitAction.OnAnyActionStarted += UnitAction_OnAnyActionStarted;
             UnitAction.OnAnyActionCompleted += UnitAction_OnAnyActionCompleted;
             button.interactable = false;
+        }
+
+        private void OnDisable() 
+        {
+            UnitAction.OnAnyActionStarted -= UnitAction_OnAnyActionStarted;
+            UnitAction.OnAnyActionCompleted -= UnitAction_OnAnyActionCompleted;
         }
 
         private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
