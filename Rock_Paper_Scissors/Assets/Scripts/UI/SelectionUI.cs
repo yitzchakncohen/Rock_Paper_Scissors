@@ -1,6 +1,7 @@
 using RockPaperScissors.Units;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RockPaperScissors.UI
 {
@@ -14,6 +15,7 @@ namespace RockPaperScissors.UI
         [SerializeField] private TextMeshProUGUI range;
         [SerializeField] private TextMeshProUGUI defense;
         [SerializeField] private TextMeshProUGUI movement;
+        [SerializeField] private Image xpBar;
 
         
         private void Start() 
@@ -34,6 +36,7 @@ namespace RockPaperScissors.UI
                 range.text = $" <sprite=3> {unit.GetAttackRange()}";
                 defense.text = $" <sprite=1> {unit.GetBaseDefense()}";
                 movement.text = $" <sprite=4> {unit.GetMoveDistance()}";
+                xpBar.fillAmount = unit.GetUnitProgression().GetXP() % 100 / 100.0f;
             }
             else
             {
