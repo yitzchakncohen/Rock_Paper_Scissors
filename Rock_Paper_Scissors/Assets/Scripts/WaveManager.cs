@@ -20,6 +20,7 @@ public class WaveManager : MonoBehaviour
     public static event Action OnWaveStarted;
     public static event Action OnWaveCompleted;
     public static event Action<Unit> OnWaveUnitSpawn;
+    public static event Action<int> OnTurnsUntilNextWaveUpdated;
     [SerializeField] private Wave[] waves;
     [SerializeField] private Transform[] enemySpawnPoints;
     [SerializeField] private Transform friendlySpawnPoint;
@@ -27,20 +28,44 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private Unit homeBasePrefab; 
     private CurrencyBank currencyBank;
     private GridManager gridManager;
+    private int turnsUntilNextWave = 0;
 
     private void Start() 
     {
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
         currencyBank = FindObjectOfType<CurrencyBank>();
         gridManager = FindObjectOfType<GridManager>();
+        UpdateTurnsUntilNextWave(0);
+    }
+
+    private void OnDestroy() 
+    {
+        TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
     }
 
     private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs eventArgs)
     {
-        if(eventArgs.IsPlayersTurn)
+        if (eventArgs.IsPlayersTurn)
         {
             StartWave(eventArgs.Turn);
         }
+
+        UpdateTurnsUntilNextWave(eventArgs.Turn);
+    }
+
+    private void UpdateTurnsUntilNextWave(int currentTurn)
+    {
+        int nextWave = currentTurn;
+        foreach (Wave wave in waves)
+        {
+            if (wave.TurnToStartWave > currentTurn)
+            {
+                nextWave = wave.TurnToStartWave;
+                break;
+            }
+        }
+        turnsUntilNextWave = nextWave - currentTurn;
+        OnTurnsUntilNextWaveUpdated.Invoke(turnsUntilNextWave);
     }
 
     public void StartWave(int turn)
