@@ -1,4 +1,5 @@
 using System;
+using RockPaperScissors.SaveSystem;
 using RockPaperScissors.Units;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +19,7 @@ namespace RockPaperScissors.UI
             WaveManager.OnWaveCompleted += WaveManager_OnWaveCompleted;
             WaveManager.OnWaveStarted += WaveManager_OnWaveStarted;
             UnitAction.OnAnyActionCompleted += UnitAction_OnAnyActionCompleted;
+            SaveManager.OnLoadCompleted += SaveManager_OnLoadCompleted;
             button = GetComponent<Button>();
             button.interactable = false;
         }
@@ -28,6 +30,7 @@ namespace RockPaperScissors.UI
             UnitAction.OnAnyActionCompleted -= UnitAction_OnAnyActionCompleted;
             WaveManager.OnWaveCompleted -= WaveManager_OnWaveCompleted;
             WaveManager.OnWaveStarted -= WaveManager_OnWaveStarted;
+            SaveManager.OnLoadCompleted -= SaveManager_OnLoadCompleted;
         }
 
         private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
@@ -73,6 +76,12 @@ namespace RockPaperScissors.UI
         private void WaveManager_OnWaveStarted()
         {
             button.interactable = false;
+        }
+
+        private void SaveManager_OnLoadCompleted()
+        {
+            button.interactable = true;
+            CheckActionsRemainingAsync();
         }
     }
 }

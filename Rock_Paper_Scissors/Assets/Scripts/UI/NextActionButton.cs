@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using RockPaperScissors.SaveSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +16,7 @@ namespace RockPaperScissors.UI
             TurnManager.OnNextTurn += TurnManager_OnNextTurn;
             WaveManager.OnWaveCompleted += WaveManager_OnWaveCompleted;
             WaveManager.OnWaveStarted += WaveManager_OnWaveStarted;
+            SaveManager.OnLoadCompleted += SaveManager_OnLoadCompleted;
             button = GetComponent<Button>();
             button.interactable = false;
         }
@@ -23,6 +26,7 @@ namespace RockPaperScissors.UI
             TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
             WaveManager.OnWaveCompleted -= WaveManager_OnWaveCompleted;
             WaveManager.OnWaveStarted -= WaveManager_OnWaveStarted;
+            SaveManager.OnLoadCompleted -= SaveManager_OnLoadCompleted;
         }
 
         private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs e)
@@ -45,6 +49,11 @@ namespace RockPaperScissors.UI
         private void WaveManager_OnWaveStarted()
         {
             button.interactable = false;
+        }
+
+        private void SaveManager_OnLoadCompleted()
+        {
+            button.interactable = true;
         }
     }
 }

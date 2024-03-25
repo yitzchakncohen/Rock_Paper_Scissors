@@ -32,15 +32,19 @@ namespace RockPaperScissors.UI
             {
                 background.SetActive(true);
                 UpdateUnitStats(unit);
+                selectedUnit = unit;
                 selectedUnit.GetUnitProgression().OnLevelUp += selectedUnit_OnLevelUp;
                 selectedUnit.GetUnitProgression().OnGainXP += selectedUnit_OnGainXP;
             }
             else
             {
                 background.SetActive(false);
-                selectedUnit.GetUnitProgression().OnLevelUp -= selectedUnit_OnLevelUp;
-                selectedUnit.GetUnitProgression().OnGainXP -= selectedUnit_OnGainXP;
-                selectedUnit = null;
+                if(selectedUnit != null)
+                {
+                    selectedUnit.GetUnitProgression().OnLevelUp -= selectedUnit_OnLevelUp;
+                    selectedUnit.GetUnitProgression().OnGainXP -= selectedUnit_OnGainXP;
+                    selectedUnit = null;
+                }
             }
         }
 

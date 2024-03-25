@@ -31,12 +31,17 @@ public class TurnManager : MonoBehaviour, ISaveInterface<SaveTurnManagerData>
     public void NextTurn()
     {
         playersTurn = !playersTurn;
-        if(playersTurn)
+        if (playersTurn)
         {
             turn++;
         }
         unitManager.ResetAllUnitActionPoints();
-        
+
+        NextTurnEvent();
+    }
+
+    private void NextTurnEvent()
+    {
         OnNextTurnEventArgs onNextTurnEventArgs = new OnNextTurnEventArgs
         {
             IsPlayersTurn = playersTurn,
