@@ -8,6 +8,7 @@ namespace RockPaperScissors.Units
     public class UnitProgression : MonoBehaviour
     {
         public event Action OnLevelUp;
+        public event Action OnGainXP;
         private UnitAnimator unitAnimator;
         private int level = 1;
         private int xp = 0;
@@ -29,6 +30,7 @@ namespace RockPaperScissors.Units
         private void GainXP(int amount)
         {
             xp += amount;
+            OnGainXP?.Invoke();
             CheckForLevelUp();
         }
 
