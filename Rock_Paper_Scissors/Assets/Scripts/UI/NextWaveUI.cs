@@ -7,7 +7,8 @@ using TMPro;
 public class NextWaveUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI nextWaveText;
-    
+    [SerializeField] private GameObject nextWaveHighlight;
+
     private void OnEnable() 
     {
         WaveManager.OnTurnsUntilNextWaveUpdated += WaveManager_OnTurnsUntilNextWaveUpdated;
@@ -21,5 +22,13 @@ public class NextWaveUI : MonoBehaviour
     private void WaveManager_OnTurnsUntilNextWaveUpdated(int turnsUntilNextWave)
     {
         nextWaveText.text = turnsUntilNextWave.ToString();
+        if(turnsUntilNextWave == 1)
+        {
+            nextWaveHighlight.SetActive(true);
+        }
+        else
+        {
+            nextWaveHighlight.SetActive(false);
+        }
     }
 }
