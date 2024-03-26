@@ -55,7 +55,10 @@ namespace RockPaperScissors.UI
 
         private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
         {
+            // float startTime = Time.realtimeSinceStartup;
+
             HideStatus();
+            // Debug.Log("StatusUpdateUI Action Complete Time: " + (Time.realtimeSinceStartup - startTime)*1000f);
         }
 
 

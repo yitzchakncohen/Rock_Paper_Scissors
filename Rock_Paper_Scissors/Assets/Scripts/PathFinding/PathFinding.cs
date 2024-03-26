@@ -28,7 +28,7 @@ namespace RockPaperScissors.PathFindings
             } 
         }
 
-        public List<GridObject> FindPath(Vector2Int startGridPosition, Vector2Int endGridPosition, out int pathLength, bool isFriendly)
+        public List<GridObject> FindPath(Vector2Int startGridPosition, Vector2Int endGridPosition, out int pathLength, IGridOccupantInterface gridOccupantInterface)
         {
             // float startTime = Time.realtimeSinceStartup;
 
@@ -79,7 +79,7 @@ namespace RockPaperScissors.PathFindings
                         continue;
                     }
 
-                    if(!neighbourNode.IsWalkable(isFriendly))
+                    if(!neighbourNode.IsWalkable(gridOccupantInterface))
                     {
                         closedList.Add(neighbourNode);
                         continue;
@@ -197,19 +197,19 @@ namespace RockPaperScissors.PathFindings
             return gridPositionList;
         }
 
-        public bool IsWalkableGridPosition(Vector2Int gridPosition, bool isFriendly)
+        public bool IsWalkableGridPosition(Vector2Int gridPosition, IGridOccupantInterface gridOccupantInterface)
         {
-            return gridManager.GetGridObject(gridPosition).IsWalkable(isFriendly);
+            return gridManager.GetGridObject(gridPosition).IsWalkable(gridOccupantInterface);
         }
 
-        public bool HasPath(Vector2Int startGridPosition, Vector2Int endGridPosition, bool isFriendly)
+        public bool HasPath(Vector2Int startGridPosition, Vector2Int endGridPosition, IGridOccupantInterface gridOccupantInterface)
         {
-            return FindPath(startGridPosition, endGridPosition, out int pathLength, isFriendly) != null;
+            return FindPath(startGridPosition, endGridPosition, out int pathLength, gridOccupantInterface) != null;
         }
 
-        public int GetPathLength(Vector2Int startGridPosition, Vector2Int endGridPosition, bool isFriendly)
+        public int GetPathLength(Vector2Int startGridPosition, Vector2Int endGridPosition, IGridOccupantInterface gridOccupantInterface)
         {
-            FindPath(startGridPosition, endGridPosition, out int pathLength, isFriendly);
+            FindPath(startGridPosition, endGridPosition, out int pathLength, gridOccupantInterface);
             return pathLength;
         }
     }

@@ -22,6 +22,6 @@ public class CurrencyUI : MonoBehaviour
 
     private void CurrencyBank_OnCurrencyChanged(object sender, int currency)
     {
-        currencyText.text = "Currency: " + currency;
+        currencyText.text = currency.ToString();
     }
 }

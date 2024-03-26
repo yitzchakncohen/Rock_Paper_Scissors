@@ -8,13 +8,14 @@ namespace RockPaperScissors.Units
     public class UnitProgression : MonoBehaviour
     {
         public event Action OnLevelUp;
+        public event Action OnGainXP;
         private UnitAnimator unitAnimator;
         private int level = 1;
         private int xp = 0;
 
         private void Start() 
         {
-            unitAnimator = FindObjectOfType<UnitAnimator>();
+            unitAnimator = GetComponentInChildren<UnitAnimator>();
             UnitHealth.OnDeath += Health_OnDeath;
         }
 
@@ -29,6 +30,7 @@ namespace RockPaperScissors.Units
         private void GainXP(int amount)
         {
             xp += amount;
+            OnGainXP?.Invoke();
             CheckForLevelUp();
         }
 
@@ -38,13 +40,29 @@ namespace RockPaperScissors.Units
             {
                 level = Math.Clamp(level + 1, 1, 3);
                 OnLevelUp?.Invoke();
-                unitAnimator.AnimateLevelUp(level);
+                StartCoroutine(unitAnimator.AnimateLevelUp(level));
             }
+        }
+
+        public int GetXP()
+        {
+            return xp;
         }
 
         public int GetLevel()
         {
             return level;
+        }
+
+        
+        public void SetXP(int xp)
+        {
+            this.xp = xp;
+        }
+
+        public void SetLevel(int level)
+        {
+            this.level = level;
         }
     }
 }

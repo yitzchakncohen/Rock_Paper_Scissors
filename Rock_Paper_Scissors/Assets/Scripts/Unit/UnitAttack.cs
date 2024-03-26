@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using RockPaperScissors.Grids;
+using RockPaperScissors.SaveSystem;
 using UnityEngine;
 
 namespace RockPaperScissors.Units
@@ -10,12 +11,14 @@ namespace RockPaperScissors.Units
     {
         [SerializeField] private UnitAnimator unitAnimator;
         [SerializeField] private AnimationCurve attackAnimationCurve;
+        private float cameraSnapDelay = 0.2f;
         private Unit unit;
         private Unit target;
         private GridManager gridManager;
         private float timer;
         private float attackAnimationTime = 0.6f;
         private Vector3 attackStartPosition;
+        private Vector3 attackTargetPosition;
         private bool attacking;
         private int unitAttackActionBaseValue = 100;
         private int classAdvantageMultiplier = 10;
@@ -40,13 +43,13 @@ namespace RockPaperScissors.Units
                 return;
             }
 
-            AnimateAttack(target.transform.position - transform.position);
+            AnimateAttack(attackTargetPosition - transform.position);
 
             // Check the attack timer to ensure the animation is complete, then compelte the attack.
             timer += Time.deltaTime;
             if(timer >= attackAnimationTime)
             {
-                CompleteAttack();
+                StartCoroutine(CompleteAttack());
             }
         }
 
@@ -54,19 +57,23 @@ namespace RockPaperScissors.Units
         {
             timer = 0f;
             attackStartPosition = transform.position;
+            attackTargetPosition = unitToAttack.transform.position;
             target = unitToAttack;
             attacking = true;
             ActionStart(onActionComplete);
         }
 
-        private void CompleteAttack()
+        private IEnumerator CompleteAttack()
         {
             GridObject gridObjectAttacking = gridManager.GetGridObjectFromWorldPosition(target.transform.position);
-            bool isTargetInTower = gridObjectAttacking.GetOccupentBuilding() != null;
+            bool isTargetInTower = gridObjectAttacking.GetOccupantBuilding() != null;
             int damageAmount = CombatModifiers.GetDamage(unit, target, isTargetInTower);
             target.Damage(damageAmount, unit);
             actionPointsRemaining -= 1;
             attacking = false;
+
+            // Wait to complete the action until the camera has snapped to the new location.
+            yield return new WaitForSeconds(cameraSnapDelay);
             ActionComplete();
         }
 
@@ -118,7 +125,7 @@ namespace RockPaperScissors.Units
             int level = unit.GetUnitProgression().GetLevel();
             float normalizedAnimationTime = timer/attackAnimationTime;
             // Animate the attack by moving the unit towards the unit it is attacking. 
-            transform.position = attackStartPosition + (target.transform.position - attackStartPosition)*attackAnimationCurve.Evaluate(normalizedAnimationTime);
+            transform.position = attackStartPosition + (attackTargetPosition - attackStartPosition)*attackAnimationCurve.Evaluate(normalizedAnimationTime);
 
             // Update the sprite via the animator.
             if(attackDirection.x > 0 && attackDirection.y > 0)
@@ -160,10 +167,10 @@ namespace RockPaperScissors.Units
             if(GetValidTargets(gridPosition).Contains(unitToAttack))
             {
                 StartAttack(unitToAttack, onActionComplete);
-                Debug.Log("Attacking: " + unitToAttack.gameObject.name);
+                // Debug.Log("Attacking: " + unitToAttack.gameObject.name);
                 return true;
             }
-            Debug.Log("Failed to attack: " + unitToAttack);
+            // Debug.Log("Failed to attack: " + unitToAttack);
             return false;
         }
 
@@ -209,9 +216,11 @@ namespace RockPaperScissors.Units
             foreach (Vector2Int position in gridPositionsInRangeList)
             {
                 GridObject gridObject = gridManager.GetGridObject(position);
-                if(gridObject.GetCombatTarget() != null && gridObject.GetCombatTarget().IsFriendly() != unit.IsFriendly())
+                if(gridObject.GetCombatTarget() != null 
+                    && gridObject.GetCombatTarget().IsFriendly() != unit.IsFriendly()
+                    && !((Unit)gridObject.GetCombatTarget()).IsDead())
                 {
-                    validTargetList.Add(gridObject.GetCombatTarget());
+                    validTargetList.Add((Unit)gridObject.GetCombatTarget());
                 }
             }
 
@@ -278,7 +287,7 @@ namespace RockPaperScissors.Units
 
         public override bool TryTakeAction(GridObject gridObject, Action onActionComplete)
         {
-            return TryAttackUnit(gridObject.GetCombatTarget(), onActionComplete);
+            return TryAttackUnit((Unit)gridObject.GetCombatTarget(), onActionComplete);
         }
 
         public Unit GetTarget()
@@ -294,6 +303,16 @@ namespace RockPaperScissors.Units
         protected override void CancelButton_OnCancelButtonPress()
         {
             base.CancelButton_OnCancelButtonPress();
+        }
+
+        public override void LoadAction(SaveUnitData loadData)
+        {
+            actionPointsRemaining = loadData.AttackActionPointsRemaining;
+        }
+
+        public override void SaveAction(SaveUnitData saveData)
+        {
+            saveData.AttackActionPointsRemaining = actionPointsRemaining;
         }
     }
 }

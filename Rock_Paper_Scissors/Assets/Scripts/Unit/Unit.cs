@@ -1,15 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RockPaperScissors.Grids;
+using RockPaperScissors.SaveSystem;
 using UnityEngine;
 
 namespace RockPaperScissors.Units
 {
-    public class Unit : MonoBehaviour
+    public class Unit : MonoBehaviour, ISaveInterface<SaveUnitData>, IGridOccupantInterface
     {
         public static event EventHandler OnUnitSpawn;
         [SerializeField] private UnitAnimator unitAnimator;
-        [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private UnitShaderController unitShaderController;
         [SerializeField] private bool isFriendly = true;
         [SerializeField] private UnitData unitData;
         private UnitAction[] unitActions;
@@ -21,13 +23,6 @@ namespace RockPaperScissors.Units
             unitActions = GetComponents<UnitAction>();
             health = GetComponent<UnitHealth>();
             unitProgression = GetComponent<UnitProgression>();
-        }
-
-        private void Start() 
-        {
-            ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
-            OnUnitSpawn?.Invoke(this, EventArgs.Empty);
-            spriteRenderer.sprite = unitData.unitThumbnail;
             if(unitAnimator != null)
             {
                 if(unitData.spriteLibrary != null)
@@ -41,6 +36,13 @@ namespace RockPaperScissors.Units
             }
         }
 
+        private void Start() 
+        {
+            ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
+            OnUnitSpawn?.Invoke(this, EventArgs.Empty);
+            unitShaderController.SetupSprite(unitData.unitThumbnail);
+        }
+
         private void OnDestroy() 
         {
             ActionHandler.OnUnitSelected -= ActionHandler_OnUnitSelected;
@@ -50,11 +52,11 @@ namespace RockPaperScissors.Units
         {
             if(selectedUnit == this)
             {
-                SetOutlineOn();
+                unitShaderController.SetOutlineOn();
             }
             else
             {
-                SetOutlineOff();
+                unitShaderController.SetOutlineOff();
             }
         }
 
@@ -63,19 +65,14 @@ namespace RockPaperScissors.Units
             return unitActions;
         }
 
-        public void SetOutlineOn()
-        {
-            spriteRenderer.material.SetInt("_OutlineOn", 1);
-        }
-
-        public void SetOutlineOff()
-        {
-            spriteRenderer.material.SetInt("_OutlineOn", 0);
-        }
-
         public bool IsFriendly()
         {
             return isFriendly;
+        }
+
+        public bool IsMoveable()
+        {
+            return GetComponent<UnitMovement>();
         }
 
         public void Damage(int damageAmount, Unit attacker)
@@ -137,6 +134,11 @@ namespace RockPaperScissors.Units
             return health.GetHealth();
         }
 
+        public bool IsDead()
+        {
+            return health.IsDead();
+        }
+
         public UnitAnimator GetUnitAnimator()
         {
             return unitAnimator;
@@ -165,6 +167,68 @@ namespace RockPaperScissors.Units
         public int GetUnitDefeatedReward()
         {
             return unitData.unitDefeatedReward;
+        }
+
+        public SaveUnitData Save()
+        {
+            
+            SaveUnitData saveUnitData = new SaveUnitData
+            {
+                UnitClass = unitData.unitClass,
+                UnitLevel = GetLevel(),
+                UnitHealth = GetHealth(),
+                UnitXP = unitProgression.GetXP(),
+                IsFriendly = isFriendly,
+                FacingDirection = unitAnimator.GetCurrentDirection()
+            };
+
+            foreach (UnitAction unitAction in GetUnitActions())
+            {
+                unitAction.SaveAction(saveUnitData);
+            }
+
+            return saveUnitData;
+        }
+
+        public void Load(SaveUnitData loadData)
+        {
+            unitProgression.SetLevel(loadData.UnitLevel);
+            health.SetHealth(loadData.UnitHealth);
+            unitProgression.SetXP(loadData.UnitXP);
+            isFriendly = loadData.IsFriendly;
+            foreach (UnitAction unitAction in GetUnitActions())
+            {
+                unitAction.LoadAction(loadData);
+            }
+            unitAnimator.SetFacingDirection(loadData.FacingDirection, unitProgression.GetLevel());
+            StartCoroutine(UpdateAnimatorRoutine());
+        }
+
+        private IEnumerator UpdateAnimatorRoutine()
+        {
+            yield return new WaitForEndOfFrame();
+            unitAnimator.UpdateSprite();
+        }
+
+        public bool CanWalkOn(IGridOccupantInterface gridOccupantInterface)
+        {
+            Unit gridOccupant = (Unit)gridOccupantInterface;
+            if(gridOccupantInterface != null && isFriendly == gridOccupant.IsFriendly())
+            {
+                // Which types of buildings can you walk over?
+                if(gridOccupant.GetUnitClass() == UnitClass.PillowOutpost)
+                {
+                    return true;
+                }
+                // Can't walk over any units right now
+                return false;
+            }
+            return true;
+        }
+
+        public bool IsBuilding()
+        {
+            return GetUnitClass() == UnitClass.PillowFort || GetUnitClass() == UnitClass.PillowOutpost;
         }
     }
 }

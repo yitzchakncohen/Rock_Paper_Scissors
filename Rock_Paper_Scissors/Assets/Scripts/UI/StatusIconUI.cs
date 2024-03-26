@@ -28,6 +28,8 @@ namespace RockPaperScissors.UI
 
         private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
         {
+            // float startTime = Time.realtimeSinceStartup;
+
             if(sender as UnitMovement)
             {
                 Unit updatedUnit = ((UnitMovement)sender).GetUnit();
@@ -36,6 +38,8 @@ namespace RockPaperScissors.UI
                     CheckForTowerOccupency(updatedUnit);
                 }
             }
+            
+            // Debug.Log("StatusIconUI Action Complete Time: " + (Time.realtimeSinceStartup - startTime)*1000f);
         }
 
         private void Unit_OnUnitSpawn(object sender, EventArgs e)
@@ -49,8 +53,13 @@ namespace RockPaperScissors.UI
         
         private void CheckForTowerOccupency(Unit updatedUnit)
         {
+            if(updatedUnit.GetUnitClass() == UnitClass.PillowFort || updatedUnit.GetUnitClass() == UnitClass.PillowOutpost)
+            {
+                return;
+            }
+
             GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(updatedUnit.transform.position);
-            if (gridObject.GetOccupentBuilding() != null)
+            if (gridObject.GetOccupantBuilding() != null)
             {
                 buildingOccupiedIcon.SetActive(true);
             }

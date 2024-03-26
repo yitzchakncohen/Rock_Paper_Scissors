@@ -11,7 +11,8 @@ public class WaveManager : MonoBehaviour
     [System.Serializable]
     private struct Wave
     {
-        public Unit[] UnitsToSpawn;
+        public Unit[] EnemyUnitsToSpawn;
+        public Unit[] FriendlyUnitsToSpawn;
         public int CurrencyBonus;
         public int TurnToStartWave;
     }
@@ -19,69 +20,138 @@ public class WaveManager : MonoBehaviour
     public static event Action OnWaveStarted;
     public static event Action OnWaveCompleted;
     public static event Action<Unit> OnWaveUnitSpawn;
+    public static event Action<int> OnTurnsUntilNextWaveUpdated;
     [SerializeField] private Wave[] waves;
-    [SerializeField] private Transform[] spawnPoints;
+    [SerializeField] private Transform[] enemySpawnPoints;
+    [SerializeField] private Transform friendlySpawnPoint;
     [SerializeField] private float showUnitsTime = 1f;
+    [SerializeField] private Unit homeBasePrefab; 
     private CurrencyBank currencyBank;
     private GridManager gridManager;
-    private List<Unit> unitsSpawnedThisWave = new List<Unit>();
+    private int turnsUntilNextWave = 0;
 
     private void Start() 
     {
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
         currencyBank = FindObjectOfType<CurrencyBank>();
         gridManager = FindObjectOfType<GridManager>();
-        StartWave(0);
+        UpdateTurnsUntilNextWave(0);
+    }
+
+    private void OnDestroy() 
+    {
+        TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
     }
 
     private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs eventArgs)
     {
-        if(eventArgs.IsPlayersTurn)
+        if (eventArgs.IsPlayersTurn)
         {
             StartWave(eventArgs.Turn);
         }
+
+        UpdateTurnsUntilNextWave(eventArgs.Turn);
     }
 
-    private void StartWave(int turn)
+    private void UpdateTurnsUntilNextWave(int currentTurn)
+    {
+        int nextWave = currentTurn;
+        foreach (Wave wave in waves)
+        {
+            if (wave.TurnToStartWave > currentTurn)
+            {
+                nextWave = wave.TurnToStartWave;
+                break;
+            }
+        }
+        turnsUntilNextWave = nextWave - currentTurn;
+        OnTurnsUntilNextWaveUpdated.Invoke(turnsUntilNextWave);
+    }
+
+    public void StartWave(int turn)
     {
         foreach (Wave wave in waves)
         {
             if(wave.TurnToStartWave == turn)
             {
                 currencyBank.AddCurrencyToBank(wave.CurrencyBonus);
-                SpawnUnits(wave);
-                StartCoroutine(ShowSpawnedUnits());
+
+                List<Unit> unitsSpawnedThisWave = SpawnEnemyUnits(wave.EnemyUnitsToSpawn);
+                unitsSpawnedThisWave.AddRange(SpawnFriendlyUnits(wave.FriendlyUnitsToSpawn, turn));
+                gridManager.UpdateGridOccupancy();
+
+                StartCoroutine(ShowSpawnedUnits(unitsSpawnedThisWave));
                 Debug.Log($"Wave spawning...");
             }
         }
     }
 
-    private void SpawnUnits(Wave wave)
+    private List<Unit> SpawnEnemyUnits(Unit[] unitsToSpawn)
     {
-        // Create a list of valid spawn points
-        int radius = wave.UnitsToSpawn.Length / 3;
-        List<Vector2Int> spawnPositions = new List<Vector2Int>();
-        foreach (Transform point in spawnPoints)
+        if(unitsToSpawn.Length == 0 )
         {
-            spawnPositions = spawnPositions.Concat(GetValidSpawnGridPositionsForSpawnPoint(point.position, radius)).ToList();;
+            return new List<Unit>();
+        }
+
+        List<Unit> enemyUnitsSpawnedThisWave = new List<Unit>();
+        // Create a list of valid spawn points
+        int radius = unitsToSpawn.Length / 3;
+        List<Vector2Int> spawnPositions = new List<Vector2Int>();
+        foreach (Transform point in enemySpawnPoints)
+        {
+            spawnPositions = spawnPositions.Concat(GetValidSpawnGridPositionsForSpawnPoint(unitsToSpawn.FirstOrDefault(), point.position, radius)).ToList();
         }
 
         // Spawn the units in random locations near the spawn points.
-        unitsSpawnedThisWave.Clear();
-        foreach (Unit unit in wave.UnitsToSpawn)
+        foreach (Unit unit in unitsToSpawn)
         {
             if(spawnPositions.Count() > 0)
             {
                 int spawnPositionIndex = UnityEngine.Random.Range(0, spawnPositions.Count());
                 Vector2Int spawnPosition = spawnPositions[spawnPositionIndex];
                 Unit spawnedUnit = Instantiate(unit, gridManager.GetGridObject(spawnPosition).transform.position, Quaternion.identity);
-                unitsSpawnedThisWave.Add(spawnedUnit);
+                enemyUnitsSpawnedThisWave.Add(spawnedUnit);
                 spawnPositions.Remove(spawnPosition);
             }
         }
+        return enemyUnitsSpawnedThisWave;
     }
 
-    private List<Vector2Int> GetValidSpawnGridPositionsForSpawnPoint(Vector3 spawnPoint,  int radius)
+    private List<Unit> SpawnFriendlyUnits(Unit[] unitsToSpawn, int turn)
+    {
+
+        List<Unit> friendlyUnitsSpawnedThisWave = new List<Unit>();
+        int radius = unitsToSpawn.Length / 3;
+        
+        if(turn == 0)
+        {
+            //Spawn the home base in the middle on the first turn. 
+            Vector2Int spawnPosition = gridManager.GetGridPositionFromWorldPosition(friendlySpawnPoint.position);
+            Unit spawnedUnit = Instantiate(homeBasePrefab, gridManager.GetGridObject(spawnPosition).transform.position, Quaternion.identity);
+            friendlyUnitsSpawnedThisWave.Add(spawnedUnit);
+        }        
+
+        if(unitsToSpawn.Length == 0 )
+        {
+            return new List<Unit>();
+        }
+        List<Vector2Int> spawnPositions = GetValidSpawnGridPositionsForSpawnPoint(unitsToSpawn.FirstOrDefault(), friendlySpawnPoint.position, radius);
+        foreach (Unit unit in unitsToSpawn)
+        {
+            if(spawnPositions.Count() > 0)
+            {
+                int spawnPositionIndex = UnityEngine.Random.Range(0, spawnPositions.Count());
+                Vector2Int spawnPosition = spawnPositions[spawnPositionIndex];
+                Unit spawnedUnit = Instantiate(unit, gridManager.GetGridObject(spawnPosition).transform.position, Quaternion.identity);
+                friendlyUnitsSpawnedThisWave.Add(spawnedUnit);
+                spawnPositions.Remove(spawnPosition);
+            }
+        }
+
+        return friendlyUnitsSpawnedThisWave;
+    }
+
+    private List<Vector2Int> GetValidSpawnGridPositionsForSpawnPoint(IGridOccupantInterface gridObject, Vector3 spawnPoint,  int radius)
     {
         List<Vector2Int> spawnPositions = new List<Vector2Int>();
 
@@ -93,7 +163,7 @@ public class WaveManager : MonoBehaviour
             {
                 Vector2Int testPosition = new Vector2Int(spawnPosition.x + x, spawnPosition.y + y);
                 if(gridManager.IsValidGridPosition(testPosition)
-                    && gridManager.GetGridObject(testPosition).IsWalkable(false))
+                    && gridManager.GetGridObject(testPosition).IsWalkable(gridObject))
                 {
                     spawnPositions.Add(testPosition);
                 }
@@ -103,37 +173,43 @@ public class WaveManager : MonoBehaviour
         return spawnPositions;
     }
 
-    private IEnumerator ShowSpawnedUnits()
+    private IEnumerator ShowSpawnedUnits(List<Unit> unitsSpawnedThisWave)
     {
         OnWaveStarted?.Invoke();
 
         unitsSpawnedThisWave.Sort(delegate(Unit unitA, Unit unitB)
         {
+            int friendlyBonus = 0; 
+            if(unitA.IsFriendly())
+            {
+                friendlyBonus = 100;
+            }
+
             if(unitA.transform.position.y > unitB.transform.position.y + 4)
             {
                 if(unitA.transform.position.x > unitB.transform.position.x)
                 {
-                    return -3;
+                    return -3 + friendlyBonus;
                 }
                 else if(unitA.transform.position.x < unitB.transform.position.x)
                 {
-                    return -2;
+                    return -2 + friendlyBonus;
                 }
-                return -1;
+                return -1 + friendlyBonus;
             }
             else if(unitA.transform.position.y < unitB.transform.position.y - 4)
             {
                 if(unitA.transform.position.x > unitB.transform.position.x)
                 {
-                    return 1;
+                    return 1 + friendlyBonus;
                 }
                 else if(unitA.transform.position.x < unitB.transform.position.x)
                 {
-                    return 2;
+                    return 2 + friendlyBonus;
                 }
-                return 3;
+                return 3 + friendlyBonus;
             }
-            return 0;
+            return 0 + friendlyBonus;
         });
         
         // Hide all the units.

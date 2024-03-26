@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using RockPaperScissors.Grids;
 using RockPaperScissors.PathFindings;
+using RockPaperScissors.SaveSystem;
 using UnityEngine;
 
 namespace RockPaperScissors.Units
@@ -12,6 +14,7 @@ namespace RockPaperScissors.Units
         [SerializeField] private UnitAnimator unitAnimator;
         [SerializeField] private float movementSpeed = 5f;
         [SerializeField] private float stoppingDistance = 0.1f;
+        private float cameraSnapDelay = 0.2f;
         private GridManager gridManager;
         private UnitManager unitManager;
         private PathFinding pathFinding;
@@ -57,20 +60,35 @@ namespace RockPaperScissors.Units
                 {
                     Vector2 moveDirection = (targetGridObjects[currentPositionIndex].transform.position - transform.position).normalized;
                     AnimateMovement(moveDirection);
-                    transform.position += (Vector3)(moveDirection * movementSpeed * Time.deltaTime);
+                    if((moveDirection * movementSpeed * Time.deltaTime).magnitude > Vector2.Distance(targetGridObjects[currentPositionIndex].transform.position, transform.position))
+                    {
+                        transform.position = targetGridObjects[currentPositionIndex].transform.position;
+                    }
+                    else
+                    {
+                        transform.position += (Vector3)(moveDirection * movementSpeed * Time.deltaTime);
+                    }
                     OnUnitMove?.Invoke(this, EventArgs.Empty);
                 }
             }
             else
             {
-                unitAnimator.ToggleMoveAnimation(false);
-                moving = false;
-                actionPointsRemaining -= 1;
-                ActionComplete();
-                
-                // TODO remove this debug statement. 
-                gridManager.ResetActionValueTexts();
+                StartCoroutine(EndMove());
             }
+        }
+
+        private IEnumerator EndMove()
+        {
+            unitAnimator.ToggleMoveAnimation(false);
+            moving = false;
+            actionPointsRemaining -= 1;
+            
+            // Wait to complete the action until the camera has snapped to the new location.
+            yield return new WaitForSeconds(cameraSnapDelay);
+            ActionComplete();
+
+            // TODO remove this debug statement. 
+            gridManager.ResetActionValueTexts();
         }
 
         public bool TryStartMove(GridObject targetGridObject, Action onActionComplete)
@@ -81,10 +99,10 @@ namespace RockPaperScissors.Units
             }
 
             Vector2Int currentGridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
-            targetGridObjects = pathFinding.FindPath(currentGridPosition, targetGridObject.GetGridPostion(), out int pathLength, unit.IsFriendly());
+            targetGridObjects = pathFinding.FindPath(currentGridPosition, targetGridObject.GetGridPostion(), out int pathLength, unit);
 
-            // Check if position is within movement range
-            if(pathLength > unit.GetMoveDistance())
+            // Check if position is within movement range and moveable
+            if(pathLength > unit.GetMoveDistance() || targetGridObjects == null)
             {
                 return false;
             }
@@ -144,13 +162,13 @@ namespace RockPaperScissors.Units
                     }
 
                     // Check if it's walkable
-                    if (!gridManager.GetGridObject(testGridPosition).IsWalkable(unit.IsFriendly()))
+                    if (!gridManager.GetGridObject(testGridPosition).IsWalkable(unit))
                     {
                         continue;
                     }
 
                     // Check if it's within movement distance
-                    pathFinding.FindPath(gridPosition, testGridPosition, out int testDistance, unit.IsFriendly());
+                    pathFinding.FindPath(gridPosition, testGridPosition, out int testDistance, unit);
                     if (testDistance > unit.GetMoveDistance())
                     {
                         continue;
@@ -207,15 +225,21 @@ namespace RockPaperScissors.Units
             
             // If there are no units in range of any of the movement spaces, the best action value will still be 0.
             // Instead move towards the closes enemy by setting a value from 1 to 10;
+            // float startTime = Time.realtimeSinceStartup;
             if(bestAction.actionValue == 0)
             {
+                Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
+                Unit closestUnit  = unitManager.GetClosestFriendlyUnitToPosition(gridPosition, out float distance);
+                Vector2Int closestUnitPosition = gridManager.GetGridPositionFromWorldPosition(closestUnit.transform.position);
+                
                 foreach (Vector2Int position in validMovePositions)
                 {
-                    GridObject gridObject = gridManager.GetGridObject(position);
+                    distance = gridManager.GetRelativeDistanceOfGridPositions(closestUnitPosition, position);
 
-                    unitManager.GetClosestFriendlyUnitToPosition(position, out float distance);
                     if(1 + 9f/distance > bestAction.actionValue)
                     {
+                        GridObject gridObject = gridManager.GetGridObject(position);
+
                         bestAction = new EnemyAIAction()
                         {
                             gridObject = gridObject,
@@ -223,11 +247,10 @@ namespace RockPaperScissors.Units
                             unitAction = this,
                         };
                     }
-
-                    gridManager.GetGridObject(position).SetActionValue(1 + 9f/distance);
                 }
             }
 
+            // Debug.Log("Get Closest Friendly: " + (Time.realtimeSinceStartup - startTime) * 1000f);
             return bestAction;
         }
 
@@ -267,6 +290,11 @@ namespace RockPaperScissors.Units
             return healthAmountValue;
         }
 
+        private Vector2Int GetCurrentGridPosition()
+        {
+            return gridManager.GetGridPositionFromWorldPosition(this.transform.position);
+        }
+
         public override int GetValidActionsRemaining()
         {
             if(GetValidMovementPositions().Count > 0)
@@ -292,6 +320,16 @@ namespace RockPaperScissors.Units
         protected override void CancelButton_OnCancelButtonPress()
         {
             base.CancelButton_OnCancelButtonPress();
+        }
+
+        public override void LoadAction(SaveUnitData loadData)
+        {
+            actionPointsRemaining = loadData.MoveActionPointsRemaining;
+        }
+
+        public override void SaveAction(SaveUnitData saveData)
+        {
+            saveData.MoveActionPointsRemaining = actionPointsRemaining;
         }
     }
 }

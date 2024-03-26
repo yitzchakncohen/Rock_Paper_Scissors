@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using RockPaperScissors.Grids;
 using RockPaperScissors.PathFindings;
+using RockPaperScissors.SaveSystem;
 using RockPaperScissors.UI;
 using UnityEngine;
 
@@ -74,11 +75,11 @@ namespace RockPaperScissors.Units
             return true;
         }
 
-        public List<Vector2Int> GetValidPlacementPositions()
+        public List<Vector2Int> GetValidPlacementPositions(Unit unitToSpawn)
         {
             List<Vector2Int> gridPositionList = new List<Vector2Int>();
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
-            Debug.Log($"Spawner at position { gridPosition}");
+            // Debug.Log($"Spawner at position { gridPosition}");
 
             for (int x = -placementRadius-1; x <= placementRadius+1; x++)
             {
@@ -93,15 +94,15 @@ namespace RockPaperScissors.Units
                     }
 
                     // Check if it's walkable for units
-                    if (unitToSpawn.GetUnitClass() != UnitClass.Tower 
-                        && !gridManager.GetGridObject(testGridPosition).IsWalkable(unitToSpawn.IsFriendly()))
+                    if (unitToSpawn.GetUnitClass() != UnitClass.PillowOutpost 
+                        && !gridManager.GetGridObject(testGridPosition).IsWalkable(unitToSpawn))
                     {
                         continue;
                     }
 
                     // Check if it has a building already for buildings
-                    if (unitToSpawn.GetUnitClass() == UnitClass.Tower 
-                        && gridManager.GetGridObject(testGridPosition).GetOccupentBuilding() != null )
+                    if (unitToSpawn.GetUnitClass() == UnitClass.PillowOutpost 
+                        && gridManager.GetGridObject(testGridPosition).GetOccupantBuilding() != null )
                     {
                         continue;
                     }
@@ -112,7 +113,7 @@ namespace RockPaperScissors.Units
                     // Find the closest spot on the edge
                     Vector2Int pathTestPostion = GetPositionOnEdge(gridPosition, x, y);
 
-                    pathFinding.FindPath(pathTestPostion, testGridPosition, out int testDistance, unitToSpawn.IsFriendly());
+                    pathFinding.FindPath(pathTestPostion, testGridPosition, out int testDistance, unitToSpawn);
                     // Debug.Log($"{pathTestPostion} to {testGridPosition}, path length {testDistance}");
                     if (testDistance > placementRadius)
                     {
@@ -180,7 +181,7 @@ namespace RockPaperScissors.Units
             Vector3 worldPositionOfInput = Camera.main.ScreenToWorldPoint(touchPosition);
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(worldPositionOfInput);
 
-            if(!GetValidPlacementPositions().Contains(gridPosition))
+            if(!GetValidPlacementPositions(unitToSpawn).Contains(gridPosition))
             {
                 return;
             }
@@ -232,6 +233,14 @@ namespace RockPaperScissors.Units
             placingUnit = false;
             unitSpawning = false;
             base.CancelButton_OnCancelButtonPress();
+        }
+
+        public override void LoadAction(SaveUnitData loadData)
+        {
+        }
+
+        public override void SaveAction(SaveUnitData saveData)
+        {
         }
     }
 }

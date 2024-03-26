@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using RockPaperScissors.Grids;
-using RockPaperScissors.PathFindings;
 using RockPaperScissors.UI;
 using RockPaperScissors.Units;
 using UnityEngine;
@@ -11,11 +9,10 @@ public class ActionHandler : MonoBehaviour
 {
     public static event EventHandler<Unit> OnUnitSelected;
     public static EventHandler<bool> BusyUpdated; 
-    [SerializeField] private Unit selectedBuilding;
+    [SerializeField] private Unit selectedUnit;
     private InputManager inputManager;
     private GridManager gridManager;
     private GridUI gridUIManager;
-    private PathFinding pathFinding;
     private TurnManager turnManager;
     private UnitManager unitManager;
     private Queue<Unit> unitQueue = new Queue<Unit>();
@@ -28,7 +25,6 @@ public class ActionHandler : MonoBehaviour
         gridManager = FindObjectOfType<GridManager>();
         gridUIManager = FindObjectOfType<GridUI>();
         inputManager = FindObjectOfType<InputManager>();
-        pathFinding = FindObjectOfType<PathFinding>();
         turnManager = FindObjectOfType<TurnManager>();
         unitManager = FindObjectOfType<UnitManager>();
 
@@ -84,14 +80,14 @@ public class ActionHandler : MonoBehaviour
 
     private void HandleGridObjectTouch(GridObject gridObject)
     {
-        Unit gridOccupentUnit = gridObject.GetOccupentUnit();
-        Unit gridOccupentBuilding = gridObject.GetOccupentBuilding(); 
+        IGridOccupantInterface gridOccupantUnit = gridObject.GetOccupantUnit();
+        IGridOccupantInterface gridOccupantBuilding = gridObject.GetOccupantBuilding(); 
         
         // Check if the grid position is occupied by a Unit
-        if(gridOccupentUnit != null)
+        if(gridOccupantUnit != null)
         {
             // Select a friendly unit
-            if(gridOccupentUnit.IsFriendly())
+            if(gridOccupantUnit.IsFriendly())
             {
                 SelectUnitOccupyingGridPosition(gridObject);
             }
@@ -103,46 +99,59 @@ public class ActionHandler : MonoBehaviour
         }
         
         // Check if the grid position is occupied by a Tower
-        if(gridOccupentBuilding != null)
+        if(gridOccupantBuilding != null)
         {
             // If it is not friendly, attack the tower.
-            if(!gridOccupentBuilding.IsFriendly())
+            if(!gridOccupantBuilding.IsFriendly())
             {
                 TryAttackUnitOccupyingGridPosition(gridObject);
             }
             else
             {
-                SelectBuildingOccupyingGridPosition(gridObject);
+                // Check if you can move the unit onto the tower.
+                if(selectedUnit != null && selectedUnit.IsMoveable())
+                {
+                    if(!TryMoveToGridPosition(gridObject))
+                    {
+                        SelectBuildingOccupyingGridPosition(gridObject);
+                    }
+                }
+                else
+                {
+                    SelectBuildingOccupyingGridPosition(gridObject);
+                }
             }
             return;
         } 
         
-        if(selectedBuilding != null)
+        if(selectedUnit != null)
         {
             TryMoveToGridPosition(gridObject);
         }
     }
 
-    private void TryMoveToGridPosition(GridObject gridObject)
+    private bool TryMoveToGridPosition(GridObject gridObject)
     {
         // If the grid position is not occupied, move the selected unit there
-        if (selectedBuilding.TryGetComponent<UnitMovement>(out UnitMovement unitMovement))
+        if (selectedUnit.TryGetComponent<UnitMovement>(out UnitMovement unitMovement))
         {
             if (unitMovement.TryStartMove(gridObject, ClearBusy))
             {
                 SetBusy();
+                return true;
             }
         }
+        return false;
     }
 
     private void TryAttackUnitOccupyingGridPosition(GridObject gridObject)
     {
         // Attack an enemy unit
-        if (selectedBuilding != null)
+        if (selectedUnit != null)
         {
-            if (selectedBuilding.TryGetComponent<UnitAttack>(out UnitAttack unitAttack))
+            if (selectedUnit.TryGetComponent<UnitAttack>(out UnitAttack unitAttack))
             {
-                if (unitAttack.TryAttackUnit(gridObject.GetCombatTarget(), ClearBusy))
+                if (unitAttack.TryAttackUnit((Unit)gridObject.GetCombatTarget(), ClearBusy))
                 {
                     SetBusy();
                 }
@@ -152,15 +161,15 @@ public class ActionHandler : MonoBehaviour
 
     private void SelectUnitOccupyingGridPosition(GridObject gridObject)
     {
-        selectedBuilding = gridObject.GetOccupentUnit();
-        OnUnitSelected?.Invoke(this, selectedBuilding);
+        selectedUnit = (Unit)gridObject.GetOccupantUnit();
+        OnUnitSelected?.Invoke(this, selectedUnit);
         updateGridActionHighlight = true;
     }
 
     private void SelectBuildingOccupyingGridPosition(GridObject gridObject)
     {
-        selectedBuilding = gridObject.GetOccupentBuilding();
-        OnUnitSelected?.Invoke(this, selectedBuilding);
+        selectedUnit = (Unit)gridObject.GetOccupantBuilding();
+        OnUnitSelected?.Invoke(this, selectedUnit);
         updateGridActionHighlight = true;
     }
 
@@ -175,12 +184,12 @@ public class ActionHandler : MonoBehaviour
         }
 
         // No selected unit
-        if(selectedBuilding == null)
+        if(selectedUnit == null)
         {
             return;
         }
 
-        foreach (UnitAction unitAction in selectedBuilding.GetUnitActions())
+        foreach (UnitAction unitAction in selectedUnit.GetUnitActions())
         {
             // Only show if there are action points
             if(unitAction.GetActionPointsRemaining() <= 0)
@@ -208,7 +217,7 @@ public class ActionHandler : MonoBehaviour
 
     private void HighlightAttackTargets(UnitAttack unitAttacking)
     {
-        Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(selectedBuilding.transform.position);
+        Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(selectedUnit.transform.position);
         List<Unit> validUnitTargets = unitAttacking.GetValidTargets(gridPosition);
 
         List<Vector2Int> validAttackPositions = new List<Vector2Int>();
@@ -220,30 +229,30 @@ public class ActionHandler : MonoBehaviour
         gridUIManager.ShowGridPositionList(validAttackPositions, GridHighlightType.Attack);
     }
 
-    private void HighlightPlacementTargets(UnitSpawner unitSpawner)
+    private void HighlightPlacementTargets(UnitSpawner unitSpawner, Unit unitToSpawn)
     {
-        List<Vector2Int> validPlacementPositions = unitSpawner.GetValidPlacementPositions();
+        List<Vector2Int> validPlacementPositions = unitSpawner.GetValidPlacementPositions(unitToSpawn);
         gridUIManager.ShowGridPositionList(validPlacementPositions, GridHighlightType.PlaceObject);
     }
 
     private void BuildingButton_BuildingButtonPressed(object sender, BuildButtonArguments arguments)
     {
-        HighlightPlacementTargets(arguments.unitSpawner);
+        HighlightPlacementTargets(arguments.unitSpawner, arguments.unit);
         GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(arguments.unitSpawner.transform.position);
         SetBusy();
         if(arguments.unitSpawner.TryTakeAction(gridObject , ClearBusy))
         {
-            selectedBuilding = null;
-            OnUnitSelected?.Invoke(this, selectedBuilding);
+            selectedUnit = null;
+            OnUnitSelected?.Invoke(this, selectedUnit);
         }        
     }
 
     private void TurnManager_OnNextTurn(object sender, EventArgs eventArgs)
     {
         updateGridActionHighlight = true;
-        selectedBuilding = null;
+        selectedUnit = null;
         ResetUnitQueue();
-        OnUnitSelected?.Invoke(this, selectedBuilding);
+        OnUnitSelected?.Invoke(this, selectedUnit);
     }
 
     private void ResetUnitQueue()
@@ -308,7 +317,7 @@ public class ActionHandler : MonoBehaviour
             {
                 if (unitAction.GetValidActionsRemaining() > 0)
                 {
-                    selectedBuilding = unit;
+                    selectedUnit = unit;
                     OnUnitSelected?.Invoke(this, unit);
                     updateGridActionHighlight = true;
                     return unit;

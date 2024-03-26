@@ -49,13 +49,14 @@ namespace RockPaperScissors.Units
 
         public void CheckForDeath(Unit attacker)
         {
-            if(health <= 0)
+            if(IsDead())
             {
-                StartCoroutine(OnDeathRoutine(attacker));
+                OnDeath?.Invoke(this, attacker);
+                StartCoroutine(OnDeathRoutine());
             }
         }
 
-        private IEnumerator OnDeathRoutine(Unit attacker)
+        private IEnumerator OnDeathRoutine()
         {
             if(unitAnimator != null)
             {
@@ -66,12 +67,20 @@ namespace RockPaperScissors.Units
                 Debug.Log("No animator on this unit.");
             }
             Destroy(gameObject);
-            OnDeath?.Invoke(this, attacker);
         }
 
         public int GetHealth()
         {
             return health;
+        }
+        public void SetHealth(int health)
+        {
+            this.health = health;
+        }
+
+        public bool IsDead()
+        {
+            return health <= 0;
         }
 
         public float GetNormalizedHealth()

@@ -43,3 +43,18 @@ The following packages were updated:
   com.unity.ide.visualstudio from version 2.0.16 to 2.0.17
   com.unity.render-pipelines.universal from version 12.1.8 to 12.1.10
   com.unity.visualscripting from version 1.7.8 to 1.8.0
+
+=== Wed Jul 12 13:57:27 2023
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.collab-proxy from version 2.0.1 to 2.0.5
+  com.unity.feature.2d from version 1.0.0 to 2.0.0
+  com.unity.ide.rider from version 3.0.18 to 3.0.24
+  com.unity.ide.visualstudio from version 2.0.17 to 2.0.18
+  com.unity.inputsystem from version 1.5.0 to 1.6.1
+  com.unity.render-pipelines.universal from version 12.1.10 to 12.1.12
+  com.unity.test-framework from version 1.1.31 to 1.1.33
+  com.unity.timeline from version 1.6.4 to 1.6.5

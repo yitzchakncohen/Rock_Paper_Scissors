@@ -45,9 +45,11 @@ namespace RockPaperScissors.UI
         {
             if(currencyBank.GetCurrencyRemaining() >= unitPrefab.GetCost())
             {
-                BuildButtonArguments arguments = new BuildButtonArguments();
-                arguments.unit = unitPrefab;
-                arguments.unitSpawner = this.unitSpawner;
+                BuildButtonArguments arguments = new BuildButtonArguments
+                {
+                    unit = unitPrefab,
+                    unitSpawner = this.unitSpawner
+                };
                 OnBuildingButtonPressed?.Invoke(this, arguments);
             }
         }

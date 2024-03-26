@@ -10,6 +10,7 @@ namespace RockPaperScissors.Grids
         [SerializeField] private LayerMask occupancyLayerMask;
         [SerializeField] private Vector2Int gridSize;
         [SerializeField] private GridObject gridObjectPrefab;
+        [SerializeField] private GameObject borderTilePrefab;
         [SerializeField] private Tilemap baseTilemap;
         private Grid grid;
         private GridObject[,] gridObjects;
@@ -20,14 +21,22 @@ namespace RockPaperScissors.Grids
             gridObjects = new GridObject[gridSize.x, gridSize.y];
 
             // Setup the grid
-            for (int x = 0; x < gridSize.x; x++)
+            for (int x = -2; x <= gridSize.x + 1; x++)
             {
-                for (int y = 0; y < gridSize.y; y++)
+                for (int y = -2; y <= gridSize.y + 1; y++)
                 {
-                    Vector3 gridPosition = grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
-                    GridObject gridObject = Instantiate(gridObjectPrefab, gridPosition, Quaternion.identity);
-                    gridObject.Setup(new Vector2Int(x,y));
-                    gridObjects[x,y] = gridObject;
+                    if(x <= -1 || x >= gridSize.x || y <= -1 || y >= gridSize.y)
+                    {
+                        Vector3 gridPosition = grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
+                        Instantiate(borderTilePrefab, gridPosition, Quaternion.identity);
+                    }
+                    else
+                    {
+                        Vector3 gridPosition = grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
+                        GridObject gridObject = Instantiate(gridObjectPrefab, gridPosition, Quaternion.identity);
+                        gridObject.Setup(new Vector2Int(x,y));
+                        gridObjects[x,y] = gridObject;
+                    }
                 }
             }
         }
@@ -89,21 +98,21 @@ namespace RockPaperScissors.Grids
                 for (int y = 0; y < gridSize.y; y++)
                 {
                     RaycastHit2D[] hits = Physics2D.RaycastAll(gridObjects[x,y].transform.position, Vector2.up, raycastDistance, occupancyLayerMask);
-                    gridObjects[x,y].SetOccupentUnit(null);
-                    gridObjects[x,y].SetOccupentBuilding(null);
+                    gridObjects[x,y].SetOccupantUnit(null);
+                    gridObjects[x,y].SetOccupantBuilding(null);
                     foreach (RaycastHit2D hit in hits)
                     {
-                        // If the object is a unit set as occupent
-                        hit.collider.TryGetComponent<Unit>(out Unit unit);
+                        // If the object is a unit set as Occupant
+                        hit.collider.TryGetComponent<IGridOccupantInterface>(out IGridOccupantInterface unit);
                         {
                             // Check if the unit is a Building
-                            if(unit.GetUnitClass() == UnitClass.Tower || unit.GetUnitClass() == UnitClass.PillowFort)
+                            if(unit.IsBuilding())
                             {
-                                gridObjects[x,y].SetOccupentBuilding(unit);
+                                gridObjects[x,y].SetOccupantBuilding(unit);
                             }
                             else
                             {
-                                gridObjects[x,y].SetOccupentUnit(unit);
+                                gridObjects[x,y].SetOccupantUnit(unit);
                             }
                         }
                     }
@@ -144,26 +153,35 @@ namespace RockPaperScissors.Grids
 
         private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
         {
-            UpdateGridOccupancy();
             // TODO more efficient occupency update
-            // Unit unit = null;
-            // unit = ((UnitAction)sender).GetComponent<Unit>();
+            // UpdateGridOccupancy();
 
-            // if(unit != null)
-            // {
-            //     for (int x = 0; x < gridSize.x; x++)
-            //     {
-            //         for (int y = 0; y < gridSize.y; y++)
-            //         {
-            //             if(gridObjects[x, y].GetOccupent() == unit)
-            //             {
-            //                 gridObjects[x, y].SetOccupent(null);
-            //             }
-            //         }
-            //     }
+            // Death and Spawning already handled
 
-            //     GetGridObjectFromWorldPosition(unit.transform.position).SetOccupent(unit);
-            // }
+            // float startTime = Time.realtimeSinceStartup;
+
+            // Movement
+            if(sender.GetType() == typeof(UnitMovement))
+            {
+                // Remove from existing grid location
+                Unit unit = ((UnitMovement)sender).GetComponent<Unit>();
+                for (int x = 0; x < gridSize.x; x++)
+                {
+                    for (int y = 0; y < gridSize.y; y++)
+                    {
+                        if((Unit)gridObjects[x, y].GetOccupantUnit() == unit)
+                        {
+                            gridObjects[x, y].SetOccupantUnit(null);
+                        }
+                    }
+                }
+
+                // Add to new grid location.
+                GridObject gridObject = GetGridObjectFromWorldPosition(unit.transform.position);
+                gridObject.SetOccupantUnit(unit);
+            }
+
+            // Debug.Log("GridManager Action Complete Time: " + (Time.realtimeSinceStartup - startTime)*1000f);
         }
 
         private void Health_OnDeath(object sender, Unit e)
@@ -173,13 +191,13 @@ namespace RockPaperScissors.Grids
             {
                 for (int y = 0; y < gridSize.y; y++)
                 {
-                    if(gridObjects[x, y].GetOccupentUnit() == unit)
+                    if((Unit)gridObjects[x, y].GetOccupantUnit() == unit)
                     {
-                        gridObjects[x, y].SetOccupentUnit(null);
+                        gridObjects[x, y].SetOccupantUnit(null);
                     }
-                    else if(gridObjects[x, y].GetOccupentBuilding() == unit)
+                    else if((Unit)gridObjects[x, y].GetOccupantBuilding() == unit)
                     {
-                        gridObjects[x, y].SetOccupentBuilding(null);
+                        gridObjects[x, y].SetOccupantBuilding(null);
                     }
                 }
             }
@@ -188,13 +206,13 @@ namespace RockPaperScissors.Grids
         private void Unit_OnUnitSpawn(object sender, EventArgs e)
         {
             Unit unit = sender as Unit;
-            if(unit.GetUnitClass() != UnitClass.Tower && unit.GetUnitClass() != UnitClass.PillowFort)
+            if(unit.GetUnitClass() != UnitClass.PillowOutpost && unit.GetUnitClass() != UnitClass.PillowFort)
             {
-                GetGridObjectFromWorldPosition(unit.transform.position).SetOccupentUnit(unit);
+                GetGridObjectFromWorldPosition(unit.transform.position).SetOccupantUnit(unit);
             }
-            else if(unit.GetUnitClass() == UnitClass.Tower)
+            else if(unit.GetUnitClass() == UnitClass.PillowOutpost)
             {
-                GetGridObjectFromWorldPosition(unit.transform.position).SetOccupentBuilding(unit);
+                GetGridObjectFromWorldPosition(unit.transform.position).SetOccupantBuilding(unit);
             }
         }
     }    

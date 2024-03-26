@@ -13,6 +13,9 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float zoomSmoothing = 0.1f;
     [SerializeField] private PolygonCollider2D cameraBoundaryCollider;
     [SerializeField] private Vector2 cameraMovementDamping = new Vector2(1, 1);
+    [SerializeField] private float cameraDampeningDistance = 1f;
+    [SerializeField] private float cameraDampeningOffDistance = 0.5f;
+    [SerializeField] private float cameraDampeningMaxValue = 1.5f;
     private float cameraBoundaryMinX;
     private float cameraBoundaryMaxX;
     private float cameraBoundaryMinY;
@@ -21,6 +24,7 @@ public class CameraController : MonoBehaviour
     private InputManager inputManager;
     private PlayerControls playerControls;
     private Camera mainCamera;
+    private CinemachineTransposer cinemachineFramingTransposer;
     private Vector2 startDraggingPosition;
     private Vector2 lastFrameDraggingPosition;
     private Vector2 startCameraPosition;
@@ -37,6 +41,7 @@ public class CameraController : MonoBehaviour
     {
         mainCamera = Camera.main;
         inputManager = FindObjectOfType<InputManager>();
+        cinemachineFramingTransposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
         playerControls = inputManager.GetPlayerControls();
         
         inputManager.OnStartDragging += InputManager_OnStartDragging;
@@ -90,6 +95,31 @@ public class CameraController : MonoBehaviour
         ZoomCamera();
     }
 
+    private void LateUpdate() 
+    {
+        ClampCameraPosition();
+        UpdateCameraDampening();
+    }
+
+    private void UpdateCameraDampening()
+    {
+        if(Vector2.Distance(cinemachineVirtualCamera.transform.position, transform.position) > cameraDampeningDistance)
+        {
+            cinemachineFramingTransposer.m_XDamping = 1f;
+            cinemachineFramingTransposer.m_YDamping = 1f;
+        }
+        else if(Vector2.Distance(cinemachineVirtualCamera.transform.position, transform.position) < cameraDampeningOffDistance)
+        {
+            cinemachineFramingTransposer.m_XDamping = 0f;
+            cinemachineFramingTransposer.m_YDamping = 0f;
+        }
+        else
+        {
+            cinemachineFramingTransposer.m_XDamping = cameraDampeningMaxValue;
+            cinemachineFramingTransposer.m_YDamping = cameraDampeningMaxValue;
+        }
+    }
+
     private void ZoomCamera()
     {
         if (cinemachineVirtualCamera.m_Lens.OrthographicSize != zoomTarget)
@@ -112,15 +142,12 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    private void LateUpdate() 
-    {
-        ClampCameraPosition();
-    }
-
     private void InputManager_OnStartDragging(object sender, Vector2 position)
     {
         startCameraPosition = transform.position;
         startDraggingPosition = position;
+        lastFrameDraggingPosition = (Vector2)transform.position;
+        draggingVector = Vector2.zero;
         dragging = true;
     }
 
