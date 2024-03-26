@@ -81,6 +81,7 @@
     <Compile Include="Assets\Scripts\Grid\GridObject.cs" />
     <Compile Include="Assets\Scripts\UI\MainMenu.cs" />
     <Compile Include="Assets\Scripts\UI\SaveButton.cs" />
+    <Compile Include="Assets\Scripts\Grid\IGridOccupantInterface.cs" />
     <Compile Include="Assets\Test\Test.cs" />
     <Compile Include="Assets\Scripts\UI\NextWaveUI.cs" />
     <Compile Include="Assets\Scripts\Currency\CurrencyUI.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Assets\Scripts\SaveSystem\SaveUnitData.cs" />
     <Compile Include="Assets\Scripts\UI\RadialLayoutGroup.cs" />
     <Compile Include="Assets\Scripts\Enemy\WaitingForTurnState.cs" />
+    <Compile Include="Assets\Scripts\UI\GameMenu.cs" />
     <Compile Include="Assets\Scripts\UI\RandomColourVariation.cs" />
     <Compile Include="Assets\Scripts\UI\CanvasFacingController.cs" />
     <Compile Include="Assets\Scripts\Unit\Unit.cs" />
@@ -111,8 +113,6 @@
     <Compile Include="Assets\Scripts\Unit\UnitMovement.cs" />
     <Compile Include="Assets\Scripts\Enemy\FindingActionState.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
-    <Compile Include="Assets\Scripts\Grid\IGridOccupantInterface.cs" />
-    <Compile Include="Assets\Scripts\UI\GameMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
