@@ -17,9 +17,17 @@ namespace RockPaperScissors.Units
         {
             UnitHealth.OnDeath += Health_OnDeath;
             Unit.OnUnitSpawn += Unit_OnUnitSpawn;
+            TurnManager.OnNextTurn += TurnManager_OnNextTurn;
             friendlyUnits = new List<Unit>();
             enemyUnits = new List<Unit>();
             gridManager = FindObjectOfType<GridManager>();
+        }
+
+        private void OnDestroy() 
+        {
+            UnitHealth.OnDeath -= Health_OnDeath;
+            Unit.OnUnitSpawn -= Unit_OnUnitSpawn;
+            TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
         }
 
         private void Unit_OnUnitSpawn(object sender, EventArgs e)
@@ -33,11 +41,6 @@ namespace RockPaperScissors.Units
             {
                 enemyUnits.Add(unit);
             }
-        }
-
-        private void OnDestroy() 
-        {
-            UnitHealth.OnDeath -= Health_OnDeath;
         }
 
         private void Health_OnDeath(object sender, Unit attacker)
@@ -55,6 +58,11 @@ namespace RockPaperScissors.Units
                     enemyUnits.Remove(unit);
                 }
             }
+        }
+
+        private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs e)
+        {
+            ResetAllUnitActionPoints();
         }
 
         public void ResetAllUnitActionPoints()

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using RockPaperScissors.SaveSystem;
-using RockPaperScissors.Units;
 using UnityEngine;
 
 public class TurnManager : MonoBehaviour, ISaveInterface<SaveTurnManagerData>
@@ -13,15 +12,8 @@ public class TurnManager : MonoBehaviour, ISaveInterface<SaveTurnManagerData>
         public int Turn;
     }
     public static event EventHandler<OnNextTurnEventArgs> OnNextTurn;
-    private UnitManager unitManager;
     private bool playersTurn = true;
     private int turn = 0;
-
-    private void Start() 
-    {
-        unitManager = FindObjectOfType<UnitManager>();
-    }
-
 
     public bool IsPlayerTurn()
     {
@@ -35,7 +27,6 @@ public class TurnManager : MonoBehaviour, ISaveInterface<SaveTurnManagerData>
         {
             turn++;
         }
-        unitManager.ResetAllUnitActionPoints();
 
         NextTurnEvent();
     }

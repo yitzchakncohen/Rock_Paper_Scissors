@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Rock_Paper_Scissor_Tasks
   m_EditorClassIdentifier: 
   tasks:
-  - Text: Create progression xp per level
+  - Text: Info tooltip in building menu
+    Completed: 0
+  - Text: Tower Spawn Radius?
     Completed: 0
   - Text: Pixel Art Decorations for perimeter
     Completed: 0
   - Text: Highscore
-    Completed: 0
-  - Text: Info tooltip in building menu
     Completed: 0
   - Text: Separate Shadows
     Completed: 0
@@ -27,13 +27,11 @@ MonoBehaviour:
     Completed: 0
   - Text: Coin Particle FX
     Completed: 0
-  - Text: MOvement Direction Enum
-    Completed: 0
   - Text: Combat balancing
     Completed: 0
-  - Text: Tower Spawn Radius?
+  - Text: Create progression xp per level
     Completed: 0
-  - Text: Create Glue Traps
+  - Text: Generic Obstacles
     Completed: 0
   - Text: Update UI
     Completed: 0
@@ -43,65 +41,67 @@ MonoBehaviour:
     Completed: 0
   - Text: main menu
     Completed: 0
-  - Text: Generic Obstacles
-    Completed: 0
   - Text: Show Attack Range
     Completed: 0
   - Text: Draw Glue Traps
     Completed: 0
   - Text: Create Scoring System
     Completed: 0
-  - Text: Create Towers
+  - Text: Create Glue Traps
+    Completed: 0
+  - Text: Currency Icons
+    Completed: 1
+  - Text: Optimize for large grid size
+    Completed: 1
+  - Text: Fast Forward Button
+    Completed: 1
+  - Text: Progression stat multipliers
+    Completed: 1
+  - Text: Add paper
+    Completed: 1
+  - Text: Unit defense bonus icon
+    Completed: 1
+  - Text: Draw Towers
+    Completed: 1
+  - Text: Death Animations
     Completed: 1
   - Text: Class factored into EnemyAI
+    Completed: 1
+  - Text: Disable next turn and next action buttons when it's not your turn
+    Completed: 1
+  - Text: Create Towers
+    Completed: 1
+  - Text: Smooth the camera movement
     Completed: 1
   - Text: Complete paper sprites
     Completed: 1
   - Text: Replace raycast with more performant solution
     Completed: 1
-  - Text: Draw Towers
-    Completed: 1
-  - Text: Smooth the camera movement
-    Completed: 1
-  - Text: Add paper
-    Completed: 1
-  - Text: Progression stat multipliers
-    Completed: 1
-  - Text: Fast Forward Button
-    Completed: 1
-  - Text: Optimize for large grid size
-    Completed: 1
-  - Text: Currency Icons
-    Completed: 1
-  - Text: Disable next turn and next action buttons when it's not your turn
-    Completed: 1
-  - Text: Get Currency when enemy is defeated
-    Completed: 1
-  - Text: Class type combat modifiers
+  - Text: Draw enviroment
     Completed: 1
   - Text: Draw tiles
     Completed: 1
-  - Text: Saving and loading
-    Completed: 1
-  - Text: Attack Animations
-    Completed: 1
-  - Text: Integrate progression
-    Completed: 1
-  - Text: Move Radius Icon.UI
-    Completed: 1
-  - Text: Level up animation
-    Completed: 1
-  - Text: Draw enviroment
-    Completed: 1
-  - Text: Replace currency (with marbles?)
+  - Text: Add xp to Unit UI
     Completed: 1
   - Text: Adjust Tile Scale
     Completed: 1
+  - Text: Replace currency (with marbles?)
+    Completed: 1
+  - Text: Class type combat modifiers
+    Completed: 1
+  - Text: Level up animation
+    Completed: 1
+  - Text: Get Currency when enemy is defeated
+    Completed: 1
+  - Text: Integrate progression
+    Completed: 1
+  - Text: Attack Animations
+    Completed: 1
+  - Text: Saving and loading
+    Completed: 1
+  - Text: MOvement Direction Enum
+    Completed: 1
   - Text: Spawn Animation
     Completed: 1
-  - Text: Add xp to Unit UI
-    Completed: 1
-  - Text: Death Animations
-    Completed: 1
-  - Text: Unit defense bonus icon
+  - Text: Move Radius Icon.UI
     Completed: 1
