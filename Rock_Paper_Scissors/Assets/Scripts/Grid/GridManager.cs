@@ -28,7 +28,7 @@ namespace RockPaperScissors.Grids
                     if(x <= -1 || x >= gridSize.x || y <= -1 || y >= gridSize.y)
                     {
                         Vector3 gridPosition = grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
-                        GameObject gridObject = Instantiate(borderTilePrefab, gridPosition, Quaternion.identity);
+                        Instantiate(borderTilePrefab, gridPosition, Quaternion.identity);
                     }
                     else
                     {
