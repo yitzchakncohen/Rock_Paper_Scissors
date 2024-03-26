@@ -1,21 +1,41 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RockPaperScissors.UI
 {
     public class MainMenu : MonoBehaviour
     {
+        [SerializeField] private Button continueButton;
+        [SerializeField] private Button startButton;
         public static event Action OnStartGameButtonPress;
         public static event Action OnContinueGameButtonPress;
 
-        public void StartGame()
+        private void Awake() 
+        {
+            startButton.onClick.AddListener(StartGame);
+
+            // Only enable the continue button if there is a saved game.
+            if(File.Exists(Application.persistentDataPath + ApplicationManager.SAVE_DIRECTORY + ApplicationManager.SAVE_FILE_NAME))
+            {
+                continueButton.interactable = true;
+                continueButton.onClick.AddListener(ContinueGame);
+            }
+            else
+            {
+                continueButton.interactable = false;
+            }
+        }
+
+        private void StartGame()
         {
             OnStartGameButtonPress?.Invoke();
         }
 
-        public void ContinueGame()
+        private void ContinueGame()
         {
             OnContinueGameButtonPress?.Invoke();
         }

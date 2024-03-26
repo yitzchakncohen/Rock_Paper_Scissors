@@ -10,7 +10,6 @@ namespace RockPaperScissors.SaveSystem
 {
     public class SaveManager : MonoBehaviour
     {
-        private const string SAVE_DIRECTORY = "/Saves/";
         public static event Action OnSaveCompleted; 
         public static event Action OnLoadCompleted; 
         [SerializeField] private List<Unit> listOfFriendlyUnitTypes = new List<Unit>();
@@ -21,18 +20,23 @@ namespace RockPaperScissors.SaveSystem
         private TurnManager turnManager;
         private CurrencyBank currencyBank;
 
-        private void Awake() 
+        private void Awake()
         {
             gridManager = FindObjectOfType<GridManager>();
             turnManager = FindObjectOfType<TurnManager>();
-            currencyBank =FindObjectOfType<CurrencyBank>();
-
-            if(!Directory.Exists(Application.dataPath + SAVE_DIRECTORY))
-            {
-                Directory.CreateDirectory(Application.dataPath + SAVE_DIRECTORY);
-            }
+            currencyBank = FindObjectOfType<CurrencyBank>();
+            CheckForDirectory();
 
             SetupUnitDictionaries();
+        }
+
+        private static void CheckForDirectory()
+        {
+            if (!Directory.Exists(Application.persistentDataPath + ApplicationManager.SAVE_DIRECTORY))
+            {
+                Directory.CreateDirectory(Application.persistentDataPath + ApplicationManager.SAVE_DIRECTORY);
+                Debug.Log("Save Directory Created");
+            }
         }
 
         private void SetupUnitDictionaries()
@@ -92,7 +96,8 @@ namespace RockPaperScissors.SaveSystem
             };
 
             string json = JsonUtility.ToJson(saveObject);
-            File.WriteAllText(Application.dataPath + SAVE_DIRECTORY + "save.txt", json);
+            CheckForDirectory();
+            File.WriteAllText(Application.persistentDataPath + ApplicationManager.SAVE_DIRECTORY + ApplicationManager.SAVE_FILE_NAME, json);
 
             yield return null;
 
@@ -110,9 +115,9 @@ namespace RockPaperScissors.SaveSystem
             // TODO add loading indicator
             // TODO clear all grid objects and delete all units. 
 
-            if (File.Exists(Application.dataPath + SAVE_DIRECTORY + "save.txt"))
+            if (File.Exists(Application.persistentDataPath + ApplicationManager.SAVE_DIRECTORY + "save.txt"))
             {
-                string saveString = File.ReadAllText(Application.dataPath + SAVE_DIRECTORY + "save.txt");
+                string saveString = File.ReadAllText(Application.persistentDataPath + ApplicationManager.SAVE_DIRECTORY + "save.txt");
                 SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
 
                 turnManager.Load(saveObject.SaveTurnManagerData);
@@ -150,7 +155,7 @@ namespace RockPaperScissors.SaveSystem
                 }
                 if(spawnedUnit == null)
                 {
-                    Debug.LogError("Cannot load Frinedly Unit, " + unitData.UnitClass.ToString() + " class not found.");
+                    Debug.LogError("Cannot load Friendly Unit, " + unitData.UnitClass.ToString() + " class not found.");
                 }
             }
             else

@@ -3,111 +3,39 @@
     "m_SelectedPackage": {
         "deviceId": "R5CR92W1AAR",
         "name": "com.DefaultCompany.Rock_Paper_Scissors",
-        "processId": 18173,
+        "processId": 6929,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
         {
             "deviceId": "R5CR92W1AAR",
-            "name": "com.sec.android.app.launcher",
-            "processId": 3276,
-            "exited": false
-        },
-        {
-            "deviceId": "R5CR92W1AAR",
-            "name": "com.DefaultCompany.Rock_Paper_Scissors",
-            "processId": 30205,
-            "exited": true
-        },
-        {
-            "deviceId": "R5CR92W1AAR",
-            "name": "com.DefaultCompany.Rock_Paper_Scissors",
-            "processId": 3675,
-            "exited": true
-        },
-        {
-            "deviceId": "R5CR92W1AAR",
-            "name": "com.DefaultCompany.Rock_Paper_Scissors",
-            "processId": 9640,
-            "exited": true
-        },
-        {
-            "deviceId": "R5CR92W1AAR",
-            "name": "com.DefaultCompany.Rock_Paper_Scissors",
-            "processId": 12482,
-            "exited": true
-        },
-        {
-            "deviceId": "R5CR92W1AAR",
-            "name": "com.DefaultCompany.Rock_Paper_Scissors",
-            "processId": 13521,
-            "exited": false
-        },
-        {
-            "deviceId": "R5CR92W1AAR",
-            "name": "com.DefaultCompany.Rock_Paper_Scissors",
-            "processId": 10557,
-            "exited": false
-        },
-        {
-            "deviceId": "R5CR92W1AAR",
-            "name": "com.DefaultCompany.Rock_Paper_Scissors",
-            "processId": 13520,
-            "exited": false
-        },
-        {
-            "deviceId": "R5CR92W1AAR",
-            "name": "com.DefaultCompany.Rock_Paper_Scissors",
-            "processId": 16077,
-            "exited": false
-        },
-        {
-            "deviceId": "R5CR92W1AAR",
-            "name": "com.DefaultCompany.Rock_Paper_Scissors",
-            "processId": 16956,
-            "exited": false
-        },
-        {
-            "deviceId": "R5CR92W1AAR",
-            "name": "com.DefaultCompany.Rock_Paper_Scissors",
-            "processId": 22714,
-            "exited": false
-        },
-        {
-            "deviceId": "R5CR92W1AAR",
-            "name": "com.DefaultCompany.Rock_Paper_Scissors",
-            "processId": 28279,
-            "exited": false
-        },
-        {
-            "deviceId": "R5CR92W1AAR",
-            "name": "com.DefaultCompany.Rock_Paper_Scissors",
-            "processId": 20254,
-            "exited": false
-        },
-        {
-            "deviceId": "R5CR92W1AAR",
-            "name": "com.DefaultCompany.Rock_Paper_Scissors",
-            "processId": 1948,
-            "exited": false
-        },
-        {
-            "deviceId": "R5CR92W1AAR",
-            "name": "com.DefaultCompany.Rock_Paper_Scissors",
-            "processId": 9966,
-            "exited": false
-        },
-        {
-            "deviceId": "R5CR92W1AAR",
             "name": "com.DefaultCompany.Rock_Paper_Scissors",
             "processId": 17113,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "R5CR92W1AAR",
             "name": "com.DefaultCompany.Rock_Paper_Scissors",
             "processId": 18173,
+            "exited": true
+        },
+        {
+            "deviceId": "R5CR92W1AAR",
+            "name": "com.android.settings.intelligence",
+            "processId": 20716,
+            "exited": true
+        },
+        {
+            "deviceId": "R5CR92W1AAR",
+            "name": "com.DefaultCompany.Rock_Paper_Scissors",
+            "processId": 28727,
+            "exited": true
+        },
+        {
+            "deviceId": "R5CR92W1AAR",
+            "name": "com.DefaultCompany.Rock_Paper_Scissors",
+            "processId": 6929,
             "exited": false
         }
     ],

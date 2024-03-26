@@ -368,6 +368,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae3a48610aa38704693b8ba1345fd3f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  continueButton: {fileID: 1833272794}
+  startButton: {fileID: 1315008515}
 --- !u!114 &466674103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -730,19 +732,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1315008516}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 466674102}
-        m_TargetAssemblyTypeName: RockPaperScissors.UI.MainMenu, Assembly-CSharp
-        m_MethodName: StartGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1315008516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1357,19 +1347,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1833272795}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 466674102}
-        m_TargetAssemblyTypeName: RockPaperScissors.UI.MainMenu, Assembly-CSharp
-        m_MethodName: ContinueGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1833272795
 MonoBehaviour:
   m_ObjectHideFlags: 0

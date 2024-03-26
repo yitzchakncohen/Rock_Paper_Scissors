@@ -13,6 +13,8 @@ namespace RockPaperScissors
     /// </summary>
     public class ApplicationManager : MonoBehaviour
     {
+        public const string SAVE_DIRECTORY = "/Saves/";
+        public const string SAVE_FILE_NAME = "save.txt";
         private const string GAME_SCENE_STRING = "MainScene";
         private const string Menu_SCENE_STRING = "MenuScene";
 
