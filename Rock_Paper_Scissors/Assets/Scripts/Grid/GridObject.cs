@@ -1,5 +1,5 @@
 using RockPaperScissors.UI;
-using RockPaperScissors.Units;
+// using RockPaperScissors.Units;
 using UnityEngine;
 
 namespace RockPaperScissors.Grids
@@ -8,8 +8,8 @@ namespace RockPaperScissors.Grids
     {
         private Vector2Int gridPosition;
         private GridObjectUI gridObjectUI;
-        private Unit gridPositionOccupyingUnit = null;
-        private Unit gridPositionOccupyingBuilding = null;
+        private IGridOccupantInterface gridPositionOccupyingUnit = null;
+        private IGridOccupantInterface gridPositionOccupyingBuilding = null;
 
         private void Awake() 
         {
@@ -27,49 +27,46 @@ namespace RockPaperScissors.Grids
             return gridPosition;
         }
 
-        public bool IsWalkable(bool isFriendly)
+        public bool IsWalkable(IGridOccupantInterface gridObject)
         {
             // Grid position empty
             if(gridPositionOccupyingUnit == null && gridPositionOccupyingBuilding == null) {return true;}
             
             // Grid position has unit
             // TODO can you walk over your own units?            
-            if(gridPositionOccupyingUnit != null) {return false;}
-
-            if(gridPositionOccupyingBuilding != null && isFriendly == gridPositionOccupyingBuilding.IsFriendly())
+            if(gridPositionOccupyingUnit != null) 
             {
-                // Which types of buildings can you walk over?
-                if(gridPositionOccupyingBuilding.GetUnitClass() == UnitClass.PillowOutpost)
-                {
-                    return true;
-                }
                 return false;
             }
+            if(gridPositionOccupyingBuilding != null)
+            {
+                return gridObject.CanWalkOn(gridPositionOccupyingBuilding);
+            }
 
-            return false;
+            return true;
         }
 
-        public void SetOccupentUnit(Unit occupent)
+        public void SetOccupantUnit(IGridOccupantInterface Occupant)
         {
-            gridPositionOccupyingUnit = occupent;
+            gridPositionOccupyingUnit = Occupant;
         }
 
-        public Unit GetOccupentUnit()
+        public IGridOccupantInterface GetOccupantUnit()
         {
             return gridPositionOccupyingUnit;
         }
 
-        public void SetOccupentBuilding(Unit occupent)
+        public void SetOccupantBuilding(IGridOccupantInterface Occupant)
         {
-            gridPositionOccupyingBuilding = occupent;
+            gridPositionOccupyingBuilding = Occupant;
         }
 
-        public Unit GetOccupentBuilding()
+        public IGridOccupantInterface GetOccupantBuilding()
         {
             return gridPositionOccupyingBuilding;
         }
 
-        public Unit GetCombatTarget()
+        public IGridOccupantInterface GetCombatTarget()
         {
             if(gridPositionOccupyingUnit != null)
             {

@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RockPaperScissors.Grids;
 using RockPaperScissors.SaveSystem;
 using UnityEngine;
 
 namespace RockPaperScissors.Units
 {
-    public class Unit : MonoBehaviour, ISaveInterface<SaveUnitData>
+    public class Unit : MonoBehaviour, ISaveInterface<SaveUnitData>, IGridOccupantInterface
     {
         public static event EventHandler OnUnitSpawn;
         [SerializeField] private UnitAnimator unitAnimator;
@@ -207,6 +208,27 @@ namespace RockPaperScissors.Units
         {
             yield return new WaitForEndOfFrame();
             unitAnimator.UpdateSprite();
+        }
+
+        public bool CanWalkOn(IGridOccupantInterface gridOccupantInterface)
+        {
+            Unit gridOccupant = (Unit)gridOccupantInterface;
+            if(gridOccupantInterface != null && isFriendly == gridOccupant.IsFriendly())
+            {
+                // Which types of buildings can you walk over?
+                if(gridOccupant.GetUnitClass() == UnitClass.PillowOutpost)
+                {
+                    return true;
+                }
+                // Can't walk over any units right now
+                return false;
+            }
+            return true;
+        }
+
+        public bool IsBuilding()
+        {
+            return GetUnitClass() == UnitClass.PillowFort || GetUnitClass() == UnitClass.PillowOutpost;
         }
     }
 }

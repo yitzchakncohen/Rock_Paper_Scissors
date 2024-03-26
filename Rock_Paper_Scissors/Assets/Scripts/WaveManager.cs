@@ -88,13 +88,18 @@ public class WaveManager : MonoBehaviour
 
     private List<Unit> SpawnEnemyUnits(Unit[] unitsToSpawn)
     {
+        if(unitsToSpawn.Length == 0 )
+        {
+            return new List<Unit>();
+        }
+
         List<Unit> enemyUnitsSpawnedThisWave = new List<Unit>();
         // Create a list of valid spawn points
         int radius = unitsToSpawn.Length / 3;
         List<Vector2Int> spawnPositions = new List<Vector2Int>();
         foreach (Transform point in enemySpawnPoints)
         {
-            spawnPositions = spawnPositions.Concat(GetValidSpawnGridPositionsForSpawnPoint(point.position, radius)).ToList();
+            spawnPositions = spawnPositions.Concat(GetValidSpawnGridPositionsForSpawnPoint(unitsToSpawn.FirstOrDefault(), point.position, radius)).ToList();
         }
 
         // Spawn the units in random locations near the spawn points.
@@ -114,6 +119,7 @@ public class WaveManager : MonoBehaviour
 
     private List<Unit> SpawnFriendlyUnits(Unit[] unitsToSpawn, int turn)
     {
+
         List<Unit> friendlyUnitsSpawnedThisWave = new List<Unit>();
         int radius = unitsToSpawn.Length / 3;
         
@@ -125,7 +131,11 @@ public class WaveManager : MonoBehaviour
             friendlyUnitsSpawnedThisWave.Add(spawnedUnit);
         }        
 
-        List<Vector2Int> spawnPositions = GetValidSpawnGridPositionsForSpawnPoint(friendlySpawnPoint.position, radius);
+        if(unitsToSpawn.Length == 0 )
+        {
+            return new List<Unit>();
+        }
+        List<Vector2Int> spawnPositions = GetValidSpawnGridPositionsForSpawnPoint(unitsToSpawn.FirstOrDefault(), friendlySpawnPoint.position, radius);
         foreach (Unit unit in unitsToSpawn)
         {
             if(spawnPositions.Count() > 0)
@@ -141,7 +151,7 @@ public class WaveManager : MonoBehaviour
         return friendlyUnitsSpawnedThisWave;
     }
 
-    private List<Vector2Int> GetValidSpawnGridPositionsForSpawnPoint(Vector3 spawnPoint,  int radius)
+    private List<Vector2Int> GetValidSpawnGridPositionsForSpawnPoint(IGridOccupantInterface gridObject, Vector3 spawnPoint,  int radius)
     {
         List<Vector2Int> spawnPositions = new List<Vector2Int>();
 
@@ -153,7 +163,7 @@ public class WaveManager : MonoBehaviour
             {
                 Vector2Int testPosition = new Vector2Int(spawnPosition.x + x, spawnPosition.y + y);
                 if(gridManager.IsValidGridPosition(testPosition)
-                    && gridManager.GetGridObject(testPosition).IsWalkable(false))
+                    && gridManager.GetGridObject(testPosition).IsWalkable(gridObject))
                 {
                     spawnPositions.Add(testPosition);
                 }

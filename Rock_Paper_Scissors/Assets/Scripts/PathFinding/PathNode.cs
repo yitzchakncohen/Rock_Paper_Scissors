@@ -76,9 +76,9 @@ namespace RockPaperScissors.PathFindings
             return gridObject.transform.position;
         }
 
-        public bool IsWalkable(bool isFriendly)
+        public bool IsWalkable(IGridOccupantInterface gridOccupantInterface)
         {
-            return gridObject.IsWalkable(isFriendly);
+            return gridObject.IsWalkable(gridOccupantInterface);
         }
     }
 }

@@ -95,14 +95,14 @@ namespace RockPaperScissors.Units
 
                     // Check if it's walkable for units
                     if (unitToSpawn.GetUnitClass() != UnitClass.PillowOutpost 
-                        && !gridManager.GetGridObject(testGridPosition).IsWalkable(unitToSpawn.IsFriendly()))
+                        && !gridManager.GetGridObject(testGridPosition).IsWalkable(unitToSpawn))
                     {
                         continue;
                     }
 
                     // Check if it has a building already for buildings
                     if (unitToSpawn.GetUnitClass() == UnitClass.PillowOutpost 
-                        && gridManager.GetGridObject(testGridPosition).GetOccupentBuilding() != null )
+                        && gridManager.GetGridObject(testGridPosition).GetOccupantBuilding() != null )
                     {
                         continue;
                     }
@@ -113,7 +113,7 @@ namespace RockPaperScissors.Units
                     // Find the closest spot on the edge
                     Vector2Int pathTestPostion = GetPositionOnEdge(gridPosition, x, y);
 
-                    pathFinding.FindPath(pathTestPostion, testGridPosition, out int testDistance, unitToSpawn.IsFriendly());
+                    pathFinding.FindPath(pathTestPostion, testGridPosition, out int testDistance, unitToSpawn);
                     // Debug.Log($"{pathTestPostion} to {testGridPosition}, path length {testDistance}");
                     if (testDistance > placementRadius)
                     {

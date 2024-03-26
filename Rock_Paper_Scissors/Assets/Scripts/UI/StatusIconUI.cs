@@ -59,7 +59,7 @@ namespace RockPaperScissors.UI
             }
 
             GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(updatedUnit.transform.position);
-            if (gridObject.GetOccupentBuilding() != null)
+            if (gridObject.GetOccupantBuilding() != null)
             {
                 buildingOccupiedIcon.SetActive(true);
             }

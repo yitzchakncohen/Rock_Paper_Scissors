@@ -66,7 +66,7 @@ namespace RockPaperScissors.Units
         private IEnumerator CompleteAttack()
         {
             GridObject gridObjectAttacking = gridManager.GetGridObjectFromWorldPosition(target.transform.position);
-            bool isTargetInTower = gridObjectAttacking.GetOccupentBuilding() != null;
+            bool isTargetInTower = gridObjectAttacking.GetOccupantBuilding() != null;
             int damageAmount = CombatModifiers.GetDamage(unit, target, isTargetInTower);
             target.Damage(damageAmount, unit);
             actionPointsRemaining -= 1;
@@ -218,9 +218,9 @@ namespace RockPaperScissors.Units
                 GridObject gridObject = gridManager.GetGridObject(position);
                 if(gridObject.GetCombatTarget() != null 
                     && gridObject.GetCombatTarget().IsFriendly() != unit.IsFriendly()
-                    && !gridObject.GetCombatTarget().IsDead())
+                    && !((Unit)gridObject.GetCombatTarget()).IsDead())
                 {
-                    validTargetList.Add(gridObject.GetCombatTarget());
+                    validTargetList.Add((Unit)gridObject.GetCombatTarget());
                 }
             }
 
@@ -287,7 +287,7 @@ namespace RockPaperScissors.Units
 
         public override bool TryTakeAction(GridObject gridObject, Action onActionComplete)
         {
-            return TryAttackUnit(gridObject.GetCombatTarget(), onActionComplete);
+            return TryAttackUnit((Unit)gridObject.GetCombatTarget(), onActionComplete);
         }
 
         public Unit GetTarget()
