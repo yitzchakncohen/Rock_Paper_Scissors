@@ -14,6 +14,8 @@ namespace RockPaperScissors
     public class ApplicationManager : MonoBehaviour
     {
         private const string GAME_SCENE_STRING = "MainScene";
+        private const string Menu_SCENE_STRING = "MenuScene";
+
         public static ApplicationManager Instance;
         void Awake()
         {
@@ -50,6 +52,11 @@ namespace RockPaperScissors
         public void ContinueGame()
         {
             StartCoroutine(LoadGameRoutineAsync());
+        }
+
+        public void ReturnToMenu()
+        {
+            SceneManager.LoadScene(Menu_SCENE_STRING);
         }
 
         private IEnumerator StartGameRoutineAsync()

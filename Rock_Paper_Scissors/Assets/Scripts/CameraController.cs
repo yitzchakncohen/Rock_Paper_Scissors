@@ -146,6 +146,8 @@ public class CameraController : MonoBehaviour
     {
         startCameraPosition = transform.position;
         startDraggingPosition = position;
+        lastFrameDraggingPosition = (Vector2)transform.position;
+        draggingVector = Vector2.zero;
         dragging = true;
     }
 
