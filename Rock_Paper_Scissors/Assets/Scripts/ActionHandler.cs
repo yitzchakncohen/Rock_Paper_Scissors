@@ -18,6 +18,7 @@ public class ActionHandler : MonoBehaviour
     private Queue<Unit> unitQueue = new Queue<Unit>();
     private bool isBusy = false;
     private bool updateGridActionHighlight = false;
+    private bool isGameOver = false;
 
     private void Start() 
     {
@@ -33,6 +34,7 @@ public class ActionHandler : MonoBehaviour
         BuildingButton.OnBuildingButtonPressed += BuildingButton_BuildingButtonPressed;
         UnitHealth.OnDeath += Health_OnDeath;
         Unit.OnUnitSpawn += Unit_OnUnitSpawn;
+        GameplayManager.OnGameOver += GameplayManager_OnGameOver;
 
         ResetUnitQueue();
     }
@@ -276,6 +278,11 @@ public class ActionHandler : MonoBehaviour
         {
             unitQueue.Enqueue(unit);
         }
+    }
+
+    private void GameplayManager_OnGameOver()
+    {
+        isGameOver = true;
     }
 
     private void SetBusy()

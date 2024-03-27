@@ -14,7 +14,7 @@ namespace RockPaperScissors.UI
         public static event Action OnStartGameButtonPress;
         public static event Action OnContinueGameButtonPress;
 
-        private void Awake() 
+        private void Start() 
         {
             startButton.onClick.AddListener(StartGame);
 
@@ -28,6 +28,12 @@ namespace RockPaperScissors.UI
             {
                 continueButton.interactable = false;
             }
+        }
+
+        private void OnDestroy() 
+        {
+            continueButton.onClick.RemoveAllListeners();
+            startButton.onClick.RemoveAllListeners();
         }
 
         private void StartGame()

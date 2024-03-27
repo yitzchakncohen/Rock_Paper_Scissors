@@ -37,6 +37,7 @@ namespace RockPaperScissors
             MainMenu.OnStartGameButtonPress += MainMenu_OnStartGameButtonPress;
             MainMenu.OnContinueGameButtonPress += MainMenu_OnContinueGameButtonPress;
             SaveButton.OnSaveButtonPress += SaveButton_OnSaveButtonPress;
+            GameMenu.OnStartGameButtonPress += GameMenu_OnStartGameButtonPress;
         }
 
         private void OnDisable() 
@@ -44,6 +45,7 @@ namespace RockPaperScissors
             MainMenu.OnStartGameButtonPress -= MainMenu_OnStartGameButtonPress;
             MainMenu.OnContinueGameButtonPress -= MainMenu_OnContinueGameButtonPress;
             SaveButton.OnSaveButtonPress -= SaveButton_OnSaveButtonPress;
+            GameMenu.OnStartGameButtonPress -= GameMenu_OnStartGameButtonPress;
         }
 
         public void StartNewGame()
@@ -104,6 +106,11 @@ namespace RockPaperScissors
         {
             SaveManager saveManager = FindObjectOfType<SaveManager>();
             saveManager.SaveGame();
+        }
+
+        private void GameMenu_OnStartGameButtonPress()
+        {
+            StartNewGame();
         }
     }
 
