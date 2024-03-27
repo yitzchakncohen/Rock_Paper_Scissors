@@ -18,7 +18,7 @@ public class ActionHandler : MonoBehaviour
     private Queue<Unit> unitQueue = new Queue<Unit>();
     private bool isBusy = false;
     private bool updateGridActionHighlight = false;
-    private bool isGameOver = false;
+    private bool controlsLocked = false;
 
     private void Start() 
     {
@@ -35,6 +35,8 @@ public class ActionHandler : MonoBehaviour
         UnitHealth.OnDeath += Health_OnDeath;
         Unit.OnUnitSpawn += Unit_OnUnitSpawn;
         GameplayManager.OnGameOver += GameplayManager_OnGameOver;
+        WaveManager.OnWaveStarted += WaveManager_OnWaveStarted;
+        WaveManager.OnWaveCompleted += WaveManager_OnWaveCompleted;
 
         ResetUnitQueue();
     }
@@ -59,7 +61,7 @@ public class ActionHandler : MonoBehaviour
 
     private void InputManager_onSingleTouch(object sender, Vector2 touchPosition)
     {
-        if (!turnManager.IsPlayerTurn())
+        if (!turnManager.IsPlayerTurn() || controlsLocked)
         {
             return;
         }
@@ -180,7 +182,7 @@ public class ActionHandler : MonoBehaviour
         gridUIManager.HideAllGridPosition();
 
         // Not the player's turn
-        if(!turnManager.IsPlayerTurn())
+        if(!turnManager.IsPlayerTurn()  || controlsLocked)
         {
             return;
         }
@@ -282,7 +284,16 @@ public class ActionHandler : MonoBehaviour
 
     private void GameplayManager_OnGameOver()
     {
-        isGameOver = true;
+        controlsLocked = true;
+    }
+    private void WaveManager_OnWaveStarted()
+    {
+        controlsLocked = true;
+    }
+
+    private void WaveManager_OnWaveCompleted()
+    {
+        controlsLocked = false;
     }
 
     private void SetBusy()

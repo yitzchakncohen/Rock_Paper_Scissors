@@ -10,6 +10,7 @@ using UnityEngine;
 public class GameplayManager : MonoBehaviour
 {
     public static event Action OnGameOver;
+    
     private void Awake() 
     {
         UnitHealth.OnDeath += UnitHealth_OnDeath;
