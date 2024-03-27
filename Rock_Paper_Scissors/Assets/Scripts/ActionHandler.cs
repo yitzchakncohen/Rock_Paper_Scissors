@@ -13,7 +13,6 @@ public class ActionHandler : MonoBehaviour
     private InputManager inputManager;
     private GridManager gridManager;
     private GridUI gridUIManager;
-    private TurnManager turnManager;
     private UnitManager unitManager;
     private Queue<Unit> unitQueue = new Queue<Unit>();
     private bool isBusy = false;
@@ -26,7 +25,6 @@ public class ActionHandler : MonoBehaviour
         gridManager = FindObjectOfType<GridManager>();
         gridUIManager = FindObjectOfType<GridUI>();
         inputManager = FindObjectOfType<InputManager>();
-        turnManager = FindObjectOfType<TurnManager>();
         unitManager = FindObjectOfType<UnitManager>();
 
         inputManager.OnSingleTap += InputManager_onSingleTouch;
@@ -61,7 +59,8 @@ public class ActionHandler : MonoBehaviour
 
     private void InputManager_onSingleTouch(object sender, Vector2 touchPosition)
     {
-        if (!turnManager.IsPlayerTurn() || controlsLocked)
+        // Not the player's turn or game over
+        if(controlsLocked)
         {
             return;
         }
@@ -181,8 +180,8 @@ public class ActionHandler : MonoBehaviour
     {
         gridUIManager.HideAllGridPosition();
 
-        // Not the player's turn
-        if(!turnManager.IsPlayerTurn()  || controlsLocked)
+        // Not the player's turn or game over
+        if(controlsLocked)
         {
             return;
         }
@@ -257,11 +256,19 @@ public class ActionHandler : MonoBehaviour
         }        
     }
 
-    private void TurnManager_OnNextTurn(object sender, EventArgs eventArgs)
+    private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs eventArgs)
     {
         updateGridActionHighlight = true;
         DeselectUnit();
         ResetUnitQueue();
+        if(eventArgs.IsPlayersTurn)
+        {
+            controlsLocked = false;
+        }
+        else
+        {
+            controlsLocked = true;
+        }
     }
 
     private void ResetUnitQueue()
