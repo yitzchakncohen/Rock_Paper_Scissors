@@ -239,6 +239,12 @@ public class ActionHandler : MonoBehaviour
         gridUIManager.ShowGridPositionList(validPlacementPositions, GridHighlightType.PlaceObject);
     }
 
+    private void DeselectUnit()
+    {
+        selectedUnit = null;
+        OnUnitSelected?.Invoke(this, selectedUnit);
+    }
+
     private void BuildingButton_BuildingButtonPressed(object sender, BuildButtonArguments arguments)
     {
         HighlightPlacementTargets(arguments.unitSpawner, arguments.unit);
@@ -254,9 +260,8 @@ public class ActionHandler : MonoBehaviour
     private void TurnManager_OnNextTurn(object sender, EventArgs eventArgs)
     {
         updateGridActionHighlight = true;
-        selectedUnit = null;
+        DeselectUnit();
         ResetUnitQueue();
-        OnUnitSelected?.Invoke(this, selectedUnit);
     }
 
     private void ResetUnitQueue()
@@ -285,10 +290,14 @@ public class ActionHandler : MonoBehaviour
     private void GameplayManager_OnGameOver()
     {
         controlsLocked = true;
+        DeselectUnit();
+
     }
     private void WaveManager_OnWaveStarted()
     {
         controlsLocked = true;
+        DeselectUnit();
+
     }
 
     private void WaveManager_OnWaveCompleted()
