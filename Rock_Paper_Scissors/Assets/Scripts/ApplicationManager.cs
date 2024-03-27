@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 namespace RockPaperScissors
 {
     /// <summary>
-    /// Class <c>ApplicationManager</c> is a persistent class that manages the high level state of the application. 
+    /// Class <c>ApplicationManager</c> is a persistent class that manages the high level state of the application.
     /// </summary>
     public class ApplicationManager : MonoBehaviour
     {
