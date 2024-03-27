@@ -171,7 +171,7 @@ namespace RockPaperScissors.Units
 
         public SaveUnitData Save()
         {
-            
+            Debug.Log(gameObject.name + " " + GetHealth());
             SaveUnitData saveUnitData = new SaveUnitData
             {
                 UnitClass = unitData.unitClass,

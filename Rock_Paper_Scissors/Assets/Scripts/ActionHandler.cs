@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using RockPaperScissors;
 using RockPaperScissors.Grids;
 using RockPaperScissors.UI;
 using RockPaperScissors.Units;

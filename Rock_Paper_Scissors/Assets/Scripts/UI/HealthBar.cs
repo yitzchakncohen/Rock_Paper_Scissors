@@ -9,7 +9,7 @@ namespace RockPaperScissors.UI
         [SerializeField] private Image healthBarImage; 
         private UnitHealth health;
 
-        private void Start() 
+        private void Awake() 
         {
             health = GetComponentInParent<UnitHealth>();
             health.OnHealthChanged += Health_OnHealthChanged;

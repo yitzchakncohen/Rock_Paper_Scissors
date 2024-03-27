@@ -10,4 +10,5 @@ struct SaveObject
     public List<SaveUnitData> UnitList;
     public SaveCurrencyBankData SaveCurrencyBankData;
     public SaveTurnManagerData SaveTurnManagerData;
+    public SaveGameplayManagerData SaveGameManagerData;
 }

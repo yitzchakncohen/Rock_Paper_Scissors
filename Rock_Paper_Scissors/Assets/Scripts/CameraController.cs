@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using RockPaperScissors;
 using RockPaperScissors.Units;
 using UnityEngine;
 
