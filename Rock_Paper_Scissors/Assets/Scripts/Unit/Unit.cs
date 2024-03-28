@@ -78,6 +78,8 @@ namespace RockPaperScissors.Units
         public void Damage(int damageAmount, Unit attacker)
         {
             health.Damage(damageAmount, attacker);
+            ParticleSystem hitFX = Instantiate(unitData.HitFX, transform.position, Quaternion.identity);
+            Destroy(hitFX.gameObject, 1f);
         }
 
         public float GetNormalizedHealth() => health.GetNormalizedHealth();
