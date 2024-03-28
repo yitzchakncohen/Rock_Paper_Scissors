@@ -70,6 +70,7 @@ namespace RockPaperScissors.Units
             int damageAmount = CombatModifiers.GetDamage(unit, target, isTargetInTower);
             target.Damage(damageAmount, unit);
             actionPointsRemaining -= 1;
+            transform.position = attackStartPosition;
             attacking = false;
 
             // Wait to complete the action until the camera has snapped to the new location.
