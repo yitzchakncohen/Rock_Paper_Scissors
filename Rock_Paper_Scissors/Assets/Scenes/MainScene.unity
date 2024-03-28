@@ -902,6 +902,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currencyText: {fileID: 292777582}
+  marblesIcon: {fileID: 814365714}
 --- !u!1 &351848895
 GameObject:
   m_ObjectHideFlags: 0
@@ -21856,6 +21857,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26526a6597941414c94b209dc40ddf9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MarbleFXPrefab: {fileID: 9035402585991199554, guid: dad29e191d4b86b4794eb2c91c30565b, type: 3}
 --- !u!4 &1687274496
 Transform:
   m_ObjectHideFlags: 0
@@ -23758,3 +23760,64 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17a82dd9ba2eacd49b54d8461fec8f76, type: 3}
+--- !u!1001 &8493887838275245565
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8493887839934343109, guid: aa669a79f22fa4f4aa6d45bf4506d148, type: 3}
+      propertyPath: m_Name
+      value: MarbleGravityWell
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493887839934343110, guid: aa669a79f22fa4f4aa6d45bf4506d148, type: 3}
+      propertyPath: currencyUI
+      value: 
+      objectReference: {fileID: 336919834}
+    - target: {fileID: 8493887839934343111, guid: aa669a79f22fa4f4aa6d45bf4506d148, type: 3}
+      propertyPath: m_RootOrder
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493887839934343111, guid: aa669a79f22fa4f4aa6d45bf4506d148, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493887839934343111, guid: aa669a79f22fa4f4aa6d45bf4506d148, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 310
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493887839934343111, guid: aa669a79f22fa4f4aa6d45bf4506d148, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493887839934343111, guid: aa669a79f22fa4f4aa6d45bf4506d148, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493887839934343111, guid: aa669a79f22fa4f4aa6d45bf4506d148, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493887839934343111, guid: aa669a79f22fa4f4aa6d45bf4506d148, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493887839934343111, guid: aa669a79f22fa4f4aa6d45bf4506d148, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493887839934343111, guid: aa669a79f22fa4f4aa6d45bf4506d148, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493887839934343111, guid: aa669a79f22fa4f4aa6d45bf4506d148, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8493887839934343111, guid: aa669a79f22fa4f4aa6d45bf4506d148, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: aa669a79f22fa4f4aa6d45bf4506d148, type: 3}

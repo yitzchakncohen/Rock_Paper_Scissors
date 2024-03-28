@@ -7,6 +7,7 @@ using UnityEngine;
 public class CurrencyUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI currencyText;
+    [SerializeField] private Transform marblesIcon;
     private CurrencyBank currencyBank;
 
     private void Start() 
@@ -23,5 +24,10 @@ public class CurrencyUI : MonoBehaviour
     private void CurrencyBank_OnCurrencyChanged(object sender, int currency)
     {
         currencyText.text = currency.ToString();
+    }
+
+    public Transform GetMarbleLocation()
+    {
+        return marblesIcon;
     }
 }
