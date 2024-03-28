@@ -83,5 +83,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScissorHitFX
       objectReference: {fileID: 0}
+    - target: {fileID: 7145341947016903399, guid: 9b1161eb5dfbf4e4585ada7203578d2e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 517051e53bab74c449e97effa50737df, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9b1161eb5dfbf4e4585ada7203578d2e, type: 3}

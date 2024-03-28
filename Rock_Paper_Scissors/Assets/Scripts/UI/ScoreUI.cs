@@ -23,7 +23,7 @@ namespace RockPaperScissors.UI
 
         private void GameplayManager_OnScoreChange(int score)
         {
-            scoreText.text = score.ToString();
+            scoreText.text = score.ToString("0000");
         }
     }    
 }
