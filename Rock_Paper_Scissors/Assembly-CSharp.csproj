@@ -57,6 +57,7 @@
     <Compile Include="Assets\Scripts\UI\HealthBar.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\SaveManager.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitHealth.cs" />
+    <Compile Include="Assets\Scripts\UI\CameraLetterboxing.cs" />
     <Compile Include="Assets\Scripts\UI\CancelButton.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyStatePattern.cs" />
     <Compile Include="Assets\Scripts\UI\BuildingMenu.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Assets\Scripts\UI\NextButtonUI.cs" />
     <Compile Include="Assets\Scripts\UI\BuildingButton.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitAnimator.cs" />
+    <Compile Include="Assets\Scripts\UI\ScoreUI.cs" />
     <Compile Include="Assets\InputSystem\PlayerControls.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitProgression.cs" />
     <Compile Include="Assets\Scripts\UI\FastForwardButton.cs" />
@@ -105,7 +107,9 @@
     <Compile Include="Assets\Scripts\SaveSystem\SaveObject.cs" />
     <Compile Include="Assets\Scripts\UI\NextActionButton.cs" />
     <Compile Include="Assets\Scripts\Grid\GridHighlightType.cs" />
+    <Compile Include="Assets\Scripts\Currency\CurrencyFX.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyAI.cs" />
+    <Compile Include="Assets\Scripts\SaveSystem\SaveGameplayManagerData.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitManager.cs" />
     <Compile Include="Assets\Scripts\Enemy\TakingActionState.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitShaderController.cs" />
@@ -114,10 +118,6 @@
     <Compile Include="Assets\Scripts\Unit\UnitMovement.cs" />
     <Compile Include="Assets\Scripts\Enemy\FindingActionState.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
-    <Compile Include="Assets\Scripts\UI\ScoreUI.cs" />
-    <Compile Include="Assets\Scripts\SaveSystem\SaveGameplayManagerData.cs" />
-    <Compile Include="Assets\Scripts\Currency\CurrencyFX.cs" />
-    <Compile Include="Assets\Scripts\UI\CameraLetterboxing.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
