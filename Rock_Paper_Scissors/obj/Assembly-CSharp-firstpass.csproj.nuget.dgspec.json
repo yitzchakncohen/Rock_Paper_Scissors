@@ -27,6 +27,60 @@
         "frameworks": {
           "netstandard2.1": {
             "targetAlias": "netstandard2.1",
+            "projectReferences": {
+              "D:\\Unity Projects\\Rock_Paper_Scissors_Repo\\Rock_Paper_Scissors\\GoogleMobileAds.Editor.csproj": {
+                "projectPath": "D:\\Unity Projects\\Rock_Paper_Scissors_Repo\\Rock_Paper_Scissors\\GoogleMobileAds.Editor.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Unity Projects\\Rock_Paper_Scissors_Repo\\Rock_Paper_Scissors\\GoogleMobileAds.Editor.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Unity Projects\\Rock_Paper_Scissors_Repo\\Rock_Paper_Scissors\\GoogleMobileAds.Editor.csproj",
+        "projectName": "GoogleMobileAds.Editor",
+        "projectPath": "D:\\Unity Projects\\Rock_Paper_Scissors_Repo\\Rock_Paper_Scissors\\GoogleMobileAds.Editor.csproj",
+        "packagesPath": "C:\\Users\\yitzc\\.nuget\\packages\\",
+        "outputPath": "D:\\Unity Projects\\Rock_Paper_Scissors_Repo\\Rock_Paper_Scissors\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\yitzc\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
             "projectReferences": {}
           }
         },

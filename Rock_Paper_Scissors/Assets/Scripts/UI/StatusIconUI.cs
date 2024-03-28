@@ -49,6 +49,10 @@ namespace RockPaperScissors.UI
             {
                 CheckForTowerOccupency(spawnedUnit);
             }
+            else if(spawnedUnit.IsBuilding())
+            {
+                CheckForTowerOccupency(spawnedUnit);
+            }
         }
         
         private void CheckForTowerOccupency(Unit updatedUnit)
