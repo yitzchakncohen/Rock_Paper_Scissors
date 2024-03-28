@@ -27,10 +27,21 @@ namespace RockPaperScissors.UI
             button = GetComponent<Button>();        
         }
 
-        private void Start() 
+        private void Start()
         {
             currencyBank = FindObjectOfType<CurrencyBank>();
-            button.interactable = (currencyBank.GetCurrencyRemaining() >= unitPrefab.GetCost());      
+            UpdateButtonInteractability();
+            currencyBank.OnCurrencyChanged += currencyBank_OnCurrencyChanged;
+        }
+
+        private void currencyBank_OnCurrencyChanged(object sender, int e)
+        {
+            UpdateButtonInteractability();
+        }
+
+        private void UpdateButtonInteractability()
+        {
+            button.interactable = currencyBank.GetCurrencyRemaining() >= unitPrefab.GetCost();
         }
 
         public void Setup(Unit unit) 
