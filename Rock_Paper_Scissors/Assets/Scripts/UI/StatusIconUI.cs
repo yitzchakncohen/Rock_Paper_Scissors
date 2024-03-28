@@ -57,20 +57,26 @@ namespace RockPaperScissors.UI
         
         private void CheckForTowerOccupency(Unit updatedUnit)
         {
+            GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(updatedUnit.transform.position);
             if(updatedUnit.GetUnitClass() == UnitClass.PillowFort || updatedUnit.GetUnitClass() == UnitClass.PillowOutpost)
             {
-                return;
-            }
-
-            GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(updatedUnit.transform.position);
-            if (gridObject.GetOccupantBuilding() != null)
-            {
-                buildingOccupiedIcon.SetActive(true);
+                if ((Unit)gridObject.GetOccupantUnit() == unit)
+                {
+                    buildingOccupiedIcon.SetActive(true);
+                }
             }
             else
             {
-                buildingOccupiedIcon.SetActive(false);
+                if (gridObject.GetOccupantBuilding() != null)
+                {
+                    buildingOccupiedIcon.SetActive(true);
+                }
+                else
+                {
+                    buildingOccupiedIcon.SetActive(false);
+                }
             }
+
         }
     }
 }
