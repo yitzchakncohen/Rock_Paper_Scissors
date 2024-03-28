@@ -38,9 +38,9 @@ public class CameraLetterboxing : MonoBehaviour
             float cameraX = (Screen.width - Screen.width * cameraWidth) / (Screen.width * 2f);
             cameraComponent.rect = new Rect
             {
-                x = cameraX,
+                x = 0,
                 y = 0,
-                width = cameraWidth,
+                width = 1f,
                 height = 1f
             };
         }
