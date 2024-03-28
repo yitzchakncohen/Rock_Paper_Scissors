@@ -117,6 +117,7 @@
     <Compile Include="Assets\Scripts\UI\ScoreUI.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\SaveGameplayManagerData.cs" />
     <Compile Include="Assets\Scripts\Currency\CurrencyFX.cs" />
+    <Compile Include="Assets\Scripts\UI\CameraLetterboxing.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
