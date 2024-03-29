@@ -10,6 +10,7 @@ namespace RockPaperScissors.Grids
         private GridObjectUI gridObjectUI;
         private IGridOccupantInterface gridPositionOccupyingUnit = null;
         private IGridOccupantInterface gridPositionOccupyingBuilding = null;
+        private IGridOccupantInterface gridPositionOccupyingTrap = null;
 
         private void Awake() 
         {
@@ -64,6 +65,16 @@ namespace RockPaperScissors.Grids
         public IGridOccupantInterface GetOccupantBuilding()
         {
             return gridPositionOccupyingBuilding;
+        }
+
+        public void SetOccupantTrap(IGridOccupantInterface Occupant)
+        {
+            gridPositionOccupyingTrap = Occupant;
+        }
+
+        public IGridOccupantInterface GetOccupantTrap()
+        {
+            return gridPositionOccupyingTrap;
         }
 
         public IGridOccupantInterface GetCombatTarget()

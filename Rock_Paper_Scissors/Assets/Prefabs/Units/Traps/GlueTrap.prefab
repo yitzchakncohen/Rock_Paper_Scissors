@@ -211,6 +211,8 @@ GameObject:
   - component: {fileID: 7550674185365434060}
   - component: {fileID: -5587580392824227166}
   - component: {fileID: 4423325987634650779}
+  - component: {fileID: 6532897644772520047}
+  - component: {fileID: 1151953408927793016}
   m_Layer: 0
   m_Name: GlueTrap
   m_TagString: Untagged
@@ -287,6 +289,37 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &6532897644772520047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8729022186923812124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6f2cf5ffa16a544aa7fab338df55ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitAnimator: {fileID: 1523352458935747124}
+  attackAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &1151953408927793016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8729022186923812124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e072e430af519a6498f9ce7c2b3346c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9013781244787316979
 GameObject:
   m_ObjectHideFlags: 0

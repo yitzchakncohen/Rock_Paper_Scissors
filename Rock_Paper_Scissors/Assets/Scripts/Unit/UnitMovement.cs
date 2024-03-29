@@ -53,8 +53,11 @@ namespace RockPaperScissors.Units
             {
                 if (Vector2.Distance(transform.position, targetGridObjects[currentPositionIndex].transform.position) < stoppingDistance)
                 {
+                    // Increment move target
                     transform.position = targetGridObjects[currentPositionIndex].transform.position;
                     currentPositionIndex++;
+
+                    // Check for Trap
                 }
                 else
                 {
