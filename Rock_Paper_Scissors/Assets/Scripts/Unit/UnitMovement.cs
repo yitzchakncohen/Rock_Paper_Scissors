@@ -89,7 +89,7 @@ namespace RockPaperScissors.Units
 
         private bool CheckGridObjectForTrap(GridObject gridObject)
         {
-            Unit unit = (Unit)gridObject.GetOccupantTrap();
+            Unit unit = gridObject.GetOccupantTrap() as Unit;
             if(unit == null)
             {
                 return false;
@@ -100,7 +100,6 @@ namespace RockPaperScissors.Units
             {   
                 if(unitTrap.GetUnit().IsFriendly() != this.unit.IsFriendly() && !unitTrap.GetIsTrapSprung())
                 {
-                    Debug.Log("Trapped!");
                     return true;
                 }
             }
