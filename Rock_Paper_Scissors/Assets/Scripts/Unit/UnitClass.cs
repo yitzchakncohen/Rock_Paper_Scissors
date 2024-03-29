@@ -10,6 +10,7 @@ namespace RockPaperScissors.Units
         Paper,
         Scissors,
         PillowFort,
-        PillowOutpost
+        PillowOutpost,
+        GlueTrap
     }
 }
