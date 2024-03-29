@@ -21,3 +21,5 @@ MonoBehaviour:
   defense: 000000000000000000000000
   unitCost: 100
   maximumHealth: 640000006400000064000000
+  unitDefeatedReward: 0
+  HitFX: {fileID: 236918012766038522, guid: 9199b18fb605334449baaff5d1010f52, type: 3}
