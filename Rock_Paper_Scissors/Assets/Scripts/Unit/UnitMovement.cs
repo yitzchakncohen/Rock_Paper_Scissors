@@ -53,11 +53,18 @@ namespace RockPaperScissors.Units
             {
                 if (Vector2.Distance(transform.position, targetGridObjects[currentPositionIndex].transform.position) < stoppingDistance)
                 {
-                    // Increment move target
+                    // Reach position
                     transform.position = targetGridObjects[currentPositionIndex].transform.position;
-                    currentPositionIndex++;
 
                     // Check for Trap
+                    if(CheckGridObjectForTrap(targetGridObjects[currentPositionIndex]))
+                    {
+                        StartCoroutine(EndMove());
+                        return;
+                    }
+
+                    // Increment move target
+                    currentPositionIndex++;
                 }
                 else
                 {
@@ -78,6 +85,20 @@ namespace RockPaperScissors.Units
             {
                 StartCoroutine(EndMove());
             }
+        }
+
+        private bool CheckGridObjectForTrap(GridObject gridObject)
+        {
+            UnitTrap unitTrap = (UnitTrap)gridObject.GetOccupantTrap();
+            if(unitTrap != null)
+            {   
+                Debug.Log("Trapped!");
+                if(unitTrap.GetUnit().IsFriendly() != unit.IsFriendly() && !unitTrap.GetIsTrapSprung())
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private IEnumerator EndMove()

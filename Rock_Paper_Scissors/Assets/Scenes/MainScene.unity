@@ -24423,13 +24423,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7550674185365434060, guid: 78755d156e89a524da87e32ecb6b7ab9, type: 3}
-      propertyPath: m_LocalPosition.x
+    - target: {fileID: -5587580392824227166, guid: 78755d156e89a524da87e32ecb6b7ab9, type: 3}
+      propertyPath: isFriendly
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7550674185365434060, guid: 78755d156e89a524da87e32ecb6b7ab9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 20.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7550674185365434060, guid: 78755d156e89a524da87e32ecb6b7ab9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 11.97
       objectReference: {fileID: 0}
     - target: {fileID: 7550674185365434060, guid: 78755d156e89a524da87e32ecb6b7ab9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -24466,6 +24470,10 @@ PrefabInstance:
     - target: {fileID: 8729022186923812124, guid: 78755d156e89a524da87e32ecb6b7ab9, type: 3}
       propertyPath: m_Name
       value: GlueTrap
+      objectReference: {fileID: 0}
+    - target: {fileID: 8729022186923812124, guid: 78755d156e89a524da87e32ecb6b7ab9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

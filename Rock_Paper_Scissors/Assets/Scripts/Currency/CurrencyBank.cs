@@ -39,6 +39,12 @@ public class CurrencyBank : MonoBehaviour, ISaveInterface<SaveCurrencyBankData>
         OnCurrencyChanged?.Invoke(this, currency);
     }
 
+    [ContextMenu("More Monies")]
+    public void AddSomeCurrency()
+    {
+        AddCurrencyToBank(1000);
+    }
+
     private void Health_OnDeath(object sender, Unit e)
     {
         Unit unit = ((UnitHealth)sender).GetUnit();

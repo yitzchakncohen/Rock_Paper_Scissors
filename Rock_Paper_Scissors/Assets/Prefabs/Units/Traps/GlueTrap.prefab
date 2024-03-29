@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7605b47921c9dc459826ce5ebeadc14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 0}
+  spriteRenderer: {fileID: 8098401671175114071}
 --- !u!114 &1523352458935747124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,7 +253,7 @@ MonoBehaviour:
   unitAnimator: {fileID: 1523352458935747124}
   unitShaderController: {fileID: 1128377067778201822}
   isFriendly: 1
-  unitData: {fileID: 0}
+  unitData: {fileID: 11400000, guid: 45c1c4a95bbbd254f9eae647a8d569af, type: 2}
 --- !u!58 &4423325987634650779
 CircleCollider2D:
   m_ObjectHideFlags: 0

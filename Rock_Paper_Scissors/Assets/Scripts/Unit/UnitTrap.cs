@@ -8,7 +8,18 @@ using UnityEngine;
 
 public class UnitTrap : UnitAction
 {
-    private bool TrapSprung = false;
+    private Unit unit;
+    private bool IsTrapSprung = false;
+
+    private void Awake() 
+    {
+        unit = GetComponent<Unit>();
+    }
+
+    private void OnEnable() 
+    {
+        UnitMovement.OnAnyActionCompleted += UnitMovement_OnAnyActionCompleted;
+    }
 
     public override EnemyAIAction GetBestEnemyAIAction()
     {
@@ -30,7 +41,22 @@ public class UnitTrap : UnitAction
 
     public override bool TryTakeAction(GridObject gridObject, Action onActionComplete)
     {
-        Debug.Log("Spring the trap!");
+        Debug.Log("It's a trap!");
         return true;
+    }
+
+    public Unit GetUnit()
+    {
+        return unit;
+    }
+    
+    public bool GetIsTrapSprung()
+    {
+        return IsTrapSprung;
+    }
+
+    private void UnitMovement_OnAnyActionCompleted(object sender, EventArgs e)
+    {
+        Debug.Log("trap check");
     }
 }
