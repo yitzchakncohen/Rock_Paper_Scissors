@@ -118,6 +118,7 @@
     <Compile Include="Assets\Scripts\UI\HealthBar.cs" />
     <Compile Include="Assets\Scripts\Grid\GridObject.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitProgression.cs" />
+    <Compile Include="Assets\Scripts\UI\SavingIndicator.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyAIAction.cs" />
     <Compile Include="Assets\Scripts\UI\SelectionUI.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\ISaveInterface.cs" />
