@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8995529487291840032}
   - component: {fileID: 8020894573146708074}
+  - component: {fileID: 4089509811032676954}
   m_Layer: 0
   m_Name: BackgroundSprite
   m_TagString: Untagged
@@ -52,7 +53,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: a10d1f4f5f516194787de6272ddca833, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,6 +85,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4089509811032676954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2551459091594147112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b89337cfd82b2344a58f5635f78cdaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteResolver: {fileID: 0}
+  spriteRenderer: {fileID: 6901134538984549767}
+  spawnFXPrefab: {fileID: 677667518724008983, guid: 8f90d32b29cd80f4f8977f828d5da67a, type: 3}
+  levelUpFX: {fileID: 1634988018634701038, guid: 6ce66b8d3970ebb4e84bfdec45c9e9c0, type: 3}
+  healthBar: {fileID: 0}
 --- !u!1 &7893072232329710855
 GameObject:
   m_ObjectHideFlags: 0
@@ -196,7 +214,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteResolver: {fileID: 0}
-  spriteRenderer: {fileID: 8098401671175114071}
+  spriteRenderer: {fileID: 0}
   spawnFXPrefab: {fileID: 677667518724008983, guid: 8f90d32b29cd80f4f8977f828d5da67a, type: 3}
   levelUpFX: {fileID: 1634988018634701038, guid: 6ce66b8d3970ebb4e84bfdec45c9e9c0, type: 3}
   healthBar: {fileID: 0}
@@ -362,6 +380,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6474959927692948742}
   - component: {fileID: 6901134538984549767}
+  - component: {fileID: 5051112583173739027}
   m_Layer: 0
   m_Name: ForegroundSprite
   m_TagString: Untagged
@@ -404,7 +423,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: a10d1f4f5f516194787de6272ddca833, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -436,3 +455,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5051112583173739027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9013781244787316979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b89337cfd82b2344a58f5635f78cdaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteResolver: {fileID: 0}
+  spriteRenderer: {fileID: 6901134538984549767}
+  spawnFXPrefab: {fileID: 677667518724008983, guid: 8f90d32b29cd80f4f8977f828d5da67a, type: 3}
+  levelUpFX: {fileID: 1634988018634701038, guid: 6ce66b8d3970ebb4e84bfdec45c9e9c0, type: 3}
+  healthBar: {fileID: 0}

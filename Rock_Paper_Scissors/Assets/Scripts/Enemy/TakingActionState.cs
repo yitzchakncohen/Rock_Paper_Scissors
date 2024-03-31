@@ -35,7 +35,7 @@ public class TakingActionState : EnemyState
             takingAction = true;
             if (TryTakeEnemyAIAction(CompleteAction))
             {
-                // Action successfully taken
+                // Action attempted
             }
             else
             {
@@ -53,6 +53,7 @@ public class TakingActionState : EnemyState
 
     public void EndTurn(EnemyStateContext context)
     {
+        Debug.Log("EndTurn");
         turnManager.NextTurn();
         context.SetState(new WaitingForTurnState());
     }
@@ -65,7 +66,11 @@ public class TakingActionState : EnemyState
         {
             // Debug.Log("Taking action with value: " + bestEnemeyAIAction.actionValue);
             // Debug.Log("Action Found: " + (Time.realtimeSinceStartup - startTime) * 1000f);
-            return nextAction.unitAction.TryTakeAction(nextAction.gridObject, onEnemyAIActionComplete);
+            if(!nextAction.unitAction.TryTakeAction(nextAction.gridObject, onEnemyAIActionComplete))
+            {
+                onEnemyAIActionComplete();
+            }
+            return true;
         }
 
         // Debug.Log("No Action Found: " + (Time.realtimeSinceStartup - startTime) * 1000f);

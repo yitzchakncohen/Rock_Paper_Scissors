@@ -61,15 +61,20 @@ namespace RockPaperScissors.Units
             trappedTurnsRemaining = Mathf.Max(trappedTurnsRemaining-1, 0);
         }
 
+        internal void SetTrappedTurnsRemaining(int trappedTurnsRemaining)
+        {
+            this.trappedTurnsRemaining = trappedTurnsRemaining;
+        }
+
+        public int GetTrappedTurnsRemaining()
+        {
+            return trappedTurnsRemaining;
+        }
         public abstract EnemyAIAction GetBestEnemyAIAction();
         public abstract bool TryTakeAction(GridObject gridObject, Action onActionComplete);
         public abstract int GetValidActionsRemaining();
         public abstract void LoadAction(SaveUnitData loadData);
         public abstract void SaveAction(SaveUnitData saveData);
 
-        internal void SetTrappedTurnsRemaining(int trappedTurnsRemaining)
-        {
-            this.trappedTurnsRemaining = trappedTurnsRemaining;
-        }
     }
 }

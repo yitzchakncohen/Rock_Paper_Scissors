@@ -11,14 +11,14 @@ namespace RockPaperScissors.Units
         public event Action OnHealthChanged;
         private Unit unit;
         private UnitProgression unitProgression;
-        private UnitAnimator unitAnimator;
+        private UnitAnimator[] unitAnimators;
         [SerializeField] private int health = -1;
         private float deathAnimationTime = 0.6f;
 
         private void Awake() 
         {
             unit = GetComponent<Unit>();
-            unitAnimator = GetComponentInChildren<UnitAnimator>();
+            unitAnimators = GetComponentsInChildren<UnitAnimator>();
         }
         
         private void Start() 
@@ -58,13 +58,16 @@ namespace RockPaperScissors.Units
 
         private IEnumerator OnDeathRoutine()
         {
-            if(unitAnimator != null)
+            foreach (UnitAnimator unitAnimator in unitAnimators)
             {
-                yield return unitAnimator.StartCoroutine(unitAnimator.DeathAnimationRoutine(deathAnimationTime));                
-            }
-            else
-            {
-                Debug.Log("No animator on this unit.");
+                if(unitAnimator != null && unitAnimator.gameObject.activeSelf)
+                {
+                    yield return unitAnimator.StartCoroutine(unitAnimator.DeathAnimationRoutine(deathAnimationTime));                
+                }
+                else
+                {
+                    yield return null;
+                }          
             }
             Destroy(gameObject);
         }
