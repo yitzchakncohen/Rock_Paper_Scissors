@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 9
+  m_SortingOrder: 8
   m_Sprite: {fileID: 21300000, guid: 7ae71c2c4018d4a4080fbdade8457b3d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -158,7 +158,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 9
   m_Sprite: {fileID: 21300000, guid: b0b4c9ab37e3ac546b5c8fd857d6c260, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -213,6 +213,8 @@ GameObject:
   - component: {fileID: 4423325987634650779}
   - component: {fileID: 6532897644772520047}
   - component: {fileID: 1151953408927793016}
+  - component: {fileID: 3244311521902394323}
+  - component: {fileID: 1724070906729191139}
   m_Layer: 0
   m_Name: GlueTrap
   m_TagString: Untagged
@@ -252,7 +254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitAnimator: {fileID: 1523352458935747124}
   unitShaderController: {fileID: 1128377067778201822}
-  isFriendly: 0
+  isFriendly: 1
   unitData: {fileID: 11400000, guid: 45c1c4a95bbbd254f9eae647a8d569af, type: 2}
 --- !u!58 &4423325987634650779
 CircleCollider2D:
@@ -320,6 +322,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e072e430af519a6498f9ce7c2b3346c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trapBackground: {fileID: 2551459091594147112}
+  trapForeground: {fileID: 9013781244787316979}
+  trapObjectSprite: {fileID: 7893072232329710855}
+  trapEffectTurns: 4
+  trapAnimationTime: 1
+--- !u!114 &3244311521902394323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8729022186923812124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7370c766bedf870409bdbdfa3699e452, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1724070906729191139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8729022186923812124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa2a016e94088f44b94d2bc6bdc7cd58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: -1
 --- !u!1 &9013781244787316979
 GameObject:
   m_ObjectHideFlags: 0

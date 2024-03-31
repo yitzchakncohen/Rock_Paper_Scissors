@@ -21,6 +21,12 @@ namespace RockPaperScissors.Units
 
         private void Health_OnDeath(object sender, Unit attacker)
         {
+            if(attacker == null)
+            {
+                // Self Destruct
+                return;
+            }
+            
             if(attacker.GetUnitProgression() == this)
             {
                 GainXP(100);

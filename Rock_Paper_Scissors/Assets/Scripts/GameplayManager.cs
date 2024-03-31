@@ -28,6 +28,12 @@ namespace RockPaperScissors
 
         private void UnitHealth_OnDeath(object sender, Unit attacker)
         {
+            if(attacker == null)
+            {
+                // Self Destruct
+                return;
+            }
+
             // Game ends when the pillow fort is destroyed.
             if(attacker.GetUnitClass() == UnitClass.PillowFort)
             {

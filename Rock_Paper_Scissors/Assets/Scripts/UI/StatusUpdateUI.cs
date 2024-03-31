@@ -75,6 +75,9 @@ namespace RockPaperScissors.UI
                 case (UnitSpawner unitSpawner):
                     ShowStatus("Placing unit...", 0);
                     break;
+                case(UnitTrap unitTrap):
+                    ShowStatus("It's a Trap!", 0);
+                    break;
             }
         }
 

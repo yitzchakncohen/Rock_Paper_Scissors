@@ -122,7 +122,7 @@ namespace RockPaperScissors.Units
 
         public bool TryStartMove(GridObject targetGridObject, Action onActionComplete)
         {
-            if(actionPointsRemaining <= 0)
+            if(actionPointsRemaining <= 0 || trappedTurnsRemaining > 0) 
             {
                 return false;
             }
@@ -354,11 +354,13 @@ namespace RockPaperScissors.Units
         public override void LoadAction(SaveUnitData loadData)
         {
             actionPointsRemaining = loadData.MoveActionPointsRemaining;
+            trappedTurnsRemaining = loadData.TrappedTurnsRemaining;
         }
 
         public override void SaveAction(SaveUnitData saveData)
         {
             saveData.MoveActionPointsRemaining = actionPointsRemaining;
+            saveData.TrappedTurnsRemaining = trappedTurnsRemaining;
         }
     }
 }

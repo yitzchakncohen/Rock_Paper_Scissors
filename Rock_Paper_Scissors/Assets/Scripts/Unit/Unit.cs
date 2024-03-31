@@ -78,8 +78,13 @@ namespace RockPaperScissors.Units
         public void Damage(int damageAmount, Unit attacker)
         {
             health.Damage(damageAmount, attacker);
-            ParticleSystem hitFX = Instantiate(unitData.HitFX, transform.position, Quaternion.identity);
+            ParticleSystem hitFX = Instantiate(GetHitFX(), transform.position, Quaternion.identity);
             Destroy(hitFX.gameObject, 1f);
+        }
+
+        public ParticleSystem GetHitFX()
+        {
+            return unitData.HitFX;
         }
 
         public float GetNormalizedHealth() => health.GetNormalizedHealth();
@@ -141,6 +146,11 @@ namespace RockPaperScissors.Units
             return health.IsDead();
         }
 
+        public void DestroyUnit()
+        {
+            health.Damage(health.GetHealth(), null);
+        }
+
         public UnitAnimator GetUnitAnimator()
         {
             return unitAnimator;
@@ -173,7 +183,6 @@ namespace RockPaperScissors.Units
 
         public SaveUnitData Save()
         {
-            Debug.Log(gameObject.name + " " + GetHealth());
             SaveUnitData saveUnitData = new SaveUnitData
             {
                 UnitClass = unitData.unitClass,
@@ -231,6 +240,14 @@ namespace RockPaperScissors.Units
         public bool IsBuilding()
         {
             return GetUnitClass() == UnitClass.PillowFort || GetUnitClass() == UnitClass.PillowOutpost;
+        }
+
+        public void SetTrappedTurnsRemaining(int trappedTurnsRemaining)
+        {
+            foreach (UnitAction action in unitActions)
+            {
+                action.SetTrappedTurnsRemaining(trappedTurnsRemaining);
+            }
         }
     }
 }

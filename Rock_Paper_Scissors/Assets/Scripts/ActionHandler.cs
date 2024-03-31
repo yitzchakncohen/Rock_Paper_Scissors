@@ -36,6 +36,7 @@ public class ActionHandler : MonoBehaviour
         GameplayManager.OnGameOver += GameplayManager_OnGameOver;
         WaveManager.OnWaveStarted += WaveManager_OnWaveStarted;
         WaveManager.OnWaveCompleted += WaveManager_OnWaveCompleted;
+        UnitAction.OnAnyActionStarted += UnitAction_OnAnyActionStarted;
 
         ResetUnitQueue();
     }
@@ -56,6 +57,10 @@ public class ActionHandler : MonoBehaviour
         BuildingButton.OnBuildingButtonPressed -= BuildingButton_BuildingButtonPressed;
         UnitHealth.OnDeath -= Health_OnDeath;
         Unit.OnUnitSpawn -= Unit_OnUnitSpawn;
+        GameplayManager.OnGameOver -= GameplayManager_OnGameOver;
+        WaveManager.OnWaveStarted -= WaveManager_OnWaveStarted;
+        WaveManager.OnWaveCompleted -= WaveManager_OnWaveCompleted;
+        UnitAction.OnAnyActionStarted -= UnitAction_OnAnyActionStarted;
     }
 
     private void InputManager_onSingleTouch(object sender, Vector2 touchPosition)
@@ -313,10 +318,25 @@ public class ActionHandler : MonoBehaviour
         controlsLocked = false;
     }
 
+    private void UnitAction_OnAnyActionStarted(object sender, EventArgs e)
+    {
+        UnitTrap unitTrap = sender as UnitTrap;
+        if(unitTrap != null)
+        {
+            SetBusy();
+            unitTrap.SetActionCompletedAction(ClearBusy);
+        }
+    }
+
     private void SetBusy()
     {
         isBusy = true;
         BusyUpdated?.Invoke(this, isBusy);
+    }
+
+    public bool IsBusy()
+    {
+        return isBusy;
     }
 
     private void ClearBusy()

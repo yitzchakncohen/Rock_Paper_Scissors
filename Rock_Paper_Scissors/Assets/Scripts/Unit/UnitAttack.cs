@@ -158,7 +158,7 @@ namespace RockPaperScissors.Units
         public bool TryAttackUnit(Unit unitToAttack, Action onActionComplete)
         {
             // Check the action points
-            if(actionPointsRemaining <= 0)
+            if(actionPointsRemaining <= 0 || trappedTurnsRemaining > 0)
             {
                 return false;
             }
