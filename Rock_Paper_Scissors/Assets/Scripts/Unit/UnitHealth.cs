@@ -63,20 +63,17 @@ namespace RockPaperScissors.Units
             {
                 if(unitAnimator != null && unitAnimator.gameObject.activeSelf)
                 {
-                    if(coroutine != null)
-                    {
-                        coroutine = unitAnimator.StartCoroutine(unitAnimator.DeathAnimationRoutine(deathAnimationTime));
-                        yield return coroutine;         
-                    }
-                    else
-                    {
-                        unitAnimator.StartCoroutine(unitAnimator.DeathAnimationRoutine(deathAnimationTime));
-                    }
+                    coroutine = unitAnimator.StartCoroutine(unitAnimator.DeathAnimationRoutine(deathAnimationTime));
                 }
+
+                if(coroutine != null)
+                {    
+                    yield return coroutine;    
+                }   
                 else
                 {
                     yield return null;
-                }          
+                }  
             }
             Destroy(gameObject);
         }
