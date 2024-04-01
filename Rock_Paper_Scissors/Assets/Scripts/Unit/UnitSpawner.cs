@@ -11,8 +11,7 @@ namespace RockPaperScissors.Units
 {
     public class UnitSpawner : UnitAction
     {
-        [SerializeField] private Unit[] spawnableUnits;
-        [SerializeField] private int placementRadius = 2;
+        [SerializeField] private UnitSpawnerData unitSpawnerData;
         private GridManager gridManager;
         private InputManager inputManager;
         private CurrencyBank currencyBank;
@@ -79,9 +78,9 @@ namespace RockPaperScissors.Units
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
             // Debug.Log($"Spawner at position { gridPosition}");
 
-            for (int x = -placementRadius; x <= placementRadius; x++)
+            for (int x = -unitSpawnerData.SpawnRadius; x <= unitSpawnerData.SpawnRadius; x++)
             {
-                for (int y = -placementRadius; y <= placementRadius; y++)
+                for (int y = -unitSpawnerData.SpawnRadius; y <= unitSpawnerData.SpawnRadius; y++)
                 {
                     Vector2Int testGridPosition = gridPosition + new Vector2Int(x, y);
 
@@ -106,10 +105,10 @@ namespace RockPaperScissors.Units
                     }
 
                     // Check if it's within spawn distance for the outermost grid positions.
-                    if (x >= placementRadius - 1 || x <= -placementRadius + 1 || y >= placementRadius - 1 || y <= -placementRadius + 1)
+                    if (x >= unitSpawnerData.SpawnRadius - 1 || x <= -unitSpawnerData.SpawnRadius + 1 || y >= unitSpawnerData.SpawnRadius - 1 || y <= -unitSpawnerData.SpawnRadius + 1)
                     {
                         int testDistance = gridManager.GetGridDistanceBetweenPositions(gridPosition, testGridPosition);
-                        if (testDistance > placementRadius)
+                        if (testDistance > unitSpawnerData.SpawnRadius)
                         {
                             continue;
                         }
@@ -164,7 +163,7 @@ namespace RockPaperScissors.Units
         {
             // Arbitrarily large starting number
             int minimumPrice = 10000;
-            foreach (Unit unit in spawnableUnits)
+            foreach (Unit unit in unitSpawnerData.SpawnableUnits)
             {
                 if (unit.GetCost() < minimumPrice)
                 {
@@ -174,9 +173,9 @@ namespace RockPaperScissors.Units
             return minimumPrice;
         }
 
-        public Unit[] GetSpawnableUnits()
+        public List<Unit> GetSpawnableUnits()
         {
-            return spawnableUnits;
+            return unitSpawnerData.SpawnableUnits;
         }
 
         protected override void CancelButton_OnCancelButtonPress()

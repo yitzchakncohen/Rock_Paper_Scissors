@@ -4,7 +4,7 @@ using UnityEngine.U2D.Animation;
 
 namespace RockPaperScissors.Units
 {
-    [CreateAssetMenu(fileName = "UnitStats", menuName = "Rock_Paper_Scissors/UnitStats", order = 0)]
+    [CreateAssetMenu(fileName = "UnitStats", menuName = "Rock_Paper_Scissors/UnitStats", order = 1)]
     public class UnitData : ScriptableObject 
     {   
         public UnitClass unitClass;

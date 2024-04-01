@@ -124,6 +124,7 @@
     <Compile Include="Assets\Scripts\UI\SelectionUI.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\ISaveInterface.cs" />
     <Compile Include="Assets\Scripts\Currency\CurrencyUI.cs" />
+    <Compile Include="Assets\Scripts\Unit\UnitSpawnerData.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitData.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\SaveGameplayManagerData.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitAttack.cs" />
