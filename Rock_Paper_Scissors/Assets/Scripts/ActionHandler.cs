@@ -135,7 +135,16 @@ public class ActionHandler : MonoBehaviour
         
         if(selectedUnit != null)
         {
-            TryMoveToGridPosition(gridObject);
+            if(TryMoveToGridPosition(gridObject))
+            {
+               // Moved Succesfuly 
+            }
+            else
+            {
+                // Tapping on a space with no options will deselect the unit. 
+                DeselectUnit();
+                updateGridActionHighlight = true;
+            }
         }
     }
 
@@ -238,9 +247,9 @@ public class ActionHandler : MonoBehaviour
         gridUIManager.ShowGridPositionList(validAttackPositions, GridHighlightType.Attack);
     }
 
-    private void HighlightPlacementTargets(UnitSpawner unitSpawner, Unit unitToSpawn)
+    private async void HighlightPlacementTargetsAsync(UnitSpawner unitSpawner, Unit unitToSpawn)
     {
-        List<Vector2Int> validPlacementPositions = unitSpawner.GetValidPlacementPositions(unitToSpawn);
+        List<Vector2Int> validPlacementPositions = await unitSpawner.GetValidPlacementPositionsAsync(unitToSpawn);
         gridUIManager.ShowGridPositionList(validPlacementPositions, GridHighlightType.PlaceObject);
     }
 
@@ -252,7 +261,7 @@ public class ActionHandler : MonoBehaviour
 
     private void BuildingButton_BuildingButtonPressed(object sender, BuildButtonArguments arguments)
     {
-        HighlightPlacementTargets(arguments.unitSpawner, arguments.unit);
+        HighlightPlacementTargetsAsync(arguments.unitSpawner, arguments.unit);
         GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(arguments.unitSpawner.transform.position);
         SetBusy();
         if(arguments.unitSpawner.TryTakeAction(gridObject , ClearBusy))

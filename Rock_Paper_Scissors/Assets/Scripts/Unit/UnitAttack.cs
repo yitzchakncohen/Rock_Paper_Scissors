@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using RockPaperScissors.Grids;
 using RockPaperScissors.SaveSystem;
 using UnityEngine;
@@ -78,49 +79,6 @@ namespace RockPaperScissors.Units
             ActionComplete();
         }
 
-        // Get a list of grid positions that neighbour the current position
-        private List<Vector2Int> GetNeighbourList(Vector2Int currentPosition)
-        {
-            List<Vector2Int> neighbourList = new List<Vector2Int>();
-
-            bool oddRow = currentPosition.y % 2 == 1;
-
-            if(currentPosition.x - 1 >= 0)
-            {
-                // Left
-                neighbourList.Add(new Vector2Int(currentPosition.x -1, currentPosition.y +0));
-
-            }
-
-            if(currentPosition.x + 1 < gridManager.GetGridSize().x)
-            {
-                // Right
-                neighbourList.Add(new Vector2Int(currentPosition.x +1, currentPosition.y +0));
-            }
-
-            if(currentPosition.y -1 >= 0)
-            {
-                // Down (left and right)
-                neighbourList.Add(new Vector2Int(currentPosition.x +0, currentPosition.y -1));
-                if(currentPosition.x - 1 >= 0 && currentPosition.x + 1 < gridManager.GetGridSize().x)
-                {
-                    neighbourList.Add(new Vector2Int(currentPosition.x + (oddRow ? +1 : -1), currentPosition.y -1));                
-                }
-            }
-
-            if(currentPosition.y + 1 < gridManager.GetGridSize().y)
-            {
-                // Up (left and right)
-                neighbourList.Add(new Vector2Int(currentPosition.x + 0, currentPosition.y +1));
-                if(currentPosition.x - 1 >= 0 && currentPosition.x + 1 < gridManager.GetGridSize().x)
-                {
-                    neighbourList.Add(new Vector2Int(currentPosition.x + (oddRow ? +1 : -1), currentPosition.y +1));
-                }
-            }
-
-            return neighbourList;
-        }
-
         private void AnimateAttack(Vector2 attackDirection)
         {
             int level = unit.GetUnitProgression().GetLevel();
@@ -194,13 +152,7 @@ namespace RockPaperScissors.Units
                 List<Vector2Int> newPositions = new List<Vector2Int>();
                 foreach (Vector2Int position in gridPositionsInRangeList)
                 {
-                    foreach (Vector2Int neighbourPosition in GetNeighbourList(position))
-                    {
-                        if(!newPositions.Contains(neighbourPosition))
-                        {
-                            newPositions.Add(neighbourPosition);
-                        }
-                    }
+                    newPositions = newPositions.Union(gridManager.GetNeighbourList(position, 0)).ToList();
                 }
 
                 // Add the new positions to the positions list.

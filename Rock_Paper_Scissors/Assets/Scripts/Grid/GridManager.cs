@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using RockPaperScissors.Units;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -14,6 +18,17 @@ namespace RockPaperScissors.Grids
         [SerializeField] private Tilemap baseTilemap;
         private Grid grid;
         private GridObject[,] gridObjects;
+        public enum DirectionFlags
+        {
+            North, 
+            South, 
+            East, 
+            West,
+            NorthEast = North | East,
+            SouthEast = South | East,
+            NorthWest = North | West,
+            SouthWest = South | West
+        }
 
         private void Awake() 
         {
@@ -132,12 +147,50 @@ namespace RockPaperScissors.Grids
             return false;
         }
 
-        public float GetRelativeDistanceOfGridPositions(Vector2Int positionA, Vector2Int positionB)
+        public float GetRelativeWorldDistanceOfGridPositions(Vector2Int positionA, Vector2Int positionB)
         {
             Vector2 gridSpacingInWorldSpace = new Vector2(1.5f, 0.75f);
             Vector2 worldPositionA = new Vector2(positionA.x * gridSpacingInWorldSpace.x, positionA.y * gridSpacingInWorldSpace.y);
             Vector2 worldPositionB = new Vector2(positionB.x * gridSpacingInWorldSpace.x, positionB.y * gridSpacingInWorldSpace.y);
             return Vector2.Distance(worldPositionA, worldPositionB);
+        }
+
+        public async Task<int> GetGridDistanceBetweenPositionsAsync(Vector2Int positionA, Vector2Int positionB)
+        { 
+            await Task.Yield();
+            List<Vector2Int> gridPositionsInRangeList = new List<Vector2Int>
+            {
+                // Add the starting position
+                positionA
+            };
+
+
+            // Increment outward getting all the positions one layer at a time.
+            int distance = 0;
+            List<Vector2Int> newPositions = new List<Vector2Int>();
+            while (true)
+            {
+                distance++;
+                // Check the valid neighbours of each position and add them to the list if they are new.
+                newPositions.Clear();
+                foreach (Vector2Int position in gridPositionsInRangeList)
+                {
+                    newPositions = newPositions.Union(GetNeighbourList(position, 0)).ToList();
+                    if(newPositions.Contains(positionB))
+                    {
+                        return distance;
+                    }
+                }
+
+                if (newPositions.Count == 0)
+                {
+                    // Position B not found
+                    Debug.LogError("Position B not found on grid");
+                    return -1;
+                }
+                // Add the new positions to the positions list.
+                gridPositionsInRangeList = gridPositionsInRangeList.Union(newPositions).ToList();
+            }
         }
 
         public void ResetActionValueTexts()
@@ -219,6 +272,49 @@ namespace RockPaperScissors.Grids
             {
                 GetGridObjectFromWorldPosition(unit.transform.position).SetOccupantUnit(unit);
             }
+        }
+
+        // Get a list of grid positions that neighbour the current position
+        public List<Vector2Int> GetNeighbourList(Vector2Int currentPosition, DirectionFlags directionFlags)
+        {
+            List<Vector2Int> neighbourList = new List<Vector2Int>();
+
+            bool oddRow = currentPosition.y % 2 == 1;
+
+            if(currentPosition.x - 1 >= 0)
+            {
+                // Left
+                neighbourList.Add(new Vector2Int(currentPosition.x -1, currentPosition.y +0));
+
+            }
+
+            if(currentPosition.x + 1 < GetGridSize().x)
+            {
+                // Right
+                neighbourList.Add(new Vector2Int(currentPosition.x +1, currentPosition.y +0));
+            }
+
+            if(currentPosition.y -1 >= 0)
+            {
+                // Down (left and right)
+                neighbourList.Add(new Vector2Int(currentPosition.x +0, currentPosition.y -1));
+                if(currentPosition.x - 1 >= 0 && currentPosition.x + 1 < GetGridSize().x)
+                {
+                    neighbourList.Add(new Vector2Int(currentPosition.x + (oddRow ? +1 : -1), currentPosition.y -1));                
+                }
+            }
+
+            if(currentPosition.y + 1 < GetGridSize().y)
+            {
+                // Up (left and right)
+                neighbourList.Add(new Vector2Int(currentPosition.x + 0, currentPosition.y +1));
+                if(currentPosition.x - 1 >= 0 && currentPosition.x + 1 < GetGridSize().x)
+                {
+                    neighbourList.Add(new Vector2Int(currentPosition.x + (oddRow ? +1 : -1), currentPosition.y +1));
+                }
+            }
+
+            return neighbourList;
         }
     }    
 }

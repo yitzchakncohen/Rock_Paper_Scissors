@@ -271,7 +271,7 @@ namespace RockPaperScissors.Units
                 
                 foreach (Vector2Int position in validMovePositions)
                 {
-                    distance = gridManager.GetRelativeDistanceOfGridPositions(closestUnitPosition, position);
+                    distance = gridManager.GetRelativeWorldDistanceOfGridPositions(closestUnitPosition, position);
 
                     if(1 + 9f/distance > bestAction.actionValue)
                     {

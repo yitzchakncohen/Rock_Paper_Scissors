@@ -69,7 +69,7 @@ namespace RockPaperScissors.UI
 
         private void BuildingButton_OnBuildingButtonPressed(object sender, BuildButtonArguments e)
         {
-            buildingMenuUI.gameObject.SetActive(false);
+            CloseBuildingMenu();
         }
 
         private void ActionHandler_OnUnitSelected(object sender, Unit unit)

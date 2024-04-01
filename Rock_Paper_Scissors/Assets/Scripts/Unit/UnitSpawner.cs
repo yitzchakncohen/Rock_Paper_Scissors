@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using RockPaperScissors.Grids;
-using RockPaperScissors.PathFindings;
 using RockPaperScissors.SaveSystem;
 using RockPaperScissors.UI;
 using UnityEngine;
@@ -14,7 +14,6 @@ namespace RockPaperScissors.Units
         [SerializeField] private Unit[] spawnableUnits;
         [SerializeField] private int placementRadius = 2;
         private GridManager gridManager;
-        private PathFinding pathFinding;
         private InputManager inputManager;
         private CurrencyBank currencyBank;
         bool placingUnit = false;
@@ -29,7 +28,6 @@ namespace RockPaperScissors.Units
             IsCancellableAction = true;
 
             gridManager = FindObjectOfType<GridManager>();
-            pathFinding = FindObjectOfType<PathFinding>();
             inputManager = FindObjectOfType<InputManager>();
             currencyBank = FindObjectOfType<CurrencyBank>();
             inputManager.OnSingleTap += InputManager_OnSingleTap;
@@ -75,15 +73,16 @@ namespace RockPaperScissors.Units
             return true;
         }
 
-        public List<Vector2Int> GetValidPlacementPositions(Unit unitToSpawn)
+        public async Task<List<Vector2Int>> GetValidPlacementPositionsAsync(Unit unitToSpawn)
         {
+            float startTime = Time.realtimeSinceStartup;
             List<Vector2Int> gridPositionList = new List<Vector2Int>();
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
             // Debug.Log($"Spawner at position { gridPosition}");
 
-            for (int x = -placementRadius-1; x <= placementRadius+1; x++)
+            for (int x = -placementRadius; x <= placementRadius; x++)
             {
-                for (int y = -placementRadius-1; y <= placementRadius+1; y++)
+                for (int y = -placementRadius; y <= placementRadius; y++)
                 {
                     Vector2Int testGridPosition = gridPosition + new Vector2Int(x, y);
 
@@ -107,71 +106,25 @@ namespace RockPaperScissors.Units
                         continue;
                     }
 
-                    // Check if it's within movement distance
-
-                    // Check from the edge of the unit spawner instead of the middle to create a valid path.
-                    // Find the closest spot on the edge
-                    Vector2Int pathTestPostion = GetPositionOnEdge(gridPosition, x, y);
-
-                    pathFinding.FindPath(pathTestPostion, testGridPosition, out int testDistance, unitToSpawn);
-                    // Debug.Log($"{pathTestPostion} to {testGridPosition}, path length {testDistance}");
-                    if (testDistance > placementRadius)
+                    // Check if it's within spawn distance for the outermost grid positions.
+                    if(x >= placementRadius -1 || x <= -placementRadius +1 || y >= placementRadius-1 || y <= -placementRadius+1)
                     {
-                        continue;
+                        int testDistance = await gridManager.GetGridDistanceBetweenPositionsAsync(gridPosition, testGridPosition);
+                        if (testDistance > placementRadius)
+                        {
+                            continue;
+                        }
                     }
 
                     gridPositionList.Add(testGridPosition);
                 }
             }
+            Debug.Log("GetValidPlacementPositions: " + (Time.realtimeSinceStartup - startTime) * 1000f);
 
             return gridPositionList;
         }
 
-        private static Vector2Int GetPositionOnEdge(Vector2Int gridPosition, int x, int y)
-        {
-            Vector2Int edgePosition = new Vector2Int(0,0);
-
-            // Left and right
-            if(y == 0 && x != 0)
-            {
-                edgePosition = new Vector2Int(x/Math.Abs(x),0);
-            }
-
-            // If y is not zero check if this is an odd row in the grid.
-            bool oddRow = gridPosition.y % 2 == 1;
-
-            // Up/down + right/left
-            if(y != 0)
-            {   
-                if(oddRow)
-                {
-                    if(x <= 0)
-                    {
-                        edgePosition = new Vector2Int(0,y/Math.Abs(y));
-                    }
-                    else
-                    {
-                        edgePosition = new Vector2Int(x/Math.Abs(x),y/Math.Abs(y));
-                    }
-                }
-                else
-                {
-                    if(x <= 0)
-                    {
-                        edgePosition = new Vector2Int(-1,y/Math.Abs(y));
-                    }
-                    else
-                    {
-                        edgePosition = new Vector2Int(x/Math.Abs(x)-1,y/Math.Abs(y));
-                    }
-                }
-            }
-
-            Vector2Int pathTestPostion = gridPosition + edgePosition;
-            return pathTestPostion;
-        }
-
-        private void InputManager_OnSingleTap(object sender, Vector2 touchPosition)
+        private async void InputManager_OnSingleTap(object sender, Vector2 touchPosition)
         {
             if(!placingUnit)
             {
@@ -181,7 +134,8 @@ namespace RockPaperScissors.Units
             Vector3 worldPositionOfInput = Camera.main.ScreenToWorldPoint(touchPosition);
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(worldPositionOfInput);
 
-            if(!GetValidPlacementPositions(unitToSpawn).Contains(gridPosition))
+            List<Vector2Int> validPlacementPositions = await GetValidPlacementPositionsAsync(unitToSpawn);
+            if(!validPlacementPositions.Contains(gridPosition))
             {
                 return;
             }
