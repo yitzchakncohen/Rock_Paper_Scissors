@@ -53,7 +53,7 @@ public class TakingActionState : EnemyState
 
     public void EndTurn(EnemyStateContext context)
     {
-        Debug.Log("EndTurn");
+        // Debug.Log("EndTurn");
         turnManager.NextTurn();
         context.SetState(new WaitingForTurnState());
     }

@@ -18,7 +18,7 @@ namespace RockPaperScissors.Units
         private void Awake() 
         {
             unit = GetComponent<Unit>();
-            unitAnimators = GetComponentsInChildren<UnitAnimator>();
+            unitAnimators = GetComponentsInChildren<UnitAnimator>(true);
         }
         
         private void Start() 
@@ -58,11 +58,20 @@ namespace RockPaperScissors.Units
 
         private IEnumerator OnDeathRoutine()
         {
+            Coroutine coroutine = null;
             foreach (UnitAnimator unitAnimator in unitAnimators)
             {
                 if(unitAnimator != null && unitAnimator.gameObject.activeSelf)
                 {
-                    yield return unitAnimator.StartCoroutine(unitAnimator.DeathAnimationRoutine(deathAnimationTime));                
+                    if(coroutine != null)
+                    {
+                        coroutine = unitAnimator.StartCoroutine(unitAnimator.DeathAnimationRoutine(deathAnimationTime));
+                        yield return coroutine;         
+                    }
+                    else
+                    {
+                        unitAnimator.StartCoroutine(unitAnimator.DeathAnimationRoutine(deathAnimationTime));
+                    }
                 }
                 else
                 {

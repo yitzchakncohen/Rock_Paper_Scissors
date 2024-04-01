@@ -214,7 +214,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteResolver: {fileID: 0}
-  spriteRenderer: {fileID: 0}
+  spriteRenderer: {fileID: 8098401671175114071}
   spawnFXPrefab: {fileID: 677667518724008983, guid: 8f90d32b29cd80f4f8977f828d5da67a, type: 3}
   levelUpFX: {fileID: 1634988018634701038, guid: 6ce66b8d3970ebb4e84bfdec45c9e9c0, type: 3}
   healthBar: {fileID: 0}
@@ -369,7 +369,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa2a016e94088f44b94d2bc6bdc7cd58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: -1
+  health: 10
 --- !u!1 &9013781244787316979
 GameObject:
   m_ObjectHideFlags: 0

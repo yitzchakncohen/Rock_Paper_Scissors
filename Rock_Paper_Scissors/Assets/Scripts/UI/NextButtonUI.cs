@@ -12,6 +12,7 @@ namespace RockPaperScissors.UI
         private Button button;
         private UnitManager unitManager;
         private TurnManager turnManager;
+        private bool waveOccuring = false;
 
         private void Start() 
         {
@@ -63,7 +64,7 @@ namespace RockPaperScissors.UI
         private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs e)
         {
             highlight.SetActive(false);
-            if(e.IsPlayersTurn)
+            if(e.IsPlayersTurn && !waveOccuring)
             {
                 button.interactable = true;
             }
@@ -76,11 +77,13 @@ namespace RockPaperScissors.UI
         private void WaveManager_OnWaveCompleted()
         {
             button.interactable = true;
+            waveOccuring = false;
         }
 
         private void WaveManager_OnWaveStarted()
         {
             button.interactable = false;
+            waveOccuring = true;
         }
 
         private void SaveManager_OnLoadCompleted()

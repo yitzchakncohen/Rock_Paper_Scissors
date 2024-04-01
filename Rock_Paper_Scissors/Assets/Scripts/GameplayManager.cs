@@ -34,8 +34,9 @@ namespace RockPaperScissors
                 return;
             }
 
+            UnitHealth unitHealth = sender as UnitHealth;
             // Game ends when the pillow fort is destroyed.
-            if(attacker.GetUnitClass() == UnitClass.PillowFort)
+            if(unitHealth != null && unitHealth.GetUnit().GetUnitClass() == UnitClass.PillowFort)
             {
                 OnGameOver?.Invoke();
             }

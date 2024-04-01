@@ -70,19 +70,6 @@ namespace RockPaperScissors.SaveSystem
                 // Get Unit location
                 SaveUnitData saveUnitData = unit.Save();
                 saveUnitData.GridPosition = gridManager.GetGridPositionFromWorldPosition(unit.transform.position);
-                // Get Unit action points
-                foreach (var action in unit.GetUnitActions())
-                {
-                    if (action is UnitAttack)
-                    {
-                        saveUnitData.AttackActionPointsRemaining = action.GetActionPointsRemaining();
-                    }
-                    else if (action is UnitMovement)
-                    {
-                        saveUnitData.MoveActionPointsRemaining = action.GetActionPointsRemaining();
-                    }
-                }
-
                 SaveUnitDataList.Add(saveUnitData);
             }
 
@@ -96,7 +83,7 @@ namespace RockPaperScissors.SaveSystem
                 SaveCurrencyBankData = currencyBankData,
                 SaveTurnManagerData = turnManagerData,
                 UnitList = SaveUnitDataList,
-                SaveGameManagerData = saveGameManagerData
+                SaveGameManagerData = saveGameManagerData,
             };
 
             string json = JsonUtility.ToJson(saveObject);

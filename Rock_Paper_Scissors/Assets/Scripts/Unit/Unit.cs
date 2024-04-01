@@ -195,7 +195,7 @@ namespace RockPaperScissors.Units
 
             foreach (UnitAction unitAction in GetUnitActions())
             {
-                unitAction.SaveAction(saveUnitData);
+                saveUnitData = unitAction.SaveAction(saveUnitData);
             }
 
             return saveUnitData;

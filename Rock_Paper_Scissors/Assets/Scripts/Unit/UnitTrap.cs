@@ -35,9 +35,7 @@ public class UnitTrap : UnitAction
         UnitMovement.OnAnyActionCompleted += UnitMovement_OnAnyActionCompleted;
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
 
-        trapBackground.SetActive(false);
-        trapForeground.SetActive(false);
-        trapObjectSprite.SetActive(true);
+        SetupSprites();
     }
 
     private void OnDestroy() 
@@ -71,11 +69,29 @@ public class UnitTrap : UnitAction
     public override void LoadAction(SaveUnitData loadData)
     {
         isTrapSprung = loadData.TrapIsSprung;
+        SetupSprites();
     }
 
-    public override void SaveAction(SaveUnitData saveData)
+    private void SetupSprites()
+    {
+        if (isTrapSprung)
+        {
+            trapObjectSprite.SetActive(false);
+            trapBackground.SetActive(true);
+            trapForeground.SetActive(true);
+        }
+        else
+        {
+            trapObjectSprite.SetActive(true);
+            trapBackground.SetActive(false);
+            trapForeground.SetActive(false);
+        }
+    }
+
+    public override SaveUnitData SaveAction(SaveUnitData saveData)
     {
         saveData.TrapIsSprung = isTrapSprung;
+        return saveData;
     }
 
     public override bool TryTakeAction(GridObject gridObject, Action onActionComplete)

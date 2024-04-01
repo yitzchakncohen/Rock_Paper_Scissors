@@ -74,7 +74,7 @@ namespace RockPaperScissors.Units
         public abstract bool TryTakeAction(GridObject gridObject, Action onActionComplete);
         public abstract int GetValidActionsRemaining();
         public abstract void LoadAction(SaveUnitData loadData);
-        public abstract void SaveAction(SaveUnitData saveData);
+        public abstract SaveUnitData SaveAction(SaveUnitData saveData);
 
     }
 }
