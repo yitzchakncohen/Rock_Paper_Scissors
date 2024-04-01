@@ -300,7 +300,7 @@ public class ActionHandler : MonoBehaviour
         }
     }
 
-    private void GameplayManager_OnGameOver()
+    private void GameplayManager_OnGameOver(int score)
     {
         controlsLocked = true;
         DeselectUnit();

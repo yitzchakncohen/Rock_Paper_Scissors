@@ -4643,6 +4643,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameMenuPanel: {fileID: 897447320}
   gameOverMenuPanel: {fileID: 773395016}
+  gameOverScoreText: {fileID: 1709288641}
   MainMenuButtons:
   - {fileID: 809240934}
   - {fileID: 1217706645}
@@ -22725,7 +22726,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7574589046934035321, guid: d9f72af5c4187f141a94f89fde83bc53, type: 3}
       propertyPath: m_text
-      value: 99999
+      value: 'Score: 99999'
       objectReference: {fileID: 0}
     - target: {fileID: 7574589046934035322, guid: d9f72af5c4187f141a94f89fde83bc53, type: 3}
       propertyPath: m_Pivot.x
@@ -22825,6 +22826,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7574589046934035322, guid: d9f72af5c4187f141a94f89fde83bc53, type: 3}
   m_PrefabInstance: {fileID: 1709288639}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1709288641 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7574589046934035321, guid: d9f72af5c4187f141a94f89fde83bc53, type: 3}
+  m_PrefabInstance: {fileID: 1709288639}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1749377903
 GameObject:
   m_ObjectHideFlags: 0

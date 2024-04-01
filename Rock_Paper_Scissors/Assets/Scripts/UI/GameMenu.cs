@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using RockPaperScissors;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,7 @@ public class GameMenu : MonoBehaviour
 
     [SerializeField] private GameObject gameMenuPanel;
     [SerializeField] private GameObject gameOverMenuPanel;
+    [SerializeField] private TextMeshProUGUI gameOverScoreText;
     [SerializeField] private Button[] MainMenuButtons;
     [SerializeField] private Button NewGameButton;
 
@@ -48,9 +50,10 @@ public class GameMenu : MonoBehaviour
         gameMenuPanel.SetActive(false);
     }
 
-    private void OpenGameOverMenu()
+    private void OpenGameOverMenu(int score)
     {
         gameOverMenuPanel.SetActive(true);
+        gameOverScoreText.text = "Score: " + score.ToString();
     }
 
     private void CloseGameOverMenu()
@@ -68,9 +71,9 @@ public class GameMenu : MonoBehaviour
         OnStartGameButtonPress?.Invoke();
     }
 
-    private void GameplayManager_OnGameOver()
+    private void GameplayManager_OnGameOver(int score)
     {
-        OpenGameOverMenu();
+        OpenGameOverMenu(score);
     }
 
 }

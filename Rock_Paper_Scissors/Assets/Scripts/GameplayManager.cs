@@ -13,7 +13,7 @@ namespace RockPaperScissors
     /// </summary>
     public class GameplayManager : MonoBehaviour, ISaveInterface<SaveGameplayManagerData>
     {
-        public static event Action OnGameOver;
+        public static event Action<int> OnGameOver;
         public static event Action<int> OnScoreChange;
         private int score = 0;
         
@@ -38,7 +38,7 @@ namespace RockPaperScissors
             // Game ends when the pillow fort is destroyed.
             if(unitHealth != null && unitHealth.GetUnit().GetUnitClass() == UnitClass.PillowFort)
             {
-                OnGameOver?.Invoke();
+                OnGameOver?.Invoke(score);
             }
 
             // Score points for defeating enemies.
