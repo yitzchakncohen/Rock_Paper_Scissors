@@ -1,3 +1,4 @@
+using System;
 using RockPaperScissors.Units;
 using UnityEngine;
 
@@ -34,6 +35,8 @@ namespace RockPaperScissors.UI
             ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
             BuildingButton.OnBuildingButtonPressed += BuildingButton_OnBuildingButtonPressed;
             radialLayoutGroup.OnCloseAnimationComplete += RadialLayoutGroup_OnCloseAnimationComplete;
+            GameplayManager.OnGameOver += GameplayManager_OnGameOver;
+            TurnManager.OnNextTurn += TurnManager_OnNextTurn;
         }
 
         private void Start() 
@@ -55,6 +58,8 @@ namespace RockPaperScissors.UI
             ActionHandler.OnUnitSelected -= ActionHandler_OnUnitSelected;
             BuildingButton.OnBuildingButtonPressed -= BuildingButton_OnBuildingButtonPressed;
             radialLayoutGroup.OnCloseAnimationComplete -= RadialLayoutGroup_OnCloseAnimationComplete;
+            GameplayManager.OnGameOver -= GameplayManager_OnGameOver;
+            TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
         }
 
         private void RadialLayoutGroup_OnCloseAnimationComplete()
@@ -91,6 +96,16 @@ namespace RockPaperScissors.UI
             {
                 radialLayoutGroup.AnimateMenuClosed();       
             }
+        }
+
+        private void GameplayManager_OnGameOver(int obj)
+        {
+            CloseBuildingMenu();
+        }
+
+        private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs e)
+        {
+            CloseBuildingMenu();
         }
     }
 }
