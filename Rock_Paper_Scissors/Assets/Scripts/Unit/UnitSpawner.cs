@@ -18,6 +18,7 @@ namespace RockPaperScissors.Units
         bool placingUnit = false;
         bool unitSpawning = false;
         private Unit unitToSpawn = null;
+        private Unit unit;
         private float timer;
 
 
@@ -25,12 +26,20 @@ namespace RockPaperScissors.Units
         {
             base.Start(); 
             IsCancellableAction = true;
+            unit = GetComponent<Unit>();
 
             gridManager = FindObjectOfType<GridManager>();
             inputManager = FindObjectOfType<InputManager>();
             currencyBank = FindObjectOfType<CurrencyBank>();
             inputManager.OnSingleTap += InputManager_OnSingleTap;
             BuildingButton.OnBuildingButtonPressed += BuildingButton_OnBuildingButtonPressed;
+            TurnManager.OnNextTurn += TurnManager_OnNextTurn;
+        }
+
+        private void OnDestroy() 
+        {
+            BuildingButton.OnBuildingButtonPressed -= BuildingButton_OnBuildingButtonPressed;  
+            TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
         }
 
         private void Update() 
@@ -57,6 +66,15 @@ namespace RockPaperScissors.Units
             if(args.unitSpawner == this)
             {
                 unitToSpawn = args.unit;
+            }
+        }
+
+        private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs e)
+        {
+            // Gain currency on player's turn. 
+            if(e.IsPlayersTurn)
+            {
+                currencyBank.AddCurrencyToBank(GetCurrencyProducedThisTurn(), unit);
             }
         }
 
@@ -192,6 +210,11 @@ namespace RockPaperScissors.Units
         public override SaveUnitData SaveAction(SaveUnitData saveData)
         {
             return saveData;
+        }
+
+        public int GetCurrencyProducedThisTurn()
+        {
+            return unitSpawnerData.CurrencyProducedPerTurn;
         }
     }
 }

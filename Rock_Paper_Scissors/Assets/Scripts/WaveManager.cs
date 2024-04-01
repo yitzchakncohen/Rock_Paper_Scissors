@@ -74,7 +74,7 @@ public class WaveManager : MonoBehaviour
         {
             if(wave.TurnToStartWave == turn)
             {
-                currencyBank.AddCurrencyToBank(wave.CurrencyBonus);
+                currencyBank.AddCurrencyToBank(wave.CurrencyBonus, null);
 
                 List<Unit> unitsSpawnedThisWave = SpawnEnemyUnits(wave.EnemyUnitsToSpawn);
                 unitsSpawnedThisWave.AddRange(SpawnFriendlyUnits(wave.FriendlyUnitsToSpawn, turn));

@@ -33,16 +33,20 @@ public class CurrencyBank : MonoBehaviour, ISaveInterface<SaveCurrencyBankData>
         return currency;
     }
 
-    public void AddCurrencyToBank(int amount)
+    public void AddCurrencyToBank(int amount, Unit unit)
     {
         currency += amount;
         OnCurrencyChanged?.Invoke(this, currency);
+        if(unit != null)
+        {
+            Instantiate(MarbleFXPrefab, unit.transform.position, quaternion.identity);
+        }
     }
 
     [ContextMenu("More Monies")]
     public void AddSomeCurrency()
     {
-        AddCurrencyToBank(1000);
+        AddCurrencyToBank(1000, null);
     }
 
     private void Health_OnDeath(object sender, Unit e)
@@ -50,9 +54,8 @@ public class CurrencyBank : MonoBehaviour, ISaveInterface<SaveCurrencyBankData>
         Unit unit = ((UnitHealth)sender).GetUnit();
         if(!unit.IsFriendly())
         {
-            currency += unit.GetUnitDefeatedReward();
             OnCurrencyChanged?.Invoke(this, currency);
-            Instantiate(MarbleFXPrefab, ((UnitHealth)sender).transform.position, quaternion.identity);
+            AddCurrencyToBank(unit.GetUnitDefeatedReward(), e);
         }
 
     }
