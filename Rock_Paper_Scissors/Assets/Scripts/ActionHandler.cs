@@ -247,9 +247,9 @@ public class ActionHandler : MonoBehaviour
         gridUIManager.ShowGridPositionList(validAttackPositions, GridHighlightType.Attack);
     }
 
-    private async void HighlightPlacementTargetsAsync(UnitSpawner unitSpawner, Unit unitToSpawn)
+    private void HighlightPlacementTargets(UnitSpawner unitSpawner, Unit unitToSpawn)
     {
-        List<Vector2Int> validPlacementPositions = await unitSpawner.GetValidPlacementPositionsAsync(unitToSpawn);
+        List<Vector2Int> validPlacementPositions = unitSpawner.GetValidPlacementPositions(unitToSpawn);
         gridUIManager.ShowGridPositionList(validPlacementPositions, GridHighlightType.PlaceObject);
     }
 
@@ -261,7 +261,7 @@ public class ActionHandler : MonoBehaviour
 
     private void BuildingButton_BuildingButtonPressed(object sender, BuildButtonArguments arguments)
     {
-        HighlightPlacementTargetsAsync(arguments.unitSpawner, arguments.unit);
+        HighlightPlacementTargets(arguments.unitSpawner, arguments.unit);
         GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(arguments.unitSpawner.transform.position);
         SetBusy();
         if(arguments.unitSpawner.TryTakeAction(gridObject , ClearBusy))

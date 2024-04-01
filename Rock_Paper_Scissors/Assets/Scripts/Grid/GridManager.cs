@@ -18,17 +18,6 @@ namespace RockPaperScissors.Grids
         [SerializeField] private Tilemap baseTilemap;
         private Grid grid;
         private GridObject[,] gridObjects;
-        public enum DirectionFlags
-        {
-            North, 
-            South, 
-            East, 
-            West,
-            NorthEast = North | East,
-            SouthEast = South | East,
-            NorthWest = North | West,
-            SouthWest = South | West
-        }
 
         private void Awake() 
         {
@@ -155,41 +144,19 @@ namespace RockPaperScissors.Grids
             return Vector2.Distance(worldPositionA, worldPositionB);
         }
 
-        public async Task<int> GetGridDistanceBetweenPositionsAsync(Vector2Int positionA, Vector2Int positionB)
-        { 
-            await Task.Yield();
-            List<Vector2Int> gridPositionsInRangeList = new List<Vector2Int>
+        public int GetGridDistanceBetweenPositions(Vector2Int positionA, Vector2Int positionB)
+        {
+            int dx = positionB.x - positionA.x;
+            int dy = positionB.y - positionA.y;
+            int x = Mathf.Abs(dx);
+            int y = Mathf.Abs(dy);
+            if (positionA.x % 2 == 1 ^ dx < 0)
             {
-                // Add the starting position
-                positionA
-            };
-
-
-            // Increment outward getting all the positions one layer at a time.
-            int distance = 0;
-            List<Vector2Int> newPositions = new List<Vector2Int>();
-            while (true)
+                return Mathf.Max(0, x - (y + 1) / 2) + y;
+            }
+            else
             {
-                distance++;
-                // Check the valid neighbours of each position and add them to the list if they are new.
-                newPositions.Clear();
-                foreach (Vector2Int position in gridPositionsInRangeList)
-                {
-                    newPositions = newPositions.Union(GetNeighbourList(position, 0)).ToList();
-                    if(newPositions.Contains(positionB))
-                    {
-                        return distance;
-                    }
-                }
-
-                if (newPositions.Count == 0)
-                {
-                    // Position B not found
-                    Debug.LogError("Position B not found on grid");
-                    return -1;
-                }
-                // Add the new positions to the positions list.
-                gridPositionsInRangeList = gridPositionsInRangeList.Union(newPositions).ToList();
+                return Mathf.Max(0, x - y / 2) + y;
             }
         }
 
@@ -275,7 +242,7 @@ namespace RockPaperScissors.Grids
         }
 
         // Get a list of grid positions that neighbour the current position
-        public List<Vector2Int> GetNeighbourList(Vector2Int currentPosition, DirectionFlags directionFlags)
+        public List<Vector2Int> GetNeighbourList(Vector2Int currentPosition)
         {
             List<Vector2Int> neighbourList = new List<Vector2Int>();
 

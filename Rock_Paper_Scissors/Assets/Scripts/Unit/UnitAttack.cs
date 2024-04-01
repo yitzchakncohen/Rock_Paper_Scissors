@@ -152,7 +152,7 @@ namespace RockPaperScissors.Units
                 List<Vector2Int> newPositions = new List<Vector2Int>();
                 foreach (Vector2Int position in gridPositionsInRangeList)
                 {
-                    newPositions = newPositions.Union(gridManager.GetNeighbourList(position, 0)).ToList();
+                    newPositions = newPositions.Union(gridManager.GetNeighbourList(position)).ToList();
                 }
 
                 // Add the new positions to the positions list.

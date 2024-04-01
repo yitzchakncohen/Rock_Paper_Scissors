@@ -73,7 +73,7 @@ namespace RockPaperScissors.Units
             return true;
         }
 
-        public async Task<List<Vector2Int>> GetValidPlacementPositionsAsync(Unit unitToSpawn)
+        public List<Vector2Int> GetValidPlacementPositions(Unit unitToSpawn)
         {
             float startTime = Time.realtimeSinceStartup;
             List<Vector2Int> gridPositionList = new List<Vector2Int>();
@@ -93,23 +93,23 @@ namespace RockPaperScissors.Units
                     }
 
                     // Check if it's walkable for units
-                    if (unitToSpawn.GetUnitClass() != UnitClass.PillowOutpost 
+                    if (unitToSpawn.GetUnitClass() != UnitClass.PillowOutpost
                         && !gridManager.GetGridObject(testGridPosition).IsWalkable(unitToSpawn))
                     {
                         continue;
                     }
 
                     // Check if it has a building already for buildings
-                    if (unitToSpawn.GetUnitClass() == UnitClass.PillowOutpost 
-                        && gridManager.GetGridObject(testGridPosition).GetOccupantBuilding() != null )
+                    if (unitToSpawn.GetUnitClass() == UnitClass.PillowOutpost
+                        && gridManager.GetGridObject(testGridPosition).GetOccupantBuilding() != null)
                     {
                         continue;
                     }
 
                     // Check if it's within spawn distance for the outermost grid positions.
-                    if(x >= placementRadius -1 || x <= -placementRadius +1 || y >= placementRadius-1 || y <= -placementRadius+1)
+                    if (x >= placementRadius - 1 || x <= -placementRadius + 1 || y >= placementRadius - 1 || y <= -placementRadius + 1)
                     {
-                        int testDistance = await gridManager.GetGridDistanceBetweenPositionsAsync(gridPosition, testGridPosition);
+                        int testDistance = gridManager.GetGridDistanceBetweenPositions(gridPosition, testGridPosition);
                         if (testDistance > placementRadius)
                         {
                             continue;
@@ -134,7 +134,7 @@ namespace RockPaperScissors.Units
             Vector3 worldPositionOfInput = Camera.main.ScreenToWorldPoint(touchPosition);
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(worldPositionOfInput);
 
-            List<Vector2Int> validPlacementPositions = await GetValidPlacementPositionsAsync(unitToSpawn);
+            List<Vector2Int> validPlacementPositions = GetValidPlacementPositions(unitToSpawn);
             if(!validPlacementPositions.Contains(gridPosition))
             {
                 return;

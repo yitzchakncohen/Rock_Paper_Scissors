@@ -1,5 +1,6 @@
 using RockPaperScissors.Grids;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace RockPaperScissors.UI
@@ -8,6 +9,7 @@ namespace RockPaperScissors.UI
     {
         [SerializeField] private TextMeshPro actionValueText;
         [SerializeField] private TextMeshPro gridPositionText;
+        [SerializeField] private TextMeshPro gridDistanceText;
         [SerializeField] private GameObject movementHighlight;
         [SerializeField] private GameObject attackHighlight;
         [SerializeField] private GameObject placementHighlight;
@@ -19,6 +21,7 @@ namespace RockPaperScissors.UI
             {
                 actionValueText.enabled = false;
                 gridPositionText.enabled = false;
+                gridDistanceText.enabled = false;
             }
         }
 
@@ -80,6 +83,27 @@ namespace RockPaperScissors.UI
                 else
                 {
                     actionValueText.text = $"AV: {actionValue:0.00}";
+                }
+            }
+        }
+
+        public void SetDistanceFromPosition(Vector2Int centerPosition, Vector2Int position)
+        {
+            if(debugging)
+            {
+                int dx = position.x - centerPosition.x;
+                int dy = position.y - centerPosition.y;
+                int x = Mathf.Abs(dx);
+                int y = Mathf.Abs(dy);
+                if(centerPosition.x % 2 == 1 ^ dx < 0)
+                {
+                    int distance = Mathf.Max(0, x - (y + 1) / 2) + y;
+                    gridDistanceText.text = distance.ToString();
+                }
+                else
+                {
+                    int distance = Mathf.Max(0, x - y / 2) + y;
+                    gridDistanceText.text = distance.ToString();
                 }
             }
         }

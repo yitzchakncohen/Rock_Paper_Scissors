@@ -21,6 +21,7 @@ namespace RockPaperScissors.Grids
         {
             this.gridPosition = gridPosition;
             gridObjectUI.SetGridPosition(gridPosition);
+            gridObjectUI.SetDistanceFromPosition(Vector2Int.one*18, gridPosition);
         }
 
         public Vector2Int GetGridPostion()
