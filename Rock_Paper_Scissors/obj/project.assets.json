@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    ".NETStandard,Version=v2.1": {}
+    ".NETStandard,Version=v2.1": {
+      "GoogleMobileAds.Editor/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.1",
+        "compile": {
+          "bin/placeholder/GoogleMobileAds.Editor.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/GoogleMobileAds.Editor.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "GoogleMobileAds.Editor/1.0.0": {
+      "type": "project",
+      "path": "GoogleMobileAds.Editor.csproj",
+      "msbuildProject": "GoogleMobileAds.Editor.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    ".NETStandard,Version=v2.1": []
+    ".NETStandard,Version=v2.1": [
+      "GoogleMobileAds.Editor >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\yitzc\\.nuget\\packages\\": {}
@@ -33,7 +52,11 @@
       "frameworks": {
         "netstandard2.1": {
           "targetAlias": "netstandard2.1",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Unity Projects\\Rock_Paper_Scissors_Repo\\Rock_Paper_Scissors\\GoogleMobileAds.Editor.csproj": {
+              "projectPath": "D:\\Unity Projects\\Rock_Paper_Scissors_Repo\\Rock_Paper_Scissors\\GoogleMobileAds.Editor.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

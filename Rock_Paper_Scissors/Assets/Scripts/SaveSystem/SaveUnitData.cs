@@ -14,9 +14,11 @@ namespace RockPaperScissors.SaveSystem
         public UnitClass UnitClass;
         public int UnitLevel;
         public int AttackActionPointsRemaining; 
-        public int MoveActionPointsRemaining; 
+        public int MoveActionPointsRemaining;
+        public int TrappedTurnsRemaining;
         public int UnitHealth;
         public int UnitXP;
+        public bool TrapIsSprung;
         public bool IsFriendly;
         public Direction FacingDirection;
     }

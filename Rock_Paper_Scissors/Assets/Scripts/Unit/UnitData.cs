@@ -17,5 +17,6 @@ namespace RockPaperScissors.Units
         public int unitCost;
         public int[] maximumHealth;
         public int unitDefeatedReward;
+        public ParticleSystem HitFX;
     }
 }

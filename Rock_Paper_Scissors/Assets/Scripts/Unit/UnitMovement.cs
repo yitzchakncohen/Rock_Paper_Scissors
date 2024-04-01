@@ -53,7 +53,17 @@ namespace RockPaperScissors.Units
             {
                 if (Vector2.Distance(transform.position, targetGridObjects[currentPositionIndex].transform.position) < stoppingDistance)
                 {
+                    // Reach position
                     transform.position = targetGridObjects[currentPositionIndex].transform.position;
+
+                    // Check for Trap
+                    if(CheckGridObjectForTrap(targetGridObjects[currentPositionIndex]))
+                    {
+                        StartCoroutine(EndMove());
+                        return;
+                    }
+
+                    // Increment move target
                     currentPositionIndex++;
                 }
                 else
@@ -77,6 +87,25 @@ namespace RockPaperScissors.Units
             }
         }
 
+        private bool CheckGridObjectForTrap(GridObject gridObject)
+        {
+            Unit unit = gridObject.GetOccupantTrap() as Unit;
+            if(unit == null)
+            {
+                return false;
+            }
+
+            UnitTrap unitTrap = unit.GetComponent<UnitTrap>();
+            if(unitTrap != null)
+            {   
+                if(unitTrap.GetUnit().IsFriendly() != this.unit.IsFriendly() && !unitTrap.GetIsTrapSprung())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private IEnumerator EndMove()
         {
             unitAnimator.ToggleMoveAnimation(false);
@@ -93,7 +122,7 @@ namespace RockPaperScissors.Units
 
         public bool TryStartMove(GridObject targetGridObject, Action onActionComplete)
         {
-            if(actionPointsRemaining <= 0)
+            if(actionPointsRemaining <= 0 || trappedTurnsRemaining > 0) 
             {
                 return false;
             }
@@ -230,7 +259,15 @@ namespace RockPaperScissors.Units
             {
                 Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
                 Unit closestUnit  = unitManager.GetClosestFriendlyUnitToPosition(gridPosition, out float distance);
-                Vector2Int closestUnitPosition = gridManager.GetGridPositionFromWorldPosition(closestUnit.transform.position);
+                Vector2Int closestUnitPosition;
+                if(closestUnit != null)
+                {
+                    closestUnitPosition = gridManager.GetGridPositionFromWorldPosition(closestUnit.transform.position);
+                }
+                else
+                {
+                    return bestAction;
+                }
                 
                 foreach (Vector2Int position in validMovePositions)
                 {
@@ -325,11 +362,14 @@ namespace RockPaperScissors.Units
         public override void LoadAction(SaveUnitData loadData)
         {
             actionPointsRemaining = loadData.MoveActionPointsRemaining;
+            trappedTurnsRemaining = loadData.TrappedTurnsRemaining;
         }
 
-        public override void SaveAction(SaveUnitData saveData)
+        public override SaveUnitData SaveAction(SaveUnitData saveData)
         {
             saveData.MoveActionPointsRemaining = actionPointsRemaining;
+            saveData.TrappedTurnsRemaining = trappedTurnsRemaining;
+            return saveData;
         }
     }
 }

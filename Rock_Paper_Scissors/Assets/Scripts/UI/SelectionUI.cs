@@ -26,6 +26,11 @@ namespace RockPaperScissors.UI
             background.SetActive(false);
         }
 
+        private void OnDestroy() 
+        {
+            ActionHandler.OnUnitSelected -= ActionHandler_OnUnitSelected;
+        }
+
         private void ActionHandler_OnUnitSelected(object sender, Unit unit)
         {
             if(unit != null)

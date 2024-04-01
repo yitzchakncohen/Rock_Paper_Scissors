@@ -239,8 +239,9 @@ namespace RockPaperScissors.Units
         {
         }
 
-        public override void SaveAction(SaveUnitData saveData)
+        public override SaveUnitData SaveAction(SaveUnitData saveData)
         {
+            return saveData;
         }
     }
 }

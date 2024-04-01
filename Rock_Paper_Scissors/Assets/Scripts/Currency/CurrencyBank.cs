@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using RockPaperScissors.SaveSystem;
 using RockPaperScissors.Units;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class CurrencyBank : MonoBehaviour, ISaveInterface<SaveCurrencyBankData>
 {
+    [SerializeField] private ParticleSystem MarbleFXPrefab;
     public event EventHandler<int> OnCurrencyChanged;
     private int currency = 0;
 
@@ -37,6 +39,12 @@ public class CurrencyBank : MonoBehaviour, ISaveInterface<SaveCurrencyBankData>
         OnCurrencyChanged?.Invoke(this, currency);
     }
 
+    [ContextMenu("More Monies")]
+    public void AddSomeCurrency()
+    {
+        AddCurrencyToBank(1000);
+    }
+
     private void Health_OnDeath(object sender, Unit e)
     {
         Unit unit = ((UnitHealth)sender).GetUnit();
@@ -44,7 +52,9 @@ public class CurrencyBank : MonoBehaviour, ISaveInterface<SaveCurrencyBankData>
         {
             currency += unit.GetUnitDefeatedReward();
             OnCurrencyChanged?.Invoke(this, currency);
+            Instantiate(MarbleFXPrefab, ((UnitHealth)sender).transform.position, quaternion.identity);
         }
+
     }
 
     public SaveCurrencyBankData Save()

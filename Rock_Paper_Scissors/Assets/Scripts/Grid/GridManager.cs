@@ -205,14 +205,19 @@ namespace RockPaperScissors.Grids
 
         private void Unit_OnUnitSpawn(object sender, EventArgs e)
         {
+            // TODO Clean up this mess :)
             Unit unit = sender as Unit;
-            if(unit.GetUnitClass() != UnitClass.PillowOutpost && unit.GetUnitClass() != UnitClass.PillowFort)
-            {
-                GetGridObjectFromWorldPosition(unit.transform.position).SetOccupantUnit(unit);
-            }
-            else if(unit.GetUnitClass() == UnitClass.PillowOutpost)
+            if(unit.GetUnitClass() == UnitClass.PillowOutpost || unit.GetUnitClass() == UnitClass.PillowOutpost)
             {
                 GetGridObjectFromWorldPosition(unit.transform.position).SetOccupantBuilding(unit);
+            }
+            else if(unit.GetUnitClass() == UnitClass.GlueTrap)
+            {
+                GetGridObjectFromWorldPosition(unit.transform.position).SetOccupantTrap(unit);
+            }
+            else
+            {
+                GetGridObjectFromWorldPosition(unit.transform.position).SetOccupantUnit(unit);
             }
         }
     }    

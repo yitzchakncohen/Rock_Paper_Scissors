@@ -15,6 +15,7 @@ namespace RockPaperScissors.Units
         protected bool isActive;
         protected Action onActionComplete;
         protected int actionPointsRemaining = 1;
+        protected int trappedTurnsRemaining = 0;
 
         protected virtual void Start() 
         {
@@ -57,12 +58,23 @@ namespace RockPaperScissors.Units
         public void ResetActionPoints()
         {
             actionPointsRemaining = 1;
+            trappedTurnsRemaining = Mathf.Max(trappedTurnsRemaining-1, 0);
         }
 
+        internal void SetTrappedTurnsRemaining(int trappedTurnsRemaining)
+        {
+            this.trappedTurnsRemaining = trappedTurnsRemaining;
+        }
+
+        public int GetTrappedTurnsRemaining()
+        {
+            return trappedTurnsRemaining;
+        }
         public abstract EnemyAIAction GetBestEnemyAIAction();
         public abstract bool TryTakeAction(GridObject gridObject, Action onActionComplete);
         public abstract int GetValidActionsRemaining();
         public abstract void LoadAction(SaveUnitData loadData);
-        public abstract void SaveAction(SaveUnitData saveData);
+        public abstract SaveUnitData SaveAction(SaveUnitData saveData);
+
     }
 }

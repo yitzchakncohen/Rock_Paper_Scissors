@@ -11,21 +11,24 @@ namespace RockPaperScissors.Units
         public event Action OnHealthChanged;
         private Unit unit;
         private UnitProgression unitProgression;
-        private UnitAnimator unitAnimator;
-        private int health;
+        private UnitAnimator[] unitAnimators;
+        [SerializeField] private int health = -1;
         private float deathAnimationTime = 0.6f;
 
         private void Awake() 
         {
             unit = GetComponent<Unit>();
-            unitAnimator = GetComponentInChildren<UnitAnimator>();
+            unitAnimators = GetComponentsInChildren<UnitAnimator>(true);
         }
         
         private void Start() 
         {
             unitProgression = unit.GetUnitProgression();
-            unitProgression.OnLevelUp += UnitProgression_OnLevelUp;        
-            health = unit.GetMaximumHealth();
+            unitProgression.OnLevelUp += UnitProgression_OnLevelUp;
+            if(health == -1)
+            {
+                SetHealth(unit.GetMaximumHealth());
+            } 
         }
 
         private void OnDestroy() 
@@ -35,15 +38,12 @@ namespace RockPaperScissors.Units
 
         private void UnitProgression_OnLevelUp()
         {
-            health = unit.GetMaximumHealth();
-            OnHealthChanged?.Invoke();
+            SetHealth(unit.GetMaximumHealth());
         }
 
         public void Damage(int damageAmount, Unit attacker)
         {
-            // Debug.Log("Damage!");
-            health -= damageAmount;
-            OnHealthChanged?.Invoke();
+            SetHealth(health - damageAmount);
             CheckForDeath(attacker);
         }
 
@@ -58,13 +58,22 @@ namespace RockPaperScissors.Units
 
         private IEnumerator OnDeathRoutine()
         {
-            if(unitAnimator != null)
+            Coroutine coroutine = null;
+            foreach (UnitAnimator unitAnimator in unitAnimators)
             {
-                yield return unitAnimator.StartCoroutine(unitAnimator.DeathAnimationRoutine(deathAnimationTime));                
-            }
-            else
-            {
-                Debug.Log("No animator on this unit.");
+                if(unitAnimator != null && unitAnimator.gameObject.activeSelf)
+                {
+                    coroutine = unitAnimator.StartCoroutine(unitAnimator.DeathAnimationRoutine(deathAnimationTime));
+                }
+
+                if(coroutine != null)
+                {    
+                    yield return coroutine;    
+                }   
+                else
+                {
+                    yield return null;
+                }  
             }
             Destroy(gameObject);
         }
@@ -76,6 +85,7 @@ namespace RockPaperScissors.Units
         public void SetHealth(int health)
         {
             this.health = health;
+            OnHealthChanged?.Invoke();
         }
 
         public bool IsDead()

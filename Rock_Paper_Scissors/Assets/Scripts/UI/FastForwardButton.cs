@@ -17,6 +17,12 @@ namespace RockPaperScissors.UI
             WaveManager.OnWaveCompleted += WaveManager_OnWaveCompleted;
         }
 
+        private void OnDestroy() 
+        {
+            TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
+            WaveManager.OnWaveCompleted -= WaveManager_OnWaveCompleted;
+        }
+
         private void WaveManager_OnWaveCompleted()
         {
             DisableFastForwarding();

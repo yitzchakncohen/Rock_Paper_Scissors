@@ -70,6 +70,7 @@ namespace RockPaperScissors.Units
             int damageAmount = CombatModifiers.GetDamage(unit, target, isTargetInTower);
             target.Damage(damageAmount, unit);
             actionPointsRemaining -= 1;
+            transform.position = attackStartPosition;
             attacking = false;
 
             // Wait to complete the action until the camera has snapped to the new location.
@@ -157,7 +158,7 @@ namespace RockPaperScissors.Units
         public bool TryAttackUnit(Unit unitToAttack, Action onActionComplete)
         {
             // Check the action points
-            if(actionPointsRemaining <= 0)
+            if(actionPointsRemaining <= 0 || trappedTurnsRemaining > 0)
             {
                 return false;
             }
@@ -310,9 +311,10 @@ namespace RockPaperScissors.Units
             actionPointsRemaining = loadData.AttackActionPointsRemaining;
         }
 
-        public override void SaveAction(SaveUnitData saveData)
+        public override SaveUnitData SaveAction(SaveUnitData saveData)
         {
             saveData.AttackActionPointsRemaining = actionPointsRemaining;
+            return saveData;
         }
     }
 }

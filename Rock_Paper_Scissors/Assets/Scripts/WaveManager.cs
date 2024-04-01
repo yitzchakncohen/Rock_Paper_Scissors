@@ -133,7 +133,7 @@ public class WaveManager : MonoBehaviour
 
         if(unitsToSpawn.Length == 0 )
         {
-            return new List<Unit>();
+            return friendlyUnitsSpawnedThisWave;
         }
         List<Vector2Int> spawnPositions = GetValidSpawnGridPositionsForSpawnPoint(unitsToSpawn.FirstOrDefault(), friendlySpawnPoint.position, radius);
         foreach (Unit unit in unitsToSpawn)

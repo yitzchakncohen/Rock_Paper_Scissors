@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using RockPaperScissors;
 using RockPaperScissors.Grids;
 using RockPaperScissors.UI;
 using RockPaperScissors.Units;
@@ -13,11 +14,11 @@ public class ActionHandler : MonoBehaviour
     private InputManager inputManager;
     private GridManager gridManager;
     private GridUI gridUIManager;
-    private TurnManager turnManager;
     private UnitManager unitManager;
     private Queue<Unit> unitQueue = new Queue<Unit>();
     private bool isBusy = false;
     private bool updateGridActionHighlight = false;
+    private bool controlsLocked = false;
 
     private void Start() 
     {
@@ -25,7 +26,6 @@ public class ActionHandler : MonoBehaviour
         gridManager = FindObjectOfType<GridManager>();
         gridUIManager = FindObjectOfType<GridUI>();
         inputManager = FindObjectOfType<InputManager>();
-        turnManager = FindObjectOfType<TurnManager>();
         unitManager = FindObjectOfType<UnitManager>();
 
         inputManager.OnSingleTap += InputManager_onSingleTouch;
@@ -33,6 +33,10 @@ public class ActionHandler : MonoBehaviour
         BuildingButton.OnBuildingButtonPressed += BuildingButton_BuildingButtonPressed;
         UnitHealth.OnDeath += Health_OnDeath;
         Unit.OnUnitSpawn += Unit_OnUnitSpawn;
+        GameplayManager.OnGameOver += GameplayManager_OnGameOver;
+        WaveManager.OnWaveStarted += WaveManager_OnWaveStarted;
+        WaveManager.OnWaveCompleted += WaveManager_OnWaveCompleted;
+        UnitAction.OnAnyActionStarted += UnitAction_OnAnyActionStarted;
 
         ResetUnitQueue();
     }
@@ -53,11 +57,16 @@ public class ActionHandler : MonoBehaviour
         BuildingButton.OnBuildingButtonPressed -= BuildingButton_BuildingButtonPressed;
         UnitHealth.OnDeath -= Health_OnDeath;
         Unit.OnUnitSpawn -= Unit_OnUnitSpawn;
+        GameplayManager.OnGameOver -= GameplayManager_OnGameOver;
+        WaveManager.OnWaveStarted -= WaveManager_OnWaveStarted;
+        WaveManager.OnWaveCompleted -= WaveManager_OnWaveCompleted;
+        UnitAction.OnAnyActionStarted -= UnitAction_OnAnyActionStarted;
     }
 
     private void InputManager_onSingleTouch(object sender, Vector2 touchPosition)
     {
-        if (!turnManager.IsPlayerTurn())
+        // Not the player's turn or game over
+        if(controlsLocked)
         {
             return;
         }
@@ -177,8 +186,8 @@ public class ActionHandler : MonoBehaviour
     {
         gridUIManager.HideAllGridPosition();
 
-        // Not the player's turn
-        if(!turnManager.IsPlayerTurn())
+        // Not the player's turn or game over
+        if(controlsLocked)
         {
             return;
         }
@@ -235,6 +244,12 @@ public class ActionHandler : MonoBehaviour
         gridUIManager.ShowGridPositionList(validPlacementPositions, GridHighlightType.PlaceObject);
     }
 
+    private void DeselectUnit()
+    {
+        selectedUnit = null;
+        OnUnitSelected?.Invoke(this, selectedUnit);
+    }
+
     private void BuildingButton_BuildingButtonPressed(object sender, BuildButtonArguments arguments)
     {
         HighlightPlacementTargets(arguments.unitSpawner, arguments.unit);
@@ -247,12 +262,19 @@ public class ActionHandler : MonoBehaviour
         }        
     }
 
-    private void TurnManager_OnNextTurn(object sender, EventArgs eventArgs)
+    private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs eventArgs)
     {
         updateGridActionHighlight = true;
-        selectedUnit = null;
+        DeselectUnit();
         ResetUnitQueue();
-        OnUnitSelected?.Invoke(this, selectedUnit);
+        if(eventArgs.IsPlayersTurn)
+        {
+            controlsLocked = false;
+        }
+        else
+        {
+            controlsLocked = true;
+        }
     }
 
     private void ResetUnitQueue()
@@ -278,10 +300,43 @@ public class ActionHandler : MonoBehaviour
         }
     }
 
+    private void GameplayManager_OnGameOver(int score)
+    {
+        controlsLocked = true;
+        DeselectUnit();
+
+    }
+    private void WaveManager_OnWaveStarted()
+    {
+        controlsLocked = true;
+        DeselectUnit();
+
+    }
+
+    private void WaveManager_OnWaveCompleted()
+    {
+        controlsLocked = false;
+    }
+
+    private void UnitAction_OnAnyActionStarted(object sender, EventArgs e)
+    {
+        UnitTrap unitTrap = sender as UnitTrap;
+        if(unitTrap != null)
+        {
+            SetBusy();
+            unitTrap.SetActionCompletedAction(ClearBusy);
+        }
+    }
+
     private void SetBusy()
     {
         isBusy = true;
         BusyUpdated?.Invoke(this, isBusy);
+    }
+
+    public bool IsBusy()
+    {
+        return isBusy;
     }
 
     private void ClearBusy()

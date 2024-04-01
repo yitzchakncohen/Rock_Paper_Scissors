@@ -123,13 +123,19 @@ namespace RockPaperScissors.Units
                 yield return new WaitForEndOfFrame();
             }
             Destroy(spawnFX);
-            healthBar.gameObject.SetActive(true);
+            if(healthBar != null)
+            {
+                healthBar.gameObject.SetActive(true);
+            }
         }
 
         public void HideUnit()
         {
             spriteRenderer.material.SetFloat("_DissolveValue", 0f);
-            healthBar.gameObject.SetActive(false);
+            if(healthBar != null)
+            {
+                healthBar.gameObject.SetActive(false);
+            }
         }
 
         private string GetLevel(int level)

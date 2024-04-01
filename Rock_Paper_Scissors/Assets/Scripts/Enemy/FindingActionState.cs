@@ -78,7 +78,7 @@ public class FindingActionState : EnemyState
         {
             // float startTime = Time.realtimeSinceStartup;
 
-            if(baseAction.GetActionPointsRemaining() <= 0)
+            if(baseAction.GetActionPointsRemaining() <= 0 || baseAction.GetTrappedTurnsRemaining() > 0)
             {
                 // Enemy cannot afford this action
                 continue;

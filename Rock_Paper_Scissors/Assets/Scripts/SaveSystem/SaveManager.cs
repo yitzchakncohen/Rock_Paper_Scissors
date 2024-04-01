@@ -19,12 +19,14 @@ namespace RockPaperScissors.SaveSystem
         private GridManager gridManager;
         private TurnManager turnManager;
         private CurrencyBank currencyBank;
+        private GameplayManager gameplayManager;
 
         private void Awake()
         {
             gridManager = FindObjectOfType<GridManager>();
             turnManager = FindObjectOfType<TurnManager>();
             currencyBank = FindObjectOfType<CurrencyBank>();
+            gameplayManager = FindObjectOfType<GameplayManager>();
             CheckForDirectory();
 
             SetupUnitDictionaries();
@@ -68,31 +70,20 @@ namespace RockPaperScissors.SaveSystem
                 // Get Unit location
                 SaveUnitData saveUnitData = unit.Save();
                 saveUnitData.GridPosition = gridManager.GetGridPositionFromWorldPosition(unit.transform.position);
-                // Get Unit action points
-                foreach (var action in unit.GetUnitActions())
-                {
-                    if (action is UnitAttack)
-                    {
-                        saveUnitData.AttackActionPointsRemaining = action.GetActionPointsRemaining();
-                    }
-                    else if (action is UnitMovement)
-                    {
-                        saveUnitData.MoveActionPointsRemaining = action.GetActionPointsRemaining();
-                    }
-                }
-
                 SaveUnitDataList.Add(saveUnitData);
             }
 
 
             SaveCurrencyBankData currencyBankData = currencyBank.Save();
             SaveTurnManagerData turnManagerData = turnManager.Save();
+            SaveGameplayManagerData saveGameManagerData = gameplayManager.Save();
 
             SaveObject saveObject = new SaveObject
             {
                 SaveCurrencyBankData = currencyBankData,
                 SaveTurnManagerData = turnManagerData,
-                UnitList = SaveUnitDataList
+                UnitList = SaveUnitDataList,
+                SaveGameManagerData = saveGameManagerData,
             };
 
             string json = JsonUtility.ToJson(saveObject);
@@ -122,6 +113,7 @@ namespace RockPaperScissors.SaveSystem
 
                 turnManager.Load(saveObject.SaveTurnManagerData);
                 currencyBank.Load(saveObject.SaveCurrencyBankData);
+                gameplayManager.Load(saveObject.SaveGameManagerData);
                 foreach (SaveUnitData unitData in saveObject.UnitList)
                 {
                     SpawnUnitByClassandTeam(unitData);

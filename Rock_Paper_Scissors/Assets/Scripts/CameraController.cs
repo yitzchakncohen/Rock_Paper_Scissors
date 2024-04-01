@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using RockPaperScissors;
 using RockPaperScissors.Units;
 using UnityEngine;
 
@@ -36,6 +37,7 @@ public class CameraController : MonoBehaviour
     private float pinchingStartZoomValue;
     private bool dragging = false;
     private bool pinching = false;
+    private bool controlsLocked = false;
 
     private void Start() 
     {
@@ -57,6 +59,8 @@ public class CameraController : MonoBehaviour
         WaveManager.OnWaveUnitSpawn += WaveManager_OnWaveUnitSpawn;
         WaveManager.OnWaveStarted += WaveManager_OnWaveStarted;
         WaveManager.OnWaveCompleted += WaveManager_OnWaveCompleted;
+        TurnManager.OnNextTurn += TurnManager_OnNextTurn;
+        GameplayManager.OnGameOver += GameplayManager_OnGameOver;
         zoomTarget = cinemachineVirtualCamera.m_Lens.OrthographicSize;
 
         CalculateCameraBoundary();
@@ -77,11 +81,18 @@ public class CameraController : MonoBehaviour
         WaveManager.OnWaveUnitSpawn -= WaveManager_OnWaveUnitSpawn;
         WaveManager.OnWaveStarted -= WaveManager_OnWaveStarted;
         WaveManager.OnWaveCompleted -= WaveManager_OnWaveCompleted;
+        TurnManager.OnNextTurn += TurnManager_OnNextTurn;
+        GameplayManager.OnGameOver -= GameplayManager_OnGameOver;
     }
 
     private void FixedUpdate()
     {
-        if (dragging && !pinching)
+        if(controlsLocked)
+        {
+            return;
+        }
+
+        if(dragging && !pinching)
         {
             Vector2 movementVector = new Vector2(draggingVector.x * (mainCamera.orthographicSize*mainCamera.aspect) /Screen.width,
                                                     draggingVector.y * (mainCamera.orthographicSize) /Screen.height)*2f;
@@ -223,13 +234,32 @@ public class CameraController : MonoBehaviour
     private void WaveManager_OnWaveStarted()
     {
         waveStartCameraPosition = transform.position;
+        controlsLocked = true;
     }
 
     private void WaveManager_OnWaveCompleted()
     {
         transform.position = waveStartCameraPosition;
+        controlsLocked = false;
     }
 
+    private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs e)
+    {
+        if(e.IsPlayersTurn)
+        {
+            controlsLocked = false;
+        }
+        else
+        {
+            controlsLocked = true;
+        }
+    }
+
+    private void GameplayManager_OnGameOver(int score)
+    {
+        // Let the player move the camera around after the game to exam the game board.
+        controlsLocked = false;
+    }
 
     private void ClampCameraPosition()
     {
