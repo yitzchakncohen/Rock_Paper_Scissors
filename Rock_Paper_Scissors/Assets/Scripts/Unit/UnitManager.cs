@@ -101,7 +101,7 @@ namespace RockPaperScissors.Units
 
             foreach (Unit friendlyUnit in friendlyUnits)
             {
-                float testDistance = gridManager.GetRelativeWorldDistanceOfGridPositions(gridPosition, gridManager.GetGridPositionFromWorldPosition(friendlyUnit.transform.position));
+                float testDistance = gridManager.GetGridDistanceBetweenPositions(gridPosition, gridManager.GetGridPositionFromWorldPosition(friendlyUnit.transform.position));
                 if(closestUnit == null || testDistance < closestUnitDistance)
                 {
                     closestUnit = friendlyUnit;

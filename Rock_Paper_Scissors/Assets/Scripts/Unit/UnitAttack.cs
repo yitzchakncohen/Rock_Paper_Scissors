@@ -46,7 +46,7 @@ namespace RockPaperScissors.Units
 
             AnimateAttack(attackTargetPosition - transform.position);
 
-            // Check the attack timer to ensure the animation is complete, then compelte the attack.
+            // Check the attack timer to ensure the animation is complete, then complete the attack.
             timer += Time.deltaTime;
             if(timer >= attackAnimationTime)
             {

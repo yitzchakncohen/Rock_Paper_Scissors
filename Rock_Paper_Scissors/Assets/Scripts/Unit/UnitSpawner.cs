@@ -75,7 +75,6 @@ namespace RockPaperScissors.Units
 
         public List<Vector2Int> GetValidPlacementPositions(Unit unitToSpawn)
         {
-            float startTime = Time.realtimeSinceStartup;
             List<Vector2Int> gridPositionList = new List<Vector2Int>();
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
             // Debug.Log($"Spawner at position { gridPosition}");
@@ -119,14 +118,12 @@ namespace RockPaperScissors.Units
                     gridPositionList.Add(testGridPosition);
                 }
             }
-            Debug.Log("GetValidPlacementPositions: " + (Time.realtimeSinceStartup - startTime) * 1000f);
-
             return gridPositionList;
         }
 
-        private async void InputManager_OnSingleTap(object sender, Vector2 touchPosition)
+        private void InputManager_OnSingleTap(object sender, Vector2 touchPosition)
         {
-            if(!placingUnit)
+            if (!placingUnit)
             {
                 return;
             }
@@ -135,12 +132,12 @@ namespace RockPaperScissors.Units
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(worldPositionOfInput);
 
             List<Vector2Int> validPlacementPositions = GetValidPlacementPositions(unitToSpawn);
-            if(!validPlacementPositions.Contains(gridPosition))
+            if (!validPlacementPositions.Contains(gridPosition))
             {
                 return;
             }
 
-            if(currencyBank.TrySpendCurrency(unitToSpawn.GetCost()))
+            if (currencyBank.TrySpendCurrency(unitToSpawn.GetCost()))
             {
                 Unit unit = Instantiate(unitToSpawn, gridManager.GetGridObject(gridPosition).transform.position, Quaternion.identity);
                 timer = 0.25f;

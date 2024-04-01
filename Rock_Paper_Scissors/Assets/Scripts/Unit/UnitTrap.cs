@@ -20,6 +20,8 @@ public class UnitTrap : UnitAction
     private void Awake() 
     {
         unit = GetComponent<Unit>();
+        // Traps have no available actions.
+        actionPointsRemaining = 0;
     }
 
     protected override void Start()

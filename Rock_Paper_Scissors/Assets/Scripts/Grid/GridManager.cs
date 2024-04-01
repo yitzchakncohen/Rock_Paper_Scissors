@@ -136,6 +136,7 @@ namespace RockPaperScissors.Grids
             return false;
         }
 
+        [Obsolete("GetRelativeWorldDistanceOfGridPositions is deprecated, please use GetGridDistanceBetweenPositions instead.")]
         public float GetRelativeWorldDistanceOfGridPositions(Vector2Int positionA, Vector2Int positionB)
         {
             Vector2 gridSpacingInWorldSpace = new Vector2(1.5f, 0.75f);
