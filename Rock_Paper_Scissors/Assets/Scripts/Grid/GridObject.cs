@@ -1,5 +1,4 @@
 using RockPaperScissors.UI;
-// using RockPaperScissors.Units;
 using UnityEngine;
 
 namespace RockPaperScissors.Grids
