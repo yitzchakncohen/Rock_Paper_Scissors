@@ -87,6 +87,8 @@ public class CameraController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        ZoomCamera();
+        
         if(controlsLocked)
         {
             return;
@@ -103,7 +105,6 @@ public class CameraController : MonoBehaviour
             DampenDragVelocity();
         }
 
-        ZoomCamera();
     }
 
     private void LateUpdate() 

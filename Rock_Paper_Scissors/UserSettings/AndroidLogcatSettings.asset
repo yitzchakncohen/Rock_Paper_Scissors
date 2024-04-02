@@ -7,7 +7,14 @@
         "exited": false
     },
     "m_SelectedPriority": 0,
-    "m_KnownProcessesForSerialization": [],
+    "m_KnownProcessesForSerialization": [
+        {
+            "deviceId": "R5CR92W1AAR",
+            "name": "com.unity3d.mobileremote",
+            "processId": 24305,
+            "exited": false
+        }
+    ],
     "m_Tags": {
         "m_Entries": [
             {

@@ -22,7 +22,7 @@ namespace RockPaperScissors.Units
         private Unit unit;
         private List<GridObject> targetGridObjects = null;
         private int currentPositionIndex = 0;
-        private bool moving;
+        private bool moving = false;
 
         private void Awake() 
         {
@@ -271,7 +271,7 @@ namespace RockPaperScissors.Units
                 
                 foreach (Vector2Int position in validMovePositions)
                 {
-                    distance = gridManager.GetRelativeDistanceOfGridPositions(closestUnitPosition, position);
+                    distance = gridManager.GetGridDistanceBetweenPositions(closestUnitPosition, position);
 
                     if(1 + 9f/distance > bestAction.actionValue)
                     {

@@ -1,15 +1,27 @@
+using System;
+using JetBrains.Annotations;
 using RockPaperScissors.Units;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RockPaperScissors.UI
 {
     public class BuildingMenu : MonoBehaviour
     {
-        [SerializeField] private Transform buildingMenuUI;
+        public static event Action<Unit> OnGarrisonedUnitSelected;
+        [SerializeField] private Transform buildingMainMenuUI;
+        [SerializeField] private Transform buildMenuUI;
         [SerializeField] private RadialLayoutGroup radialLayoutGroup;
+        [SerializeField] private RadialLayoutGroup mainRadialLayoutGroup;
         [SerializeField] private BuildingButton buildingButtonPrefab;
+        [SerializeField] private Button openBuildMenuButton;
+        [SerializeField] private Button selectUnitButton;
+        [SerializeField] private Image selectUnitImage;
+        [SerializeField] private Button closeMainMenuButton;
+        [SerializeField] private Button closeBuildMenuButton;
         private Unit parentUnit;
         private UnitSpawner unitSpawner;
+        private Unit garrisonedUnit = null;
         private float lastFrameZoom;
 
         private void Awake() 
@@ -34,6 +46,14 @@ namespace RockPaperScissors.UI
             ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
             BuildingButton.OnBuildingButtonPressed += BuildingButton_OnBuildingButtonPressed;
             radialLayoutGroup.OnCloseAnimationComplete += RadialLayoutGroup_OnCloseAnimationComplete;
+            mainRadialLayoutGroup.OnCloseAnimationComplete += MainRadialLayoutGroup_OnCloseAnimationComplete;
+            GameplayManager.OnGameOver += GameplayManager_OnGameOver;
+            TurnManager.OnNextTurn += TurnManager_OnNextTurn;
+            openBuildMenuButton.onClick.AddListener(OpenBuildMenu);
+            selectUnitButton.onClick.AddListener(OnSelectUnitButtonPress);
+            closeMainMenuButton.onClick.AddListener(CloseMainMenu);
+            closeBuildMenuButton.onClick.AddListener(CloseBuildingMenu);
+            selectUnitButton.interactable = false;
         }
 
         private void Start() 
@@ -55,16 +75,28 @@ namespace RockPaperScissors.UI
             ActionHandler.OnUnitSelected -= ActionHandler_OnUnitSelected;
             BuildingButton.OnBuildingButtonPressed -= BuildingButton_OnBuildingButtonPressed;
             radialLayoutGroup.OnCloseAnimationComplete -= RadialLayoutGroup_OnCloseAnimationComplete;
+            mainRadialLayoutGroup.OnCloseAnimationComplete -= MainRadialLayoutGroup_OnCloseAnimationComplete;
+            GameplayManager.OnGameOver -= GameplayManager_OnGameOver;
+            TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
+            openBuildMenuButton.onClick.RemoveAllListeners();
+            selectUnitButton.onClick.RemoveAllListeners();
+            closeMainMenuButton.onClick.RemoveAllListeners();
+            closeBuildMenuButton.onClick.RemoveAllListeners();
         }
 
         private void RadialLayoutGroup_OnCloseAnimationComplete()
         {
-            buildingMenuUI.gameObject.SetActive(false);
+            buildMenuUI.gameObject.SetActive(false);
+        }
+
+        private void MainRadialLayoutGroup_OnCloseAnimationComplete()
+        {
+            buildingMainMenuUI.gameObject.SetActive(false);
         }
 
         private void BuildingButton_OnBuildingButtonPressed(object sender, BuildButtonArguments e)
         {
-            buildingMenuUI.gameObject.SetActive(false);
+            CloseBuildingMenu();
         }
 
         private void ActionHandler_OnUnitSelected(object sender, Unit unit)
@@ -73,23 +105,85 @@ namespace RockPaperScissors.UI
             {
                 OpenBuildingMenu();
             }
-            else if(unit != null)
+            else
             {
                 CloseBuildingMenu();
+                CloseMainMenu();
+                garrisonedUnit = null;
             }
         }
 
         public void OpenBuildingMenu()
         {
-            buildingMenuUI.gameObject.SetActive(true);
+            if(garrisonedUnit != null)
+            {
+                Debug.Log(garrisonedUnit.gameObject.name);
+                selectUnitButton.interactable = true;
+                OpenMainMenu();
+            }
+            else
+            {
+                OpenBuildMenu();
+            }
+        }
+
+        public void OpenMainMenu()
+        {
+            buildingMainMenuUI.gameObject.SetActive(true);
+            mainRadialLayoutGroup.AnimateMenuOpen();
+        }
+
+        public void OpenBuildMenu()
+        {
+            CloseMainMenu();
+            buildMenuUI.gameObject.SetActive(true);
             radialLayoutGroup.AnimateMenuOpen();
         }
 
         public void CloseBuildingMenu()
         {
-            if(buildingMenuUI.gameObject.activeSelf)
+            if(buildMenuUI.gameObject.activeSelf)
             {
                 radialLayoutGroup.AnimateMenuClosed();       
+            }
+            if(garrisonedUnit != null)
+            {
+                OpenMainMenu();
+            }
+        }
+
+        public void CloseMainMenu()
+        {
+            if(buildingMainMenuUI.gameObject.activeSelf)
+            {
+                mainRadialLayoutGroup.AnimateMenuClosed();
+            }
+        }
+
+        private void GameplayManager_OnGameOver(int obj)
+        {
+            CloseBuildingMenu();
+            CloseMainMenu();
+        }
+
+        private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs e)
+        {
+            CloseBuildingMenu();
+            CloseMainMenu();
+        }
+
+        private void OnSelectUnitButtonPress()
+        {
+            OnGarrisonedUnitSelected?.Invoke(garrisonedUnit);
+        }
+
+        public void SetGarrisonedUnit(Unit unit)
+        {
+            garrisonedUnit = unit;
+            if(garrisonedUnit != null)
+            {
+                selectUnitButton.interactable = true;
+                selectUnitImage.sprite = garrisonedUnit.GetUnitThumbnail();
             }
         }
     }

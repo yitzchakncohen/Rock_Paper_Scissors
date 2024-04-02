@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using RockPaperScissors.Grids;
-using RockPaperScissors.PathFindings;
 using RockPaperScissors.SaveSystem;
 using RockPaperScissors.UI;
 using UnityEngine;
@@ -11,15 +11,14 @@ namespace RockPaperScissors.Units
 {
     public class UnitSpawner : UnitAction
     {
-        [SerializeField] private Unit[] spawnableUnits;
-        [SerializeField] private int placementRadius = 2;
+        [SerializeField] private UnitSpawnerData unitSpawnerData;
         private GridManager gridManager;
-        private PathFinding pathFinding;
         private InputManager inputManager;
         private CurrencyBank currencyBank;
         bool placingUnit = false;
         bool unitSpawning = false;
         private Unit unitToSpawn = null;
+        private Unit unit;
         private float timer;
 
 
@@ -27,13 +26,20 @@ namespace RockPaperScissors.Units
         {
             base.Start(); 
             IsCancellableAction = true;
+            unit = GetComponent<Unit>();
 
             gridManager = FindObjectOfType<GridManager>();
-            pathFinding = FindObjectOfType<PathFinding>();
             inputManager = FindObjectOfType<InputManager>();
             currencyBank = FindObjectOfType<CurrencyBank>();
             inputManager.OnSingleTap += InputManager_OnSingleTap;
             BuildingButton.OnBuildingButtonPressed += BuildingButton_OnBuildingButtonPressed;
+            TurnManager.OnNextTurn += TurnManager_OnNextTurn;
+        }
+
+        private void OnDestroy() 
+        {
+            BuildingButton.OnBuildingButtonPressed -= BuildingButton_OnBuildingButtonPressed;  
+            TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
         }
 
         private void Update() 
@@ -63,6 +69,15 @@ namespace RockPaperScissors.Units
             }
         }
 
+        private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs e)
+        {
+            // Gain currency on player's turn. 
+            if(e.IsPlayersTurn)
+            {
+                currencyBank.AddCurrencyToBank(GetCurrencyProducedThisTurn(), unit);
+            }
+        }
+
         public override EnemyAIAction GetBestEnemyAIAction()
         {
             throw new NotImplementedException();
@@ -81,9 +96,9 @@ namespace RockPaperScissors.Units
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
             // Debug.Log($"Spawner at position { gridPosition}");
 
-            for (int x = -placementRadius-1; x <= placementRadius+1; x++)
+            for (int x = -unitSpawnerData.SpawnRadius; x <= unitSpawnerData.SpawnRadius; x++)
             {
-                for (int y = -placementRadius-1; y <= placementRadius+1; y++)
+                for (int y = -unitSpawnerData.SpawnRadius; y <= unitSpawnerData.SpawnRadius; y++)
                 {
                     Vector2Int testGridPosition = gridPosition + new Vector2Int(x, y);
 
@@ -94,86 +109,38 @@ namespace RockPaperScissors.Units
                     }
 
                     // Check if it's walkable for units
-                    if (unitToSpawn.GetUnitClass() != UnitClass.PillowOutpost 
+                    if (unitToSpawn.GetUnitClass() != UnitClass.PillowOutpost
                         && !gridManager.GetGridObject(testGridPosition).IsWalkable(unitToSpawn))
                     {
                         continue;
                     }
 
                     // Check if it has a building already for buildings
-                    if (unitToSpawn.GetUnitClass() == UnitClass.PillowOutpost 
-                        && gridManager.GetGridObject(testGridPosition).GetOccupantBuilding() != null )
+                    if (unitToSpawn.GetUnitClass() == UnitClass.PillowOutpost
+                        && gridManager.GetGridObject(testGridPosition).GetOccupantBuilding() != null)
                     {
                         continue;
                     }
 
-                    // Check if it's within movement distance
-
-                    // Check from the edge of the unit spawner instead of the middle to create a valid path.
-                    // Find the closest spot on the edge
-                    Vector2Int pathTestPostion = GetPositionOnEdge(gridPosition, x, y);
-
-                    pathFinding.FindPath(pathTestPostion, testGridPosition, out int testDistance, unitToSpawn);
-                    // Debug.Log($"{pathTestPostion} to {testGridPosition}, path length {testDistance}");
-                    if (testDistance > placementRadius)
+                    // Check if it's within spawn distance for the outermost grid positions.
+                    if (x >= unitSpawnerData.SpawnRadius - 1 || x <= -unitSpawnerData.SpawnRadius + 1 || y >= unitSpawnerData.SpawnRadius - 1 || y <= -unitSpawnerData.SpawnRadius + 1)
                     {
-                        continue;
+                        int testDistance = gridManager.GetGridDistanceBetweenPositions(gridPosition, testGridPosition);
+                        if (testDistance > unitSpawnerData.SpawnRadius)
+                        {
+                            continue;
+                        }
                     }
 
                     gridPositionList.Add(testGridPosition);
                 }
             }
-
             return gridPositionList;
-        }
-
-        private static Vector2Int GetPositionOnEdge(Vector2Int gridPosition, int x, int y)
-        {
-            Vector2Int edgePosition = new Vector2Int(0,0);
-
-            // Left and right
-            if(y == 0 && x != 0)
-            {
-                edgePosition = new Vector2Int(x/Math.Abs(x),0);
-            }
-
-            // If y is not zero check if this is an odd row in the grid.
-            bool oddRow = gridPosition.y % 2 == 1;
-
-            // Up/down + right/left
-            if(y != 0)
-            {   
-                if(oddRow)
-                {
-                    if(x <= 0)
-                    {
-                        edgePosition = new Vector2Int(0,y/Math.Abs(y));
-                    }
-                    else
-                    {
-                        edgePosition = new Vector2Int(x/Math.Abs(x),y/Math.Abs(y));
-                    }
-                }
-                else
-                {
-                    if(x <= 0)
-                    {
-                        edgePosition = new Vector2Int(-1,y/Math.Abs(y));
-                    }
-                    else
-                    {
-                        edgePosition = new Vector2Int(x/Math.Abs(x)-1,y/Math.Abs(y));
-                    }
-                }
-            }
-
-            Vector2Int pathTestPostion = gridPosition + edgePosition;
-            return pathTestPostion;
         }
 
         private void InputManager_OnSingleTap(object sender, Vector2 touchPosition)
         {
-            if(!placingUnit)
+            if (!placingUnit)
             {
                 return;
             }
@@ -181,12 +148,13 @@ namespace RockPaperScissors.Units
             Vector3 worldPositionOfInput = Camera.main.ScreenToWorldPoint(touchPosition);
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(worldPositionOfInput);
 
-            if(!GetValidPlacementPositions(unitToSpawn).Contains(gridPosition))
+            List<Vector2Int> validPlacementPositions = GetValidPlacementPositions(unitToSpawn);
+            if (!validPlacementPositions.Contains(gridPosition))
             {
                 return;
             }
 
-            if(currencyBank.TrySpendCurrency(unitToSpawn.GetCost()))
+            if (currencyBank.TrySpendCurrency(unitToSpawn.GetCost()))
             {
                 Unit unit = Instantiate(unitToSpawn, gridManager.GetGridObject(gridPosition).transform.position, Quaternion.identity);
                 timer = 0.25f;
@@ -213,7 +181,7 @@ namespace RockPaperScissors.Units
         {
             // Arbitrarily large starting number
             int minimumPrice = 10000;
-            foreach (Unit unit in spawnableUnits)
+            foreach (Unit unit in unitSpawnerData.SpawnableUnits)
             {
                 if (unit.GetCost() < minimumPrice)
                 {
@@ -223,9 +191,9 @@ namespace RockPaperScissors.Units
             return minimumPrice;
         }
 
-        public Unit[] GetSpawnableUnits()
+        public List<Unit> GetSpawnableUnits()
         {
-            return spawnableUnits;
+            return unitSpawnerData.SpawnableUnits;
         }
 
         protected override void CancelButton_OnCancelButtonPress()
@@ -242,6 +210,11 @@ namespace RockPaperScissors.Units
         public override SaveUnitData SaveAction(SaveUnitData saveData)
         {
             return saveData;
+        }
+
+        public int GetCurrencyProducedThisTurn()
+        {
+            return unitSpawnerData.CurrencyProducedPerTurn;
         }
     }
 }
