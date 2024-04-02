@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,7 @@ namespace RockPaperScissors.UI
     {
         [SerializeField] private Button continueButton;
         [SerializeField] private Button startButton;
+        [SerializeField] private TextMeshProUGUI highscoreText;
         public static event Action OnStartGameButtonPress;
         public static event Action OnContinueGameButtonPress;
 
@@ -27,6 +29,16 @@ namespace RockPaperScissors.UI
             else
             {
                 continueButton.interactable = false;
+            }
+            
+            int highscore = PlayerPrefs.GetInt(ApplicationManager.HIGH_SCORE_STRING, -1);
+            if(highscore != -1)
+            {
+                highscoreText.text = "HIGHSCORE: " + highscore; 
+            }
+            else
+            {
+                highscoreText.gameObject.SetActive(false);
             }
         }
 

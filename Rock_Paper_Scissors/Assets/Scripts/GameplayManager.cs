@@ -15,6 +15,7 @@ namespace RockPaperScissors
     {
         public static event Action<int> OnGameOver;
         public static event Action<int> OnScoreChange;
+        public static event Action<int> OnNewHighscore;
         private int score = 0;
         
         private void Awake() 
@@ -38,14 +39,25 @@ namespace RockPaperScissors
             // Game ends when the pillow fort is destroyed.
             if(unitHealth != null && unitHealth.GetUnit().GetUnitClass() == UnitClass.PillowFort)
             {
-                OnGameOver?.Invoke(score);
+                GameOver();
             }
 
             // Score points for defeating enemies.
-            if(attacker.IsFriendly())
+            if (attacker.IsFriendly())
             {
                 score += 10;
                 OnScoreChange?.Invoke(score);
+            }
+        }
+
+        private void GameOver()
+        {
+            OnGameOver?.Invoke(score);
+            int highscore = PlayerPrefs.GetInt(ApplicationManager.HIGH_SCORE_STRING, -1);
+            if(highscore < score)
+            {
+                PlayerPrefs.SetInt(ApplicationManager.HIGH_SCORE_STRING, score);
+                OnNewHighscore?.Invoke(score);
             }
         }
 
