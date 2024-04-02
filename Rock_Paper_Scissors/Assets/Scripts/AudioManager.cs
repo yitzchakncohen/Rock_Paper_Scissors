@@ -12,6 +12,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip unitDeselectionSound = null;
     [SerializeField] private AudioClip unitLevelUpSound = null;
     [SerializeField] private AudioClip unitSpawnSound = null;
+    [SerializeField] private AudioClip unitMovementSound = null;
     [SerializeField] private AudioClip collectCurrencySound = null;
     [SerializeField] private AudioClip glueTrapSound = null;
     [SerializeField] private AudioClip rockAttackSound = null;
@@ -68,6 +69,11 @@ public class AudioManager : MonoBehaviour
     public void PlayUnitSpawnSound()
     {
         PlaySoundOneShot(unitSpawnSound);
+    }
+
+    public void PlayUnitMovementSound()
+    {
+        PlaySoundOneShot(unitMovementSound);
     }
 
     public void PlayCollectCurrencySound()

@@ -1566,7 +1566,8 @@ MonoBehaviour:
   unitSelectionSound: {fileID: 8300000, guid: 0994c12e202f342459a4212e7287f7e8, type: 3}
   unitDeselectionSound: {fileID: 8300000, guid: b43d102aac6b145468dcaa94a5cccae1, type: 3}
   unitLevelUpSound: {fileID: 8300000, guid: 7bd6b897eb5ca4b7d88a205c4a51640c, type: 3}
-  unitSpawnSound: {fileID: 8300000, guid: 724131bc8a7f34041bb9f1701f0cb58d, type: 3}
+  unitSpawnSound: {fileID: 8300000, guid: 19f89c6e740e7447f9e12a8310d3e973, type: 3}
+  unitMovementSound: {fileID: 8300000, guid: ffb159a21c8a04135a5616979c828fab, type: 3}
   collectCurrencySound: {fileID: 8300000, guid: 79180f511d89441b9aa23ccae1992fe0, type: 3}
   glueTrapSound: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
   rockAttackSound: {fileID: 8300000, guid: d46323e22e74e46baa241cbf48c85671, type: 3}

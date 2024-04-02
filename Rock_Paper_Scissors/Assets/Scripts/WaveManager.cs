@@ -176,6 +176,7 @@ public class WaveManager : MonoBehaviour
     private IEnumerator ShowSpawnedUnits(List<Unit> unitsSpawnedThisWave)
     {
         OnWaveStarted?.Invoke();
+        AudioManager.Instance.PlayEnemyWaveSound();
 
         unitsSpawnedThisWave.Sort(delegate(Unit unitA, Unit unitB)
         {
@@ -221,6 +222,7 @@ public class WaveManager : MonoBehaviour
         // Show the units one at a time.
         foreach (Unit unit in unitsSpawnedThisWave)
         {
+            AudioManager.Instance.PlayUnitSpawnSound();
             OnWaveUnitSpawn?.Invoke(unit);
             yield return StartCoroutine(unit.GetUnitAnimator().SpawnAnimationRoutine(showUnitsTime));
         }
