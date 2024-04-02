@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingMainMenuUI: {fileID: 4758082968879578020}
   buildMenuUI: {fileID: 4721943390710829849}
-  radialLayoutGroup: {fileID: 1539066252720212047}
+  buildButtonsRadialLayoutGroup: {fileID: 1539066252720212047}
   mainRadialLayoutGroup: {fileID: 5907085637833330758}
   buildingButtonPrefab: {fileID: 804627946948452930, guid: dfd9d4824a9329741aff63054b1fe6e4, type: 3}
   openBuildMenuButton: {fileID: 3600497530535283239}
