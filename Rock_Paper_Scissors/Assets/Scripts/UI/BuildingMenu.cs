@@ -16,6 +16,7 @@ namespace RockPaperScissors.UI
         [SerializeField] private BuildingButton buildingButtonPrefab;
         [SerializeField] private Button openBuildMenuButton;
         [SerializeField] private Button selectUnitButton;
+        [SerializeField] private Image selectUnitImage;
         [SerializeField] private Button closeMainMenuButton;
         [SerializeField] private Button closeBuildMenuButton;
         private Unit parentUnit;
@@ -182,6 +183,7 @@ namespace RockPaperScissors.UI
             if(garrisonedUnit != null)
             {
                 selectUnitButton.interactable = true;
+                selectUnitImage.sprite = garrisonedUnit.GetUnitThumbnail();
             }
         }
     }

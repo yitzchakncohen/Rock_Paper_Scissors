@@ -52,6 +52,7 @@ MonoBehaviour:
   buildingButtonPrefab: {fileID: 804627946948452930, guid: dfd9d4824a9329741aff63054b1fe6e4, type: 3}
   openBuildMenuButton: {fileID: 3600497530535283239}
   selectUnitButton: {fileID: 1861219232819400068}
+  selectUnitImage: {fileID: 5556002543947296888}
   closeMainMenuButton: {fileID: 6145858707899894329}
   closeBuildMenuButton: {fileID: 3696852924407473001}
 --- !u!1 &389913418028379282
