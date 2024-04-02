@@ -31,6 +31,7 @@ public class ActionHandler : MonoBehaviour
         inputManager.OnSingleTap += InputManager_onSingleTouch;
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
         BuildingButton.OnBuildingButtonPressed += BuildingButton_BuildingButtonPressed;
+        BuildingMenu.OnGarrisonedUnitSelected += BuildingMenu_OnGarrisonedUnitSelected;
         UnitHealth.OnDeath += Health_OnDeath;
         Unit.OnUnitSpawn += Unit_OnUnitSpawn;
         GameplayManager.OnGameOver += GameplayManager_OnGameOver;
@@ -55,6 +56,7 @@ public class ActionHandler : MonoBehaviour
         inputManager.OnSingleTap -= InputManager_onSingleTouch;
         TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
         BuildingButton.OnBuildingButtonPressed -= BuildingButton_BuildingButtonPressed;
+        BuildingMenu.OnGarrisonedUnitSelected -= BuildingMenu_OnGarrisonedUnitSelected;
         UnitHealth.OnDeath -= Health_OnDeath;
         Unit.OnUnitSpawn -= Unit_OnUnitSpawn;
         GameplayManager.OnGameOver -= GameplayManager_OnGameOver;
@@ -91,47 +93,40 @@ public class ActionHandler : MonoBehaviour
     {
         IGridOccupantInterface gridOccupantUnit = gridObject.GetOccupantUnit();
         IGridOccupantInterface gridOccupantBuilding = gridObject.GetOccupantBuilding(); 
-        
-        // Check if the grid position is occupied by a Unit
-        if(gridOccupantUnit != null)
+
+        // Try and attack 
+        if(gridOccupantUnit != null && !gridOccupantUnit.IsFriendly())
         {
-            // Select a friendly unit
-            if(gridOccupantUnit.IsFriendly())
-            {
-                SelectUnitOccupyingGridPosition(gridObject);
-            }
-            else
-            {
-                TryAttackUnitOccupyingGridPosition(gridObject);
-            }
+            TryAttackUnitOccupyingGridPosition(gridObject);
             return;
         }
-        
-        // Check if the grid position is occupied by a Tower
-        if(gridOccupantBuilding != null)
+        else if(gridOccupantBuilding != null && !gridOccupantBuilding.IsFriendly())
         {
-            // If it is not friendly, attack the tower.
-            if(!gridOccupantBuilding.IsFriendly())
+            // Attack the building
+            return;
+        }
+        // Try to move / select
+        else if(gridOccupantBuilding != null && gridOccupantBuilding.IsFriendly())
+        {
+            // Check if you can move the unit onto the tower.
+            if(selectedUnit != null && selectedUnit.IsMoveable() && gridOccupantUnit == null)
             {
-                TryAttackUnitOccupyingGridPosition(gridObject);
-            }
-            else
-            {
-                // Check if you can move the unit onto the tower.
-                if(selectedUnit != null && selectedUnit.IsMoveable())
-                {
-                    if(!TryMoveToGridPosition(gridObject))
-                    {
-                        SelectBuildingOccupyingGridPosition(gridObject);
-                    }
-                }
-                else
+                if(!TryMoveToGridPosition(gridObject))
                 {
                     SelectBuildingOccupyingGridPosition(gridObject);
                 }
             }
+            else
+            {
+                SelectBuildingOccupyingGridPosition(gridObject);
+            }
             return;
-        } 
+        }
+        else if(gridOccupantUnit != null && gridOccupantUnit.IsFriendly())
+        {
+            SelectUnitOccupyingGridPosition(gridObject);
+            return;
+        }
         
         if(selectedUnit != null)
         {
@@ -187,6 +182,11 @@ public class ActionHandler : MonoBehaviour
     private void SelectBuildingOccupyingGridPosition(GridObject gridObject)
     {
         selectedUnit = (Unit)gridObject.GetOccupantBuilding();
+        if(gridObject.GetOccupantUnit() != null)
+        {
+            BuildingMenu buildingMenu = selectedUnit.GetComponentInChildren<BuildingMenu>();
+            buildingMenu.SetGarrisonedUnit(gridObject.GetOccupantUnit() as Unit);
+        }
         OnUnitSelected?.Invoke(this, selectedUnit);
         updateGridActionHighlight = true;
     }
@@ -269,6 +269,13 @@ public class ActionHandler : MonoBehaviour
             selectedUnit = null;
             OnUnitSelected?.Invoke(this, selectedUnit);
         }        
+    }
+
+    private void BuildingMenu_OnGarrisonedUnitSelected(Unit unit)
+    {
+        selectedUnit = unit;
+        OnUnitSelected?.Invoke(this, selectedUnit);
+        updateGridActionHighlight = true;
     }
 
     private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs eventArgs)

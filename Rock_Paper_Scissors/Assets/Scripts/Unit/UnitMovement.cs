@@ -22,7 +22,7 @@ namespace RockPaperScissors.Units
         private Unit unit;
         private List<GridObject> targetGridObjects = null;
         private int currentPositionIndex = 0;
-        private bool moving;
+        private bool moving = false;
 
         private void Awake() 
         {

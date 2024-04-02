@@ -108,16 +108,14 @@ namespace RockPaperScissors.Grids
                     {
                         // If the object is a unit set as Occupant
                         hit.collider.TryGetComponent<IGridOccupantInterface>(out IGridOccupantInterface unit);
+                        // Check if the unit is a Building
+                        if(unit.IsBuilding())
                         {
-                            // Check if the unit is a Building
-                            if(unit.IsBuilding())
-                            {
-                                gridObjects[x,y].SetOccupantBuilding(unit);
-                            }
-                            else
-                            {
-                                gridObjects[x,y].SetOccupantUnit(unit);
-                            }
+                            gridObjects[x,y].SetOccupantBuilding(unit);
+                        }
+                        else
+                        {
+                            gridObjects[x,y].SetOccupantUnit(unit);
                         }
                     }
                 }
@@ -182,7 +180,8 @@ namespace RockPaperScissors.Grids
             // float startTime = Time.realtimeSinceStartup;
 
             // Movement
-            if(sender.GetType() == typeof(UnitMovement))
+            UnitMovement unitMovement = sender as UnitMovement;
+            if(unitMovement != null && !unitMovement.GetUnit().IsBuilding())
             {
                 // Remove from existing grid location
                 Unit unit = ((UnitMovement)sender).GetComponent<Unit>();
@@ -228,7 +227,7 @@ namespace RockPaperScissors.Grids
         {
             // TODO Clean up this mess :)
             Unit unit = sender as Unit;
-            if(unit.GetUnitClass() == UnitClass.PillowOutpost || unit.GetUnitClass() == UnitClass.PillowOutpost)
+            if(unit.IsBuilding())
             {
                 GetGridObjectFromWorldPosition(unit.transform.position).SetOccupantBuilding(unit);
             }
