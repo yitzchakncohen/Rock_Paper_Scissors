@@ -41,7 +41,10 @@ namespace RockPaperScissors.UI
 
         private void UpdateButtonInteractability()
         {
-            button.interactable = currencyBank.GetCurrencyRemaining() >= unitPrefab.GetCost();
+            if(button != null)
+            {
+                button.interactable = currencyBank.GetCurrencyRemaining() >= unitPrefab.GetCost();
+            }
         }
 
         public void Setup(Unit unit) 
