@@ -36,6 +36,7 @@ public class CurrencyBank : MonoBehaviour, ISaveInterface<SaveCurrencyBankData>
     public void AddCurrencyToBank(int amount, Unit unit)
     {
         currency += amount;
+        AudioManager.Instance.PlayCollectCurrencySound();
         OnCurrencyChanged?.Invoke(this, currency);
         if(unit != null)
         {

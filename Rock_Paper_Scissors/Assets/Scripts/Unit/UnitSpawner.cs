@@ -159,6 +159,7 @@ namespace RockPaperScissors.Units
                 Unit unit = Instantiate(unitToSpawn, gridManager.GetGridObject(gridPosition).transform.position, Quaternion.identity);
                 timer = 0.25f;
                 StartCoroutine(unit.GetUnitAnimator().SpawnAnimationRoutine(timer));
+                AudioManager.Instance.PlayUnitSpawnSound();
                 unitSpawning = true;
             }
         }

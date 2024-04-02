@@ -176,6 +176,7 @@ public class ActionHandler : MonoBehaviour
     {
         selectedUnit = (Unit)gridObject.GetOccupantUnit();
         OnUnitSelected?.Invoke(this, selectedUnit);
+        AudioManager.Instance.PlayUnitSelectionSound();
         updateGridActionHighlight = true;
     }
 
@@ -188,6 +189,7 @@ public class ActionHandler : MonoBehaviour
             buildingMenu.SetGarrisonedUnit(gridObject.GetOccupantUnit() as Unit);
         }
         OnUnitSelected?.Invoke(this, selectedUnit);
+        AudioManager.Instance.PlayUnitSelectionSound();
         updateGridActionHighlight = true;
     }
 
@@ -257,6 +259,7 @@ public class ActionHandler : MonoBehaviour
     {
         selectedUnit = null;
         OnUnitSelected?.Invoke(this, selectedUnit);
+        AudioManager.Instance.PlayUnitDeselectionSound();
     }
 
     private void BuildingButton_BuildingButtonPressed(object sender, BuildButtonArguments arguments)
@@ -268,6 +271,7 @@ public class ActionHandler : MonoBehaviour
         {
             selectedUnit = null;
             OnUnitSelected?.Invoke(this, selectedUnit);
+            AudioManager.Instance.PlayUnitDeselectionSound();
         }        
     }
 
@@ -275,6 +279,7 @@ public class ActionHandler : MonoBehaviour
     {
         selectedUnit = unit;
         OnUnitSelected?.Invoke(this, selectedUnit);
+        AudioManager.Instance.PlayUnitSelectionSound();
         updateGridActionHighlight = true;
     }
 
