@@ -1564,7 +1564,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuNavigationSound: {fileID: 8300000, guid: 32d4b1811dda14a6cb9e059ee8ad17d2, type: 3}
   unitSelectionSound: {fileID: 8300000, guid: 0994c12e202f342459a4212e7287f7e8, type: 3}
-  unitDeselectionSound: {fileID: 8300000, guid: b43d102aac6b145468dcaa94a5cccae1, type: 3}
+  unitDeselectionSound: {fileID: 8300000, guid: 19f89c6e740e7447f9e12a8310d3e973, type: 3}
   unitLevelUpSound: {fileID: 8300000, guid: 7bd6b897eb5ca4b7d88a205c4a51640c, type: 3}
   unitSpawnSound: {fileID: 8300000, guid: 19f89c6e740e7447f9e12a8310d3e973, type: 3}
   unitMovementSound: {fileID: 8300000, guid: ffb159a21c8a04135a5616979c828fab, type: 3}

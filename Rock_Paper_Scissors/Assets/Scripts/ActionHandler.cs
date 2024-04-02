@@ -271,7 +271,6 @@ public class ActionHandler : MonoBehaviour
         {
             selectedUnit = null;
             OnUnitSelected?.Invoke(this, selectedUnit);
-            AudioManager.Instance.PlayUnitDeselectionSound();
         }        
     }
 
