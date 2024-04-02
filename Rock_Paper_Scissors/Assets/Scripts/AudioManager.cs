@@ -13,6 +13,12 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip unitLevelUpSound = null;
     [SerializeField] private AudioClip unitSpawnSound = null;
     [SerializeField] private AudioClip collectCurrencySound = null;
+    [SerializeField] private AudioClip glueTrapSound = null;
+    [SerializeField] private AudioClip rockAttackSound = null;
+    [SerializeField] private AudioClip paperAttackSound = null;
+    [SerializeField] private AudioClip scissorsAttackSound = null;
+    [SerializeField] private AudioClip enemyWaveSound = null;
+
     private AudioSource audioSource;
     public static AudioManager Instance;
 
@@ -67,5 +73,30 @@ public class AudioManager : MonoBehaviour
     public void PlayCollectCurrencySound()
     {
         PlaySoundOneShot(collectCurrencySound);
+    }
+
+    public void PlayGlueTrapSound()
+    {
+        PlaySoundOneShot(glueTrapSound);
+    }
+
+    public void PlayRockAttackSound()
+    {
+        PlaySoundOneShot(rockAttackSound);
+    }
+
+    public void PlayPaperAttackSound()
+    {
+        PlaySoundOneShot(paperAttackSound);
+    }
+
+    public void PlayScissorsAttackSound()
+    {
+        PlaySoundOneShot(scissorsAttackSound);
+    }
+
+    public void PlayEnemyWaveSound()
+    {
+        PlaySoundOneShot(enemyWaveSound);
     }
 }

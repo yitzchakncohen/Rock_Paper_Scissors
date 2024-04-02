@@ -44,7 +44,7 @@ namespace RockPaperScissors.Units
 
         protected virtual void CancelButton_OnCancelButtonPress()
         {
-            if(IsCancellableAction)
+            if(IsCancellableAction && isActive)
             {
                 ActionComplete();
             }

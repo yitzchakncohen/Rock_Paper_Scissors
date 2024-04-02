@@ -18,9 +18,11 @@ namespace RockPaperScissors.Units
         private GridManager gridManager;
         private float timer;
         private float attackAnimationTime = 0.6f;
+        private float soundAnimationPoint = 0.2f;
         private Vector3 attackStartPosition;
         private Vector3 attackTargetPosition;
         private bool attacking;
+        private bool attackSoundHasPlayed = false;
         private int unitAttackActionBaseValue = 100;
         private int classAdvantageMultiplier = 10;
 
@@ -57,6 +59,7 @@ namespace RockPaperScissors.Units
         private void StartAttack(Unit unitToAttack, Action onActionComplete)
         {
             timer = 0f;
+            attackSoundHasPlayed = false;
             attackStartPosition = transform.position;
             attackTargetPosition = unitToAttack.transform.position;
             target = unitToAttack;
@@ -73,7 +76,6 @@ namespace RockPaperScissors.Units
             actionPointsRemaining -= 1;
             transform.position = attackStartPosition;
             attacking = false;
-
             // Wait to complete the action until the camera has snapped to the new location.
             yield return new WaitForSeconds(cameraSnapDelay);
             ActionComplete();
@@ -85,6 +87,11 @@ namespace RockPaperScissors.Units
             float normalizedAnimationTime = timer/attackAnimationTime;
             // Animate the attack by moving the unit towards the unit it is attacking. 
             transform.position = attackStartPosition + (attackTargetPosition - attackStartPosition)*attackAnimationCurve.Evaluate(normalizedAnimationTime);
+            if(soundAnimationPoint - normalizedAnimationTime < 0.001f && !attackSoundHasPlayed)
+            {
+                PlayAttackSound();
+                attackSoundHasPlayed = true;
+            }
 
             // Update the sprite via the animator.
             if(attackDirection.x > 0 && attackDirection.y > 0)
@@ -110,6 +117,26 @@ namespace RockPaperScissors.Units
             else if(attackDirection.x < 0 && attackDirection.y == 0)
             {
                 unitAnimator.MoveLeft(level);
+            }
+        }
+
+        private void PlayAttackSound()
+        {
+            switch (unit.GetUnitClass())
+            {
+                case UnitClass.GlueTrap:
+                    AudioManager.Instance.PlayGlueTrapSound();
+                    break;
+                case UnitClass.Paper:
+                    AudioManager.Instance.PlayPaperAttackSound();
+                    break;
+                case UnitClass.Scissors:
+                    AudioManager.Instance.PlayScissorsAttackSound();
+                    break;
+                case UnitClass.Rock:
+                default:
+                    AudioManager.Instance.PlayRockAttackSound();
+                    break;
             }
         }
 
