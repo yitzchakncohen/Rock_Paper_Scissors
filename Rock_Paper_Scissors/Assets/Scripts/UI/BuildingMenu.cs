@@ -51,8 +51,8 @@ namespace RockPaperScissors.UI
             TurnManager.OnNextTurn += TurnManager_OnNextTurn;
             openBuildMenuButton.onClick.AddListener(OpenBuildMenu);
             selectUnitButton.onClick.AddListener(OnSelectUnitButtonPress);
-            closeMainMenuButton.onClick.AddListener(CloseMainMenu);
-            closeBuildMenuButton.onClick.AddListener(CloseBuildingMenu);
+            closeMainMenuButton.onClick.AddListener(OnCloseMainMenuButtonPress);
+            closeBuildMenuButton.onClick.AddListener(OnCloseBuildMenuButtonPress);
             selectUnitButton.interactable = false;
         }
 
@@ -97,6 +97,7 @@ namespace RockPaperScissors.UI
         private void BuildingButton_OnBuildingButtonPressed(object sender, BuildButtonArguments e)
         {
             CloseBuildingMenu();
+            AudioManager.Instance.PlayMenuNavigationSound();
         }
 
         private void ActionHandler_OnUnitSelected(object sender, Unit unit)
@@ -138,6 +139,7 @@ namespace RockPaperScissors.UI
             CloseMainMenu();
             buildMenuUI.gameObject.SetActive(true);
             radialLayoutGroup.AnimateMenuOpen();
+            AudioManager.Instance.PlayMenuNavigationSound();
         }
 
         public void CloseBuildingMenu()
@@ -172,9 +174,22 @@ namespace RockPaperScissors.UI
             CloseMainMenu();
         }
 
+        private void OnCloseBuildMenuButtonPress()
+        {
+            CloseBuildingMenu();
+            AudioManager.Instance.PlayMenuNavigationSound();
+        }
+
+        private void OnCloseMainMenuButtonPress()
+        {
+            CloseMainMenu();
+            AudioManager.Instance.PlayMenuNavigationSound();
+        }
+
         private void OnSelectUnitButtonPress()
         {
             OnGarrisonedUnitSelected?.Invoke(garrisonedUnit);
+            AudioManager.Instance.PlayMenuNavigationSound();
         }
 
         public void SetGarrisonedUnit(Unit unit)

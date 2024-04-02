@@ -50,11 +50,13 @@ namespace RockPaperScissors.UI
 
         private void StartGame()
         {
+            AudioManager.Instance.PlayMenuNavigationSound();
             OnStartGameButtonPress?.Invoke();
         }
 
         private void ContinueGame()
         {
+            AudioManager.Instance.PlayMenuNavigationSound();
             OnContinueGameButtonPress?.Invoke();
         }
     }

@@ -43,11 +43,13 @@ public class GameMenu : MonoBehaviour
     public void OpenGameMenu()
     {
         gameMenuPanel.SetActive(true);
+        AudioManager.Instance.PlayMenuNavigationSound();
     }
 
     public void CloseGameMenu()
     {
         gameMenuPanel.SetActive(false);
+        AudioManager.Instance.PlayMenuNavigationSound();
     }
 
     private void OpenGameOverMenu(int score)
@@ -64,11 +66,13 @@ public class GameMenu : MonoBehaviour
     private void GoToMainMenu()
     {
         ApplicationManager.Instance.ReturnToMenu();
+        AudioManager.Instance.PlayMenuNavigationSound();
     }
 
     private void StartGame()
     {
         OnStartGameButtonPress?.Invoke();
+        AudioManager.Instance.PlayMenuNavigationSound();
     }
 
     private void GameplayManager_OnGameOver(int score)
