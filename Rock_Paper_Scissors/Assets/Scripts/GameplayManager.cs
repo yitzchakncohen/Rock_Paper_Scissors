@@ -13,7 +13,12 @@ namespace RockPaperScissors
     /// </summary>
     public class GameplayManager : MonoBehaviour, ISaveInterface<SaveGameplayManagerData>
     {
-        public static event Action<int> OnGameOver;
+        public class OnGameOverEventArgs : EventArgs
+        {
+            public int Score;
+            public int Highscore;
+        }
+        public static event EventHandler<OnGameOverEventArgs> OnGameOver;
         public static event Action<int> OnScoreChange;
         public static event Action<int> OnNewHighscore;
         private int score = 0;
@@ -50,15 +55,22 @@ namespace RockPaperScissors
             }
         }
 
+        [ContextMenu("Game Over")]
         private void GameOver()
         {
-            OnGameOver?.Invoke(score);
             int highscore = PlayerPrefs.GetInt(ApplicationManager.HIGH_SCORE_STRING, -1);
             if(highscore < score)
             {
                 PlayerPrefs.SetInt(ApplicationManager.HIGH_SCORE_STRING, score);
+                highscore = score;
                 OnNewHighscore?.Invoke(score);
             }
+            OnGameOverEventArgs onGameOverEventArgs = new OnGameOverEventArgs
+            {
+                Score = score, 
+                Highscore = highscore
+            };
+            OnGameOver?.Invoke(this, onGameOverEventArgs);
         }
 
         public SaveGameplayManagerData Save()

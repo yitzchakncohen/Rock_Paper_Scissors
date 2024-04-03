@@ -59,7 +59,7 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    private void GameplayManager_OnGameOver(int score)
+    private void GameplayManager_OnGameOver(object sender, EventArgs e)
     {
         // Use a null state to mark the game being over.
         state = null;

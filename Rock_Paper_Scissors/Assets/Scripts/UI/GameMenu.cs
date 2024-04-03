@@ -10,9 +10,11 @@ public class GameMenu : MonoBehaviour
 {
     public static event Action OnStartGameButtonPress;
 
+    [SerializeField] private GameObject HUDPanel;
     [SerializeField] private GameObject gameMenuPanel;
     [SerializeField] private GameObject gameOverMenuPanel;
-    [SerializeField] private TextMeshProUGUI gameOverScoreText;
+    [SerializeField] private TextMeshProUGUI gameOverScoreValueText;
+    [SerializeField] private TextMeshProUGUI gameOverHighScoreValueText;
     [SerializeField] private Button[] MainMenuButtons;
     [SerializeField] private Button NewGameButton;
 
@@ -28,6 +30,7 @@ public class GameMenu : MonoBehaviour
 
         gameOverMenuPanel.SetActive(false);
         gameMenuPanel.SetActive(false);
+        HUDPanel.SetActive(true);
     }
 
     private void OnDestroy() 
@@ -52,10 +55,12 @@ public class GameMenu : MonoBehaviour
         AudioManager.Instance.PlayMenuNavigationSound();
     }
 
-    private void OpenGameOverMenu(int score)
+    private void OpenGameOverMenu(int score, int highscore)
     {
+        HUDPanel.SetActive(false);
         gameOverMenuPanel.SetActive(true);
-        gameOverScoreText.text = "Score: " + score.ToString();
+        gameOverScoreValueText.text = score.ToString();
+        gameOverHighScoreValueText.text = highscore.ToString();
     }
 
     private void CloseGameOverMenu()
@@ -75,9 +80,9 @@ public class GameMenu : MonoBehaviour
         AudioManager.Instance.PlayMenuNavigationSound();
     }
 
-    private void GameplayManager_OnGameOver(int score)
+    private void GameplayManager_OnGameOver(object sender, GameplayManager.OnGameOverEventArgs e)
     {
-        OpenGameOverMenu(score);
+        OpenGameOverMenu(e.Score, e.Highscore);
     }
 
 }

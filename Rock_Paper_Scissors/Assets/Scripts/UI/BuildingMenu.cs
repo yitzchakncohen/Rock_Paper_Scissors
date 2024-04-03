@@ -179,7 +179,7 @@ namespace RockPaperScissors.UI
             }
         }
 
-        private void GameplayManager_OnGameOver(int obj)
+        private void GameplayManager_OnGameOver(object sender, EventArgs e)
         {
             StartCoroutine(CloseBuildingMenu());
             StartCoroutine(CloseMainMenu());

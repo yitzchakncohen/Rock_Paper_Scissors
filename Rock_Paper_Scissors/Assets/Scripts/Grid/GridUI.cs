@@ -56,7 +56,7 @@ namespace RockPaperScissors.Grids
 
         private IEnumerator AnimateGridWave(bool even)
         {
-            WaitForSeconds waitForSeconds = new WaitForSeconds(gridWaveAnimationTimePerHex);
+            WaitForSeconds waitBetweenXPositions = new WaitForSeconds(gridWaveAnimationTimePerHex);
             for (int x = 0; x < gridManager.GetGridSize().x; x++)
             {
                 for (int y = 0; y < gridManager.GetGridSize().y; y++)
@@ -65,10 +65,13 @@ namespace RockPaperScissors.Grids
                     {
                         Vector2Int gridPosition = new Vector2Int(x,y);
                         OutlineShine outlineShine = gridManager.GetGridObject(gridPosition).GetComponentInChildren<OutlineShine>();
-                        StartCoroutine(outlineShine.StartShine(gridWaveAnimationTimePerHex));
+                        if(outlineShine.isActiveAndEnabled)
+                        {
+                            StartCoroutine(outlineShine.StartShine(gridWaveAnimationTimePerHex));
+                        }
                     }
                 }
-                yield return waitForSeconds;
+                yield return waitBetweenXPositions;
             }
         }
     }

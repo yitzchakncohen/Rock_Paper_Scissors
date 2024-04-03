@@ -256,7 +256,7 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    private void GameplayManager_OnGameOver(int score)
+    private void GameplayManager_OnGameOver(object sender, EventArgs e)
     {
         // Let the player move the camera around after the game to exam the game board.
         controlsLocked = false;
