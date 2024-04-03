@@ -2271,6 +2271,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameOverPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 4083752891096165857, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083752891096165857, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083752891096165857, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083752891096165857, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083752891096165857, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 640
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083752891096165857, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 320
+      objectReference: {fileID: 0}
     - target: {fileID: 4242933184835116025, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
