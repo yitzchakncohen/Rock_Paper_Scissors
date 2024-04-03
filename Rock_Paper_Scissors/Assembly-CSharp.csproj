@@ -78,6 +78,7 @@
     <Compile Include="Assets\Scripts\SaveSystem\SaveObject.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitAnimator.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitSpawner.cs" />
+    <Compile Include="Assets\Scripts\UI\OutlineShine.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\SaveManager.cs" />
     <Compile Include="Assets\Scripts\UI\StatusUpdateUI.cs" />
     <Compile Include="Assets\Scripts\CombatModifiers.cs" />

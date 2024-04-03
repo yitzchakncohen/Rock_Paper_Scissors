@@ -8,6 +8,7 @@ namespace RockPaperScissors.Grids
 {
     public class GridManager : MonoBehaviour
     {
+        public event Action OnGridSetupComplete;
         [SerializeField] private LayerMask occupancyLayerMask;
         [SerializeField] private Vector2Int gridSize;
         [SerializeField] private GridObject gridObjectPrefab;
@@ -40,6 +41,8 @@ namespace RockPaperScissors.Grids
                     }
                 }
             }
+
+            OnGridSetupComplete?.Invoke();
         }
 
         private void Start() 
