@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RockPaperScissors.Grids;
 using RockPaperScissors.SaveSystem;
 using RockPaperScissors.UI;
 using UnityEngine;
@@ -18,8 +19,10 @@ namespace RockPaperScissors
         public const string HIGH_SCORE_STRING = "highscore";
         private const string GAME_SCENE_STRING = "MainScene";
         private const string MENU_SCENE_STRING = "MenuScene";
-
         public static ApplicationManager Instance;
+        private SceneTransitionUI sceneTransitionUI;
+        private GridManager gridManager;
+
         void Awake()
         {
             if(Instance == null)
@@ -31,6 +34,14 @@ namespace RockPaperScissors
             {
                 Destroy(gameObject);
             }
+
+            sceneTransitionUI = GetComponentInChildren<SceneTransitionUI>();
+            StartCoroutine(StartUpRoutine());
+        }
+
+        private void OnEnable() 
+        {
+            gridManager = FindObjectOfType<GridManager>();
         }
 
         private void Start() 
@@ -51,46 +62,83 @@ namespace RockPaperScissors
 
         public void StartNewGame()
         {
-            StartCoroutine(StartGameRoutineAsync());
+            StartCoroutine(StartGameRoutine());
         }
 
         public void ContinueGame()
         {
-            StartCoroutine(LoadGameRoutineAsync());
+            StartCoroutine(LoadGameRoutine());
         }
 
         public void ReturnToMenu()
         {
-            SceneManager.LoadScene(MENU_SCENE_STRING);
+            StartCoroutine(ReturnToMenuRoutine());
         }
 
-        private IEnumerator StartGameRoutineAsync()
+        private IEnumerator ReturnToMenuRoutine()
         {
+            sceneTransitionUI.TransitionOut();
+            AsyncOperation asyncLoadScene =  SceneManager.LoadSceneAsync(MENU_SCENE_STRING);
+            while(!asyncLoadScene.isDone)
+            {
+                Debug.Log("Loading Scene...");
+                yield return null;
+            }
+            StartCoroutine(StartUpRoutine());
+        }
+
+
+        private IEnumerator StartUpRoutine()
+        {
+            sceneTransitionUI.TransitionIn();
+            gridManager = FindObjectOfType<GridManager>();
+            Debug.Log("Waiting for grid setup...");
+            yield return new WaitUntil(() => gridManager.SetupGridTask.IsCompleted);
+            sceneTransitionUI.LoadingCompleted();
+        }
+        private IEnumerator StartGameRoutine()
+        {
+            sceneTransitionUI.TransitionOut();
             AsyncOperation asyncLoadScene =  SceneManager.LoadSceneAsync(GAME_SCENE_STRING);
 
             while(!asyncLoadScene.isDone)
             {
+                Debug.Log("Loading Scene...");
                 yield return null;
             }
 
+            sceneTransitionUI.TransitionIn();
+            sceneTransitionUI.StartLoading();
+
+            Debug.Log("Waiting for grid setup...");
+            yield return new WaitUntil(() => gridManager.SetupGridTask.IsCompleted);
+
+            sceneTransitionUI.LoadingCompleted();
             // Trigger new game.
             WaveManager waveManager = FindObjectOfType<WaveManager>();
             waveManager.StartWave(0);
         }
 
-        private IEnumerator LoadGameRoutineAsync()
+        private IEnumerator LoadGameRoutine()
         {
+            sceneTransitionUI.TransitionOut();
             AsyncOperation asyncLoadScene =  SceneManager.LoadSceneAsync(GAME_SCENE_STRING);
 
             while(!asyncLoadScene.isDone)
             {
+                Debug.Log("Loading Scene...");
                 yield return null;
             }
 
-            // Clear existing game
-
+            sceneTransitionUI.TransitionIn();
+            sceneTransitionUI.StartLoading();
             SaveManager saveManager = FindObjectOfType<SaveManager>();
+            
+            Debug.Log("Waiting for grid setup...");
+            yield return new WaitUntil(() => gridManager.SetupGridTask.IsCompleted);
+
             saveManager.LoadGame();
+            sceneTransitionUI.LoadingCompleted();
         }
 
         private void MainMenu_OnContinueGameButtonPress()
@@ -113,6 +161,7 @@ namespace RockPaperScissors
         {
             StartNewGame();
         }
+
     }
 
 }

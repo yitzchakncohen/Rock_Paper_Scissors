@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using RockPaperScissors.Units;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -15,11 +16,18 @@ namespace RockPaperScissors.Grids
         [SerializeField] private GameObject borderTilePrefab;
         [SerializeField] private Tilemap baseTilemap;
         private Grid grid;
-        private GridObject[,] gridObjects;
+        public GridObject[,] gridObjects;
+        public Task SetupGridTask{get; private set;} = null;
 
-        private void Awake() 
+        private void Awake()
         {
             grid = GetComponent<Grid>();
+            SetupGridTask = SetupGridAsync();
+        }
+
+        private async Task SetupGridAsync()
+        {
+            await Task.Yield();
             gridObjects = new GridObject[gridSize.x, gridSize.y];
 
             // Setup the grid
@@ -27,7 +35,7 @@ namespace RockPaperScissors.Grids
             {
                 for (int y = -2; y <= gridSize.y + 1; y++)
                 {
-                    if(x <= -1 || x >= gridSize.x || y <= -1 || y >= gridSize.y)
+                    if (x <= -1 || x >= gridSize.x || y <= -1 || y >= gridSize.y)
                     {
                         Vector3 gridPosition = grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
                         Instantiate(borderTilePrefab, gridPosition, Quaternion.identity);
@@ -36,21 +44,21 @@ namespace RockPaperScissors.Grids
                     {
                         Vector3 gridPosition = grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
                         GridObject gridObject = Instantiate(gridObjectPrefab, gridPosition, Quaternion.identity);
-                        gridObject.Setup(new Vector2Int(x,y));
-                        gridObjects[x,y] = gridObject;
+                        gridObject.Setup(new Vector2Int(x, y));
+                        gridObjects[x, y] = gridObject;
                     }
                 }
             }
 
+            UpdateGridOccupancy();
+            Debug.Log("Grid Setup Completed");
             OnGridSetupComplete?.Invoke();
         }
-
         private void Start() 
         {
             UnitAction.OnAnyActionCompleted += UnitAction_OnAnyActionCompleted;
             UnitHealth.OnDeath += Health_OnDeath;
             Unit.OnUnitSpawn += Unit_OnUnitSpawn;
-            UpdateGridOccupancy();
         }
 
         private void OnDestroy() 

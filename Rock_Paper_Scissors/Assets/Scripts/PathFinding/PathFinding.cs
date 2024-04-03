@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using RockPaperScissors.Grids;
 using UnityEngine;
@@ -14,6 +15,16 @@ namespace RockPaperScissors.PathFindings
         private void Start() 
         {
             gridManager = FindObjectOfType<GridManager>();
+            gridManager.OnGridSetupComplete += GridManager_OnGridSetupComplete; 
+        }
+
+        private void OnDestroy() 
+        {
+            gridManager.OnGridSetupComplete -= GridManager_OnGridSetupComplete; 
+        }
+
+        private void GridManager_OnGridSetupComplete()
+        {
             gridSize = gridManager.GetGridSize();
             // Setup the nodes
             pathNodes = new PathNode[gridSize.x, gridSize.y];

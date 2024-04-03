@@ -38,6 +38,12 @@ public class WaveManager : MonoBehaviour
         UpdateTurnsUntilNextWave(0);
     }
 
+    [ContextMenu("Start Wave 0")]
+    public void StartWaveZero()
+    {
+        StartWave(0);
+    }
+
     private void OnDestroy() 
     {
         TurnManager.OnNextTurn -= TurnManager_OnNextTurn;

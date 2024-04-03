@@ -113,6 +113,7 @@
     <Compile Include="Assets\Scripts\Enemy\FindingActionState.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Scripts\UI\BuildingButton.cs" />
+    <Compile Include="Assets\Scripts\UI\SceneTransitionUI.cs" />
     <Compile Include="Assets\Scripts\UI\FastForwardButton.cs" />
     <Compile Include="Assets\Scripts\UI\BuildingMenu.cs" />
     <Compile Include="Assets\Scripts\WaveManager.cs" />
