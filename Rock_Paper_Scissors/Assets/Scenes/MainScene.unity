@@ -2191,6 +2191,14 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3290385707568938084, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 3290385707568938084, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 166
+      objectReference: {fileID: 0}
     - target: {fileID: 3500770251198707464, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2303,6 +2311,14 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4306459846180150435, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4306459846180150435, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 4591113753322777447, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -2383,6 +2399,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5155638459432920458, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4e797d60bce5943489eca8c1bd21e936, type: 3}
     - target: {fileID: 5220181415752874672, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
       propertyPath: m_Name
       value: GameUI
@@ -2661,6 +2681,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7118251973636006295, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7863093959497878837, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
+      propertyPath: m_enableWordWrapping
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8135326561370798734, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}

@@ -1894,6 +1894,7 @@ MonoBehaviour:
   paperAttackSound: {fileID: 8300000, guid: fe0b1f9aeb45b41b089175aeeabd5d95, type: 3}
   scissorsAttackSound: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
   enemyWaveSound: {fileID: 8300000, guid: 2667a0a008b044e218b63df62e2be749, type: 3}
+  gameOverSound: {fileID: 8300000, guid: a0ca8964c08d54c5dbebf245bdc474ca, type: 3}
 --- !u!82 &2044538736
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2011,7 +2012,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2429623060202498975, guid: ffb34e21b4581454993284f97d26df75, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2983680802661181945, guid: ffb34e21b4581454993284f97d26df75, type: 3}
       propertyPath: m_Name

@@ -70,6 +70,7 @@ namespace RockPaperScissors
                 Score = score, 
                 Highscore = highscore
             };
+            AudioManager.Instance.PlayGameOverSound();
             OnGameOver?.Invoke(this, onGameOverEventArgs);
         }
 

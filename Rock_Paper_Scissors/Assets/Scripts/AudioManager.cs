@@ -19,6 +19,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip paperAttackSound = null;
     [SerializeField] private AudioClip scissorsAttackSound = null;
     [SerializeField] private AudioClip enemyWaveSound = null;
+    [SerializeField] private AudioClip gameOverSound = null;
 
     private AudioSource audioSource;
     public static AudioManager Instance;
@@ -104,5 +105,10 @@ public class AudioManager : MonoBehaviour
     public void PlayEnemyWaveSound()
     {
         PlaySoundOneShot(enemyWaveSound);
+    }
+
+    public void PlayGameOverSound()
+    {
+        PlaySoundOneShot(gameOverSound);
     }
 }
