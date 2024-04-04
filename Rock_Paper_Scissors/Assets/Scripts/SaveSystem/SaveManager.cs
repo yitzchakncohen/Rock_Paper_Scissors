@@ -11,6 +11,8 @@ namespace RockPaperScissors.SaveSystem
 {
     public class SaveManager : MonoBehaviour
     {
+        public const string SAVE_DIRECTORY = "/Saves/";
+        public const string SAVE_FILE_NAME = "save.txt";
         public static event Action OnSaveCompleted; 
         public static event Action OnLoadCompleted; 
         [SerializeField] private List<Unit> listOfFriendlyUnitTypes = new List<Unit>();
@@ -35,9 +37,9 @@ namespace RockPaperScissors.SaveSystem
 
         private static void CheckForDirectory()
         {
-            if (!Directory.Exists(Application.persistentDataPath + ApplicationManager.SAVE_DIRECTORY))
+            if (!Directory.Exists(Application.persistentDataPath + SAVE_DIRECTORY))
             {
-                Directory.CreateDirectory(Application.persistentDataPath + ApplicationManager.SAVE_DIRECTORY);
+                Directory.CreateDirectory(Application.persistentDataPath + SAVE_DIRECTORY);
                 Debug.Log("Save Directory Created");
             }
         }
@@ -89,7 +91,7 @@ namespace RockPaperScissors.SaveSystem
 
             string json = JsonUtility.ToJson(saveObject);
             CheckForDirectory();
-            File.WriteAllText(Application.persistentDataPath + ApplicationManager.SAVE_DIRECTORY + ApplicationManager.SAVE_FILE_NAME, json);
+            File.WriteAllText(Application.persistentDataPath + SAVE_DIRECTORY + SAVE_FILE_NAME, json);
 
             yield return null;
 
@@ -108,9 +110,9 @@ namespace RockPaperScissors.SaveSystem
             await Task.Yield();
             // TODO clear all grid objects and delete all units. 
 
-            if (File.Exists(Application.persistentDataPath + ApplicationManager.SAVE_DIRECTORY + "save.txt"))
+            if (File.Exists(Application.persistentDataPath + SAVE_DIRECTORY + "save.txt"))
             {
-                string saveString = File.ReadAllText(Application.persistentDataPath + ApplicationManager.SAVE_DIRECTORY + "save.txt");
+                string saveString = File.ReadAllText(Application.persistentDataPath + SAVE_DIRECTORY + "save.txt");
                 SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
 
                 turnManager.Load(saveObject.SaveTurnManagerData);

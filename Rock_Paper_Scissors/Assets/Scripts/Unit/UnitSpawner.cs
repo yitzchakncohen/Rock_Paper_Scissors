@@ -74,7 +74,7 @@ namespace RockPaperScissors.Units
             // Gain currency on player's turn. 
             if(e.IsPlayersTurn)
             {
-                currencyBank.AddCurrencyToBank(GetCurrencyProducedThisTurn(), unit);
+                currencyBank.AddCurrencyToBank(GetCurrencyProducedThisTurn(), unit.transform);
             }
         }
 
