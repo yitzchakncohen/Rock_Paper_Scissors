@@ -102,7 +102,7 @@ namespace RockPaperScissors
             sceneTransitionUI.LoadingCompleted();
             // Trigger new game.
             WaveManager waveManager = FindObjectOfType<WaveManager>();
-            waveManager.StartWave(0);
+            waveManager.StartWaveWhenReady();
         }
 
         private IEnumerator LoadGameRoutine()

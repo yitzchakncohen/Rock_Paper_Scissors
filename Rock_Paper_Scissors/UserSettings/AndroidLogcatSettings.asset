@@ -1,9 +1,9 @@
 {
     "m_SelectedDeviceId": "R5CR92W1AAR",
     "m_SelectedProcess": {
-        "deviceId": "",
-        "name": "",
-        "processId": 0,
+        "deviceId": "R5CR92W1AAR",
+        "name": "com.DefaultCompany.Rock_Paper_Scissors",
+        "processId": 27858,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -12,6 +12,18 @@
             "deviceId": "R5CR92W1AAR",
             "name": "com.unity3d.mobileremote",
             "processId": 24305,
+            "exited": true
+        },
+        {
+            "deviceId": "R5CR92W1AAR",
+            "name": "com.DefaultCompany.Rock_Paper_Scissors",
+            "processId": 27263,
+            "exited": true
+        },
+        {
+            "deviceId": "R5CR92W1AAR",
+            "name": "com.DefaultCompany.Rock_Paper_Scissors",
+            "processId": 27858,
             "exited": false
         }
     ],

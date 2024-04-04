@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RockPaperScissors.Grids;
 using RockPaperScissors.Units;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 
 public class WaveManager : MonoBehaviour
@@ -29,6 +30,7 @@ public class WaveManager : MonoBehaviour
     private CurrencyBank currencyBank;
     private GridManager gridManager;
     private int turnsUntilNextWave = 0;
+    private bool startWaveWhenReady = false;
 
     private void Start() 
     {
@@ -38,10 +40,27 @@ public class WaveManager : MonoBehaviour
         UpdateTurnsUntilNextWave(0);
     }
 
+    private void Update() 
+    {
+        if(startWaveWhenReady)
+        {
+            if(gridManager.SetupGridTask.IsCompleted)
+            {
+                startWaveWhenReady = false;
+                StartWave(0);
+            }
+        }
+    }
+
     [ContextMenu("Start Wave 0")]
     public void StartWaveZero()
     {
         StartWave(0);
+    }
+
+    public void StartWaveWhenReady()
+    {
+        startWaveWhenReady = true;
     }
 
     private void OnDestroy() 
@@ -74,7 +93,7 @@ public class WaveManager : MonoBehaviour
         OnTurnsUntilNextWaveUpdated.Invoke(turnsUntilNextWave);
     }
 
-    public void StartWave(int turn)
+    private void StartWave(int turn)
     {
         foreach (Wave wave in waves)
         {

@@ -16,7 +16,7 @@ namespace RockPaperScissors.Grids
         [SerializeField] private GameObject borderTilePrefab;
         [SerializeField] private Tilemap baseTilemap;
         private Grid grid;
-        public GridObject[,] gridObjects;
+        private GridObject[,] gridObjects;
         public Task SetupGridTask{get; private set;} = null;
 
         private void Awake()
