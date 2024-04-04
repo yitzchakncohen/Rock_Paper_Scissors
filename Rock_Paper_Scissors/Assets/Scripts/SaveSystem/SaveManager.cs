@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using RockPaperScissors.Grids;
 using RockPaperScissors.Units;
 using UnityEngine;
@@ -95,15 +96,16 @@ namespace RockPaperScissors.SaveSystem
             OnSaveCompleted?.Invoke();
         }
 
-        [ContextMenu("Load Game")]
-        public void LoadGame()
-        {
-            StartCoroutine(LoadGameAsync());
-        }
+        // For Debugging Only
+        // [ContextMenu("Load Game")]
+        // public void LoadGame()
+        // {
+        //     LoadGameAsync();
+        // }
 
-        private IEnumerator LoadGameAsync()
+        public async Task LoadGameAsync()
         {
-            // TODO add loading indicator
+            await Task.Yield();
             // TODO clear all grid objects and delete all units. 
 
             if (File.Exists(Application.persistentDataPath + ApplicationManager.SAVE_DIRECTORY + "save.txt"))
@@ -124,8 +126,6 @@ namespace RockPaperScissors.SaveSystem
                 Debug.LogError("No save file found.");
             }
             gridManager.UpdateGridOccupancy();
-
-            yield return null;
 
             OnLoadCompleted?.Invoke();
         }

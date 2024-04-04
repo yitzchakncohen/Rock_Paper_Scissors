@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using RockPaperScissors.Grids;
 using RockPaperScissors.SaveSystem;
 using RockPaperScissors.UI;
@@ -77,13 +78,11 @@ namespace RockPaperScissors
 
         private IEnumerator ReturnToMenuRoutine()
         {
-            sceneTransitionUI.TransitionOut();
+            yield return StartCoroutine(sceneTransitionUI.TransitionOut());
+            sceneTransitionUI.StartLoading();
             AsyncOperation asyncLoadScene =  SceneManager.LoadSceneAsync(MENU_SCENE_STRING);
-            while(!asyncLoadScene.isDone)
-            {
-                Debug.Log("Loading Scene...");
-                yield return null;
-            }
+            Debug.Log("Loading Scene...");
+            yield return new WaitUntil(() => asyncLoadScene.isDone);
             StartCoroutine(StartUpRoutine());
         }
 
@@ -98,20 +97,7 @@ namespace RockPaperScissors
         }
         private IEnumerator StartGameRoutine()
         {
-            sceneTransitionUI.TransitionOut();
-            AsyncOperation asyncLoadScene =  SceneManager.LoadSceneAsync(GAME_SCENE_STRING);
-
-            while(!asyncLoadScene.isDone)
-            {
-                Debug.Log("Loading Scene...");
-                yield return null;
-            }
-
-            sceneTransitionUI.TransitionIn();
-            sceneTransitionUI.StartLoading();
-
-            Debug.Log("Waiting for grid setup...");
-            yield return new WaitUntil(() => gridManager.SetupGridTask.IsCompleted);
+            yield return StartCoroutine(LoadGameScene());
 
             sceneTransitionUI.LoadingCompleted();
             // Trigger new game.
@@ -121,24 +107,26 @@ namespace RockPaperScissors
 
         private IEnumerator LoadGameRoutine()
         {
-            sceneTransitionUI.TransitionOut();
-            AsyncOperation asyncLoadScene =  SceneManager.LoadSceneAsync(GAME_SCENE_STRING);
+            yield return StartCoroutine(LoadGameScene());
 
-            while(!asyncLoadScene.isDone)
-            {
-                Debug.Log("Loading Scene...");
-                yield return null;
-            }
+            SaveManager saveManager = FindObjectOfType<SaveManager>();
+            Task loadTask = saveManager.LoadGameAsync();
+            yield return new WaitUntil(() => loadTask.IsCompleted);
+            sceneTransitionUI.LoadingCompleted();
+        }
+
+        private IEnumerator LoadGameScene()
+        {
+            yield return StartCoroutine(sceneTransitionUI.TransitionOut());
+            sceneTransitionUI.StartLoading();
+            AsyncOperation asyncLoadScene = SceneManager.LoadSceneAsync(GAME_SCENE_STRING);
+            Debug.Log("Loading Scene...");
+            yield return new WaitUntil(() => asyncLoadScene.isDone);
 
             sceneTransitionUI.TransitionIn();
-            sceneTransitionUI.StartLoading();
-            SaveManager saveManager = FindObjectOfType<SaveManager>();
-            
+
             Debug.Log("Waiting for grid setup...");
             yield return new WaitUntil(() => gridManager.SetupGridTask.IsCompleted);
-
-            saveManager.LoadGame();
-            sceneTransitionUI.LoadingCompleted();
         }
 
         private void MainMenu_OnContinueGameButtonPress()

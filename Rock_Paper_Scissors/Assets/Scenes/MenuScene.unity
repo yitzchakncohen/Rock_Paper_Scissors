@@ -2265,8 +2265,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3f65f4b3e056974986954d582cf5fc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transitionPanel: {fileID: 113147986}
-  loadingPanel: {fileID: 1904908586}
+  transitionPanel: {fileID: 113147988}
+  loadingPanel: {fileID: 1904908590}
+  fadeOutTime: 0.5
+  fadeInTime: 0.5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
