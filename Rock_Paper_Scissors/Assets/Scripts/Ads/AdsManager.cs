@@ -64,7 +64,7 @@ namespace RockPaperScissors.Ads
                 });
         }
 
-        public void ShowRewardedInterstitialAd(Action rewardCallback)
+        public void ShowRewardedInterstitialAd(Action<Reward> rewardCallback)
         {
             const string rewardMsg =
                 "Rewarded interstitial ad rewarded the user. Type: {0}, amount: {1}.";
@@ -73,7 +73,7 @@ namespace RockPaperScissors.Ads
             {
                 rewardedInterstitialAd.Show((Reward reward) =>
                 {
-                    rewardCallback();
+                    rewardCallback(reward);
                     Debug.Log(string.Format(rewardMsg, reward.Type, reward.Amount));
                 });
                 rewardedInterstitialAd.Destroy();

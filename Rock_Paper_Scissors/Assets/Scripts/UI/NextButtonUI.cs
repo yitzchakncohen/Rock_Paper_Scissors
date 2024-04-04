@@ -89,7 +89,10 @@ namespace RockPaperScissors.UI
         private void SaveManager_OnLoadCompleted()
         {
             button.interactable = true;
-            CheckActionsRemainingAsync();
+            if(turnManager.IsPlayerTurn())
+            {
+                CheckActionsRemainingAsync();
+            }
         }
     }
 }

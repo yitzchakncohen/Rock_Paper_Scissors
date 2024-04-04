@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GoogleMobileAds.Api;
+using RockPaperScissors.Ads;
 using RockPaperScissors.Grids;
 using RockPaperScissors.SaveSystem;
 using RockPaperScissors.UI;
@@ -18,9 +20,12 @@ namespace RockPaperScissors
         public const string HIGH_SCORE_STRING = "highscore";
         private const string GAME_SCENE_STRING = "MainScene";
         private const string MENU_SCENE_STRING = "MenuScene";
+        private const float REWARD_MULTIPLIER = 10f;
         public static ApplicationManager Instance;
         private SceneTransitionUI sceneTransitionUI;
         private GridManager gridManager;
+        private AdsManager adsManager;
+        private int rewardAmount = 0;
 
         void Awake()
         {
@@ -36,6 +41,8 @@ namespace RockPaperScissors
 
             sceneTransitionUI = GetComponentInChildren<SceneTransitionUI>();
             StartCoroutine(StartUpRoutine());
+            GameplayManager.OnGameOver += GameplayManager_OnGameOver;
+            adsManager = GetComponent<AdsManager>();
         }
 
         private void OnEnable() 
@@ -98,9 +105,19 @@ namespace RockPaperScissors
             yield return StartCoroutine(LoadGameScene());
 
             sceneTransitionUI.LoadingCompleted();
+
             // Trigger new game.
             WaveManager waveManager = FindObjectOfType<WaveManager>();
             waveManager.StartWaveWhenReady();
+
+            // Apply Ad Reward
+            if(rewardAmount > 0)
+            {
+                CurrencyBank currencyBank = FindObjectOfType<CurrencyBank>();
+                currencyBank.AddCurrencyToBank(rewardAmount, null);
+                // Reset Flag
+                rewardAmount = 0;
+            }
         }
 
         private IEnumerator LoadGameRoutine()
@@ -148,6 +165,35 @@ namespace RockPaperScissors
             StartNewGame();
         }
 
+        private void GameplayManager_OnGameOver(object sender, GameplayManager.OnGameOverEventArgs e)
+        {
+            if(adsManager == null)
+            {
+                Debug.LogWarning("No Ads Manager Found");
+                return;
+            }
+
+            LoadAdAsync();
+        }
+
+        private async void LoadAdAsync()
+        {
+            await Task.Yield();
+            adsManager.LoadRewardedInterstitialAd();
+            adsManager.ShowRewardedInterstitialAd(OnRewardReceived);
+        }
+
+        private void OnRewardReceived(Reward reward)
+        {
+            rewardAmount = (int)(REWARD_MULTIPLIER * reward.Amount);
+            RewardBonusUI rewardBonusUI = FindObjectOfType<RewardBonusUI>(true);
+            if(rewardBonusUI != null)
+            {
+                rewardBonusUI.gameObject.SetActive(true);
+                rewardBonusUI.SetRewardAmount(rewardAmount);
+            }
+            Debug.Log("Reward Received");
+        }
     }
 
 }

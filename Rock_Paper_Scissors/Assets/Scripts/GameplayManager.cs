@@ -56,7 +56,7 @@ namespace RockPaperScissors
         }
 
         [ContextMenu("Game Over")]
-        private void GameOver()
+        public void GameOver()
         {
             int highscore = PlayerPrefs.GetInt(ApplicationManager.HIGH_SCORE_STRING, -1);
             if(highscore < score)

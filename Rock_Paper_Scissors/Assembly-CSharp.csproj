@@ -88,6 +88,7 @@
     <Compile Include="Assets\Scripts\Currency\CurrencyFX.cs" />
     <Compile Include="Assets\Scripts\PathFinding\PathFinding.cs" />
     <Compile Include="Assets\Scripts\Ads\AdsManager.cs" />
+    <Compile Include="Assets\Scripts\UI\RewardBonusUI.cs" />
     <Compile Include="Assets\Scripts\UI\StatusIconUI.cs" />
     <Compile Include="Assets\Scripts\Grid\GridObjectUI.cs" />
     <Compile Include="Assets\Scripts\ApplicationManager.cs" />
