@@ -16,7 +16,7 @@ namespace RockPaperScissors.UI
 
         public void SetRewardAmount(int rewardAmount)
         {
-            rewardValueText.text = rewardAmount.ToString();
+            rewardValueText.text = "+" + rewardAmount.ToString();
         }
     }    
 }
