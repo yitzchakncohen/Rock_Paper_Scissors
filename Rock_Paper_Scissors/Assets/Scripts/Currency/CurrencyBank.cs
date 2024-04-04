@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using RockPaperScissors.SaveSystem;
-using RockPaperScissors.Units;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -11,11 +8,6 @@ public class CurrencyBank : MonoBehaviour, ISaveInterface<SaveCurrencyBankData>
     [SerializeField] private ParticleSystem MarbleFXPrefab;
     public event EventHandler<int> OnCurrencyChanged;
     private int currency = 0;
-
-    private void Start() 
-    {
-        UnitHealth.OnDeath += Health_OnDeath;
-    }
 
     public bool TrySpendCurrency(int amountToSpend)
     {
@@ -33,13 +25,14 @@ public class CurrencyBank : MonoBehaviour, ISaveInterface<SaveCurrencyBankData>
         return currency;
     }
 
-    public void AddCurrencyToBank(int amount, Unit unit)
+    public void AddCurrencyToBank(int amount, Transform unitLocation)
     {
         currency += amount;
+        AudioManager.Instance.PlayCollectCurrencySound();
         OnCurrencyChanged?.Invoke(this, currency);
-        if(unit != null)
+        if(unitLocation != null)
         {
-            Instantiate(MarbleFXPrefab, unit.transform.position, quaternion.identity);
+            Instantiate(MarbleFXPrefab, unitLocation.position, quaternion.identity);
         }
     }
 
@@ -47,17 +40,6 @@ public class CurrencyBank : MonoBehaviour, ISaveInterface<SaveCurrencyBankData>
     public void AddSomeCurrency()
     {
         AddCurrencyToBank(1000, null);
-    }
-
-    private void Health_OnDeath(object sender, Unit e)
-    {
-        Unit unit = ((UnitHealth)sender).GetUnit();
-        if(!unit.IsFriendly())
-        {
-            OnCurrencyChanged?.Invoke(this, currency);
-            AddCurrencyToBank(unit.GetUnitDefeatedReward(), e);
-        }
-
     }
 
     public SaveCurrencyBankData Save()

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using JetBrains.Annotations;
 using RockPaperScissors.Units;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace RockPaperScissors.UI
         public static event Action<Unit> OnGarrisonedUnitSelected;
         [SerializeField] private Transform buildingMainMenuUI;
         [SerializeField] private Transform buildMenuUI;
-        [SerializeField] private RadialLayoutGroup radialLayoutGroup;
+        [SerializeField] private RadialLayoutGroup buildButtonsRadialLayoutGroup;
         [SerializeField] private RadialLayoutGroup mainRadialLayoutGroup;
         [SerializeField] private BuildingButton buildingButtonPrefab;
         [SerializeField] private Button openBuildMenuButton;
@@ -33,26 +34,26 @@ namespace RockPaperScissors.UI
                 Debug.Log("This building menu is not attached to a unit spawner.");
             }else
             {
-                foreach (Transform child in radialLayoutGroup.transform)
+                foreach (Transform child in buildButtonsRadialLayoutGroup.transform)
                 {
                     Destroy(child.gameObject);
                 }
                 foreach (Unit unit in unitSpawner.GetSpawnableUnits())
                 {
-                    BuildingButton buildingButton = Instantiate(buildingButtonPrefab, radialLayoutGroup.transform);
+                    BuildingButton buildingButton = Instantiate(buildingButtonPrefab, buildButtonsRadialLayoutGroup.transform);
                     buildingButton.Setup(unit);
                 }
             }
             ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
             BuildingButton.OnBuildingButtonPressed += BuildingButton_OnBuildingButtonPressed;
-            radialLayoutGroup.OnCloseAnimationComplete += RadialLayoutGroup_OnCloseAnimationComplete;
+            buildButtonsRadialLayoutGroup.OnCloseAnimationComplete += RadialLayoutGroup_OnCloseAnimationComplete;
             mainRadialLayoutGroup.OnCloseAnimationComplete += MainRadialLayoutGroup_OnCloseAnimationComplete;
             GameplayManager.OnGameOver += GameplayManager_OnGameOver;
             TurnManager.OnNextTurn += TurnManager_OnNextTurn;
-            openBuildMenuButton.onClick.AddListener(OpenBuildMenu);
+            openBuildMenuButton.onClick.AddListener(OnOpenBuildMenu);
             selectUnitButton.onClick.AddListener(OnSelectUnitButtonPress);
-            closeMainMenuButton.onClick.AddListener(CloseMainMenu);
-            closeBuildMenuButton.onClick.AddListener(CloseBuildingMenu);
+            closeMainMenuButton.onClick.AddListener(OnCloseMainMenuButtonPress);
+            closeBuildMenuButton.onClick.AddListener(OnCloseBuildMenuButtonPress);
             selectUnitButton.interactable = false;
         }
 
@@ -74,7 +75,7 @@ namespace RockPaperScissors.UI
         {
             ActionHandler.OnUnitSelected -= ActionHandler_OnUnitSelected;
             BuildingButton.OnBuildingButtonPressed -= BuildingButton_OnBuildingButtonPressed;
-            radialLayoutGroup.OnCloseAnimationComplete -= RadialLayoutGroup_OnCloseAnimationComplete;
+            buildButtonsRadialLayoutGroup.OnCloseAnimationComplete -= RadialLayoutGroup_OnCloseAnimationComplete;
             mainRadialLayoutGroup.OnCloseAnimationComplete -= MainRadialLayoutGroup_OnCloseAnimationComplete;
             GameplayManager.OnGameOver -= GameplayManager_OnGameOver;
             TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
@@ -96,7 +97,8 @@ namespace RockPaperScissors.UI
 
         private void BuildingButton_OnBuildingButtonPressed(object sender, BuildButtonArguments e)
         {
-            CloseBuildingMenu();
+            StartCoroutine(CloseBuildingMenu());
+            AudioManager.Instance.PlayMenuNavigationSound();
         }
 
         private void ActionHandler_OnUnitSelected(object sender, Unit unit)
@@ -107,8 +109,14 @@ namespace RockPaperScissors.UI
             }
             else
             {
-                CloseBuildingMenu();
-                CloseMainMenu();
+                if(buildMenuUI.gameObject.activeSelf)
+                {
+                    StartCoroutine(CloseBuildingMenu());
+                }
+                else if(buildingMainMenuUI.gameObject.activeSelf)
+                {
+                    StartCoroutine(CloseMainMenu());
+                }
                 garrisonedUnit = null;
             }
         }
@@ -119,62 +127,89 @@ namespace RockPaperScissors.UI
             {
                 Debug.Log(garrisonedUnit.gameObject.name);
                 selectUnitButton.interactable = true;
-                OpenMainMenu();
+                StartCoroutine(OpenMainMenu());
             }
             else
             {
-                OpenBuildMenu();
+                OnOpenBuildMenu();
             }
         }
 
-        public void OpenMainMenu()
+        public IEnumerator OpenMainMenu()
         {
             buildingMainMenuUI.gameObject.SetActive(true);
-            mainRadialLayoutGroup.AnimateMenuOpen();
+            yield return StartCoroutine(mainRadialLayoutGroup.AnimateMenuOpen());
         }
 
-        public void OpenBuildMenu()
+        public void OnOpenBuildMenu()
         {
-            CloseMainMenu();
-            buildMenuUI.gameObject.SetActive(true);
-            radialLayoutGroup.AnimateMenuOpen();
+            StopAllCoroutines();
+            StartCoroutine(OpenBuildMenuRoutine());
         }
 
-        public void CloseBuildingMenu()
+        private IEnumerator OpenBuildMenuRoutine()
+        {
+            AudioManager.Instance.PlayMenuNavigationSound();
+            yield return StartCoroutine(CloseMainMenu());
+            buildMenuUI.gameObject.SetActive(true);
+            yield return StartCoroutine(buildButtonsRadialLayoutGroup.AnimateMenuOpen());
+        }
+
+        public IEnumerator CloseBuildingMenu()
         {
             if(buildMenuUI.gameObject.activeSelf)
             {
-                radialLayoutGroup.AnimateMenuClosed();       
+                yield return StartCoroutine(buildButtonsRadialLayoutGroup.AnimateMenuClosed());       
             }
             if(garrisonedUnit != null)
             {
-                OpenMainMenu();
+                yield return StartCoroutine(OpenMainMenu());
             }
         }
 
-        public void CloseMainMenu()
+        public IEnumerator CloseMainMenu()
         {
             if(buildingMainMenuUI.gameObject.activeSelf)
             {
-                mainRadialLayoutGroup.AnimateMenuClosed();
+                yield return StartCoroutine(mainRadialLayoutGroup.AnimateMenuClosed());
+            }
+            else
+            {
+                yield return null;
             }
         }
 
-        private void GameplayManager_OnGameOver(int obj)
+        private void GameplayManager_OnGameOver(object sender, EventArgs e)
         {
-            CloseBuildingMenu();
-            CloseMainMenu();
+            StartCoroutine(CloseBuildingMenu());
+            StartCoroutine(CloseMainMenu());
         }
 
         private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs e)
         {
-            CloseBuildingMenu();
-            CloseMainMenu();
+            StartCoroutine(CloseBuildingMenu());
+            StartCoroutine(CloseMainMenu());
+        }
+
+        private void OnCloseBuildMenuButtonPress()
+        {
+            StopAllCoroutines();
+            StartCoroutine(CloseBuildingMenu());
+            AudioManager.Instance.PlayMenuNavigationSound();
+        }
+
+        private void OnCloseMainMenuButtonPress()
+        {
+            StopAllCoroutines();
+            StartCoroutine(CloseMainMenu());
+            AudioManager.Instance.PlayMenuNavigationSound();
         }
 
         private void OnSelectUnitButtonPress()
         {
+            StopAllCoroutines();
             OnGarrisonedUnitSelected?.Invoke(garrisonedUnit);
+            AudioManager.Instance.PlayMenuNavigationSound();
         }
 
         public void SetGarrisonedUnit(Unit unit)

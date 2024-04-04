@@ -29,6 +29,7 @@ public class WaveManager : MonoBehaviour
     private CurrencyBank currencyBank;
     private GridManager gridManager;
     private int turnsUntilNextWave = 0;
+    private bool startWaveWhenReady = false;
 
     private void Start() 
     {
@@ -36,6 +37,29 @@ public class WaveManager : MonoBehaviour
         currencyBank = FindObjectOfType<CurrencyBank>();
         gridManager = FindObjectOfType<GridManager>();
         UpdateTurnsUntilNextWave(0);
+    }
+
+    private void Update() 
+    {
+        if(startWaveWhenReady)
+        {
+            if(gridManager.SetupGridTask.IsCompleted)
+            {
+                startWaveWhenReady = false;
+                StartWave(0);
+            }
+        }
+    }
+
+    [ContextMenu("Start Wave 0")]
+    public void StartWaveZero()
+    {
+        StartWave(0);
+    }
+
+    public void StartWaveWhenReady()
+    {
+        startWaveWhenReady = true;
     }
 
     private void OnDestroy() 
@@ -68,7 +92,7 @@ public class WaveManager : MonoBehaviour
         OnTurnsUntilNextWaveUpdated.Invoke(turnsUntilNextWave);
     }
 
-    public void StartWave(int turn)
+    private void StartWave(int turn)
     {
         foreach (Wave wave in waves)
         {
@@ -176,6 +200,7 @@ public class WaveManager : MonoBehaviour
     private IEnumerator ShowSpawnedUnits(List<Unit> unitsSpawnedThisWave)
     {
         OnWaveStarted?.Invoke();
+        AudioManager.Instance.PlayEnemyWaveSound();
 
         unitsSpawnedThisWave.Sort(delegate(Unit unitA, Unit unitB)
         {
@@ -221,6 +246,7 @@ public class WaveManager : MonoBehaviour
         // Show the units one at a time.
         foreach (Unit unit in unitsSpawnedThisWave)
         {
+            AudioManager.Instance.PlayUnitSpawnSound();
             OnWaveUnitSpawn?.Invoke(unit);
             yield return StartCoroutine(unit.GetUnitAnimator().SpawnAnimationRoutine(showUnitsTime));
         }

@@ -114,6 +114,7 @@ namespace RockPaperScissors.Units
 
         public async Task<int> GetFriendlyAvaliableActionsRemaining()
         {
+            await Task.Yield();
             int actionPoints = 0;
 
             foreach (Unit friendlyUnit in friendlyUnits)
@@ -122,8 +123,6 @@ namespace RockPaperScissors.Units
                 {
                     actionPoints += unitAction.GetValidActionsRemaining();
                 }
-
-                await Task.Delay((int)(Time.deltaTime*1000));
             }
 
             return actionPoints;

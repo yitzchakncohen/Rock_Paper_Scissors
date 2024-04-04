@@ -1,24 +1,30 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
 using RockPaperScissors;
+using RockPaperScissors.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 
 public class GameMenu : MonoBehaviour
 {
     public static event Action OnStartGameButtonPress;
 
+    [SerializeField] private GameObject HUDPanel;
     [SerializeField] private GameObject gameMenuPanel;
     [SerializeField] private GameObject gameOverMenuPanel;
-    [SerializeField] private TextMeshProUGUI gameOverScoreText;
+    [SerializeField] private TextMeshProUGUI gameOverScoreValueText;
+    [SerializeField] private TextMeshProUGUI gameOverHighScoreValueText;
     [SerializeField] private Button[] MainMenuButtons;
     [SerializeField] private Button NewGameButton;
-
+    [SerializeField] private LetterAnimation gameOverTextAnimation;
+    [SerializeField] private float gameOverAnimationTime = 0.5f;
+    private RectTransform gameOverMenuRectTransform;
 
     private void Start() 
     {
+        gameOverMenuRectTransform = gameOverMenuPanel.GetComponent<RectTransform>();
         GameplayManager.OnGameOver += GameplayManager_OnGameOver;
         foreach (Button button in MainMenuButtons)
         {
@@ -28,6 +34,7 @@ public class GameMenu : MonoBehaviour
 
         gameOverMenuPanel.SetActive(false);
         gameMenuPanel.SetActive(false);
+        HUDPanel.SetActive(true);
     }
 
     private void OnDestroy() 
@@ -43,17 +50,34 @@ public class GameMenu : MonoBehaviour
     public void OpenGameMenu()
     {
         gameMenuPanel.SetActive(true);
+        AudioManager.Instance.PlayMenuNavigationSound();
     }
 
     public void CloseGameMenu()
     {
         gameMenuPanel.SetActive(false);
+        AudioManager.Instance.PlayMenuNavigationSound();
     }
 
-    private void OpenGameOverMenu(int score)
+    [ContextMenu("Open Game Over Menu")]
+    public void TestMenu()
     {
+        OpenGameOverMenu(100, 1000);
+    }
+
+    public void OpenGameOverMenu(int score, int highscore)
+    {
+        HUDPanel.SetActive(false);
         gameOverMenuPanel.SetActive(true);
-        gameOverScoreText.text = "Score: " + score.ToString();
+        gameOverScoreValueText.text = score.ToString();
+        gameOverHighScoreValueText.text = highscore.ToString();
+        gameOverMenuRectTransform.transform.localPosition = new Vector2(0, -Screen.height);
+        Sequence gameOverSequence = DOTween.Sequence();
+        gameOverSequence.Append(gameOverMenuRectTransform.DOAnchorPos(Vector2.zero, gameOverAnimationTime).SetEase(Ease.InOutQuint));
+        gameOverSequence.AppendCallback(() => {
+            gameOverTextAnimation.Play();
+        });
+        gameOverSequence.PlayForward();
     }
 
     private void CloseGameOverMenu()
@@ -64,16 +88,18 @@ public class GameMenu : MonoBehaviour
     private void GoToMainMenu()
     {
         ApplicationManager.Instance.ReturnToMenu();
+        AudioManager.Instance.PlayMenuNavigationSound();
     }
 
     private void StartGame()
     {
         OnStartGameButtonPress?.Invoke();
+        AudioManager.Instance.PlayMenuNavigationSound();
     }
 
-    private void GameplayManager_OnGameOver(int score)
+    private void GameplayManager_OnGameOver(object sender, GameplayManager.OnGameOverEventArgs e)
     {
-        OpenGameOverMenu(score);
+        OpenGameOverMenu(e.Score, e.Highscore);
     }
 
 }

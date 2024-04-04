@@ -55,6 +55,11 @@ namespace RockPaperScissors.Units
                 {
                     // Reach position
                     transform.position = targetGridObjects[currentPositionIndex].transform.position;
+                    // Play sound every other position.
+                    if(currentPositionIndex % 2 == 0)
+                    {
+                        AudioManager.Instance.PlayUnitMovementSound();
+                    }
 
                     // Check for Trap
                     if(CheckGridObjectForTrap(targetGridObjects[currentPositionIndex]))

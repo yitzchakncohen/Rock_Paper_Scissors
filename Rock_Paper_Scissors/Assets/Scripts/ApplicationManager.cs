@@ -1,6 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using GoogleMobileAds.Api;
+using RockPaperScissors.Ads;
+using RockPaperScissors.Grids;
 using RockPaperScissors.SaveSystem;
 using RockPaperScissors.UI;
 using UnityEngine;
@@ -13,12 +17,16 @@ namespace RockPaperScissors
     /// </summary>
     public class ApplicationManager : MonoBehaviour
     {
-        public const string SAVE_DIRECTORY = "/Saves/";
-        public const string SAVE_FILE_NAME = "save.txt";
+        public const string HIGH_SCORE_STRING = "highscore";
         private const string GAME_SCENE_STRING = "MainScene";
         private const string MENU_SCENE_STRING = "MenuScene";
-
+        private const float REWARD_MULTIPLIER = 10f;
         public static ApplicationManager Instance;
+        private SceneTransitionUI sceneTransitionUI;
+        private GridManager gridManager;
+        private AdsManager adsManager;
+        private int rewardAmount = 0;
+
         void Awake()
         {
             if(Instance == null)
@@ -30,6 +38,15 @@ namespace RockPaperScissors
             {
                 Destroy(gameObject);
             }
+
+            sceneTransitionUI = GetComponentInChildren<SceneTransitionUI>();
+            GameplayManager.OnGameOver += GameplayManager_OnGameOver;
+            adsManager = GetComponent<AdsManager>();
+        }
+
+        private void OnEnable() 
+        {
+            gridManager = FindObjectOfType<GridManager>();
         }
 
         private void Start() 
@@ -38,6 +55,7 @@ namespace RockPaperScissors
             MainMenu.OnContinueGameButtonPress += MainMenu_OnContinueGameButtonPress;
             SaveButton.OnSaveButtonPress += SaveButton_OnSaveButtonPress;
             GameMenu.OnStartGameButtonPress += GameMenu_OnStartGameButtonPress;
+            StartCoroutine(StartUpRoutine());
         }
 
         private void OnDisable() 
@@ -50,46 +68,86 @@ namespace RockPaperScissors
 
         public void StartNewGame()
         {
-            StartCoroutine(StartGameRoutineAsync());
+            StartCoroutine(StartGameRoutine());
         }
 
         public void ContinueGame()
         {
-            StartCoroutine(LoadGameRoutineAsync());
+            StartCoroutine(LoadGameRoutine());
         }
 
         public void ReturnToMenu()
         {
-            SceneManager.LoadScene(MENU_SCENE_STRING);
+            StartCoroutine(ReturnToMenuRoutine());
         }
 
-        private IEnumerator StartGameRoutineAsync()
+        private IEnumerator ReturnToMenuRoutine()
         {
-            AsyncOperation asyncLoadScene =  SceneManager.LoadSceneAsync(GAME_SCENE_STRING);
+            yield return StartCoroutine(sceneTransitionUI.TransitionOut());
+            sceneTransitionUI.StartLoading();
+            AsyncOperation asyncLoadScene =  SceneManager.LoadSceneAsync(MENU_SCENE_STRING);
+            Debug.Log("Loading Scene...");
+            yield return new WaitUntil(() => asyncLoadScene.isDone);
+            StartCoroutine(StartUpRoutine());
+        }
 
-            while(!asyncLoadScene.isDone)
+
+        private IEnumerator StartUpRoutine()
+        {
+            sceneTransitionUI.TransitionIn();
+            gridManager = FindObjectOfType<GridManager>();
+            Debug.Log("Waiting for grid setup...");
+            if(gridManager.SetupGridTask != null)
             {
-                yield return null;
+                yield return new WaitUntil(() => gridManager.SetupGridTask.IsCompleted);
             }
+            sceneTransitionUI.LoadingCompleted();
+        }
+        private IEnumerator StartGameRoutine()
+        {
+            yield return StartCoroutine(LoadGameScene());
+
+            sceneTransitionUI.LoadingCompleted();
 
             // Trigger new game.
             WaveManager waveManager = FindObjectOfType<WaveManager>();
-            waveManager.StartWave(0);
+            waveManager.StartWaveWhenReady();
+
+            // Apply Ad Reward
+            if(rewardAmount > 0)
+            {
+                CurrencyBank currencyBank = FindObjectOfType<CurrencyBank>();
+                currencyBank.AddCurrencyToBank(rewardAmount, null);
+                // Reset Flag
+                rewardAmount = 0;
+            }
         }
 
-        private IEnumerator LoadGameRoutineAsync()
+        private IEnumerator LoadGameRoutine()
         {
-            AsyncOperation asyncLoadScene =  SceneManager.LoadSceneAsync(GAME_SCENE_STRING);
-
-            while(!asyncLoadScene.isDone)
-            {
-                yield return null;
-            }
-
-            // Clear existing game
+            yield return StartCoroutine(LoadGameScene());
 
             SaveManager saveManager = FindObjectOfType<SaveManager>();
-            saveManager.LoadGame();
+            Task loadTask = saveManager.LoadGameAsync();
+            yield return new WaitUntil(() => loadTask.IsCompleted);
+            sceneTransitionUI.LoadingCompleted();
+        }
+
+        private IEnumerator LoadGameScene()
+        {
+            yield return StartCoroutine(sceneTransitionUI.TransitionOut());
+            sceneTransitionUI.StartLoading();
+            AsyncOperation asyncLoadScene = SceneManager.LoadSceneAsync(GAME_SCENE_STRING);
+            Debug.Log("Loading Scene...");
+            yield return new WaitUntil(() => asyncLoadScene.isDone);
+
+            sceneTransitionUI.TransitionIn();
+
+            if(gridManager.SetupGridTask != null)
+            {
+                Debug.Log("Waiting for grid setup...");
+                yield return new WaitUntil(() => gridManager.SetupGridTask.IsCompleted);
+            }
         }
 
         private void MainMenu_OnContinueGameButtonPress()
@@ -111,6 +169,38 @@ namespace RockPaperScissors
         private void GameMenu_OnStartGameButtonPress()
         {
             StartNewGame();
+        }
+
+        private void GameplayManager_OnGameOver(object sender, GameplayManager.OnGameOverEventArgs e)
+        {
+            if(adsManager == null)
+            {
+                Debug.LogWarning("No Ads Manager Found");
+                return;
+            }
+
+            ShowAd();
+        }
+
+        private void ShowAd()
+        {
+            if(!adsManager.adsInitialized)
+            {
+                return;
+            }
+            adsManager.ShowRewardedInterstitialAd(OnRewardReceived);
+        }
+
+        private void OnRewardReceived(Reward reward)
+        {
+            rewardAmount = (int)(REWARD_MULTIPLIER * reward.Amount);
+            RewardBonusUI rewardBonusUI = FindObjectOfType<RewardBonusUI>(true);
+            if(rewardBonusUI != null)
+            {
+                rewardBonusUI.gameObject.SetActive(true);
+                rewardBonusUI.SetRewardAmount(rewardAmount);
+            }
+            Debug.Log("Reward Received");
         }
     }
 

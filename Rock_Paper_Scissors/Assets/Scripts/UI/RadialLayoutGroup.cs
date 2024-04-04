@@ -98,18 +98,18 @@ namespace RockPaperScissors.UI
             while(currentRadialPosition != tragetRadialPosition);
         }
 
-        public void AnimateMenuOpen()
+        public IEnumerator AnimateMenuOpen()
         {
             StopAllCoroutines();
-            StartCoroutine(AnimateMenuOpenRoutine());
+            yield return StartCoroutine(AnimateMenuOpenRoutine());
         }
 
-        public void AnimateMenuClosed()
+        public IEnumerator AnimateMenuClosed()
         {
             if(gameObject.activeSelf)
             {
                 StopAllCoroutines();
-                StartCoroutine(AnimateMenuClosedRoutine());
+                yield return StartCoroutine(AnimateMenuClosedRoutine());
             }
         }
     }    

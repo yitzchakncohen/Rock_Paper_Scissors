@@ -47,6 +47,7 @@ namespace RockPaperScissors.Units
                 level = Math.Clamp(level + 1, 1, 3);
                 OnLevelUp?.Invoke();
                 StartCoroutine(unitAnimator.AnimateLevelUp(level));
+                AudioManager.Instance.PlayUnitLevelUpSound();
             }
         }
 
