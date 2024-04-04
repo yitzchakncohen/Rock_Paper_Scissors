@@ -40,7 +40,6 @@ namespace RockPaperScissors
             }
 
             sceneTransitionUI = GetComponentInChildren<SceneTransitionUI>();
-            StartCoroutine(StartUpRoutine());
             GameplayManager.OnGameOver += GameplayManager_OnGameOver;
             adsManager = GetComponent<AdsManager>();
         }
@@ -56,6 +55,7 @@ namespace RockPaperScissors
             MainMenu.OnContinueGameButtonPress += MainMenu_OnContinueGameButtonPress;
             SaveButton.OnSaveButtonPress += SaveButton_OnSaveButtonPress;
             GameMenu.OnStartGameButtonPress += GameMenu_OnStartGameButtonPress;
+            StartCoroutine(StartUpRoutine());
         }
 
         private void OnDisable() 
@@ -97,7 +97,10 @@ namespace RockPaperScissors
             sceneTransitionUI.TransitionIn();
             gridManager = FindObjectOfType<GridManager>();
             Debug.Log("Waiting for grid setup...");
-            yield return new WaitUntil(() => gridManager.SetupGridTask.IsCompleted);
+            if(gridManager.SetupGridTask != null)
+            {
+                yield return new WaitUntil(() => gridManager.SetupGridTask.IsCompleted);
+            }
             sceneTransitionUI.LoadingCompleted();
         }
         private IEnumerator StartGameRoutine()
@@ -140,8 +143,11 @@ namespace RockPaperScissors
 
             sceneTransitionUI.TransitionIn();
 
-            Debug.Log("Waiting for grid setup...");
-            yield return new WaitUntil(() => gridManager.SetupGridTask.IsCompleted);
+            if(gridManager.SetupGridTask != null)
+            {
+                Debug.Log("Waiting for grid setup...");
+                yield return new WaitUntil(() => gridManager.SetupGridTask.IsCompleted);
+            }
         }
 
         private void MainMenu_OnContinueGameButtonPress()
