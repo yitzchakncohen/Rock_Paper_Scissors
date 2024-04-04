@@ -108,6 +108,7 @@
     <Compile Include="Assets\Scripts\TurnManager.cs" />
     <Compile Include="Assets\Test\Test.cs" />
     <Compile Include="Assets\Scripts\UI\SaveButton.cs" />
+    <Compile Include="Assets\Scripts\UI\AdModal.cs" />
     <Compile Include="Assets\Scripts\UI\RandomColourVariation.cs" />
     <Compile Include="Assets\Scripts\UI\RadialLayoutGroup.cs" />
     <Compile Include="Assets\Scripts\Grid\GridUI.cs" />

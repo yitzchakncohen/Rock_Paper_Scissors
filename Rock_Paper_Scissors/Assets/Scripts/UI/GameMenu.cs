@@ -20,12 +20,15 @@ public class GameMenu : MonoBehaviour
     [SerializeField] private Button NewGameButton;
     [SerializeField] private LetterAnimation gameOverTextAnimation;
     [SerializeField] private float gameOverAnimationTime = 0.5f;
+    [SerializeField] private AdModal adModal;
     private RectTransform gameOverMenuRectTransform;
 
     private void Start() 
     {
         gameOverMenuRectTransform = gameOverMenuPanel.GetComponent<RectTransform>();
         GameplayManager.OnGameOver += GameplayManager_OnGameOver;
+        AdModal.OnSkipButtonClick += AdModal_OnSkipButtonClick;
+        AdModal.OnWatchButtonClick += AdModal_OnWatchButtonClick;
         foreach (Button button in MainMenuButtons)
         {
             button.onClick.AddListener(GoToMainMenu);
@@ -35,6 +38,7 @@ public class GameMenu : MonoBehaviour
         gameOverMenuPanel.SetActive(false);
         gameMenuPanel.SetActive(false);
         HUDPanel.SetActive(true);
+        adModal.gameObject.SetActive(false);
     }
 
     private void OnDestroy() 
@@ -44,7 +48,9 @@ public class GameMenu : MonoBehaviour
             button.onClick.RemoveAllListeners();
         }
         NewGameButton.onClick.RemoveAllListeners();
-        GameplayManager.OnGameOver -= GameplayManager_OnGameOver;        
+        GameplayManager.OnGameOver -= GameplayManager_OnGameOver;    
+        AdModal.OnSkipButtonClick -= AdModal_OnSkipButtonClick;
+        AdModal.OnWatchButtonClick -= AdModal_OnWatchButtonClick;    
     }
 
     public void OpenGameMenu()
@@ -99,7 +105,17 @@ public class GameMenu : MonoBehaviour
 
     private void GameplayManager_OnGameOver(object sender, GameplayManager.OnGameOverEventArgs e)
     {
+        adModal.gameObject.SetActive(true);
+        adModal.PassGameOverEventArgs(e);
+    }
+
+    private void AdModal_OnWatchButtonClick(object sender, GameplayManager.OnGameOverEventArgs e)
+    {
         OpenGameOverMenu(e.Score, e.Highscore);
     }
 
+    private void AdModal_OnSkipButtonClick(object sender, GameplayManager.OnGameOverEventArgs e)
+    {
+        OpenGameOverMenu(e.Score, e.Highscore);
+    }
 }
