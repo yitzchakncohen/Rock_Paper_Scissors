@@ -15,7 +15,7 @@ namespace RockPaperScissors.Ads
         private string _adUnitId = "unused";
 #endif
         private RewardedInterstitialAd rewardedInterstitialAd;
-        private bool adsInitialized = false;
+        public bool adsInitialized {get; private set;} = false;
 
         public void Start()
         {
@@ -24,6 +24,7 @@ namespace RockPaperScissors.Ads
             {
                 // This callback is called once the MobileAds SDK is initialized.
                 adsInitialized = true;
+                LoadRewardedInterstitialAd();
             });
         }
 
@@ -61,6 +62,7 @@ namespace RockPaperScissors.Ads
                                 + ad.GetResponseInfo());
 
                     rewardedInterstitialAd = ad;
+                    RegisterReloadHandler(ad);
                 });
         }
 
@@ -78,6 +80,27 @@ namespace RockPaperScissors.Ads
                 });
                 rewardedInterstitialAd.Destroy();
             }
+        }
+
+        private void RegisterReloadHandler(RewardedInterstitialAd ad)
+        {
+            // Raised when the ad closed full screen content.
+            ad.OnAdFullScreenContentClosed += () =>
+            {
+                Debug.Log("Rewarded interstitial ad full screen content closed.");
+
+                // Reload the ad so that we can show another as soon as possible.
+                LoadRewardedInterstitialAd();
+            };
+            // Raised when the ad failed to open full screen content.
+            ad.OnAdFullScreenContentFailed += (AdError error) =>
+            {
+                Debug.LogError("Rewarded interstitial ad failed to open " +
+                            "full screen content with error : " + error);
+
+                // Reload the ad so that we can show another as soon as possible.
+                LoadRewardedInterstitialAd();
+            };
         }
     }
     

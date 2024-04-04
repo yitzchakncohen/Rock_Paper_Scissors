@@ -179,13 +179,15 @@ namespace RockPaperScissors
                 return;
             }
 
-            LoadAdAsync();
+            ShowAd();
         }
 
-        private async void LoadAdAsync()
+        private void ShowAd()
         {
-            await Task.Yield();
-            adsManager.LoadRewardedInterstitialAd();
+            if(!adsManager.adsInitialized)
+            {
+                return;
+            }
             adsManager.ShowRewardedInterstitialAd(OnRewardReceived);
         }
 
