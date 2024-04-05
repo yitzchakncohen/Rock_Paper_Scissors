@@ -78,6 +78,7 @@ public class GameMenu : MonoBehaviour
         gameOverScoreValueText.text = score.ToString();
         gameOverHighScoreValueText.text = highscore.ToString();
         gameOverMenuRectTransform.transform.localPosition = new Vector2(0, -Screen.height);
+        gameOverMenuRectTransform.sizeDelta = new Vector2(gameOverMenuRectTransform.sizeDelta.x * Camera.main.aspect/2, gameOverMenuRectTransform.sizeDelta.y);
         Sequence gameOverSequence = DOTween.Sequence();
         gameOverSequence.Append(gameOverMenuRectTransform.DOAnchorPos(Vector2.zero, gameOverAnimationTime).SetEase(Ease.InOutQuint));
         gameOverSequence.AppendCallback(() => {
