@@ -23,7 +23,8 @@ namespace RockPaperScissors.UI
         private Unit parentUnit;
         private UnitSpawner unitSpawner;
         private Unit garrisonedUnit = null;
-        private float lastFrameZoom;
+        private float startingZoom;
+        private Vector3 startingScale;
 
         private void Awake() 
         {
@@ -55,19 +56,20 @@ namespace RockPaperScissors.UI
             closeMainMenuButton.onClick.AddListener(OnCloseMainMenuButtonPress);
             closeBuildMenuButton.onClick.AddListener(OnCloseBuildMenuButtonPress);
             selectUnitButton.interactable = false;
+
+            startingScale = transform.localScale;
         }
 
         private void Start() 
         {
-            lastFrameZoom = Camera.main.orthographicSize;
+            startingZoom = Camera.main.orthographicSize;
         }
 
         private void Update() 
         {
-            if(lastFrameZoom != Camera.main.orthographicSize)
+            if(startingZoom != Camera.main.orthographicSize)
             {
-                transform.localScale = transform.localScale * Camera.main.orthographicSize/lastFrameZoom;
-                lastFrameZoom = Camera.main.orthographicSize;
+                transform.localScale = startingScale * Camera.main.orthographicSize/startingZoom;
             }
         }
 
