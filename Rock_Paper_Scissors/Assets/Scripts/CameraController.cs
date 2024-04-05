@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public float DefaultZoom => defaultZoom;
     [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
     [SerializeField] private float zoomSpeed = 1f;
     [SerializeField] private Vector2 zoomClamp = new Vector2(3, 10);
@@ -22,6 +23,7 @@ public class CameraController : MonoBehaviour
     private float cameraBoundaryMinY;
     private float cameraBoundaryMaxY;
     private float zoomTarget;
+    private float defaultZoom;
     private InputManager inputManager;
     private PlayerControls playerControls;
     private Camera mainCamera;
@@ -44,6 +46,7 @@ public class CameraController : MonoBehaviour
         mainCamera = Camera.main;
         inputManager = FindObjectOfType<InputManager>();
         cinemachineFramingTransposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
+        defaultZoom = cinemachineVirtualCamera.m_Lens.OrthographicSize;
         playerControls = inputManager.GetPlayerControls();
         
         inputManager.OnStartDragging += InputManager_OnStartDragging;

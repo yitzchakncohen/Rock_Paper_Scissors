@@ -22,6 +22,7 @@ namespace RockPaperScissors.UI
         [SerializeField] private Button closeBuildMenuButton;
         private Unit parentUnit;
         private UnitSpawner unitSpawner;
+        private CameraController cameraController;
         private Unit garrisonedUnit = null;
         private float startingZoom;
         private Vector3 startingScale;
@@ -62,7 +63,8 @@ namespace RockPaperScissors.UI
 
         private void Start() 
         {
-            startingZoom = Camera.main.orthographicSize;
+            cameraController = FindObjectOfType<CameraController>();
+            startingZoom = cameraController.DefaultZoom;
         }
 
         private void Update() 
