@@ -12,9 +12,9 @@ public class FindingActionState : EnemyState
         throw new NotImplementedException();
     }
 
-    public void FindAction(EnemyStateContext context, UnitManager unitManager)
+    public void FindAction(EnemyStateContext context, UnitManager unitManager, Action<Vector3> OnActionFound)
     {
-        FindNextAction(context, unitManager);
+        FindNextAction(context, unitManager, OnActionFound);
     }
 
     public void TakeAction(EnemyStateContext context, Action CompleteAction, TurnManager turnManager)
@@ -32,7 +32,7 @@ public class FindingActionState : EnemyState
         throw new NotImplementedException();
     }
 
-    private async void FindNextAction(EnemyStateContext context, UnitManager unitManager)
+    private async void FindNextAction(EnemyStateContext context, UnitManager unitManager, Action<Vector3> OnActionFound)
     {
         // Already finding action
         if (findingAction) { return; }
@@ -41,6 +41,11 @@ public class FindingActionState : EnemyState
         findingAction = true;
 
         EnemyAIAction nextAction = await GetBestEnemyAction(unitManager);
+
+        if(nextAction != null)
+        {
+            OnActionFound?.Invoke(nextAction.unitAction.transform.position);
+        }
 
         context.SetState(new TakingActionState(nextAction));
     }

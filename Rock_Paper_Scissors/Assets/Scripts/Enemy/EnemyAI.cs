@@ -6,6 +6,7 @@ using RockPaperScissors;
 
 public class EnemyAI : MonoBehaviour
 {
+    public static event Action<Vector3> OnActionFound;
     private EnemyStatePattern state = new EnemyStatePattern();
     private TurnManager turnManager;
     private UnitManager unitManager;
@@ -35,7 +36,7 @@ public class EnemyAI : MonoBehaviour
             case WaitingForTurnState:
                 break;
             case FindingActionState:
-                state.FindAction(unitManager);
+                state.FindAction(unitManager, OnActionFound);
                 break;
             case TakingActionState:
                 state.TakeAction(CompleteAction, turnManager);

@@ -64,6 +64,7 @@ public class CameraController : MonoBehaviour
         WaveManager.OnWaveCompleted += WaveManager_OnWaveCompleted;
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
         GameplayManager.OnGameOver += GameplayManager_OnGameOver;
+        EnemyAI.OnActionFound += EnemyAI_OnActionFound;
         zoomTarget = cinemachineVirtualCamera.m_Lens.OrthographicSize;
 
         CalculateCameraBoundary();
@@ -86,6 +87,7 @@ public class CameraController : MonoBehaviour
         WaveManager.OnWaveCompleted -= WaveManager_OnWaveCompleted;
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
         GameplayManager.OnGameOver -= GameplayManager_OnGameOver;
+        EnemyAI.OnActionFound -= EnemyAI_OnActionFound;
     }
 
     private void FixedUpdate()
@@ -263,6 +265,11 @@ public class CameraController : MonoBehaviour
     {
         // Let the player move the camera around after the game to exam the game board.
         controlsLocked = false;
+    }
+
+    private void EnemyAI_OnActionFound(Vector3 position)
+    {
+        transform.position = position;
     }
 
     private void ClampCameraPosition()
