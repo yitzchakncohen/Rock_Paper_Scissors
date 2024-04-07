@@ -1,6 +1,7 @@
 using System;
 using RockPaperScissors.Units;
 using TMPro;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +17,7 @@ namespace RockPaperScissors.UI
         [SerializeField] private TextMeshProUGUI range;
         [SerializeField] private TextMeshProUGUI defense;
         [SerializeField] private TextMeshProUGUI movement;
-        [SerializeField] private Image xpBar;
+        [SerializeField] private TextMeshProUGUI xp;
         private Unit selectedUnit = null;
 
         
@@ -55,14 +56,14 @@ namespace RockPaperScissors.UI
 
         private void UpdateUnitStats(Unit unit)
         {
-            this.unit.text = unit.GetUnitClass().ToString();
-            level.text = $"Level: {unit.GetLevel().ToString()}";
-            health.text = $" <sprite=0> {unit.GetHealth().ToString()}/{unit.GetMaximumHealth().ToString()}";
+            this.unit.text = SplitCamelCase(unit.GetUnitClass().ToString());
+            level.text = $"Level: {unit.GetLevel()}";
+            health.text = $" <sprite=0> {unit.GetHealth()}/{unit.GetMaximumHealth()}";
             attack.text = $" <sprite=2> {unit.GetBaseAttack()}";
             range.text = $" <sprite=3> {unit.GetAttackRange()}";
             defense.text = $" <sprite=1> {unit.GetBaseDefense()}";
             movement.text = $" <sprite=4> {unit.GetMoveDistance()}";
-            xpBar.fillAmount = unit.GetUnitProgression().GetXP() % 100 / 100.0f;
+            xp.text = $"XP {unit.GetUnitProgression().GetXP()} / {100}";
         }
 
         private void selectedUnit_OnLevelUp()
@@ -72,7 +73,19 @@ namespace RockPaperScissors.UI
 
         private void selectedUnit_OnGainXP()
         {
-            xpBar.fillAmount = selectedUnit.GetUnitProgression().GetXP() % 100 / 100.0f;
+            xp.text = $"XP {selectedUnit.GetUnitProgression().GetXP()} / {100}";
+            level.text = $"Level: {selectedUnit.GetLevel()}";
+        }
+
+        private string SplitCamelCase(string str)
+        {
+            string[] strings = SearchUtils.SplitCamelCase(str.ToString());
+            string newString = "";
+            foreach (string partialString in strings)
+            {
+                newString += partialString + " ";
+            }            
+            return newString.Trim();
         }
     }
 }
