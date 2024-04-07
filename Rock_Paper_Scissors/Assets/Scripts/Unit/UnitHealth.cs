@@ -9,6 +9,7 @@ namespace RockPaperScissors.Units
     {
         public static event EventHandler<Unit> OnDeath;
         public event Action OnHealthChanged;
+        public Unit Unit => unit;
         private Unit unit;
         private CurrencyBank currencyBank;
         private UnitProgression unitProgression;
@@ -61,7 +62,7 @@ namespace RockPaperScissors.Units
         private void CheckForCurrencyReward(Unit attacker)
         {
             currencyBank = FindObjectOfType<CurrencyBank>();
-            if(!attacker.IsFriendly())
+            if(!attacker.IsFriendly)
             {
                 currencyBank.AddCurrencyToBank(unit.GetUnitDefeatedReward(), attacker.transform);
             }
@@ -107,11 +108,6 @@ namespace RockPaperScissors.Units
         public float GetNormalizedHealth()
         {
             return (float)health / (float)unit.GetMaximumHealth();
-        }
-
-        public Unit GetUnit()
-        {
-            return unit;
         }
     }
 }

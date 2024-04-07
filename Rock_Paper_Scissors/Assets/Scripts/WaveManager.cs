@@ -205,7 +205,7 @@ public class WaveManager : MonoBehaviour
         unitsSpawnedThisWave.Sort(delegate(Unit unitA, Unit unitB)
         {
             int friendlyBonus = 0; 
-            if(unitA.IsFriendly())
+            if(unitA.IsFriendly)
             {
                 friendlyBonus = 100;
             }

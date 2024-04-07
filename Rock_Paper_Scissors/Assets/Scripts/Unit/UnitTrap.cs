@@ -13,13 +13,11 @@ public class UnitTrap : UnitAction
     [SerializeField] private int trapEffectTurns = 2;
     [SerializeField] private float trapAnimationTime = 1f;
     private GridManager gridManager;
-    private Unit unit;
     private int turnsUntilDestroyed;
     private bool isTrapSprung = false;
 
     private void Awake() 
     {
-        unit = GetComponent<Unit>();
         // Traps have no available actions.
         actionPointsRemaining = 0;
     }
@@ -99,11 +97,6 @@ public class UnitTrap : UnitAction
         // Exit early when actively trying to spring a trap. This could be changed later.
         return false;
     }
-
-    public Unit GetUnit()
-    {
-        return unit;
-    }
     
     public bool GetIsTrapSprung()
     {
@@ -123,7 +116,7 @@ public class UnitTrap : UnitAction
         GridObject trapGridObject = gridManager.GetGridObjectFromWorldPosition(transform.position);
         if(movingUnitGridObject == trapGridObject)
         {
-            SpringTheTrap(movingUnit.GetUnit());
+            SpringTheTrap(movingUnit.Unit);
         }
     }
 

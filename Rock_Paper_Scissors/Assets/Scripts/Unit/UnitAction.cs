@@ -7,16 +7,24 @@ using UnityEngine;
 namespace RockPaperScissors.Units
 {
     // Base action class which the unit actions inherit from.
+    [RequireComponent(typeof(Unit))]
     public abstract class UnitAction : MonoBehaviour
     {
         public static event EventHandler OnAnyActionStarted;
         public static event EventHandler OnAnyActionCompleted;
         public bool IsCancellableAction {get; protected set;}
         public int ActionPointsRemaining => actionPointsRemaining;
+        public Unit Unit => unit;
         protected bool isActive;
         protected Action onActionComplete;
+        protected Unit unit;
         protected int actionPointsRemaining = 1;
         protected int trappedTurnsRemaining = 0;
+
+        private void Awake() 
+        {
+            unit = GetComponent<Unit>();
+        }
 
         protected virtual void Start() 
         {

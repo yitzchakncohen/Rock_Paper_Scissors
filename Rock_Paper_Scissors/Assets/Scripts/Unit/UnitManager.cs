@@ -33,7 +33,7 @@ namespace RockPaperScissors.Units
         private void Unit_OnUnitSpawn(object sender, EventArgs e)
         {
             Unit unit = (Unit)sender;
-            if(unit.IsFriendly())
+            if(unit.IsFriendly)
             {
                 friendlyUnits.Add(unit);
             }

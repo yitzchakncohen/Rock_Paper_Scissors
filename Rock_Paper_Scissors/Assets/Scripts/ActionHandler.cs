@@ -95,18 +95,18 @@ public class ActionHandler : MonoBehaviour
         IGridOccupantInterface gridOccupantBuilding = gridObject.GetOccupantBuilding(); 
 
         // Try and attack 
-        if(gridOccupantUnit != null && !gridOccupantUnit.IsFriendly())
+        if(gridOccupantUnit != null && !gridOccupantUnit.IsFriendly)
         {
             TryAttackUnitOccupyingGridPosition(gridObject);
             return;
         }
-        else if(gridOccupantBuilding != null && !gridOccupantBuilding.IsFriendly())
+        else if(gridOccupantBuilding != null && !gridOccupantBuilding.IsFriendly)
         {
             // Attack the building
             return;
         }
         // Try to move / select
-        else if(gridOccupantBuilding != null && gridOccupantBuilding.IsFriendly())
+        else if(gridOccupantBuilding != null && gridOccupantBuilding.IsFriendly)
         {
             // Check if you can move the unit onto the tower.
             if(selectedUnit != null && selectedUnit.IsMoveable() && gridOccupantUnit == null)
@@ -122,7 +122,7 @@ public class ActionHandler : MonoBehaviour
             }
             return;
         }
-        else if(gridOccupantUnit != null && gridOccupantUnit.IsFriendly())
+        else if(gridOccupantUnit != null && gridOccupantUnit.IsFriendly)
         {
             SelectUnitOccupyingGridPosition(gridObject);
             return;
@@ -314,7 +314,7 @@ public class ActionHandler : MonoBehaviour
     private void Unit_OnUnitSpawn(object sender, EventArgs e)
     {
         Unit unit = sender as Unit;
-        if(unit != null && unit.IsFriendly())
+        if(unit != null && unit.IsFriendly)
         {
             unitQueue.Enqueue(unit);
         }

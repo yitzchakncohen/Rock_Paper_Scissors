@@ -18,15 +18,12 @@ namespace RockPaperScissors.Units
         bool placingUnit = false;
         bool unitSpawning = false;
         private Unit unitToSpawn = null;
-        private Unit unit;
         private float timer;
-
 
         protected override void Start() 
         {
             base.Start(); 
             IsCancellableAction = true;
-            unit = GetComponent<Unit>();
 
             gridManager = FindObjectOfType<GridManager>();
             inputManager = FindObjectOfType<InputManager>();

@@ -13,6 +13,7 @@ namespace RockPaperScissors.UI
         [SerializeField] private GameObject movementHighlight;
         [SerializeField] private GameObject attackHighlight;
         [SerializeField] private GameObject placementHighlight;
+        [SerializeField] private GameObject actionAvailableHighlight;
         [SerializeField] private bool debugging = false;
 
         private void Awake() 
@@ -23,6 +24,7 @@ namespace RockPaperScissors.UI
                 gridPositionText.enabled = false;
                 gridDistanceText.enabled = false;
             }
+            actionAvailableHighlight.SetActive(false);
         }
 
         public void ShowHighlight(GridHighlightType highlightType)
@@ -106,6 +108,11 @@ namespace RockPaperScissors.UI
                     gridDistanceText.text = distance.ToString();
                 }
             }
+        }
+
+        public void SetActionAvailableHighlight(bool isAvailable)
+        {
+            actionAvailableHighlight.SetActive(true);
         }
     }
 }

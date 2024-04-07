@@ -192,7 +192,7 @@ namespace RockPaperScissors.Grids
 
             // Movement
             UnitMovement unitMovement = sender as UnitMovement;
-            if(unitMovement != null && !unitMovement.GetUnit().IsBuilding())
+            if(unitMovement != null && !unitMovement.Unit.IsBuilding())
             {
                 // Remove from existing grid location
                 Unit unit = ((UnitMovement)sender).GetComponent<Unit>();
@@ -217,7 +217,7 @@ namespace RockPaperScissors.Grids
 
         private void Health_OnDeath(object sender, Unit e)
         {
-            Unit unit = ((UnitHealth)sender).GetUnit();
+            Unit unit = ((UnitHealth)sender).Unit;
             for (int x = 0; x < gridSize.x; x++)
             {
                 for (int y = 0; y < gridSize.y; y++)

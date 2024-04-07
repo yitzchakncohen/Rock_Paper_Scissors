@@ -19,7 +19,6 @@ namespace RockPaperScissors.Units
         private UnitManager unitManager;
         private PathFinding pathFinding;
         private UnitAttack unitAttack;
-        private Unit unit;
         private List<GridObject> targetGridObjects = null;
         private int currentPositionIndex = 0;
         private bool moving = false;
@@ -27,7 +26,6 @@ namespace RockPaperScissors.Units
         private void Awake() 
         {
             unitAttack = GetComponent<UnitAttack>();
-            unit = GetComponent<Unit>();
         }
         
         protected override void Start() 
@@ -103,7 +101,7 @@ namespace RockPaperScissors.Units
             UnitTrap unitTrap = unit.GetComponent<UnitTrap>();
             if(unitTrap != null)
             {   
-                if(unitTrap.GetUnit().IsFriendly() != this.unit.IsFriendly() && !unitTrap.GetIsTrapSprung())
+                if(unitTrap.Unit.IsFriendly != this.unit.IsFriendly && !unitTrap.GetIsTrapSprung())
                 {
                     return true;
                 }
@@ -182,6 +180,10 @@ namespace RockPaperScissors.Units
         {
             List<Vector2Int> gridPositionList = new List<Vector2Int>();
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
+            if(unit == null)
+            {
+                unit = GetComponent<Unit>();
+            }
 
             for (int x = -unit.GetMoveDistance(); x <= unit.GetMoveDistance(); x++)
             {
@@ -352,11 +354,6 @@ namespace RockPaperScissors.Units
         public override bool TryTakeAction(GridObject gridObject, Action onActionComplete)
         {
             return TryStartMove(gridObject, onActionComplete);
-        }
-
-        public Unit GetUnit()
-        {
-            return unit;
         }
 
         protected override void CancelButton_OnCancelButtonPress()

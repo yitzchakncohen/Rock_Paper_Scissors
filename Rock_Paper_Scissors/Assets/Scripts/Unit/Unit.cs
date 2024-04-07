@@ -10,6 +10,7 @@ namespace RockPaperScissors.Units
     public class Unit : MonoBehaviour, ISaveInterface<SaveUnitData>, IGridOccupantInterface
     {
         public static event EventHandler OnUnitSpawn;
+        public bool IsFriendly { get => isFriendly; set{} }
         [SerializeField] private UnitAnimator unitAnimator;
         [SerializeField] private UnitShaderController unitShaderController;
         [SerializeField] private bool isFriendly = true;
@@ -17,6 +18,7 @@ namespace RockPaperScissors.Units
         private UnitAction[] unitActions;
         private UnitProgression unitProgression;
         private UnitHealth health;
+
 
         private void Awake() 
         {
@@ -63,11 +65,6 @@ namespace RockPaperScissors.Units
         public UnitAction[] GetUnitActions()
         {
             return unitActions;
-        }
-
-        public bool IsFriendly()
-        {
-            return isFriendly;
         }
 
         public bool IsMoveable()
@@ -224,7 +221,7 @@ namespace RockPaperScissors.Units
         public bool CanWalkOn(IGridOccupantInterface gridOccupantInterface)
         {
             Unit gridOccupant = (Unit)gridOccupantInterface;
-            if(gridOccupantInterface != null && isFriendly == gridOccupant.IsFriendly())
+            if(gridOccupantInterface != null && isFriendly == gridOccupant.IsFriendly)
             {
                 // Which types of buildings can you walk over?
                 if(gridOccupant.GetUnitClass() == UnitClass.PillowOutpost)
@@ -248,6 +245,16 @@ namespace RockPaperScissors.Units
             {
                 action.SetTrappedTurnsRemaining(trappedTurnsRemaining);
             }
+        }
+
+        public int GetTotalActionPointsRemaining()
+        {
+            int actionPoints = 0;
+            foreach (UnitAction unitAction in unitActions)
+            {
+                actionPoints += unitAction.ActionPointsRemaining;
+            }
+            return actionPoints;
         }
     }
 }

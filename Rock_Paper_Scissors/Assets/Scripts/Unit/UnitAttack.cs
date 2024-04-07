@@ -13,7 +13,6 @@ namespace RockPaperScissors.Units
         [SerializeField] private UnitAnimator unitAnimator;
         [SerializeField] private AnimationCurve attackAnimationCurve;
         private float cameraSnapDelay = 0.2f;
-        private Unit unit;
         private Unit target;
         private GridManager gridManager;
         private float timer;
@@ -25,12 +24,6 @@ namespace RockPaperScissors.Units
         private bool attackSoundHasPlayed = false;
         private int unitAttackActionBaseValue = 100;
         private int classAdvantageMultiplier = 10;
-
-
-        private void Awake() 
-        {
-            unit = GetComponent<Unit>();
-        }
 
         protected override void Start() 
         {
@@ -197,7 +190,7 @@ namespace RockPaperScissors.Units
             {
                 GridObject gridObject = gridManager.GetGridObject(position);
                 if(gridObject.GetCombatTarget() != null 
-                    && gridObject.GetCombatTarget().IsFriendly() != unit.IsFriendly()
+                    && gridObject.GetCombatTarget().IsFriendly != unit.IsFriendly
                     && !((Unit)gridObject.GetCombatTarget()).IsDead())
                 {
                     validTargetList.Add((Unit)gridObject.GetCombatTarget());
@@ -273,11 +266,6 @@ namespace RockPaperScissors.Units
         public Unit GetTarget()
         {
             return target;
-        }
-
-        public Unit GetUnit()
-        {
-            return unit;
         }
 
         protected override void CancelButton_OnCancelButtonPress()

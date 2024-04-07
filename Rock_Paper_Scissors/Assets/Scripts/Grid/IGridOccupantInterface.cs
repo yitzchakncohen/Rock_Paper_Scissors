@@ -4,6 +4,6 @@ namespace RockPaperScissors.Grids
     {
         public bool CanWalkOn(IGridOccupantInterface gridOccupantInterface);
         public bool IsBuilding();
-        public bool IsFriendly();
+        public bool IsFriendly {get; set;}
     }
 }
