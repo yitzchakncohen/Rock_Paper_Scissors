@@ -24,6 +24,10 @@ namespace RockPaperScissors.UI
             {
                 actionPointIcon.SetActive(false);  
             }
+            else
+            {
+                actionPointIcon.SetActive(unit.GetTotalActionPointsRemaining() > 0);
+            }
         }
 
         private void OnDestroy() 
@@ -46,7 +50,6 @@ namespace RockPaperScissors.UI
             Unit updatedUnit = unitAction.Unit;
             if(updatedUnit == unit)
             {
-                actionPointIcon.SetActive(updatedUnit.GetTotalActionPointsRemaining() > 0);
                 CheckForTowerOccupency(updatedUnit);
             }
         }
@@ -56,6 +59,7 @@ namespace RockPaperScissors.UI
             Unit spawnedUnit = (Unit)sender;
             if(spawnedUnit == unit)
             {
+                actionPointIcon.SetActive(unit.GetTotalActionPointsRemaining() > 0);
                 CheckForTowerOccupency(spawnedUnit);
             }
             else if(spawnedUnit.IsBuilding())
