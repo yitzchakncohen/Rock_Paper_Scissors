@@ -95,5 +95,6 @@ namespace RockPaperScissors.Grids
         public void HideHighlight(GridHighlightType highlightType) => gridObjectUI.HideHighlight(highlightType);
         public void HideAllHighlights() => gridObjectUI.HideAllHighlights();
         public void SetActionValue(float actionValue) => gridObjectUI.SetActionValue(actionValue);
+        public void SetDistanceFromPosition(Vector2Int centerPosition) => gridObjectUI.SetDistanceFromPosition(centerPosition, gridPosition);
     }
 }

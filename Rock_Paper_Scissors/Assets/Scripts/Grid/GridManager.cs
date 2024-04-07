@@ -59,13 +59,16 @@ namespace RockPaperScissors.Grids
             UnitAction.OnAnyActionCompleted += UnitAction_OnAnyActionCompleted;
             UnitHealth.OnDeath += Health_OnDeath;
             Unit.OnUnitSpawn += Unit_OnUnitSpawn;
+            ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
         }
+
 
         private void OnDestroy() 
         {
             UnitAction.OnAnyActionCompleted -= UnitAction_OnAnyActionCompleted;
             UnitHealth.OnDeath -= Health_OnDeath;
             Unit.OnUnitSpawn -= Unit_OnUnitSpawn;
+            ActionHandler.OnUnitSelected -= ActionHandler_OnUnitSelected;
         }
 
         public Vector2Int GetGridPositionFromWorldPosition(Vector2 worldPosition)
@@ -157,7 +160,7 @@ namespace RockPaperScissors.Grids
             int dy = positionB.y - positionA.y;
             int x = Mathf.Abs(dx);
             int y = Mathf.Abs(dy);
-            if (positionA.x % 2 == 1 ^ dx < 0)
+            if (positionA.y % 2 == 1 ^ dx < 0)
             {
                 return Mathf.Max(0, x - (y + 1) / 2) + y;
             }
@@ -290,6 +293,18 @@ namespace RockPaperScissors.Grids
             }
 
             return neighbourList;
+        }
+
+        private void ActionHandler_OnUnitSelected(object sender, Unit e)
+        {
+            if(e != null)
+            {
+                Vector2Int position = GetGridPositionFromWorldPosition(e.transform.position);
+                foreach (GridObject gridObject in gridObjects)
+                {
+                    gridObject.SetDistanceFromPosition(position);
+                }
+            }
         }
     }    
 }

@@ -95,7 +95,7 @@ namespace RockPaperScissors.UI
                 int dy = position.y - centerPosition.y;
                 int x = Mathf.Abs(dx);
                 int y = Mathf.Abs(dy);
-                if(centerPosition.x % 2 == 1 ^ dx < 0)
+                if(centerPosition.y % 2 == 1 ^ dx < 0)
                 {
                     int distance = Mathf.Max(0, x - (y + 1) / 2) + y;
                     gridDistanceText.text = distance.ToString();
