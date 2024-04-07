@@ -41,6 +41,7 @@ namespace RockPaperScissors
 
             sceneTransitionUI = GetComponentInChildren<SceneTransitionUI>();
             adsManager = GetComponent<AdsManager>();
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
         }
 
         private void OnEnable() 
