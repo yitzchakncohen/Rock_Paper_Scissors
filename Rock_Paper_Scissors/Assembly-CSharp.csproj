@@ -75,6 +75,7 @@
     <Compile Include="Assets\Scripts\Unit\UnitAction.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyAI.cs" />
     <Compile Include="Assets\Scripts\UI\MainMenu.cs" />
+    <Compile Include="Assets\Scripts\UI\AttackRangeIndicator.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\SaveObject.cs" />
     <Compile Include="Assets\Scripts\UI\LetterAnimation.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitAnimator.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Assets\Scripts\Enemy\TakingActionState.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\UI\Buttons\FastForwardButton.cs" />
+    <Compile Include="Assets\Scripts\Direction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

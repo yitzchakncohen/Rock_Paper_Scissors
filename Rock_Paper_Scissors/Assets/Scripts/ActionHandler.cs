@@ -230,6 +230,7 @@ public class ActionHandler : MonoBehaviour
             else if(unitAction is UnitAttack)
             {
                 HighlightAttackTargets(unitAction as UnitAttack);
+                HighlightAttackRange();
             }
         }
     }
@@ -254,6 +255,128 @@ public class ActionHandler : MonoBehaviour
 
         gridUIManager.ShowGridPositionList(validAttackPositions, GridHighlightType.Attack);
     }
+
+    private void HighlightAttackRange()
+    {
+        Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(selectedUnit.transform.position);
+        for (int x = 0; x < gridManager.GridSize.x; x++)
+        {
+            for (int z = 0; z < gridManager.GridSize.y; z++)
+            {
+                Vector2Int testGridPosition = new Vector2Int(x, z);
+                GridObject gridObject = gridManager.GetGridObject(testGridPosition);
+                int distance = gridManager.GetGridDistanceBetweenPositions(testGridPosition, gridPosition);
+                if(distance == selectedUnit.GetAttackRange())
+                {
+                    int dx = testGridPosition.x - gridPosition.x;
+                    int dy = testGridPosition.y - gridPosition.y;
+                    int dxAbs = Mathf.Abs(dx);
+                    int dyAbs = Mathf.Abs(dy);
+                    // if (positionA.y % 2 == 1 ^ dx < 0)
+                    // {
+                    //     return Mathf.Max(0, x - (y + 1) / 2) + y;
+                    // }
+                    // else
+                    // {
+                    //     return Mathf.Max(0, x - y / 2) + y;
+                    // }
+
+                    // Same Row
+                    if(testGridPosition.y == gridPosition.y)
+                    {
+                        if(testGridPosition.x < gridPosition.x)
+                        {
+                                gridObject.EnableAttackRangeIndicator(Direction.AllWest);
+                                continue;
+                        }
+                        else if(testGridPosition.x > gridPosition.x)
+                        {
+
+                                gridObject.EnableAttackRangeIndicator(Direction.AllEast);
+                                continue;
+                        }
+                    }
+
+                    // Top and Bottom Rows
+                    if(distance == dyAbs)
+                    {
+                        if(testGridPosition.y > gridPosition.y)
+                        {
+                            gridObject.EnableAttackRangeIndicator(Direction.AllNorth);
+                        }
+                        else
+                        {
+                            gridObject.EnableAttackRangeIndicator(Direction.AllSouth);
+                        }
+                        continue;
+                    }
+
+                    // Special Cases
+                    // Even rows XAND to the left
+                    if(gridPosition.x % 2 == 0 ^ testGridPosition.x < gridPosition.x)
+                    {
+                        if(distance == (dxAbs - (dyAbs + 1) / 2 + dyAbs)  || distance == (dxAbs - (dyAbs - 1) / 2 + dyAbs))
+                        {
+                            if(testGridPosition.y > gridPosition.y)
+                            {
+                                if(testGridPosition.x > gridPosition.x)
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.EastNorthEast);
+                                }
+                                else
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.WestNorthWest);
+                                }
+                            }
+                            else
+                            {
+                                if(testGridPosition.x > gridPosition.x)
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.EastSouthEast);
+                                }
+                                else
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.WestSouthWest);
+                                }
+                            }
+                            continue;
+                        }
+                    }
+                    // Odd Rows
+                    else
+                    {
+                        if(distance == (dxAbs - dyAbs / 2 + dyAbs) || distance == (dxAbs - (dyAbs - 1) / 2 + dyAbs) || distance == (dxAbs - (dyAbs + 1) / 2 + dyAbs))
+                        {
+                            if(testGridPosition.y > gridPosition.y)
+                            {
+                                if(testGridPosition.x > gridPosition.x)
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.EastNorthEast);
+                                }
+                                else
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.WestNorthWest);
+                                }
+                            }
+                            else
+                            {
+                                if(testGridPosition.x > gridPosition.x)
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.EastSouthEast);
+                                }
+                                else
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.WestSouthWest);
+                                }
+                            }
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
 
     private void HighlightPlacementTargets(UnitSpawner unitSpawner, Unit unitToSpawn)
     {

@@ -18,6 +18,7 @@ namespace RockPaperScissors.UI
         [SerializeField] private OutlineShine outlineShine;
         public OutlineShine OutlineShine => outlineShine;
         [SerializeField] private OutlineShine actionAvailableAnimation;
+        [SerializeField] private AttackRangeIndicator attackRangeIndicator;
 
 
         private void Awake() 
@@ -29,6 +30,7 @@ namespace RockPaperScissors.UI
                 gridDistanceText.enabled = false;
             }
             actionAvailableHighlight.SetActive(false);
+            DisableAttackRangeIndicator();
         }
 
         public void ShowHighlight(GridHighlightType highlightType)
@@ -68,6 +70,7 @@ namespace RockPaperScissors.UI
             attackHighlight.SetActive(false);
             movementHighlight.SetActive(false);
             placementHighlight.SetActive(false);
+            attackRangeIndicator.DisableAll();
         }
 
         public void SetGridPosition(Vector2 gridPosition)
@@ -125,6 +128,16 @@ namespace RockPaperScissors.UI
             {
                 actionAvailableAnimation.StopShine();
             }
+        }
+
+        public void EnableAttackRangeIndicator(Direction direction)
+        {
+            attackRangeIndicator.SetIndicator(direction);
+        }
+
+        public void DisableAttackRangeIndicator()
+        {
+            attackRangeIndicator.DisableAll();
         }
     }
 }

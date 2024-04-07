@@ -31,7 +31,6 @@ public class OutlineShine : MonoBehaviour
     {
         shining = true;
         StartCoroutine(Shine(minRandomTime, maxRandomTime));
-        Debug.Log("start shine");
     }
 
     public void StopShine()

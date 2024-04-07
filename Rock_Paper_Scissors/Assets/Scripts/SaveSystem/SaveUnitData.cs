@@ -24,14 +24,3 @@ namespace RockPaperScissors.SaveSystem
         public Direction FacingDirection;
     }
 }
-
-[System.Serializable]
-public enum Direction
-{
-    NorthWest,
-    NorthEast,
-    SouthWest,
-    SouthEast,
-    East,
-    West
-}

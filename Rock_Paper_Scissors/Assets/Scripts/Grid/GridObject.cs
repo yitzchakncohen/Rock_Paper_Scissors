@@ -98,5 +98,7 @@ namespace RockPaperScissors.Grids
         public void SetDistanceFromPosition(Vector2Int centerPosition) => gridObjectUI.SetDistanceFromPosition(centerPosition, gridPosition);
         public void SetActionAvailableHighlight(bool isAvailable) => gridObjectUI.SetActionAvailableHighlight(isAvailable);    
         public OutlineShine GetOutlineShine() => gridObjectUI.OutlineShine;
+        public void EnableAttackRangeIndicator(Direction direction) => gridObjectUI.EnableAttackRangeIndicator(direction);
+        public void DisableAttackRangeIndicator() => gridObjectUI.DisableAttackRangeIndicator();
     }
 }

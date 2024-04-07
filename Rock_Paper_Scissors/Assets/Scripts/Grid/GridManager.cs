@@ -18,6 +18,7 @@ namespace RockPaperScissors.Grids
         private Grid grid;
         private GridObject[,] gridObjects;
         public Task SetupGridTask{get; private set;} = null;
+        public Vector2Int GridSize => gridSize;
 
         private void Awake()
         {
@@ -98,11 +99,6 @@ namespace RockPaperScissors.Grids
         public GridObject GetGridObject(Vector2Int gridPosition)
         {
             return gridObjects[gridPosition.x, gridPosition.y];
-        }
-
-        public Vector2Int GetGridSize()
-        {
-            return gridSize;
         }
 
         public void UpdateGridOccupancy()
@@ -284,7 +280,7 @@ namespace RockPaperScissors.Grids
 
             }
 
-            if(currentPosition.x + 1 < GetGridSize().x)
+            if(currentPosition.x + 1 < GridSize.x)
             {
                 // Right
                 neighbourList.Add(new Vector2Int(currentPosition.x +1, currentPosition.y +0));
@@ -294,17 +290,17 @@ namespace RockPaperScissors.Grids
             {
                 // Down (left and right)
                 neighbourList.Add(new Vector2Int(currentPosition.x +0, currentPosition.y -1));
-                if(currentPosition.x - 1 >= 0 && currentPosition.x + 1 < GetGridSize().x)
+                if(currentPosition.x - 1 >= 0 && currentPosition.x + 1 < GridSize.x)
                 {
                     neighbourList.Add(new Vector2Int(currentPosition.x + (oddRow ? +1 : -1), currentPosition.y -1));                
                 }
             }
 
-            if(currentPosition.y + 1 < GetGridSize().y)
+            if(currentPosition.y + 1 < GridSize.y)
             {
                 // Up (left and right)
                 neighbourList.Add(new Vector2Int(currentPosition.x + 0, currentPosition.y +1));
-                if(currentPosition.x - 1 >= 0 && currentPosition.x + 1 < GetGridSize().x)
+                if(currentPosition.x - 1 >= 0 && currentPosition.x + 1 < GridSize.x)
                 {
                     neighbourList.Add(new Vector2Int(currentPosition.x + (oddRow ? +1 : -1), currentPosition.y +1));
                 }
