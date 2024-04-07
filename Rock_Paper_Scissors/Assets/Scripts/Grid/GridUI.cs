@@ -64,7 +64,7 @@ namespace RockPaperScissors.Grids
                     if((even && y % 2 == 0) || (!even && y % 2 == 1))
                     {
                         Vector2Int gridPosition = new Vector2Int(x,y);
-                        OutlineShine outlineShine = gridManager.GetGridObject(gridPosition).GetComponentInChildren<OutlineShine>();
+                        OutlineShine outlineShine = gridManager.GetGridObject(gridPosition).GetOutlineShine();
                         if(outlineShine.isActiveAndEnabled)
                         {
                             StartCoroutine(outlineShine.StartShine(gridWaveAnimationTimePerHex));

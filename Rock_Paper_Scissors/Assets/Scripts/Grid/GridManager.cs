@@ -120,7 +120,7 @@ namespace RockPaperScissors.Grids
                         // If the object is a unit set as Occupant
                         hit.collider.TryGetComponent<IGridOccupantInterface>(out IGridOccupantInterface unit);
                         // Check if the unit is a Building
-                        if(unit.IsBuilding())
+                        if(unit.IsBuilding)
                         {
                             gridObjects[x,y].SetOccupantBuilding(unit);
                         }
@@ -133,11 +133,21 @@ namespace RockPaperScissors.Grids
             }
         }
 
-        public void HideAllActionHighlights()
+        public void UpdateActionHighlights(List<Unit> units)
         {
             foreach (GridObject gridObject in gridObjects)
             {
                 gridObject.SetActionAvailableHighlight(false);
+            }
+            if(units != null)
+            {
+                foreach (Unit unit in units)
+                {
+                    if(unit.GetTotalActionPointsRemaining() > 0)
+                    {
+                        GetGridObjectFromWorldPosition(unit.transform.position).SetActionAvailableHighlight(true);
+                    }
+                }
             }
         }
 
@@ -200,7 +210,7 @@ namespace RockPaperScissors.Grids
 
             // Movement
             UnitMovement unitMovement = sender as UnitMovement;
-            if(unitMovement != null && !unitMovement.Unit.IsBuilding())
+            if(unitMovement != null && !unitMovement.Unit.IsBuilding)
             {
                 // Remove from existing grid location
                 Unit unit = ((UnitMovement)sender).GetComponent<Unit>();
@@ -246,7 +256,7 @@ namespace RockPaperScissors.Grids
         {
             // TODO Clean up this mess :)
             Unit unit = sender as Unit;
-            if(unit.IsBuilding())
+            if(unit.IsBuilding)
             {
                 GetGridObjectFromWorldPosition(unit.transform.position).SetOccupantBuilding(unit);
             }

@@ -97,5 +97,6 @@ namespace RockPaperScissors.Grids
         public void SetActionValue(float actionValue) => gridObjectUI.SetActionValue(actionValue);
         public void SetDistanceFromPosition(Vector2Int centerPosition) => gridObjectUI.SetDistanceFromPosition(centerPosition, gridPosition);
         public void SetActionAvailableHighlight(bool isAvailable) => gridObjectUI.SetActionAvailableHighlight(isAvailable);    
+        public OutlineShine GetOutlineShine() => gridObjectUI.OutlineShine;
     }
 }

@@ -7,6 +7,7 @@ public class OutlineShine : MonoBehaviour
 {
     [SerializeField] private float shineAnimationTime = 0.3f;
     [SerializeField] private bool randomShineEnabled = true;
+    private bool shining = false;
     private SpriteRenderer spriteRenderer;
     private float shineValue = 0f;
 
@@ -16,7 +17,8 @@ public class OutlineShine : MonoBehaviour
         spriteRenderer.material.SetFloat("_x1", shineValue);
         if(randomShineEnabled)
         {
-            StartCoroutine(Shine());
+            shining = true;
+            StartShine(5.0f, 15.0f);
         }
     }
 
@@ -25,10 +27,24 @@ public class OutlineShine : MonoBehaviour
         spriteRenderer.sprite = sprite;
     }
 
-    private IEnumerator Shine()
+    public void StartShine(float minRandomTime, float maxRandomTime)
     {
-        yield return new WaitForSeconds(Random.Range(0f, 15.0f));
-        while(isActiveAndEnabled)
+        shining = true;
+        StartCoroutine(Shine(minRandomTime, maxRandomTime));
+        Debug.Log("start shine");
+    }
+
+    public void StopShine()
+    {
+        StopAllCoroutines();
+        spriteRenderer.material.SetFloat("_x1", 0f);
+        shining = false;
+    }
+
+    private IEnumerator Shine(float minRandomTime, float maxRandomTime)
+    {
+        yield return new WaitForSeconds(Random.Range(0f, maxRandomTime));
+        while(shining)
         {
             spriteRenderer.material.SetFloat("_x1", shineValue);
             shineValue += Time.deltaTime * (1f/shineAnimationTime);
@@ -36,7 +52,7 @@ public class OutlineShine : MonoBehaviour
             {
                 shineValue = 0f;
                 spriteRenderer.material.SetFloat("_x1", shineValue);
-                yield return new WaitForSeconds(Random.Range(5.0f, 15.0f));
+                yield return new WaitForSeconds(Random.Range(minRandomTime, maxRandomTime));
             }
             else
             {
@@ -54,7 +70,6 @@ public class OutlineShine : MonoBehaviour
             shineValue += Time.deltaTime * (1f/shineAnimationTime);
             spriteRenderer.material.SetFloat("_x1", shineValue);
             yield return null;
-
         }
     }
 }

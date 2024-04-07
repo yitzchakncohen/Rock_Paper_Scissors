@@ -10,7 +10,6 @@ namespace RockPaperScissors.Units
     public class Unit : MonoBehaviour, ISaveInterface<SaveUnitData>, IGridOccupantInterface
     {
         public static event EventHandler OnUnitSpawn;
-        public bool IsFriendly { get => isFriendly; set{} }
         [SerializeField] private UnitAnimator unitAnimator;
         [SerializeField] private UnitShaderController unitShaderController;
         [SerializeField] private bool isFriendly = true;
@@ -233,11 +232,9 @@ namespace RockPaperScissors.Units
             }
             return true;
         }
-
-        public bool IsBuilding()
-        {
-            return GetUnitClass() == UnitClass.PillowFort || GetUnitClass() == UnitClass.PillowOutpost;
-        }
+        
+        public bool IsFriendly { get => isFriendly; set{} }
+        public bool IsBuilding{get => GetUnitClass() == UnitClass.PillowFort || GetUnitClass() == UnitClass.PillowOutpost; set{}} 
 
         public void SetTrappedTurnsRemaining(int trappedTurnsRemaining)
         {

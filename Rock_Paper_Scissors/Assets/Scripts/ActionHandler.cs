@@ -21,6 +21,19 @@ public class ActionHandler : MonoBehaviour
     private bool updateGridActionHighlight = false;
     private bool controlsLocked = false;
 
+    void Awake()
+    {
+        TurnManager.OnNextTurn += TurnManager_OnNextTurn;
+        BuildingButton.OnBuildingButtonPressed += BuildingButton_BuildingButtonPressed;
+        BuildingMenu.OnGarrisonedUnitSelected += BuildingMenu_OnGarrisonedUnitSelected;
+        UnitHealth.OnDeath += Health_OnDeath;
+        Unit.OnUnitSpawn += Unit_OnUnitSpawn;
+        GameplayManager.OnGameOver += GameplayManager_OnGameOver;
+        WaveManager.OnWaveStarted += WaveManager_OnWaveStarted;
+        WaveManager.OnWaveCompleted += WaveManager_OnWaveCompleted;
+        UnitAction.OnAnyActionStarted += UnitAction_OnAnyActionStarted;
+    }
+
     private void Start() 
     {
         inputManager = FindObjectOfType<InputManager>();
@@ -31,15 +44,6 @@ public class ActionHandler : MonoBehaviour
         turnManager = FindObjectOfType<TurnManager>();
 
         inputManager.OnSingleTap += InputManager_onSingleTouch;
-        TurnManager.OnNextTurn += TurnManager_OnNextTurn;
-        BuildingButton.OnBuildingButtonPressed += BuildingButton_BuildingButtonPressed;
-        BuildingMenu.OnGarrisonedUnitSelected += BuildingMenu_OnGarrisonedUnitSelected;
-        UnitHealth.OnDeath += Health_OnDeath;
-        Unit.OnUnitSpawn += Unit_OnUnitSpawn;
-        GameplayManager.OnGameOver += GameplayManager_OnGameOver;
-        WaveManager.OnWaveStarted += WaveManager_OnWaveStarted;
-        WaveManager.OnWaveCompleted += WaveManager_OnWaveCompleted;
-        UnitAction.OnAnyActionStarted += UnitAction_OnAnyActionStarted;
 
         ResetUnitQueue();
     }
@@ -259,17 +263,11 @@ public class ActionHandler : MonoBehaviour
 
     private void HighlightUnitActionsAvailable()
     {
-        gridManager.HideAllActionHighlights();
-        if(!turnManager.IsPlayerTurn)
+        gridManager.UpdateActionHighlights(null);
+        if(turnManager.IsPlayerTurn)
         {
-            return;
-        }
-        foreach (Unit unit in unitManager.GetFriendlyUnitsList())
-        {
-            if(unit.GetTotalActionPointsRemaining() > 0)
-            {
-                gridManager.GetGridObjectFromWorldPosition(unit.transform.position).SetActionAvailableHighlight(true);
-            }
+            List<Unit> units = unitManager.GetFriendlyUnitsList();
+            gridManager.UpdateActionHighlights(units);
         }
     }
 
@@ -337,6 +335,7 @@ public class ActionHandler : MonoBehaviour
         {
             unitQueue.Enqueue(unit);
         }
+        HighlightUnitActionsAvailable();
     }
 
     private void GameplayManager_OnGameOver(object sender, EventArgs e)

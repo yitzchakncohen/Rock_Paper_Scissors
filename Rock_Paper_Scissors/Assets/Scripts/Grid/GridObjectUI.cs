@@ -15,6 +15,10 @@ namespace RockPaperScissors.UI
         [SerializeField] private GameObject placementHighlight;
         [SerializeField] private GameObject actionAvailableHighlight;
         [SerializeField] private bool debugging = false;
+        [SerializeField] private OutlineShine outlineShine;
+        public OutlineShine OutlineShine => outlineShine;
+        [SerializeField] private OutlineShine actionAvailableAnimation;
+
 
         private void Awake() 
         {
@@ -112,7 +116,15 @@ namespace RockPaperScissors.UI
 
         public void SetActionAvailableHighlight(bool isAvailable)
         {
-            actionAvailableHighlight.SetActive(isAvailable);
+            // actionAvailableHighlight.SetActive(isAvailable);
+            if(isAvailable)
+            {
+                actionAvailableAnimation.StartShine(0, 1.0f);
+            }
+            else
+            {
+                actionAvailableAnimation.StopShine();
+            }
         }
     }
 }
