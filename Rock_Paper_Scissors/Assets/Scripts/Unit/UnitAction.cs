@@ -12,6 +12,7 @@ namespace RockPaperScissors.Units
         public static event EventHandler OnAnyActionStarted;
         public static event EventHandler OnAnyActionCompleted;
         public bool IsCancellableAction {get; protected set;}
+        public int ActionPointsRemaining => actionPointsRemaining;
         protected bool isActive;
         protected Action onActionComplete;
         protected int actionPointsRemaining = 1;
@@ -48,11 +49,6 @@ namespace RockPaperScissors.Units
             {
                 ActionComplete();
             }
-        }
-
-        public int GetActionPointsRemaining()
-        {
-            return actionPointsRemaining;
         }
 
         public void ResetActionPoints()

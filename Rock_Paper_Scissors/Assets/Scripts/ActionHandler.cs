@@ -212,7 +212,7 @@ public class ActionHandler : MonoBehaviour
         foreach (UnitAction unitAction in selectedUnit.GetUnitActions())
         {
             // Only show if there are action points
-            if(unitAction.GetActionPointsRemaining() <= 0)
+            if(unitAction.ActionPointsRemaining <= 0)
             {
                 continue;
             }

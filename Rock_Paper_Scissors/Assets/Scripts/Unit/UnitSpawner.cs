@@ -85,9 +85,13 @@ namespace RockPaperScissors.Units
 
         public override bool TryTakeAction(GridObject gridObject, Action onActionComplete)
         {
-            ActionStart(onActionComplete);
-            placingUnit = true;
-            return true;
+            if(actionPointsRemaining > 0)
+            {
+                ActionStart(onActionComplete);
+                placingUnit = true;
+                return true;
+            }
+            return false;
         }
 
         public List<Vector2Int> GetValidPlacementPositions(Unit unitToSpawn)
@@ -161,6 +165,7 @@ namespace RockPaperScissors.Units
                 StartCoroutine(unit.GetUnitAnimator().SpawnAnimationRoutine(timer));
                 AudioManager.Instance.PlayUnitSpawnSound();
                 unitSpawning = true;
+                actionPointsRemaining -= 1;
             }
         }
 
@@ -206,10 +211,12 @@ namespace RockPaperScissors.Units
 
         public override void LoadAction(SaveUnitData loadData)
         {
+            actionPointsRemaining = loadData.SpawnerActionPointsRemaining;
         }
 
         public override SaveUnitData SaveAction(SaveUnitData saveData)
         {
+            saveData.SpawnerActionPointsRemaining = actionPointsRemaining;
             return saveData;
         }
 

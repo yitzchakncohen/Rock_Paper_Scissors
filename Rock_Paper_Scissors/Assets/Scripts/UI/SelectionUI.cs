@@ -63,7 +63,7 @@ namespace RockPaperScissors.UI
             range.text = $" <sprite=3> {unit.GetAttackRange()}";
             defense.text = $" <sprite=1> {unit.GetBaseDefense()}";
             movement.text = $" <sprite=4> {unit.GetMoveDistance()}";
-            xp.text = $"XP {unit.GetUnitProgression().GetXP()} / {100}";
+            xp.text = $"XP {unit.GetUnitProgression().GetXP()}/{100}";
         }
 
         private void selectedUnit_OnLevelUp()

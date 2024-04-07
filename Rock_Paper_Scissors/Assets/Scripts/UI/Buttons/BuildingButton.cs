@@ -26,12 +26,25 @@ namespace RockPaperScissors.UI
         {
             button = GetComponent<Button>();        
         }
-
-        private void Start()
+        
+        private void Start() 
         {
-            currencyBank = FindObjectOfType<CurrencyBank>();
+            currencyBank = FindObjectOfType<CurrencyBank>();            
+        }
+
+        private void OnEnable()
+        {
+            if(currencyBank == null)
+            {
+                currencyBank = FindObjectOfType<CurrencyBank>();            
+            }
             UpdateButtonInteractability();
             currencyBank.OnCurrencyChanged += currencyBank_OnCurrencyChanged;
+        }
+
+        private void OnDisable() 
+        {
+            currencyBank.OnCurrencyChanged -= currencyBank_OnCurrencyChanged;
         }
 
         private void currencyBank_OnCurrencyChanged(object sender, int e)
@@ -43,7 +56,7 @@ namespace RockPaperScissors.UI
         {
             if(button != null)
             {
-                button.interactable = currencyBank.GetCurrencyRemaining() >= unitPrefab.GetCost();
+                button.interactable = currencyBank.GetCurrencyRemaining() >= unitPrefab.GetCost() && unitSpawner.ActionPointsRemaining > 0;
             }
         }
 
