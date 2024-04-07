@@ -38,7 +38,7 @@ namespace RockPaperScissors.UI
 
         private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
         {
-            if(turnManager.IsPlayerTurn())
+            if(turnManager.IsPlayerTurn)
             {
                 CheckActionsRemainingAsync();
             }
@@ -89,7 +89,7 @@ namespace RockPaperScissors.UI
         private void SaveManager_OnLoadCompleted()
         {
             button.interactable = true;
-            if(turnManager.IsPlayerTurn())
+            if(turnManager.IsPlayerTurn)
             {
                 CheckActionsRemainingAsync();
             }

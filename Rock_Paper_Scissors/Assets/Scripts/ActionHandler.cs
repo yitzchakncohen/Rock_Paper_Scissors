@@ -16,6 +16,7 @@ public class ActionHandler : MonoBehaviour
     private GridUI gridUIManager;
     private UnitManager unitManager;
     private Queue<Unit> unitQueue = new Queue<Unit>();
+    private TurnManager turnManager;
     private bool isBusy = false;
     private bool updateGridActionHighlight = false;
     private bool controlsLocked = false;
@@ -27,6 +28,7 @@ public class ActionHandler : MonoBehaviour
         gridUIManager = FindObjectOfType<GridUI>();
         inputManager = FindObjectOfType<InputManager>();
         unitManager = FindObjectOfType<UnitManager>();
+        turnManager = FindObjectOfType<TurnManager>();
 
         inputManager.OnSingleTap += InputManager_onSingleTouch;
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
@@ -255,6 +257,22 @@ public class ActionHandler : MonoBehaviour
         gridUIManager.ShowGridPositionList(validPlacementPositions, GridHighlightType.PlaceObject);
     }
 
+    private void HighlightUnitActionsAvailable()
+    {
+        gridManager.HideAllActionHighlights();
+        if(!turnManager.IsPlayerTurn)
+        {
+            return;
+        }
+        foreach (Unit unit in unitManager.GetFriendlyUnitsList())
+        {
+            if(unit.GetTotalActionPointsRemaining() > 0)
+            {
+                gridManager.GetGridObjectFromWorldPosition(unit.transform.position).SetActionAvailableHighlight(true);
+            }
+        }
+    }
+
     private void DeselectUnit()
     {
         selectedUnit = null;
@@ -285,6 +303,7 @@ public class ActionHandler : MonoBehaviour
     private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs eventArgs)
     {
         updateGridActionHighlight = true;
+        HighlightUnitActionsAvailable();
         DeselectUnit();
         ResetUnitQueue();
         if(eventArgs.IsPlayersTurn)
@@ -364,6 +383,7 @@ public class ActionHandler : MonoBehaviour
         isBusy = false;
         BusyUpdated?.Invoke(this, isBusy);
         updateGridActionHighlight = true;
+        HighlightUnitActionsAvailable();
     }
 
     public void SelectNextAvaliableUnit()

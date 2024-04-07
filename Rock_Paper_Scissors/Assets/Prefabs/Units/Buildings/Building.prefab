@@ -377,8 +377,32 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 465782616686677387}
     - target: {fileID: 1115283567538226439, guid: bb42047d13781ee419ad41b732292df1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1115283567538226439, guid: bb42047d13781ee419ad41b732292df1, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1115283567538226439, guid: bb42047d13781ee419ad41b732292df1, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3130211090382488909, guid: bb42047d13781ee419ad41b732292df1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3130211090382488909, guid: bb42047d13781ee419ad41b732292df1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3130211090382488909, guid: bb42047d13781ee419ad41b732292df1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3130211090382488909, guid: bb42047d13781ee419ad41b732292df1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4908440045780330502, guid: bb42047d13781ee419ad41b732292df1, type: 3}
       propertyPath: m_AnchorMax.y
@@ -480,6 +504,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7561968158653686073, guid: bb42047d13781ee419ad41b732292df1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7561968158653686073, guid: bb42047d13781ee419ad41b732292df1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7561968158653686073, guid: bb42047d13781ee419ad41b732292df1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7561968158653686073, guid: bb42047d13781ee419ad41b732292df1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8135776853402640460, guid: bb42047d13781ee419ad41b732292df1, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0c94d12d7e11d1842ba7d77e42318d44, type: 3}
     - target: {fileID: 8916406943803302682, guid: bb42047d13781ee419ad41b732292df1, type: 3}
       propertyPath: m_Name
       value: HealthBarCanvas

@@ -112,7 +112,7 @@ namespace RockPaperScissors.UI
 
         public void SetActionAvailableHighlight(bool isAvailable)
         {
-            actionAvailableHighlight.SetActive(true);
+            actionAvailableHighlight.SetActive(isAvailable);
         }
     }
 }

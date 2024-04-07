@@ -133,6 +133,14 @@ namespace RockPaperScissors.Grids
             }
         }
 
+        public void HideAllActionHighlights()
+        {
+            foreach (GridObject gridObject in gridObjects)
+            {
+                gridObject.SetActionAvailableHighlight(false);
+            }
+        }
+
         public bool IsValidGridPosition(Vector2Int testGridPosition)
         {
             if(testGridPosition.x >= 0 && testGridPosition.x < gridSize.x)

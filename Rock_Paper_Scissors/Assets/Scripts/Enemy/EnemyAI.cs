@@ -22,7 +22,7 @@ public class EnemyAI : MonoBehaviour
 
     private void Update() 
     {
-        if(turnManager.IsPlayerTurn()){ return; }
+        if(turnManager.IsPlayerTurn){ return; }
         if(actionHandler.IsBusy()) { return; }
         if(state == null)
         {
@@ -45,7 +45,7 @@ public class EnemyAI : MonoBehaviour
 
     private void TurnManager_OnNextTurn(object sender, EventArgs eventArgs)
     {
-        if(!turnManager.IsPlayerTurn() && state != null)
+        if(!turnManager.IsPlayerTurn && state != null)
         {
             state.StartTurn();
         }

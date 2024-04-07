@@ -15,10 +15,7 @@ public class TurnManager : MonoBehaviour, ISaveInterface<SaveTurnManagerData>
     private bool playersTurn = true;
     private int turn = 0;
 
-    public bool IsPlayerTurn()
-    {
-        return playersTurn;
-    }
+    public bool IsPlayerTurn => playersTurn;
 
     public void NextTurn()
     {
@@ -45,7 +42,7 @@ public class TurnManager : MonoBehaviour, ISaveInterface<SaveTurnManagerData>
     {
         SaveTurnManagerData turnManagerData = new SaveTurnManagerData
         {
-            IsPlayersTurn = IsPlayerTurn(),
+            IsPlayersTurn = this.IsPlayerTurn,
             Turn = turn
         };
 
