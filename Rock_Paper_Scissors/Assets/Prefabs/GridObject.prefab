@@ -514,7 +514,7 @@ MonoBehaviour:
   attackHighlight: {fileID: 7665185849016466686}
   placementHighlight: {fileID: 8397986420930348906}
   actionAvailableHighlight: {fileID: 5214652029631079776}
-  debugging: 1
+  debugging: 0
   outlineShine: {fileID: 2288895101046394537}
   actionAvailableAnimation: {fileID: 8808133204724482145}
   attackRangeIndicator: {fileID: 3701870889369219564}
