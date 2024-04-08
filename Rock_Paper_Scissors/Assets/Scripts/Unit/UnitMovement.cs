@@ -134,7 +134,7 @@ namespace RockPaperScissors.Units
             targetGridObjects = pathFinding.FindPath(currentGridPosition, targetGridObject.GetGridPostion(), out int pathLength, unit);
 
             // Check if position is within movement range and moveable
-            if(pathLength > unit.GetMoveDistance() || targetGridObjects == null)
+            if(pathLength > unit.MoveDistance || targetGridObjects == null)
             {
                 return false;
             }
@@ -148,7 +148,7 @@ namespace RockPaperScissors.Units
 
         private void AnimateMovement(Vector2 moveDirection)
         {
-            int level = unit.GetUnitProgression().GetLevel();
+            int level = unit.UnitProgression.GetLevel();
             if(moveDirection.x > 0 && moveDirection.y > 0)
             {
                 unitAnimator.MoveUpRight(level);
@@ -185,9 +185,9 @@ namespace RockPaperScissors.Units
                 unit = GetComponent<Unit>();
             }
 
-            for (int x = -unit.GetMoveDistance(); x <= unit.GetMoveDistance(); x++)
+            for (int x = -unit.MoveDistance; x <= unit.MoveDistance; x++)
             {
-                for (int z = -unit.GetMoveDistance(); z <= unit.GetMoveDistance(); z++)
+                for (int z = -unit.MoveDistance; z <= unit.MoveDistance; z++)
                 {
                     Vector2Int testGridPosition = gridPosition + new Vector2Int(x, z);
 
@@ -205,7 +205,7 @@ namespace RockPaperScissors.Units
 
                     // Check if it's within movement distance
                     pathFinding.FindPath(gridPosition, testGridPosition, out int testDistance, unit);
-                    if (testDistance > unit.GetMoveDistance())
+                    if (testDistance > unit.MoveDistance)
                     {
                         continue;
                     }
@@ -310,7 +310,7 @@ namespace RockPaperScissors.Units
             foreach (Unit unit in targetList)
             {
                 // Add or substract 1 if there is a combat advantage over the unit.
-                targetCountValue += CombatModifiers.UnitHasAdvantage(this.unit.GetUnitClass(), unit.GetUnitClass());
+                targetCountValue += CombatModifiers.UnitHasAdvantage(this.unit.UnitClass, unit.UnitClass);
             }
 
             return targetCountValue;
@@ -324,7 +324,7 @@ namespace RockPaperScissors.Units
                 float averageNormalizedHealth = 0f;
                 foreach (Unit unit in targetList)
                 {
-                    averageNormalizedHealth += unit.GetNormalizedHealth();
+                    averageNormalizedHealth += unit.NormalizedHealth;
                 }
                 averageNormalizedHealth = averageNormalizedHealth / targetList.Count;
                 // The health value is a number between 0 and 10;

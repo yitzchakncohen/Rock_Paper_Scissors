@@ -71,7 +71,7 @@ namespace RockPaperScissors.UI
         private void CheckForTowerOccupency(Unit updatedUnit)
         {
             GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(updatedUnit.transform.position);
-            if(updatedUnit.GetUnitClass() == UnitClass.PillowFort || updatedUnit.GetUnitClass() == UnitClass.PillowOutpost)
+            if(updatedUnit.UnitClass == UnitClass.PillowFort || updatedUnit.UnitClass == UnitClass.PillowOutpost)
             {
                 if ((Unit)gridObject.GetOccupantUnit() == unit)
                 {

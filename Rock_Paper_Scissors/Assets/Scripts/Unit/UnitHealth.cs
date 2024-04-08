@@ -25,7 +25,7 @@ namespace RockPaperScissors.Units
         
         private void Start() 
         {
-            unitProgression = unit.GetUnitProgression();
+            unitProgression = unit.UnitProgression;
             unitProgression.OnLevelUp += UnitProgression_OnLevelUp;
             if(health == -1)
             {
@@ -64,7 +64,7 @@ namespace RockPaperScissors.Units
             currencyBank = FindObjectOfType<CurrencyBank>();
             if(!attacker.IsFriendly)
             {
-                currencyBank.AddCurrencyToBank(unit.GetUnitDefeatedReward(), attacker.transform);
+                currencyBank.AddCurrencyToBank(unit.UnitDefeatedReward, attacker.transform);
             }
         }
 

@@ -27,7 +27,7 @@ namespace RockPaperScissors.Units
                 return;
             }
             
-            if(attacker.GetUnitProgression() == this)
+            if(attacker.UnitProgression == this)
             {
                 GainXP(100);
             }

@@ -115,7 +115,7 @@ public class ActionHandler : MonoBehaviour
         else if(gridOccupantBuilding != null && gridOccupantBuilding.IsFriendly)
         {
             // Check if you can move the unit onto the tower.
-            if(selectedUnit != null && selectedUnit.IsMoveable() && gridOccupantUnit == null)
+            if(selectedUnit != null && selectedUnit.IsMoveable && gridOccupantUnit == null)
             {
                 if(!TryMoveToGridPosition(gridObject))
                 {
@@ -215,7 +215,7 @@ public class ActionHandler : MonoBehaviour
             return;
         }
 
-        foreach (UnitAction unitAction in selectedUnit.GetUnitActions())
+        foreach (UnitAction unitAction in selectedUnit.UnitActions)
         {
             // Only show if there are action points
             if(unitAction.ActionPointsRemaining <= 0)
@@ -266,7 +266,7 @@ public class ActionHandler : MonoBehaviour
                 Vector2Int testGridPosition = new Vector2Int(x, z);
                 GridObject gridObject = gridManager.GetGridObject(testGridPosition);
                 int distance = gridManager.GetGridDistanceBetweenPositions(testGridPosition, gridPosition);
-                if(distance == selectedUnit.GetAttackRange())
+                if(distance == selectedUnit.AttackRange)
                 {
                     int dx = testGridPosition.x - gridPosition.x;
                     int dy = testGridPosition.y - gridPosition.y;
@@ -569,7 +569,7 @@ public class ActionHandler : MonoBehaviour
     {
         foreach (Unit unit in unitQueue)
         {
-            foreach (UnitAction unitAction in unit.GetUnitActions())
+            foreach (UnitAction unitAction in unit.UnitActions)
             {
                 if (unitAction.GetValidActionsRemaining() > 0)
                 {

@@ -56,7 +56,7 @@ namespace RockPaperScissors.UI
         {
             if(button != null)
             {
-                button.interactable = currencyBank.GetCurrencyRemaining() >= unitPrefab.GetCost() && unitSpawner.ActionPointsRemaining > 0;
+                button.interactable = currencyBank.GetCurrencyRemaining() >= unitPrefab.Cost && unitSpawner.ActionPointsRemaining > 0;
             }
         }
 
@@ -64,13 +64,13 @@ namespace RockPaperScissors.UI
         {
             unitPrefab = unit;
             unitSpawner = GetComponentInParent<UnitSpawner>();
-            unitThumbnail.sprite = unitPrefab.GetUnitThumbnail();
-            unitCostText.text = unitPrefab.GetCost().ToString();
+            unitThumbnail.sprite = unitPrefab.UnitThumbnail;
+            unitCostText.text = unitPrefab.Cost.ToString();
         }
 
         public void ButtonPressed()
         {
-            if(currencyBank.GetCurrencyRemaining() >= unitPrefab.GetCost())
+            if(currencyBank.GetCurrencyRemaining() >= unitPrefab.Cost)
             {
                 BuildButtonArguments arguments = new BuildButtonArguments
                 {

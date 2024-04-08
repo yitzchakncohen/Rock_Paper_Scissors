@@ -76,7 +76,7 @@ namespace RockPaperScissors.Units
 
         private void AnimateAttack(Vector2 attackDirection)
         {
-            int level = unit.GetUnitProgression().GetLevel();
+            int level = unit.UnitProgression.GetLevel();
             float normalizedAnimationTime = timer/attackAnimationTime;
             // Animate the attack by moving the unit towards the unit it is attacking. 
             transform.position = attackStartPosition + (attackTargetPosition - attackStartPosition)*attackAnimationCurve.Evaluate(normalizedAnimationTime);
@@ -115,7 +115,7 @@ namespace RockPaperScissors.Units
 
         private void PlayAttackSound()
         {
-            switch (unit.GetUnitClass())
+            switch (unit.UnitClass)
             {
                 case UnitClass.GlueTrap:
                     AudioManager.Instance.PlayGlueTrapSound();
@@ -166,7 +166,7 @@ namespace RockPaperScissors.Units
 
 
             // Increment outward getting all the positions in range one layer at a time.
-            for (int i = 0; i < unit.GetAttackRange(); i++)
+            for (int i = 0; i < unit.AttackRange; i++)
             {
                 // Check the valid neighbours of each position and add them to the list if they are new.
                 List<Vector2Int> newPositions = new List<Vector2Int>();
@@ -191,7 +191,7 @@ namespace RockPaperScissors.Units
                 GridObject gridObject = gridManager.GetGridObject(position);
                 if(gridObject.GetCombatTarget() != null 
                     && gridObject.GetCombatTarget().IsFriendly != unit.IsFriendly
-                    && !((Unit)gridObject.GetCombatTarget()).IsDead())
+                    && !((Unit)gridObject.GetCombatTarget()).IsDead)
                 {
                     validTargetList.Add((Unit)gridObject.GetCombatTarget());
                 }
@@ -216,8 +216,8 @@ namespace RockPaperScissors.Units
                     {
                         gridObject = gridObject,
                         actionValue = unitAttackActionBaseValue 
-                                        + (1 - unit.GetNormalizedHealth())*unitAttackActionBaseValue 
-                                        + CombatModifiers.UnitHasAdvantage(this.unit.GetUnitClass(), unit.GetUnitClass())*classAdvantageMultiplier,
+                                        + (1 - unit.NormalizedHealth)*unitAttackActionBaseValue 
+                                        + CombatModifiers.UnitHasAdvantage(this.unit.UnitClass, unit.UnitClass)*classAdvantageMultiplier,
                         unitAction = this,
                     };
                 }
@@ -228,8 +228,8 @@ namespace RockPaperScissors.Units
                     {
                         gridObject = gridObject,
                         actionValue = unitAttackActionBaseValue 
-                                        + (1 - unit.GetNormalizedHealth())*unitAttackActionBaseValue
-                                        + CombatModifiers.UnitHasAdvantage(this.unit.GetUnitClass(), unit.GetUnitClass())*classAdvantageMultiplier,
+                                        + (1 - unit.NormalizedHealth)*unitAttackActionBaseValue
+                                        + CombatModifiers.UnitHasAdvantage(this.unit.UnitClass, unit.UnitClass)*classAdvantageMultiplier,
                         unitAction = this,
                     }; 
 

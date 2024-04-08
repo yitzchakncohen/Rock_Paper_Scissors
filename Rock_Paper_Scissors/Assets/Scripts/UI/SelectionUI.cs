@@ -39,16 +39,16 @@ namespace RockPaperScissors.UI
                 background.SetActive(true);
                 UpdateUnitStats(unit);
                 selectedUnit = unit;
-                selectedUnit.GetUnitProgression().OnLevelUp += selectedUnit_OnLevelUp;
-                selectedUnit.GetUnitProgression().OnGainXP += selectedUnit_OnGainXP;
+                selectedUnit.UnitProgression.OnLevelUp += selectedUnit_OnLevelUp;
+                selectedUnit.UnitProgression.OnGainXP += selectedUnit_OnGainXP;
             }
             else
             {
                 background.SetActive(false);
                 if(selectedUnit != null)
                 {
-                    selectedUnit.GetUnitProgression().OnLevelUp -= selectedUnit_OnLevelUp;
-                    selectedUnit.GetUnitProgression().OnGainXP -= selectedUnit_OnGainXP;
+                    selectedUnit.UnitProgression.OnLevelUp -= selectedUnit_OnLevelUp;
+                    selectedUnit.UnitProgression.OnGainXP -= selectedUnit_OnGainXP;
                     selectedUnit = null;
                 }
             }
@@ -56,14 +56,14 @@ namespace RockPaperScissors.UI
 
         private void UpdateUnitStats(Unit unit)
         {
-            this.unit.text = SplitCamelCase(unit.GetUnitClass().ToString());
+            this.unit.text = SplitCamelCase(unit.UnitClass.ToString());
             level.text = $"Level: {unit.GetLevel()}";
-            health.text = $" <sprite=0> {unit.GetHealth()}/{unit.GetMaximumHealth()}";
-            attack.text = $" <sprite=2> {unit.GetBaseAttack()}";
-            range.text = $" <sprite=3> {unit.GetAttackRange()}";
-            defense.text = $" <sprite=1> {unit.GetBaseDefense()}";
-            movement.text = $" <sprite=4> {unit.GetMoveDistance()}";
-            xp.text = $"XP {unit.GetUnitProgression().GetXP()}/{100}";
+            health.text = $" <sprite=0> {unit.Health}/{unit.GetMaximumHealth()}";
+            attack.text = $" <sprite=2> {unit.AttackDamage}";
+            range.text = $" <sprite=3> {unit.AttackRange}";
+            defense.text = $" <sprite=1> {unit.Defense}";
+            movement.text = $" <sprite=4> {unit.MoveDistance}";
+            xp.text = $"XP {unit.UnitProgression.GetXP()}/{100}";
         }
 
         private void selectedUnit_OnLevelUp()
@@ -73,7 +73,7 @@ namespace RockPaperScissors.UI
 
         private void selectedUnit_OnGainXP()
         {
-            xp.text = $"XP {selectedUnit.GetUnitProgression().GetXP()} / {100}";
+            xp.text = $"XP {selectedUnit.UnitProgression.GetXP()} / {100}";
             level.text = $"Level: {selectedUnit.GetLevel()}";
         }
 

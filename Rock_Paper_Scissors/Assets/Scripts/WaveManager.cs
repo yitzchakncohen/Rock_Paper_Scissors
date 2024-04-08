@@ -240,7 +240,7 @@ public class WaveManager : MonoBehaviour
         // Hide all the units.
         foreach (Unit unit in unitsSpawnedThisWave)
         {
-            unit.GetUnitAnimator().HideUnit();
+            unit.UnitAnimator.HideUnit();
         }
 
         // Show the units one at a time.
@@ -248,7 +248,7 @@ public class WaveManager : MonoBehaviour
         {
             AudioManager.Instance.PlayUnitSpawnSound();
             OnWaveUnitSpawn?.Invoke(unit);
-            yield return StartCoroutine(unit.GetUnitAnimator().SpawnAnimationRoutine(showUnitsTime));
+            yield return StartCoroutine(unit.UnitAnimator.SpawnAnimationRoutine(showUnitsTime));
         }
         OnWaveCompleted?.Invoke();
     }

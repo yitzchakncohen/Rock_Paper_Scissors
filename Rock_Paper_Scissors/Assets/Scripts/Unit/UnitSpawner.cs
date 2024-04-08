@@ -110,14 +110,14 @@ namespace RockPaperScissors.Units
                     }
 
                     // Check if it's walkable for units
-                    if (unitToSpawn.GetUnitClass() != UnitClass.PillowOutpost
+                    if (unitToSpawn.UnitClass != UnitClass.PillowOutpost
                         && !gridManager.GetGridObject(testGridPosition).IsWalkable(unitToSpawn))
                     {
                         continue;
                     }
 
                     // Check if it has a building already for buildings
-                    if (unitToSpawn.GetUnitClass() == UnitClass.PillowOutpost
+                    if (unitToSpawn.UnitClass == UnitClass.PillowOutpost
                         && gridManager.GetGridObject(testGridPosition).GetOccupantBuilding() != null)
                     {
                         continue;
@@ -155,11 +155,11 @@ namespace RockPaperScissors.Units
                 return;
             }
 
-            if (currencyBank.TrySpendCurrency(unitToSpawn.GetCost()))
+            if (currencyBank.TrySpendCurrency(unitToSpawn.Cost))
             {
                 Unit unit = Instantiate(unitToSpawn, gridManager.GetGridObject(gridPosition).transform.position, Quaternion.identity);
                 timer = 0.25f;
-                StartCoroutine(unit.GetUnitAnimator().SpawnAnimationRoutine(timer));
+                StartCoroutine(unit.UnitAnimator.SpawnAnimationRoutine(timer));
                 AudioManager.Instance.PlayUnitSpawnSound();
                 unitSpawning = true;
                 actionPointsRemaining -= 1;
@@ -186,9 +186,9 @@ namespace RockPaperScissors.Units
             int minimumPrice = 10000;
             foreach (Unit unit in unitSpawnerData.SpawnableUnits)
             {
-                if (unit.GetCost() < minimumPrice)
+                if (unit.Cost < minimumPrice)
                 {
-                    minimumPrice = unit.GetCost();
+                    minimumPrice = unit.Cost;
                 }
             }
             return minimumPrice;

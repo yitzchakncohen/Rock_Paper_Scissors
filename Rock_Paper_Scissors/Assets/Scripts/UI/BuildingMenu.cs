@@ -222,7 +222,7 @@ namespace RockPaperScissors.UI
             if(garrisonedUnit != null)
             {
                 selectUnitButton.interactable = true;
-                selectUnitImage.sprite = garrisonedUnit.GetUnitThumbnail();
+                selectUnitImage.sprite = garrisonedUnit.UnitThumbnail;
             }
         }
     }

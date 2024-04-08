@@ -79,7 +79,7 @@ public class FindingActionState : EnemyState
 
         EnemyAIAction bestEnemeyAIAction = null;
 
-        foreach (UnitAction baseAction in enemyUnit.GetUnitActions())
+        foreach (UnitAction baseAction in enemyUnit.UnitActions)
         {
             // float startTime = Time.realtimeSinceStartup;
 

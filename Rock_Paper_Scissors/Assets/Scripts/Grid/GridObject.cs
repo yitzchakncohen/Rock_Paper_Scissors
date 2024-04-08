@@ -41,7 +41,7 @@ namespace RockPaperScissors.Grids
             }
             if(gridPositionOccupyingBuilding != null)
             {
-                return gridObject.CanWalkOn(gridPositionOccupyingBuilding);
+                return gridObject.CanWalkOnGridOccupant(gridPositionOccupyingBuilding);
             }
 
             return true;

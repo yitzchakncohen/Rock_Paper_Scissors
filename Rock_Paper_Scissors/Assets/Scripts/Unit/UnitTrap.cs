@@ -132,7 +132,7 @@ public class UnitTrap : UnitAction
     private IEnumerator TrapRoutine(Unit trappedUnit)
     {
         trapObjectSprite.SetActive(false);
-        Instantiate(unit.GetHitFX(), transform.position, Quaternion.identity);
+        Instantiate(unit.HitFX, transform.position, Quaternion.identity);
         yield return new WaitForSeconds(trapAnimationTime);
         // Trap animation
         trapBackground.SetActive(true);
