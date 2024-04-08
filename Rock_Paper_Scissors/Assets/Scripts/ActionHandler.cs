@@ -272,14 +272,6 @@ public class ActionHandler : MonoBehaviour
                     int dy = testGridPosition.y - gridPosition.y;
                     int dxAbs = Mathf.Abs(dx);
                     int dyAbs = Mathf.Abs(dy);
-                    // if (positionA.y % 2 == 1 ^ dx < 0)
-                    // {
-                    //     return Mathf.Max(0, x - (y + 1) / 2) + y;
-                    // }
-                    // else
-                    // {
-                    //     return Mathf.Max(0, x - y / 2) + y;
-                    // }
 
                     // Same Row
                     if(testGridPosition.y == gridPosition.y)
@@ -300,7 +292,54 @@ public class ActionHandler : MonoBehaviour
                     // Top and Bottom Rows
                     if(distance == dyAbs)
                     {
-                        if(testGridPosition.y > gridPosition.y)
+                        // Corners
+                        if(((gridPosition.y % 2 == 1 ^ dx < 0) && (distance == (dxAbs - (dyAbs+1) / 2 + dyAbs)))
+                        || (distance == (dxAbs - (dyAbs) / 2 + dyAbs) && (gridPosition.y % 2 == 1) && testGridPosition.x <= gridPosition.x)
+                        || (distance == (dxAbs - (dyAbs) / 2 + dyAbs) && (gridPosition.y % 2 == 0) && testGridPosition.x >= gridPosition.x))
+                        {
+                            // North
+                            if(testGridPosition.y > gridPosition.y)
+                            {
+                                if(testGridPosition.x > gridPosition.x)
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.NorthAndEast);
+                                }
+                                else if(testGridPosition.x == gridPosition.x && (gridPosition.y % 2 == 0))
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.NorthAndEast);
+                                }
+                                else if(testGridPosition.x == gridPosition.x && (gridPosition.y % 2 == 1))
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.NorthAndWest);
+                                }
+                                else
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.NorthAndWest);
+                                }
+                            }
+                            else
+                            { 
+                                // South
+                                if(testGridPosition.x > gridPosition.x)
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.SouthAndEast);
+                                }
+                                else if(testGridPosition.x == gridPosition.x && (gridPosition.y % 2 == 0))
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.SouthAndEast);
+                                }
+                                else if(testGridPosition.x == gridPosition.x && (gridPosition.y % 2 == 1))
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.SouthAndWest);
+                                }
+                                else
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.SouthAndWest);
+                                }
+                            }
+                            continue;
+                        }
+                        else if(testGridPosition.y > gridPosition.y)
                         {
                             gridObject.EnableAttackRangeIndicator(Direction.AllNorth);
                         }
