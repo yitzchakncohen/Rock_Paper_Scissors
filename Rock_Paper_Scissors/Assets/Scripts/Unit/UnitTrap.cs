@@ -5,19 +5,21 @@ using RockPaperScissors.SaveSystem;
 using RockPaperScissors.Units;
 using UnityEngine;
 
-public class UnitTrap : UnitAction
+public abstract class UnitTrap : UnitAction
 {
-    [SerializeField] private GameObject trapBackground;
-    [SerializeField] private GameObject trapForeground;
-    [SerializeField] private GameObject trapObjectSprite;
-    [SerializeField] private int trapEffectTurns = 2;
-    [SerializeField] private float trapAnimationTime = 1f;
-    private GridManager gridManager;
-    private int turnsUntilDestroyed;
-    private bool isTrapSprung = false;
+    public bool IsTrapSprung => isTrapSprung;
+    [SerializeField] protected GameObject trapBackground;
+    [SerializeField] protected GameObject trapForeground;
+    [SerializeField] protected GameObject trapObjectSprite;
+    [SerializeField] protected int trapEffectTurns = 2;
+    [SerializeField] protected float trapAnimationTime = 1f;
+    protected GridManager gridManager;
+    protected int turnsUntilDestroyed;
+    protected bool isTrapSprung = false;
 
-    private void Awake() 
+    protected override void Awake() 
     {
+        base.Awake();
         // Traps have no available actions.
         actionPointsRemaining = 0;
     }
@@ -75,14 +77,20 @@ public class UnitTrap : UnitAction
         if (isTrapSprung)
         {
             trapObjectSprite.SetActive(false);
-            trapBackground.SetActive(true);
-            trapForeground.SetActive(true);
+            if(trapBackground != null)
+            {
+                trapBackground.SetActive(true);
+                trapForeground.SetActive(true);
+            }
         }
         else
         {
             trapObjectSprite.SetActive(true);
-            trapBackground.SetActive(false);
-            trapForeground.SetActive(false);
+            if(trapBackground != null)
+            {
+                trapBackground.SetActive(false);
+                trapForeground.SetActive(false);
+            }
         }
     }
 
@@ -98,11 +106,6 @@ public class UnitTrap : UnitAction
         return false;
     }
     
-    public bool GetIsTrapSprung()
-    {
-        return isTrapSprung;
-    }
-
     private void UnitMovement_OnAnyActionCompleted(object sender, EventArgs e)
     {
         // Check if the unit that is moving is on the grid location of this trap.
@@ -132,14 +135,10 @@ public class UnitTrap : UnitAction
     private IEnumerator TrapRoutine(Unit trappedUnit)
     {
         trapObjectSprite.SetActive(false);
-        Instantiate(unit.HitFX, transform.position, Quaternion.identity);
+        Instantiate(Unit.HitFX, transform.position, Quaternion.identity);
         yield return new WaitForSeconds(trapAnimationTime);
-        // Trap animation
-        trapBackground.SetActive(true);
-        trapForeground.SetActive(true);
-        // Damage unit
-        int damageAmount = CombatModifiers.GetDamage(unit, trappedUnit, false);
-        trappedUnit.Damage(damageAmount, unit);
+        AnimateTrap();
+        ApplyTrapEffect(trappedUnit);
         // Destroy after turns
         turnsUntilDestroyed = trapEffectTurns;
         ActionComplete();
@@ -149,4 +148,7 @@ public class UnitTrap : UnitAction
     {
         this.onActionComplete = onActionComplete;
     }
+
+    abstract protected void AnimateTrap();
+    abstract protected void ApplyTrapEffect(Unit trappedUnit);
 }

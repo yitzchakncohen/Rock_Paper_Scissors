@@ -21,7 +21,7 @@ namespace RockPaperScissors.Units
         protected int actionPointsRemaining = 1;
         protected int trappedTurnsRemaining = 0;
 
-        private void Awake() 
+        protected virtual void Awake() 
         {
             unit = GetComponent<Unit>();
         }

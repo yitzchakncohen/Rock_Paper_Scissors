@@ -24,9 +24,12 @@ namespace RockPaperScissors.Units
         public int AttackDamage => unitData.attackDamage[unitProgression.GetLevel() - 1];
         public int Defense => unitData.defense[unitProgression.GetLevel() - 1];
         public bool IsDead => health.IsDead();
-        public bool IsMoveable => GetComponent<UnitMovement>();
         public bool IsFriendly { get => isFriendly; set{} }
-        public bool IsBuilding{get => UnitClass is UnitClass.PillowFort or UnitClass.PillowOutpost; set{}} 
+        public bool IsMoveable{get => UnitClass.Moveable.HasFlag(UnitClass); set{}} 
+        public bool IsBuilding{get => UnitClass.Building.HasFlag(UnitClass); set{}} 
+        public bool IsTrap{get => UnitClass.Trap.HasFlag(UnitClass); set{}} 
+
+
         
         public static event EventHandler OnUnitSpawn;
         [SerializeField] private UnitAnimator unitAnimator;
@@ -172,7 +175,7 @@ namespace RockPaperScissors.Units
             if(gridOccupantInterface != null && isFriendly == gridOccupant.IsFriendly)
             {
                 // Which types of buildings can you walk over?
-                if(gridOccupant.UnitClass == Units.UnitClass.PillowOutpost)
+                if(gridOccupant.UnitClass == UnitClass.PillowOutpost)
                 {
                     return true;
                 }

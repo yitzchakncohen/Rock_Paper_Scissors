@@ -127,8 +127,8 @@ GameObject:
   - component: {fileID: 7550674185365434060}
   - component: {fileID: -5587580392824227166}
   - component: {fileID: 4423325987634650779}
+  - component: {fileID: 1923041771124077453}
   - component: {fileID: 6532897644772520047}
-  - component: {fileID: 1151953408927793016}
   - component: {fileID: 3244311521902394323}
   - component: {fileID: 1724070906729191139}
   m_Layer: 0
@@ -168,7 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitAnimator: {fileID: 1523352458935747124}
   unitShaderController: {fileID: 1128377067778201822}
-  isFriendly: 1
+  isFriendly: 0
   unitData: {fileID: 11400000, guid: 0e833bf953d00ab41a7b931db6a41a8c, type: 2}
 --- !u!58 &4423325987634650779
 CircleCollider2D:
@@ -205,6 +205,72 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &1923041771124077453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8729022186923812124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec61a660db8a4454db03fe55be6cacf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trapBackground: {fileID: 0}
+  trapForeground: {fileID: 0}
+  trapObjectSprite: {fileID: 7893072232329710855}
+  trapEffectTurns: 0
+  trapAnimationTime: 0
+  launchDistance: 5
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2.961572
+      outSlope: 2.961572
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.039192498
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  animationHeightCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -5.5600724
+      outSlope: -5.5600724
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.038004816
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &6532897644772520047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -220,27 +286,19 @@ MonoBehaviour:
   unitAnimator: {fileID: 1523352458935747124}
   attackAnimationCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -0.041919935
+      outSlope: -0.041919935
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1151953408927793016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8729022186923812124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e072e430af519a6498f9ce7c2b3346c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trapBackground: {fileID: 0}
-  trapForeground: {fileID: 0}
-  trapObjectSprite: {fileID: 7893072232329710855}
-  trapEffectTurns: 4
-  trapAnimationTime: 1
 --- !u!114 &3244311521902394323
 MonoBehaviour:
   m_ObjectHideFlags: 0

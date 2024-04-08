@@ -20,14 +20,8 @@ namespace RockPaperScissors.UI
             UnitAction.OnAnyActionCompleted += UnitAction_OnAnyActionCompleted;
             TurnManager.OnNextTurn += TurnManager_OnNextTurn;
             gridManager = FindObjectOfType<GridManager>();
-            // if(!unit.IsFriendly)
-            // {
-                actionPointIcon.SetActive(false);  
-            // }
-            // else
-            // {
-                // actionPointIcon.SetActive(unit.GetTotalActionPointsRemaining() > 0);
-            // }
+            // TODO remove action point icon, no longer in use. 
+            actionPointIcon.SetActive(false);  
         }
 
         private void OnDestroy() 
@@ -70,8 +64,15 @@ namespace RockPaperScissors.UI
         
         private void CheckForTowerOccupency(Unit updatedUnit)
         {
+            if(unit.IsBuilding)
+            {
+                // Buildings don't get the icon
+                buildingOccupiedIcon.SetActive(false);
+                return;
+            }
+
             GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(updatedUnit.transform.position);
-            if(updatedUnit.UnitClass == UnitClass.PillowFort || updatedUnit.UnitClass == UnitClass.PillowOutpost)
+            if(updatedUnit.IsBuilding)
             {
                 if ((Unit)gridObject.GetOccupantUnit() == unit)
                 {

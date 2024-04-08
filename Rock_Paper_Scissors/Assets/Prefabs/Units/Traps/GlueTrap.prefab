@@ -230,7 +230,7 @@ GameObject:
   - component: {fileID: -5587580392824227166}
   - component: {fileID: 4423325987634650779}
   - component: {fileID: 6532897644772520047}
-  - component: {fileID: 1151953408927793016}
+  - component: {fileID: 8219552854865217702}
   - component: {fileID: 3244311521902394323}
   - component: {fileID: 1724070906729191139}
   m_Layer: 0
@@ -328,7 +328,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1151953408927793016
+--- !u!114 &8219552854865217702
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -337,7 +337,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8729022186923812124}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e072e430af519a6498f9ce7c2b3346c4, type: 3}
+  m_Script: {fileID: 11500000, guid: 47deb5e6d062bab4da791ffe23cbc233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   trapBackground: {fileID: 2551459091594147112}

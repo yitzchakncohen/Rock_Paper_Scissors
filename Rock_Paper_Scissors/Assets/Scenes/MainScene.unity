@@ -1032,11 +1032,13 @@ MonoBehaviour:
   - {fileID: 7927884055322289663, guid: de102ff297a1a7d4bb4befe5fbf75ad2, type: 3}
   - {fileID: 2715817389625404827, guid: c477b10fc6ef1b94d8860e3a1f446ef8, type: 3}
   - {fileID: -5587580392824227166, guid: 78755d156e89a524da87e32ecb6b7ab9, type: 3}
+  - {fileID: -5587580392824227166, guid: e9aeddc036a19af4f84827e28a3b7349, type: 3}
   listOfEnemyUnitTypes:
   - {fileID: 3659614332370105537, guid: 3a99c9f8d3b8b3d41b1531669fd2f659, type: 3}
   - {fileID: 8909835649686224163, guid: e547fb81a099d9544a36bdf74adf9d3d, type: 3}
   - {fileID: 6548610982091184903, guid: c84a2cefecbc72c45b4b5061beb8770c, type: 3}
   - {fileID: 8066103548949251539, guid: bfdc55cd41d813e4ea45b61ed92b97d7, type: 3}
+  - {fileID: 2934202642371606164, guid: bf95ce37b1840c9439f4c93dc0bb04eb, type: 3}
 --- !u!4 &1173781873
 Transform:
   m_ObjectHideFlags: 0
@@ -2489,7 +2491,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5773631841882567295, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 96
+      value: 95
       objectReference: {fileID: 0}
     - target: {fileID: 5991560217563658135, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
       propertyPath: m_AnchorMax.y

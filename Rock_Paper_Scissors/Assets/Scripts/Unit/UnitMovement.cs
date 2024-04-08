@@ -23,8 +23,9 @@ namespace RockPaperScissors.Units
         private int currentPositionIndex = 0;
         private bool moving = false;
 
-        private void Awake() 
+        protected override void Awake() 
         {
+            base.Awake();
             unitAttack = GetComponent<UnitAttack>();
         }
         
@@ -101,7 +102,7 @@ namespace RockPaperScissors.Units
             UnitTrap unitTrap = unit.GetComponent<UnitTrap>();
             if(unitTrap != null)
             {   
-                if(unitTrap.Unit.IsFriendly != this.unit.IsFriendly && !unitTrap.GetIsTrapSprung())
+                if(unit.IsFriendly != Unit.IsFriendly && !unitTrap.IsTrapSprung)
                 {
                     return true;
                 }
@@ -336,7 +337,7 @@ namespace RockPaperScissors.Units
 
         private Vector2Int GetCurrentGridPosition()
         {
-            return gridManager.GetGridPositionFromWorldPosition(this.transform.position);
+            return gridManager.GetGridPositionFromWorldPosition(transform.position);
         }
 
         public override int GetValidActionsRemaining()

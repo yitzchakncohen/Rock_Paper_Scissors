@@ -102,6 +102,7 @@
     <Compile Include="Assets\Scripts\Unit\Unit.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\SaveTurnManagerData.cs" />
     <Compile Include="Assets\Scripts\PathFinding\PathNode.cs" />
+    <Compile Include="Assets\Scripts\Unit\TrampolineTrap.cs" />
     <Compile Include="Assets\Scripts\Currency\CurrencyBank.cs" />
     <Compile Include="Assets\Scripts\UI\CameraLetterboxing.cs" />
     <Compile Include="Assets\Scripts\UI\Buttons\BuildingButton.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="Assets\Scripts\UI\SelectionUI.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\ISaveInterface.cs" />
     <Compile Include="Assets\Scripts\Currency\CurrencyUI.cs" />
+    <Compile Include="Assets\Scripts\Unit\GlueTrap.cs" />
     <Compile Include="Assets\Scripts\UI\Buttons\NextButtonUI.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitSpawnerData.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitData.cs" />

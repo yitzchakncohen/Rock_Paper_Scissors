@@ -256,7 +256,7 @@ namespace RockPaperScissors.Grids
             {
                 GetGridObjectFromWorldPosition(unit.transform.position).SetOccupantBuilding(unit);
             }
-            else if(unit.UnitClass == UnitClass.GlueTrap)
+            else if(unit.IsTrap)
             {
                 GetGridObjectFromWorldPosition(unit.transform.position).SetOccupantTrap(unit);
             }

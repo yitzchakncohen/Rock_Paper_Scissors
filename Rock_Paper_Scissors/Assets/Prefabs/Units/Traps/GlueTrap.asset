@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7e8d6b7018f9b7468f94ff771886656, type: 3}
   m_Name: GlueTrap
   m_EditorClassIdentifier: 
-  unitClass: 5
+  unitClass: 64
   unitThumbnail: {fileID: 21300000, guid: b0b4c9ab37e3ac546b5c8fd857d6c260, type: 3}
   spriteLibrary: {fileID: 0}
   moveDistance: 0
