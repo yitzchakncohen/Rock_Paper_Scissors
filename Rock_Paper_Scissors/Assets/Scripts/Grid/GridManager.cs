@@ -275,6 +275,17 @@ namespace RockPaperScissors.Grids
                 gridObject.SetOccupantUnit(unit);
             }
 
+            // TrampolineTrap
+            TrampolineTrap trampolineTrap = sender as TrampolineTrap;
+            if(trampolineTrap != null)
+            {
+                GridObject launchStartGridObject = GetGridObjectFromWorldPosition(trampolineTrap.Unit.transform.position);
+                Unit launchedUnit = launchStartGridObject.GetOccupantUnit() as Unit;
+                launchStartGridObject.SetOccupantUnit(null);
+                GridObject launchedUnitGridObject = GetGridObjectFromWorldPosition(launchedUnit.transform.position);
+                launchedUnitGridObject.SetOccupantUnit(launchedUnit);
+            }
+
             // Debug.Log("GridManager Action Complete Time: " + (Time.realtimeSinceStartup - startTime)*1000f);
         }
 
