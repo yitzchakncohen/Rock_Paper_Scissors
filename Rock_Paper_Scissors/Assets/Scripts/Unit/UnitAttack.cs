@@ -115,7 +115,7 @@ namespace RockPaperScissors.Units
 
         private void PlayAttackSound()
         {
-            switch (unit.UnitClass)
+            switch (unit.Class)
             {
                 case UnitClass.GlueTrap:
                     AudioManager.Instance.PlayGlueTrapSound();
@@ -217,7 +217,7 @@ namespace RockPaperScissors.Units
                         gridObject = gridObject,
                         actionValue = unitAttackActionBaseValue 
                                         + (1 - unit.NormalizedHealth)*unitAttackActionBaseValue 
-                                        + CombatModifiers.UnitHasAdvantage(this.unit.UnitClass, unit.UnitClass)*classAdvantageMultiplier,
+                                        + CombatModifiers.UnitHasAdvantage(this.unit.Class, unit.Class)*classAdvantageMultiplier,
                         unitAction = this,
                     };
                 }
@@ -229,7 +229,7 @@ namespace RockPaperScissors.Units
                         gridObject = gridObject,
                         actionValue = unitAttackActionBaseValue 
                                         + (1 - unit.NormalizedHealth)*unitAttackActionBaseValue
-                                        + CombatModifiers.UnitHasAdvantage(this.unit.UnitClass, unit.UnitClass)*classAdvantageMultiplier,
+                                        + CombatModifiers.UnitHasAdvantage(this.unit.Class, unit.Class)*classAdvantageMultiplier,
                         unitAction = this,
                     }; 
 

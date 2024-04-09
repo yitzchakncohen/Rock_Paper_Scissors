@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using RockPaperScissors.Grids;
@@ -10,6 +11,7 @@ public class TrampolineTrap : UnitTrap
     [SerializeField] private AnimationCurve animationCurve;
     [SerializeField] private AnimationCurve animationHeightCurve;
     private float launchAnimationTimeMultiplier = 0.2f;
+    List<Vector2Int> launchLocations = new List<Vector2Int>();
 
     protected override void AnimateTrap()
     {
@@ -27,7 +29,7 @@ public class TrampolineTrap : UnitTrap
             landingGridLocation = GetLandingLocation(unitFacingDirection, gridLaunchLocation, launchDistance -i);
             i++;
         }
-        yield return StartCoroutine(LaunchUnitRoutine(trappedUnit, landingGridLocation, gridLaunchLocation));
+        yield return StartCoroutine(LaunchUnitRoutine(trappedUnit, landingGridLocation));
     }
 
     private Vector2Int GetLandingLocation(Direction unitFacingDirection, Vector2Int gridLaunchLocation, int launchDistance)
@@ -52,9 +54,10 @@ public class TrampolineTrap : UnitTrap
         return gridLaunchLocation;
     }
 
-    private IEnumerator LaunchUnitRoutine(Unit unit, Vector2Int landingGridLocation, Vector2Int gridLaunchLocation)
+    private IEnumerator LaunchUnitRoutine(Unit unit, Vector2Int landingGridLocation)
     {
-        float animationTime = launchAnimationTimeMultiplier * Vector2Int.Distance(landingGridLocation, gridLaunchLocation);
+        Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
+        float animationTime = launchAnimationTimeMultiplier * gridManager.GetGridDistanceBetweenPositions(landingGridLocation, gridPosition);
         float timer = 0f;
         float maxLaunchHeight = 2.5f;
         Vector3 launchStartPosition = transform.position;
@@ -68,5 +71,46 @@ public class TrampolineTrap : UnitTrap
             yield return null;
         }
         unit.transform.position = landingPosition;
+    }
+
+    public override bool TryTakeAction(GridObject gridObject, Action onActionComplete)
+    {
+        if(launchLocations.Contains(gridObject.Position))
+        {
+            ActionStart(onActionComplete);
+            GridObject launchGridObject = gridManager.GetGridObjectFromWorldPosition(transform.position);
+            Unit unitToLaunch = launchGridObject.GetOccupantUnit() as Unit;
+            StartCoroutine(LaunchUnit(unitToLaunch, gridObject.Position, launchGridObject.Position));
+            return true;
+        }
+        return false;
+    }
+
+    private IEnumerator LaunchUnit(Unit unit, Vector2Int landingGridLocation, Vector2Int gridLaunchLocation)
+    {
+        yield return StartCoroutine(LaunchUnitRoutine(unit, landingGridLocation));
+        ActionComplete();  
+    }
+
+    public List<Vector2Int> GetLaunchLocations(Unit unitToLaunch, GridObject gridObject)
+    {
+        launchLocations.Clear();
+        for (int x = 0; x < gridManager.GridSize.x; x++)
+        {
+            for (int z = 0; z < gridManager.GridSize.y; z++)
+            {
+                Vector2Int testGridPosition = new Vector2Int(x, z);
+                int distance = gridManager.GetGridDistanceBetweenPositions(testGridPosition, gridObject.Position);
+                if(distance == launchDistance)
+                {
+                    GridObject testGridObject = gridManager.GetGridObject(testGridPosition);
+                    if(testGridObject.IsWalkable(unitToLaunch))
+                    {
+                       launchLocations.Add(testGridObject.Position);
+                    }
+                }
+            }
+        }
+        return launchLocations;
     }
 }

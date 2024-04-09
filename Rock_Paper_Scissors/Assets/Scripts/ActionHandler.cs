@@ -32,6 +32,7 @@ public class ActionHandler : MonoBehaviour
         WaveManager.OnWaveStarted += WaveManager_OnWaveStarted;
         WaveManager.OnWaveCompleted += WaveManager_OnWaveCompleted;
         UnitAction.OnAnyActionStarted += UnitAction_OnAnyActionStarted;
+        UnitAction.OnAnyActionCompleted += UnitAction_OnAnyActionCompleted;
     }
 
     private void Start() 
@@ -69,6 +70,7 @@ public class ActionHandler : MonoBehaviour
         WaveManager.OnWaveStarted -= WaveManager_OnWaveStarted;
         WaveManager.OnWaveCompleted -= WaveManager_OnWaveCompleted;
         UnitAction.OnAnyActionStarted -= UnitAction_OnAnyActionStarted;
+        UnitAction.OnAnyActionCompleted -= UnitAction_OnAnyActionCompleted;
     }
 
     private void InputManager_onSingleTouch(object sender, Vector2 touchPosition)
@@ -98,7 +100,25 @@ public class ActionHandler : MonoBehaviour
     private void HandleGridObjectTouch(GridObject gridObject)
     {
         IGridOccupantInterface gridOccupantUnit = gridObject.GetOccupantUnit();
-        IGridOccupantInterface gridOccupantBuilding = gridObject.GetOccupantBuilding(); 
+        IGridOccupantInterface gridOccupantBuilding = gridObject.GetOccupantBuilding();
+        IGridOccupantInterface gridOccupantTrap = gridObject.GetOccupantTrap();
+
+        // Selected unit on a trampoline
+        if(selectedUnit != null)
+        {
+            GridObject selectedUnitOccupiedGridObject = gridManager.GetGridObjectFromWorldPosition(selectedUnit.transform.position);
+            Unit trap = selectedUnitOccupiedGridObject.GetOccupantTrap() as Unit;
+            if(trap != null && trap.TryGetComponent<TrampolineTrap>(out TrampolineTrap trampolineTrap))
+            {
+                if(trampolineTrap.GetLaunchLocations(selectedUnit, selectedUnitOccupiedGridObject).Contains(gridObject.Position))
+                {
+                    if(trampolineTrap.TryTakeAction(gridObject, ClearBusy))
+                    {
+                        return;
+                    }
+                }
+            }
+        } 
 
         // Try and attack 
         if(gridOccupantUnit != null && !gridOccupantUnit.IsFriendly)
@@ -214,6 +234,18 @@ public class ActionHandler : MonoBehaviour
         {
             return;
         }
+
+        // Unit on TrampolineTrap
+        GridObject selectedUnitOccupiedGridObject = gridManager.GetGridObjectFromWorldPosition(selectedUnit.transform.position);
+        if(selectedUnitOccupiedGridObject.GetOccupantTrap() != null)
+        {
+            if((selectedUnitOccupiedGridObject.GetOccupantTrap() as Unit).TryGetComponent<TrampolineTrap>(out TrampolineTrap trampolineTrap))
+            {
+                gridUIManager.ShowGridPositionList(trampolineTrap.GetLaunchLocations(selectedUnit, selectedUnitOccupiedGridObject), GridHighlightType.Movement);
+                return;
+            }
+        }
+
 
         foreach (UnitAction unitAction in selectedUnit.UnitActions)
         {
@@ -527,6 +559,23 @@ public class ActionHandler : MonoBehaviour
             SetBusy();
             unitTrap.SetActionCompletedAction(ClearBusy);
         }
+    }
+
+    private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
+    {
+        // Check for unit landed on friendly trampoline.
+        UnitMovement movingUnit = sender as UnitMovement;
+        if(movingUnit != null)
+        {
+            GridObject movingUnitGridObject = gridManager.GetGridObjectFromWorldPosition(movingUnit.transform.position);
+            TrampolineTrap trampolineTrap = movingUnitGridObject.GetOccupantTrap() as TrampolineTrap;
+            if(trampolineTrap != null && trampolineTrap.Unit.IsFriendly == movingUnit.Unit.IsFriendly)
+            {
+                selectedUnit = movingUnit.Unit;
+                updateGridActionHighlight = true;
+            }
+        }
+
     }
 
     private void SetBusy()

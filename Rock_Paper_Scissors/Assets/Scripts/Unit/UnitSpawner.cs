@@ -110,14 +110,14 @@ namespace RockPaperScissors.Units
                     }
 
                     // Check if it's walkable for units
-                    if (unitToSpawn.UnitClass != UnitClass.PillowOutpost
+                    if (unitToSpawn.Class != UnitClass.PillowOutpost
                         && !gridManager.GetGridObject(testGridPosition).IsWalkable(unitToSpawn))
                     {
                         continue;
                     }
 
                     // Check if it has a building already for buildings
-                    if (unitToSpawn.UnitClass == UnitClass.PillowOutpost
+                    if (unitToSpawn.Class == UnitClass.PillowOutpost
                         && gridManager.GetGridObject(testGridPosition).GetOccupantBuilding() != null)
                     {
                         continue;

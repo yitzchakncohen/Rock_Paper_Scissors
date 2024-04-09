@@ -48,11 +48,11 @@ namespace RockPaperScissors.SaveSystem
         {
             foreach (Unit unit in listOfFriendlyUnitTypes)
             {
-                dictionaryOfFriendlyUnitTypes.Add(unit.UnitClass, unit);
+                dictionaryOfFriendlyUnitTypes.Add(unit.Class, unit);
             }
             foreach (Unit unit in listOfEnemyUnitTypes)
             {
-                dictionaryOfEnemyUnitTypes.Add(unit.UnitClass, unit);
+                dictionaryOfEnemyUnitTypes.Add(unit.Class, unit);
             }
         }
 

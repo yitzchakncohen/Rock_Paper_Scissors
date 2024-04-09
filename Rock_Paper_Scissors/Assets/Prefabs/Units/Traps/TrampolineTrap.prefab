@@ -168,7 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitAnimator: {fileID: 1523352458935747124}
   unitShaderController: {fileID: 1128377067778201822}
-  isFriendly: 0
+  isFriendly: 1
   unitData: {fileID: 11400000, guid: 0e833bf953d00ab41a7b931db6a41a8c, type: 2}
 --- !u!58 &4423325987634650779
 CircleCollider2D:

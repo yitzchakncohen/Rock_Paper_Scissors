@@ -13,7 +13,7 @@ namespace RockPaperScissors.Units
         public ParticleSystem HitFX => unitData.HitFX;
         public Sprite UnitThumbnail => unitData.unitThumbnail;
         public UnitProgression UnitProgression => unitProgression;
-        public UnitClass UnitClass => unitData.unitClass;
+        public UnitClass Class => unitData.unitClass;
         public UnitAction[] UnitActions => unitActions;
         public float NormalizedHealth => health.GetNormalizedHealth();
         public int Cost => unitData.unitCost;
@@ -25,9 +25,9 @@ namespace RockPaperScissors.Units
         public int Defense => unitData.defense[unitProgression.GetLevel() - 1];
         public bool IsDead => health.IsDead();
         public bool IsFriendly { get => isFriendly; set{} }
-        public bool IsMoveable{get => UnitClass.Moveable.HasFlag(UnitClass); set{}} 
-        public bool IsBuilding{get => UnitClass.Building.HasFlag(UnitClass); set{}} 
-        public bool IsTrap{get => UnitClass.Trap.HasFlag(UnitClass); set{}} 
+        public bool IsMoveable{get => UnitClass.Moveable.HasFlag(Class); set{}} 
+        public bool IsBuilding{get => UnitClass.Building.HasFlag(Class); set{}} 
+        public bool IsTrap{get => UnitClass.Trap.HasFlag(Class); set{}} 
 
 
         
@@ -180,15 +180,15 @@ namespace RockPaperScissors.Units
             if(gridOccupantInterface != null && IsFriendly == gridOccupant.IsFriendly)
             {
                 // Which types of buildings can you walk over?
-                if(gridOccupant.UnitClass == UnitClass.PillowOutpost)
+                if(gridOccupant.Class == UnitClass.PillowOutpost)
                 {
                     return true;
                 }
-                if(gridOccupant.UnitClass == UnitClass.TrampolineTrap)
+                if(gridOccupant.Class == UnitClass.TrampolineTrap)
                 {
                     return true;
                 }
-                if(gridOccupant.UnitClass == UnitClass.GlueTrap)
+                if(gridOccupant.Class == UnitClass.GlueTrap)
                 {
                     return gridOccupant.isFriendly != IsFriendly;
                 }

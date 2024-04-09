@@ -68,7 +68,7 @@ namespace RockPaperScissors.PathFindings
 
         public Vector2Int GetGridPosition()
         {
-            return gridObject.GetGridPostion();
+            return gridObject.Position;
         }
 
         public Vector3 GetWorldPosition()

@@ -11,7 +11,7 @@ public class CombatModifiers
 
         damage = damage - defendingUnit.Defense * GetInTowerModifier(defendingUnitInTower);
 
-        damage = (int)(damage * GetModiferByClasses(attackingUnit.UnitClass, defendingUnit.UnitClass));
+        damage = (int)(damage * GetModiferByClasses(attackingUnit.Class, defendingUnit.Class));
 
         return damage;
     }

@@ -136,7 +136,7 @@ namespace RockPaperScissors.Units
             }
 
             Vector2Int currentGridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
-            targetGridObjects = pathFinding.FindPath(currentGridPosition, targetGridObject.GetGridPostion(), out int pathLength, unit);
+            targetGridObjects = pathFinding.FindPath(currentGridPosition, targetGridObject.Position, out int pathLength, unit);
 
             // Check if position is within movement range and moveable
             if(pathLength > unit.MoveDistance || targetGridObjects == null)
@@ -315,7 +315,7 @@ namespace RockPaperScissors.Units
             foreach (Unit unit in targetList)
             {
                 // Add or substract 1 if there is a combat advantage over the unit.
-                targetCountValue += CombatModifiers.UnitHasAdvantage(this.unit.UnitClass, unit.UnitClass);
+                targetCountValue += CombatModifiers.UnitHasAdvantage(this.unit.Class, unit.Class);
             }
 
             return targetCountValue;

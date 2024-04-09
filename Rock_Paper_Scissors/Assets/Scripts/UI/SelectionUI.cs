@@ -56,7 +56,7 @@ namespace RockPaperScissors.UI
 
         private void UpdateUnitStats(Unit unit)
         {
-            this.unit.text = SplitCamelCase(unit.UnitClass.ToString());
+            this.unit.text = SplitCamelCase(unit.Class.ToString());
             level.text = $"Level: {unit.GetLevel()}";
             health.text = $" <sprite=0> {unit.Health}/{unit.GetMaximumHealth()}";
             attack.text = $" <sprite=2> {unit.AttackDamage}";

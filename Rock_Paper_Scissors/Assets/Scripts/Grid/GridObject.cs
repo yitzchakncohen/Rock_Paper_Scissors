@@ -6,6 +6,7 @@ namespace RockPaperScissors.Grids
 {
     public class GridObject : MonoBehaviour
     {
+        public Vector2Int Position => gridPosition;
         private Vector2Int gridPosition;
         private GridObjectUI gridObjectUI;
         private IGridOccupantInterface gridPositionOccupyingUnit = null;
@@ -22,11 +23,6 @@ namespace RockPaperScissors.Grids
             this.gridPosition = gridPosition;
             gridObjectUI.SetGridPosition(gridPosition);
             gridObjectUI.SetDistanceFromPosition(Vector2Int.one*18, gridPosition);
-        }
-
-        public Vector2Int GetGridPostion()
-        {
-            return gridPosition;
         }
 
         public bool IsWalkable(IGridOccupantInterface gridObject)
