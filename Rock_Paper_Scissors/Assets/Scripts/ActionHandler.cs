@@ -262,7 +262,10 @@ public class ActionHandler : MonoBehaviour
             else if(unitAction is UnitAttack)
             {
                 HighlightAttackTargets(unitAction as UnitAttack);
-                HighlightAttackRange();
+                if(unitAction.ActionPointsRemaining > 0)
+                {
+                    HighlightAttackRange();
+                }
             }
         }
     }
