@@ -1170,7 +1170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f453f694addf4275988fac205bc91968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BoundingShape2D: {fileID: 1937499472}
+  m_BoundingShape2D: {fileID: 0}
   m_Damping: 0.5
   m_MaxWindowSize: -1
 --- !u!1 &1426841684
@@ -1693,7 +1693,7 @@ Transform:
   m_GameObject: {fileID: 1937499469}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24, y: 12, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1840,6 +1840,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5859449962443565998, guid: d98ca6261b6900543bbd9b28d8835c3a, type: 3}
+      propertyPath: cameraBorderCollider
+      value: 
+      objectReference: {fileID: 1937499472}
     - target: {fileID: 7224911256415723430, guid: d98ca6261b6900543bbd9b28d8835c3a, type: 3}
       propertyPath: m_Name
       value: Grid

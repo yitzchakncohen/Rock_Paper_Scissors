@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using RockPaperScissors.Units;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Linq; 
 
 namespace RockPaperScissors.Grids
 {
@@ -15,8 +16,11 @@ namespace RockPaperScissors.Grids
         [SerializeField] private GridObject gridObjectPrefab;
         [SerializeField] private GameObject borderTilePrefab;
         [SerializeField] private Tilemap baseTilemap;
+        [SerializeField] private int borderWidth = 4;
         private Grid grid;
         private GridObject[,] gridObjects;
+        private Vector2[] borderPoints = new Vector2[4];
+        public Vector2[] BorderPoints => borderPoints;
         public Task SetupGridTask{get; private set;} = null;
         public Vector2Int GridSize => gridSize;
 
@@ -30,16 +34,18 @@ namespace RockPaperScissors.Grids
         {
             await Task.Yield();
             gridObjects = new GridObject[gridSize.x, gridSize.y];
+            List<Vector3> allBorderLocations = new List<Vector3>();
 
             // Setup the grid
-            for (int x = -2; x <= gridSize.x + 1; x++)
+            for (int x = -borderWidth; x <= gridSize.x + borderWidth - 1; x++)
             {
-                for (int y = -2; y <= gridSize.y + 1; y++)
+                for (int y = -borderWidth; y <= gridSize.y + borderWidth - 1; y++)
                 {
                     if (x <= -1 || x >= gridSize.x || y <= -1 || y >= gridSize.y)
                     {
                         Vector3 gridPosition = grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
                         Instantiate(borderTilePrefab, gridPosition, Quaternion.identity);
+                        allBorderLocations.Add(gridPosition);
                     }
                     else
                     {
@@ -51,10 +57,49 @@ namespace RockPaperScissors.Grids
                 }
             }
 
+            CalculateBorderCorners(allBorderLocations);
+
             UpdateGridOccupancy();
             Debug.Log("Grid Setup Completed");
             OnGridSetupComplete?.Invoke();
         }
+
+        private void CalculateBorderCorners(List<Vector3> allBorderLocations)
+        {
+            // Bottom Left
+            borderPoints[0] = Vector2Int.zero;
+            // Top Left
+            borderPoints[1] = Vector2Int.zero;
+            // Top Right
+            borderPoints[2] = Vector2Int.zero;
+            // Bottom Right
+            borderPoints[3] = Vector2Int.zero;
+
+            foreach (Vector3 location in allBorderLocations)
+            {
+                // Bottom Left
+                if (location.x <= borderPoints[0].x && location.y <= borderPoints[0].y)
+                {
+                    borderPoints[0] = location;
+                }
+                // Top Left
+                if (location.x <= borderPoints[1].x && location.y >= borderPoints[1].y)
+                {
+                    borderPoints[1] = location;
+                }
+                // Top Right
+                if (location.x >= borderPoints[2].x && location.y >= borderPoints[2].y)
+                {
+                    borderPoints[2] = location;
+                }
+                // Bottom Right
+                if (location.x >= borderPoints[3].x && location.y <= borderPoints[3].y)
+                {
+                    borderPoints[3] = location;
+                }
+            }
+        }
+
         private void Start() 
         {
             UnitAction.OnAnyActionCompleted += UnitAction_OnAnyActionCompleted;

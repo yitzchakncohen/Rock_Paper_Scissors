@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cinemachine;
 using RockPaperScissors;
+using RockPaperScissors.Grids;
 using RockPaperScissors.Units;
 using UnityEngine;
 
@@ -26,6 +28,7 @@ public class CameraController : MonoBehaviour
     private float defaultZoom;
     private InputManager inputManager;
     private PlayerControls playerControls;
+    private GridManager gridManager;
     private Camera mainCamera;
     private CinemachineTransposer cinemachineFramingTransposer;
     private Vector2 startDraggingPosition;
@@ -45,6 +48,8 @@ public class CameraController : MonoBehaviour
     {
         mainCamera = Camera.main;
         inputManager = FindObjectOfType<InputManager>();
+        gridManager = FindObjectOfType<GridManager>();
+        gridManager.OnGridSetupComplete += GridManager_OnGridSetupComplete;
         cinemachineFramingTransposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
         defaultZoom = cinemachineVirtualCamera.m_Lens.OrthographicSize;
         playerControls = inputManager.GetPlayerControls();
@@ -66,12 +71,11 @@ public class CameraController : MonoBehaviour
         GameplayManager.OnGameOver += GameplayManager_OnGameOver;
         EnemyAI.OnActionFound += EnemyAI_OnActionFound;
         zoomTarget = cinemachineVirtualCamera.m_Lens.OrthographicSize;
-
-        CalculateCameraBoundary();
     }
 
     private void OnDestroy() 
     {
+        gridManager.OnGridSetupComplete -= GridManager_OnGridSetupComplete;
         inputManager.OnStartDragging -= InputManager_OnStartDragging;
         inputManager.OnDragging -= InputManager_Dragging;
         inputManager.OnDraggingCompleted -= InputManager_OnDraggingCompleted;
@@ -272,6 +276,16 @@ public class CameraController : MonoBehaviour
         transform.position = position;
     }
 
+    private void GridManager_OnGridSetupComplete()
+    {
+        cameraBoundaryCollider.points = gridManager.BorderPoints;
+        CalculateCameraBoundary();
+        // Center Camera
+        CinemachineConfiner2D confiner = cinemachineVirtualCamera.GetComponent<CinemachineConfiner2D>();
+        confiner.m_BoundingShape2D = cameraBoundaryCollider;
+        transform.position = cameraBoundaryCollider.points.Aggregate(new Vector2(0,0), (x,y) => x + y) / cameraBoundaryCollider.points.Length;
+    }
+
     private void ClampCameraPosition()
     {
         float horizontalBorder = cinemachineVirtualCamera.m_Lens.OrthographicSize * mainCamera.aspect;
@@ -325,6 +339,8 @@ public class CameraController : MonoBehaviour
         cameraBoundaryMaxX = cameraBoundaryMaxX + cameraBoundaryCollider.transform.position.x;
         cameraBoundaryMinY = cameraBoundaryMinY + cameraBoundaryCollider.transform.position.y;
         cameraBoundaryMaxY = cameraBoundaryMaxY + cameraBoundaryCollider.transform.position.y;
+
+        zoomClamp.y = ((cameraBoundaryMaxX - cameraBoundaryMinX) / 2) / mainCamera.aspect;
     }
 
     private void OnDrawGizmos() 
