@@ -7,11 +7,11 @@ public class CombatModifiers
 {
     public static int GetDamage(Unit attackingUnit, Unit defendingUnit, bool defendingUnitInTower)
     {
-        int damage = attackingUnit.GetModifiedAttack();
+        int damage = attackingUnit.AttackDamage;
 
-        damage = damage - defendingUnit.GetModifiedDefense() * GetInTowerModifier(defendingUnitInTower);
+        damage = damage - defendingUnit.Defense * GetInTowerModifier(defendingUnitInTower);
 
-        damage = (int)(damage * GetModiferByClasses(attackingUnit.GetUnitClass(), defendingUnit.GetUnitClass()));
+        damage = (int)(damage * GetModiferByClasses(attackingUnit.Class, defendingUnit.Class));
 
         return damage;
     }

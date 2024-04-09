@@ -19,7 +19,7 @@ public class TakingActionState : EnemyState
         throw new NotImplementedException();
     }
 
-    public void FindAction(EnemyStateContext context, UnitManager unitManager)
+    public void FindAction(EnemyStateContext context, UnitManager unitManager, Action<Vector3> OnActionFound)
     {
         throw new NotImplementedException();
     }

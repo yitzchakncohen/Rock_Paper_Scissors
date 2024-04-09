@@ -6,6 +6,7 @@ using RockPaperScissors;
 
 public class EnemyAI : MonoBehaviour
 {
+    public static event Action<Vector3> OnActionFound;
     private EnemyStatePattern state = new EnemyStatePattern();
     private TurnManager turnManager;
     private UnitManager unitManager;
@@ -22,7 +23,7 @@ public class EnemyAI : MonoBehaviour
 
     private void Update() 
     {
-        if(turnManager.IsPlayerTurn()){ return; }
+        if(turnManager.IsPlayerTurn){ return; }
         if(actionHandler.IsBusy()) { return; }
         if(state == null)
         {
@@ -35,7 +36,7 @@ public class EnemyAI : MonoBehaviour
             case WaitingForTurnState:
                 break;
             case FindingActionState:
-                state.FindAction(unitManager);
+                state.FindAction(unitManager, OnActionFound);
                 break;
             case TakingActionState:
                 state.TakeAction(CompleteAction, turnManager);
@@ -45,7 +46,7 @@ public class EnemyAI : MonoBehaviour
 
     private void TurnManager_OnNextTurn(object sender, EventArgs eventArgs)
     {
-        if(!turnManager.IsPlayerTurn() && state != null)
+        if(!turnManager.IsPlayerTurn && state != null)
         {
             state.StartTurn();
         }

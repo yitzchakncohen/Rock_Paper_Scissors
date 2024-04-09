@@ -1,5 +1,6 @@
 using System;
 using RockPaperScissors.Units;
+using UnityEngine;
 
 public class WaitingForTurnState : EnemyState
 {
@@ -8,7 +9,7 @@ public class WaitingForTurnState : EnemyState
         context.SetState(new FindingActionState());
     }
 
-    public void FindAction(EnemyStateContext context, UnitManager unitManager)
+    public void FindAction(EnemyStateContext context, UnitManager unitManager, Action<Vector3> OnActionFound)
     {
         throw new NotImplementedException();
     }

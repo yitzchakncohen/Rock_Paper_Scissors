@@ -9,6 +9,28 @@ namespace RockPaperScissors.Units
 {
     public class Unit : MonoBehaviour, ISaveInterface<SaveUnitData>, IGridOccupantInterface
     {
+        public UnitAnimator UnitAnimator => unitAnimator;
+        public ParticleSystem HitFX => unitData.HitFX;
+        public Sprite UnitThumbnail => unitData.unitThumbnail;
+        public UnitProgression UnitProgression => unitProgression;
+        public UnitClass Class => unitData.unitClass;
+        public UnitAction[] UnitActions => unitActions;
+        public float NormalizedHealth => health.GetNormalizedHealth();
+        public int Cost => unitData.unitCost;
+        public int MoveDistance => unitData.moveDistance;
+        public int AttackRange => unitData.attackRange;
+        public int UnitDefeatedReward => unitData.unitDefeatedReward;
+        public int Health => health.GetHealth(); 
+        public int AttackDamage => unitData.attackDamage[unitProgression.GetLevel() - 1];
+        public int Defense => unitData.defense[unitProgression.GetLevel() - 1];
+        public bool IsDead => health.IsDead();
+        public bool IsFriendly { get => isFriendly; set{} }
+        public bool IsMoveable{get => UnitClass.Moveable.HasFlag(Class); set{}} 
+        public bool IsBuilding{get => UnitClass.Building.HasFlag(Class); set{}} 
+        public bool IsTrap{get => UnitClass.Trap.HasFlag(Class); set{}} 
+
+
+        
         public static event EventHandler OnUnitSpawn;
         [SerializeField] private UnitAnimator unitAnimator;
         [SerializeField] private UnitShaderController unitShaderController;
@@ -60,69 +82,22 @@ namespace RockPaperScissors.Units
             }
         }
 
-        public UnitAction[] GetUnitActions()
-        {
-            return unitActions;
-        }
-
-        public bool IsFriendly()
-        {
-            return isFriendly;
-        }
-
-        public bool IsMoveable()
-        {
-            return GetComponent<UnitMovement>();
-        }
-
         public void Damage(int damageAmount, Unit attacker)
         {
             health.Damage(damageAmount, attacker);
-            ParticleSystem hitFX = Instantiate(GetHitFX(), transform.position, Quaternion.identity);
+            ParticleSystem hitFX = Instantiate(HitFX, transform.position, Quaternion.identity);
             Destroy(hitFX.gameObject, 1f);
         }
 
-        public ParticleSystem GetHitFX()
+        public void DestroyUnit()
         {
-            return unitData.HitFX;
+            health.Damage(health.GetHealth(), null);
         }
-
-        public float GetNormalizedHealth() => health.GetNormalizedHealth();
 
         public int GetMaximumHealth()
         {
             return unitData.maximumHealth[unitProgression.GetLevel() - 1];
-        }
-
-        public int GetCost()
-        {
-            return unitData.unitCost;
-        }
-
-        public Sprite GetUnitThumbnail()
-        {
-            return unitData.unitThumbnail;
-        }
-
-        public int GetAttackRange()
-        {
-            return unitData.attackRange;
-        }
-
-        internal int GetMoveDistance()
-        {
-            return unitData.moveDistance;
-        }
-
-        public UnitClass GetUnitClass()
-        {
-            return unitData.unitClass;
-        }
-
-        public UnitProgression GetUnitProgression()
-        {
-            return unitProgression;
-        }
+        }     
 
         public int GetLevel()
         {
@@ -134,51 +109,29 @@ namespace RockPaperScissors.Units
             {
                 return -1;
             }
+        }        
+
+        public int GetTotalActionPointsRemaining()
+        {
+            if(IsTrap)
+            {
+                return 0;
+            }
+
+            int actionPoints = 0;
+            foreach (UnitAction unitAction in unitActions)
+            {
+                actionPoints += unitAction.ActionPointsRemaining;
+            }
+            return actionPoints;
         }
 
-        public int GetHealth()
+        public void SetTrappedTurnsRemaining(int trappedTurnsRemaining)
         {
-            return health.GetHealth();
-        }
-
-        public bool IsDead()
-        {
-            return health.IsDead();
-        }
-
-        public void DestroyUnit()
-        {
-            health.Damage(health.GetHealth(), null);
-        }
-
-        public UnitAnimator GetUnitAnimator()
-        {
-            return unitAnimator;
-        }
-
-        public int GetBaseAttack()
-        {
-            return unitData.attackDamage[0];
-        }
-
-        public int GetBaseDefense()
-        {
-            return unitData.defense[0];
-        }
-
-        public int GetModifiedAttack()
-        {
-            return unitData.attackDamage[unitProgression.GetLevel() - 1];
-        }
-
-        public int GetModifiedDefense()
-        {
-            return unitData.defense[unitProgression.GetLevel() - 1];
-        }
-
-        public int GetUnitDefeatedReward()
-        {
-            return unitData.unitDefeatedReward;
+            foreach (UnitAction action in unitActions)
+            {
+                action.SetTrappedTurnsRemaining(trappedTurnsRemaining);
+            }
         }
 
         public SaveUnitData Save()
@@ -187,13 +140,13 @@ namespace RockPaperScissors.Units
             {
                 UnitClass = unitData.unitClass,
                 UnitLevel = GetLevel(),
-                UnitHealth = GetHealth(),
+                UnitHealth = Health,
                 UnitXP = unitProgression.GetXP(),
                 IsFriendly = isFriendly,
                 FacingDirection = unitAnimator.GetCurrentDirection()
             };
 
-            foreach (UnitAction unitAction in GetUnitActions())
+            foreach (UnitAction unitAction in UnitActions)
             {
                 saveUnitData = unitAction.SaveAction(saveUnitData);
             }
@@ -207,7 +160,7 @@ namespace RockPaperScissors.Units
             health.SetHealth(loadData.UnitHealth);
             unitProgression.SetXP(loadData.UnitXP);
             isFriendly = loadData.IsFriendly;
-            foreach (UnitAction unitAction in GetUnitActions())
+            foreach (UnitAction unitAction in UnitActions)
             {
                 unitAction.LoadAction(loadData);
             }
@@ -221,33 +174,28 @@ namespace RockPaperScissors.Units
             unitAnimator.UpdateSprite();
         }
 
-        public bool CanWalkOn(IGridOccupantInterface gridOccupantInterface)
+        public bool CanWalkOnGridOccupant(IGridOccupantInterface gridOccupantInterface)
         {
             Unit gridOccupant = (Unit)gridOccupantInterface;
-            if(gridOccupantInterface != null && isFriendly == gridOccupant.IsFriendly())
+            if(gridOccupantInterface != null && IsFriendly == gridOccupant.IsFriendly)
             {
                 // Which types of buildings can you walk over?
-                if(gridOccupant.GetUnitClass() == UnitClass.PillowOutpost)
+                if(gridOccupant.Class == UnitClass.PillowOutpost)
                 {
                     return true;
+                }
+                if(gridOccupant.Class == UnitClass.TrampolineTrap)
+                {
+                    return true;
+                }
+                if(gridOccupant.Class == UnitClass.GlueTrap)
+                {
+                    return gridOccupant.isFriendly != IsFriendly;
                 }
                 // Can't walk over any units right now
                 return false;
             }
             return true;
-        }
-
-        public bool IsBuilding()
-        {
-            return GetUnitClass() == UnitClass.PillowFort || GetUnitClass() == UnitClass.PillowOutpost;
-        }
-
-        public void SetTrappedTurnsRemaining(int trappedTurnsRemaining)
-        {
-            foreach (UnitAction action in unitActions)
-            {
-                action.SetTrappedTurnsRemaining(trappedTurnsRemaining);
-            }
         }
     }
 }

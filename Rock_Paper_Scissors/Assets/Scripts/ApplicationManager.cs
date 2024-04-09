@@ -40,8 +40,8 @@ namespace RockPaperScissors
             }
 
             sceneTransitionUI = GetComponentInChildren<SceneTransitionUI>();
-            GameplayManager.OnGameOver += GameplayManager_OnGameOver;
             adsManager = GetComponent<AdsManager>();
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
         }
 
         private void OnEnable() 
@@ -55,6 +55,7 @@ namespace RockPaperScissors
             MainMenu.OnContinueGameButtonPress += MainMenu_OnContinueGameButtonPress;
             SaveButton.OnSaveButtonPress += SaveButton_OnSaveButtonPress;
             GameMenu.OnStartGameButtonPress += GameMenu_OnStartGameButtonPress;
+            AdModal.OnWatchButtonClick += AdModal_OnWatchButtonClick;
             StartCoroutine(StartUpRoutine());
         }
 
@@ -64,6 +65,7 @@ namespace RockPaperScissors
             MainMenu.OnContinueGameButtonPress -= MainMenu_OnContinueGameButtonPress;
             SaveButton.OnSaveButtonPress -= SaveButton_OnSaveButtonPress;
             GameMenu.OnStartGameButtonPress -= GameMenu_OnStartGameButtonPress;
+            AdModal.OnWatchButtonClick -= AdModal_OnWatchButtonClick;
         }
 
         public void StartNewGame()
@@ -171,19 +173,13 @@ namespace RockPaperScissors
             StartNewGame();
         }
 
-        private void GameplayManager_OnGameOver(object sender, GameplayManager.OnGameOverEventArgs e)
+        private void ShowAd()
         {
             if(adsManager == null)
             {
                 Debug.LogWarning("No Ads Manager Found");
                 return;
             }
-
-            ShowAd();
-        }
-
-        private void ShowAd()
-        {
             if(!adsManager.adsInitialized)
             {
                 return;
@@ -201,6 +197,11 @@ namespace RockPaperScissors
                 rewardBonusUI.SetRewardAmount(rewardAmount);
             }
             Debug.Log("Reward Received");
+        }
+
+        private void AdModal_OnWatchButtonClick(object sender, GameplayManager.OnGameOverEventArgs e)
+        {
+            ShowAd();
         }
     }
 

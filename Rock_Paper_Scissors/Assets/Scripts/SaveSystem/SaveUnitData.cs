@@ -15,6 +15,7 @@ namespace RockPaperScissors.SaveSystem
         public int UnitLevel;
         public int AttackActionPointsRemaining; 
         public int MoveActionPointsRemaining;
+        public int SpawnerActionPointsRemaining;
         public int TrappedTurnsRemaining;
         public int UnitHealth;
         public int UnitXP;
@@ -22,15 +23,4 @@ namespace RockPaperScissors.SaveSystem
         public bool IsFriendly;
         public Direction FacingDirection;
     }
-}
-
-[System.Serializable]
-public enum Direction
-{
-    NorthWest,
-    NorthEast,
-    SouthWest,
-    SouthEast,
-    East,
-    West
 }

@@ -25,9 +25,9 @@ namespace RockPaperScissors.Grids
 
         public void HideAllGridPosition()
         {
-            for (int x = 0; x < gridManager.GetGridSize().x; x++)
+            for (int x = 0; x < gridManager.GridSize.x; x++)
             {
-                for (int y = 0; y < gridManager.GetGridSize().y; y++)
+                for (int y = 0; y < gridManager.GridSize.y; y++)
                 {
                     Vector2Int gridPosition = new Vector2Int(x,y);
                     gridManager.GetGridObject(gridPosition).HideAllHighlights();
@@ -57,14 +57,14 @@ namespace RockPaperScissors.Grids
         private IEnumerator AnimateGridWave(bool even)
         {
             WaitForSeconds waitBetweenXPositions = new WaitForSeconds(gridWaveAnimationTimePerHex);
-            for (int x = 0; x < gridManager.GetGridSize().x; x++)
+            for (int x = 0; x < gridManager.GridSize.x; x++)
             {
-                for (int y = 0; y < gridManager.GetGridSize().y; y++)
+                for (int y = 0; y < gridManager.GridSize.y; y++)
                 {
                     if((even && y % 2 == 0) || (!even && y % 2 == 1))
                     {
                         Vector2Int gridPosition = new Vector2Int(x,y);
-                        OutlineShine outlineShine = gridManager.GetGridObject(gridPosition).GetComponentInChildren<OutlineShine>();
+                        OutlineShine outlineShine = gridManager.GetGridObject(gridPosition).GetOutlineShine();
                         if(outlineShine.isActiveAndEnabled)
                         {
                             StartCoroutine(outlineShine.StartShine(gridWaveAnimationTimePerHex));

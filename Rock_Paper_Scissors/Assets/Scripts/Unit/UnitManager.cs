@@ -33,7 +33,7 @@ namespace RockPaperScissors.Units
         private void Unit_OnUnitSpawn(object sender, EventArgs e)
         {
             Unit unit = (Unit)sender;
-            if(unit.IsFriendly())
+            if(unit.IsFriendly)
             {
                 friendlyUnits.Add(unit);
             }
@@ -69,7 +69,7 @@ namespace RockPaperScissors.Units
         {
             foreach (Unit unit in friendlyUnits)
             {
-                foreach (UnitAction unitAction in unit.GetUnitActions())
+                foreach (UnitAction unitAction in unit.UnitActions)
                 {
                     unitAction.ResetActionPoints();
                 }
@@ -77,7 +77,7 @@ namespace RockPaperScissors.Units
 
             foreach (Unit unit in enemyUnits)
             {
-                foreach (UnitAction unitAction in unit.GetUnitActions())
+                foreach (UnitAction unitAction in unit.UnitActions)
                 {
                     unitAction.ResetActionPoints();
                 }
@@ -119,7 +119,7 @@ namespace RockPaperScissors.Units
 
             foreach (Unit friendlyUnit in friendlyUnits)
             {
-                foreach (UnitAction unitAction in friendlyUnit.GetUnitActions())
+                foreach (UnitAction unitAction in friendlyUnit.UnitActions)
                 {
                     actionPoints += unitAction.GetValidActionsRemaining();
                 }

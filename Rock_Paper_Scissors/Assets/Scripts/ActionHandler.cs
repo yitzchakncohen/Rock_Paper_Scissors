@@ -16,19 +16,13 @@ public class ActionHandler : MonoBehaviour
     private GridUI gridUIManager;
     private UnitManager unitManager;
     private Queue<Unit> unitQueue = new Queue<Unit>();
+    private TurnManager turnManager;
     private bool isBusy = false;
     private bool updateGridActionHighlight = false;
     private bool controlsLocked = false;
 
-    private void Start() 
+    void Awake()
     {
-        inputManager = FindObjectOfType<InputManager>();
-        gridManager = FindObjectOfType<GridManager>();
-        gridUIManager = FindObjectOfType<GridUI>();
-        inputManager = FindObjectOfType<InputManager>();
-        unitManager = FindObjectOfType<UnitManager>();
-
-        inputManager.OnSingleTap += InputManager_onSingleTouch;
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
         BuildingButton.OnBuildingButtonPressed += BuildingButton_BuildingButtonPressed;
         BuildingMenu.OnGarrisonedUnitSelected += BuildingMenu_OnGarrisonedUnitSelected;
@@ -38,6 +32,19 @@ public class ActionHandler : MonoBehaviour
         WaveManager.OnWaveStarted += WaveManager_OnWaveStarted;
         WaveManager.OnWaveCompleted += WaveManager_OnWaveCompleted;
         UnitAction.OnAnyActionStarted += UnitAction_OnAnyActionStarted;
+        UnitAction.OnAnyActionCompleted += UnitAction_OnAnyActionCompleted;
+    }
+
+    private void Start() 
+    {
+        inputManager = FindObjectOfType<InputManager>();
+        gridManager = FindObjectOfType<GridManager>();
+        gridUIManager = FindObjectOfType<GridUI>();
+        inputManager = FindObjectOfType<InputManager>();
+        unitManager = FindObjectOfType<UnitManager>();
+        turnManager = FindObjectOfType<TurnManager>();
+
+        inputManager.OnSingleTap += InputManager_onSingleTouch;
 
         ResetUnitQueue();
     }
@@ -63,6 +70,7 @@ public class ActionHandler : MonoBehaviour
         WaveManager.OnWaveStarted -= WaveManager_OnWaveStarted;
         WaveManager.OnWaveCompleted -= WaveManager_OnWaveCompleted;
         UnitAction.OnAnyActionStarted -= UnitAction_OnAnyActionStarted;
+        UnitAction.OnAnyActionCompleted -= UnitAction_OnAnyActionCompleted;
     }
 
     private void InputManager_onSingleTouch(object sender, Vector2 touchPosition)
@@ -92,24 +100,42 @@ public class ActionHandler : MonoBehaviour
     private void HandleGridObjectTouch(GridObject gridObject)
     {
         IGridOccupantInterface gridOccupantUnit = gridObject.GetOccupantUnit();
-        IGridOccupantInterface gridOccupantBuilding = gridObject.GetOccupantBuilding(); 
+        IGridOccupantInterface gridOccupantBuilding = gridObject.GetOccupantBuilding();
+        IGridOccupantInterface gridOccupantTrap = gridObject.GetOccupantTrap();
+
+        // Selected unit on a trampoline
+        if(selectedUnit != null)
+        {
+            GridObject selectedUnitOccupiedGridObject = gridManager.GetGridObjectFromWorldPosition(selectedUnit.transform.position);
+            Unit trap = selectedUnitOccupiedGridObject.GetOccupantTrap() as Unit;
+            if(trap != null && trap.TryGetComponent<TrampolineTrap>(out TrampolineTrap trampolineTrap))
+            {
+                if(trampolineTrap.GetLaunchLocations(selectedUnit, selectedUnitOccupiedGridObject).Contains(gridObject.Position))
+                {
+                    if(trampolineTrap.TryTakeAction(gridObject, ClearBusy))
+                    {
+                        return;
+                    }
+                }
+            }
+        } 
 
         // Try and attack 
-        if(gridOccupantUnit != null && !gridOccupantUnit.IsFriendly())
+        if(gridOccupantUnit != null && !gridOccupantUnit.IsFriendly)
         {
             TryAttackUnitOccupyingGridPosition(gridObject);
             return;
         }
-        else if(gridOccupantBuilding != null && !gridOccupantBuilding.IsFriendly())
+        else if(gridOccupantBuilding != null && !gridOccupantBuilding.IsFriendly)
         {
             // Attack the building
             return;
         }
         // Try to move / select
-        else if(gridOccupantBuilding != null && gridOccupantBuilding.IsFriendly())
+        else if(gridOccupantBuilding != null && gridOccupantBuilding.IsFriendly)
         {
             // Check if you can move the unit onto the tower.
-            if(selectedUnit != null && selectedUnit.IsMoveable() && gridOccupantUnit == null)
+            if(selectedUnit != null && selectedUnit.IsMoveable && gridOccupantUnit == null)
             {
                 if(!TryMoveToGridPosition(gridObject))
                 {
@@ -122,7 +148,7 @@ public class ActionHandler : MonoBehaviour
             }
             return;
         }
-        else if(gridOccupantUnit != null && gridOccupantUnit.IsFriendly())
+        else if(gridOccupantUnit != null && gridOccupantUnit.IsFriendly)
         {
             SelectUnitOccupyingGridPosition(gridObject);
             return;
@@ -209,10 +235,22 @@ public class ActionHandler : MonoBehaviour
             return;
         }
 
-        foreach (UnitAction unitAction in selectedUnit.GetUnitActions())
+        // Unit on TrampolineTrap
+        GridObject selectedUnitOccupiedGridObject = gridManager.GetGridObjectFromWorldPosition(selectedUnit.transform.position);
+        if(selectedUnitOccupiedGridObject.GetOccupantTrap() != null)
+        {
+            if((selectedUnitOccupiedGridObject.GetOccupantTrap() as Unit).TryGetComponent<TrampolineTrap>(out TrampolineTrap trampolineTrap))
+            {
+                gridUIManager.ShowGridPositionList(trampolineTrap.GetLaunchLocations(selectedUnit, selectedUnitOccupiedGridObject), GridHighlightType.Movement);
+                return;
+            }
+        }
+
+
+        foreach (UnitAction unitAction in selectedUnit.UnitActions)
         {
             // Only show if there are action points
-            if(unitAction.GetActionPointsRemaining() <= 0)
+            if(unitAction.ActionPointsRemaining <= 0)
             {
                 continue;
             }
@@ -224,6 +262,7 @@ public class ActionHandler : MonoBehaviour
             else if(unitAction is UnitAttack)
             {
                 HighlightAttackTargets(unitAction as UnitAttack);
+                HighlightAttackRange();
             }
         }
     }
@@ -249,10 +288,181 @@ public class ActionHandler : MonoBehaviour
         gridUIManager.ShowGridPositionList(validAttackPositions, GridHighlightType.Attack);
     }
 
+    private void HighlightAttackRange()
+    {
+        Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(selectedUnit.transform.position);
+        for (int x = 0; x < gridManager.GridSize.x; x++)
+        {
+            for (int z = 0; z < gridManager.GridSize.y; z++)
+            {
+                Vector2Int testGridPosition = new Vector2Int(x, z);
+                GridObject gridObject = gridManager.GetGridObject(testGridPosition);
+                int distance = gridManager.GetGridDistanceBetweenPositions(testGridPosition, gridPosition);
+                if(distance == selectedUnit.AttackRange)
+                {
+                    int dx = testGridPosition.x - gridPosition.x;
+                    int dy = testGridPosition.y - gridPosition.y;
+                    int dxAbs = Mathf.Abs(dx);
+                    int dyAbs = Mathf.Abs(dy);
+
+                    // Same Row
+                    if(testGridPosition.y == gridPosition.y)
+                    {
+                        if(testGridPosition.x < gridPosition.x)
+                        {
+                                gridObject.EnableAttackRangeIndicator(Direction.AllWest);
+                                continue;
+                        }
+                        else if(testGridPosition.x > gridPosition.x)
+                        {
+
+                                gridObject.EnableAttackRangeIndicator(Direction.AllEast);
+                                continue;
+                        }
+                    }
+
+                    // Top and Bottom Rows
+                    if(distance == dyAbs)
+                    {
+                        // Corners
+                        if(((gridPosition.y % 2 == 1 ^ dx < 0) && (distance == (dxAbs - (dyAbs+1) / 2 + dyAbs)))
+                        || (distance == (dxAbs - (dyAbs) / 2 + dyAbs) && (gridPosition.y % 2 == 1) && testGridPosition.x <= gridPosition.x)
+                        || (distance == (dxAbs - (dyAbs) / 2 + dyAbs) && (gridPosition.y % 2 == 0) && testGridPosition.x >= gridPosition.x))
+                        {
+                            // North
+                            if(testGridPosition.y > gridPosition.y)
+                            {
+                                if(testGridPosition.x > gridPosition.x)
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.NorthAndEast);
+                                }
+                                else if(testGridPosition.x == gridPosition.x && (gridPosition.y % 2 == 0))
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.NorthAndEast);
+                                }
+                                else if(testGridPosition.x == gridPosition.x && (gridPosition.y % 2 == 1))
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.NorthAndWest);
+                                }
+                                else
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.NorthAndWest);
+                                }
+                            }
+                            else
+                            { 
+                                // South
+                                if(testGridPosition.x > gridPosition.x)
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.SouthAndEast);
+                                }
+                                else if(testGridPosition.x == gridPosition.x && (gridPosition.y % 2 == 0))
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.SouthAndEast);
+                                }
+                                else if(testGridPosition.x == gridPosition.x && (gridPosition.y % 2 == 1))
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.SouthAndWest);
+                                }
+                                else
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.SouthAndWest);
+                                }
+                            }
+                            continue;
+                        }
+                        else if(testGridPosition.y > gridPosition.y)
+                        {
+                            gridObject.EnableAttackRangeIndicator(Direction.AllNorth);
+                        }
+                        else
+                        {
+                            gridObject.EnableAttackRangeIndicator(Direction.AllSouth);
+                        }
+                        continue;
+                    }
+
+                    // Special Cases
+                    // Even rows XAND to the left
+                    if(gridPosition.x % 2 == 0 ^ testGridPosition.x < gridPosition.x)
+                    {
+                        if(distance == (dxAbs - (dyAbs + 1) / 2 + dyAbs)  || distance == (dxAbs - (dyAbs - 1) / 2 + dyAbs))
+                        {
+                            if(testGridPosition.y > gridPosition.y)
+                            {
+                                if(testGridPosition.x > gridPosition.x)
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.EastNorthEast);
+                                }
+                                else
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.WestNorthWest);
+                                }
+                            }
+                            else
+                            {
+                                if(testGridPosition.x > gridPosition.x)
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.EastSouthEast);
+                                }
+                                else
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.WestSouthWest);
+                                }
+                            }
+                            continue;
+                        }
+                    }
+                    // Odd Rows
+                    else
+                    {
+                        if(distance == (dxAbs - dyAbs / 2 + dyAbs) || distance == (dxAbs - (dyAbs - 1) / 2 + dyAbs) || distance == (dxAbs - (dyAbs + 1) / 2 + dyAbs))
+                        {
+                            if(testGridPosition.y > gridPosition.y)
+                            {
+                                if(testGridPosition.x > gridPosition.x)
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.EastNorthEast);
+                                }
+                                else
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.WestNorthWest);
+                                }
+                            }
+                            else
+                            {
+                                if(testGridPosition.x > gridPosition.x)
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.EastSouthEast);
+                                }
+                                else
+                                {
+                                    gridObject.EnableAttackRangeIndicator(Direction.WestSouthWest);
+                                }
+                            }
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+
     private void HighlightPlacementTargets(UnitSpawner unitSpawner, Unit unitToSpawn)
     {
         List<Vector2Int> validPlacementPositions = unitSpawner.GetValidPlacementPositions(unitToSpawn);
         gridUIManager.ShowGridPositionList(validPlacementPositions, GridHighlightType.PlaceObject);
+    }
+
+    private void HighlightUnitActionsAvailable()
+    {
+        gridManager.UpdateActionHighlights(null);
+        if(turnManager.IsPlayerTurn)
+        {
+            List<Unit> units = unitManager.GetFriendlyUnitsList();
+            gridManager.UpdateActionHighlights(units);
+        }
     }
 
     private void DeselectUnit()
@@ -285,6 +495,7 @@ public class ActionHandler : MonoBehaviour
     private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs eventArgs)
     {
         updateGridActionHighlight = true;
+        HighlightUnitActionsAvailable();
         DeselectUnit();
         ResetUnitQueue();
         if(eventArgs.IsPlayersTurn)
@@ -309,15 +520,17 @@ public class ActionHandler : MonoBehaviour
     private void Health_OnDeath(object sender, Unit e)
     {
         updateGridActionHighlight = true;
+        HighlightUnitActionsAvailable();
     }
 
     private void Unit_OnUnitSpawn(object sender, EventArgs e)
     {
         Unit unit = sender as Unit;
-        if(unit != null && unit.IsFriendly())
+        if(unit != null && unit.IsFriendly)
         {
             unitQueue.Enqueue(unit);
         }
+        HighlightUnitActionsAvailable();
     }
 
     private void GameplayManager_OnGameOver(object sender, EventArgs e)
@@ -348,6 +561,23 @@ public class ActionHandler : MonoBehaviour
         }
     }
 
+    private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
+    {
+        // Check for unit landed on friendly trampoline.
+        UnitMovement movingUnit = sender as UnitMovement;
+        if(movingUnit != null)
+        {
+            GridObject movingUnitGridObject = gridManager.GetGridObjectFromWorldPosition(movingUnit.transform.position);
+            TrampolineTrap trampolineTrap = movingUnitGridObject.GetOccupantTrap() as TrampolineTrap;
+            if(trampolineTrap != null && trampolineTrap.Unit.IsFriendly == movingUnit.Unit.IsFriendly)
+            {
+                selectedUnit = movingUnit.Unit;
+                updateGridActionHighlight = true;
+            }
+        }
+
+    }
+
     private void SetBusy()
     {
         isBusy = true;
@@ -364,6 +594,7 @@ public class ActionHandler : MonoBehaviour
         isBusy = false;
         BusyUpdated?.Invoke(this, isBusy);
         updateGridActionHighlight = true;
+        HighlightUnitActionsAvailable();
     }
 
     public void SelectNextAvaliableUnit()
@@ -388,7 +619,7 @@ public class ActionHandler : MonoBehaviour
     {
         foreach (Unit unit in unitQueue)
         {
-            foreach (UnitAction unitAction in unit.GetUnitActions())
+            foreach (UnitAction unitAction in unit.UnitActions)
             {
                 if (unitAction.GetValidActionsRemaining() > 0)
                 {

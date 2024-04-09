@@ -12,9 +12,9 @@ public class FindingActionState : EnemyState
         throw new NotImplementedException();
     }
 
-    public void FindAction(EnemyStateContext context, UnitManager unitManager)
+    public void FindAction(EnemyStateContext context, UnitManager unitManager, Action<Vector3> OnActionFound)
     {
-        FindNextAction(context, unitManager);
+        FindNextAction(context, unitManager, OnActionFound);
     }
 
     public void TakeAction(EnemyStateContext context, Action CompleteAction, TurnManager turnManager)
@@ -32,7 +32,7 @@ public class FindingActionState : EnemyState
         throw new NotImplementedException();
     }
 
-    private async void FindNextAction(EnemyStateContext context, UnitManager unitManager)
+    private async void FindNextAction(EnemyStateContext context, UnitManager unitManager, Action<Vector3> OnActionFound)
     {
         // Already finding action
         if (findingAction) { return; }
@@ -41,6 +41,11 @@ public class FindingActionState : EnemyState
         findingAction = true;
 
         EnemyAIAction nextAction = await GetBestEnemyAction(unitManager);
+
+        if(nextAction != null)
+        {
+            OnActionFound?.Invoke(nextAction.unitAction.transform.position);
+        }
 
         context.SetState(new TakingActionState(nextAction));
     }
@@ -74,11 +79,11 @@ public class FindingActionState : EnemyState
 
         EnemyAIAction bestEnemeyAIAction = null;
 
-        foreach (UnitAction baseAction in enemyUnit.GetUnitActions())
+        foreach (UnitAction baseAction in enemyUnit.UnitActions)
         {
             // float startTime = Time.realtimeSinceStartup;
 
-            if(baseAction.GetActionPointsRemaining() <= 0 || baseAction.GetTrappedTurnsRemaining() > 0)
+            if(baseAction.ActionPointsRemaining <= 0 || baseAction.GetTrappedTurnsRemaining() > 0)
             {
                 // Enemy cannot afford this action
                 continue;

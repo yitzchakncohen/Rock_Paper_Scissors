@@ -13,7 +13,13 @@ namespace RockPaperScissors.UI
         [SerializeField] private GameObject movementHighlight;
         [SerializeField] private GameObject attackHighlight;
         [SerializeField] private GameObject placementHighlight;
+        [SerializeField] private GameObject actionAvailableHighlight;
         [SerializeField] private bool debugging = false;
+        [SerializeField] private OutlineShine outlineShine;
+        public OutlineShine OutlineShine => outlineShine;
+        [SerializeField] private OutlineShine actionAvailableAnimation;
+        [SerializeField] private AttackRangeIndicator attackRangeIndicator;
+
 
         private void Awake() 
         {
@@ -23,6 +29,8 @@ namespace RockPaperScissors.UI
                 gridPositionText.enabled = false;
                 gridDistanceText.enabled = false;
             }
+            actionAvailableHighlight.SetActive(false);
+            DisableAttackRangeIndicator();
         }
 
         public void ShowHighlight(GridHighlightType highlightType)
@@ -62,6 +70,7 @@ namespace RockPaperScissors.UI
             attackHighlight.SetActive(false);
             movementHighlight.SetActive(false);
             placementHighlight.SetActive(false);
+            attackRangeIndicator.DisableAll();
         }
 
         public void SetGridPosition(Vector2 gridPosition)
@@ -95,7 +104,7 @@ namespace RockPaperScissors.UI
                 int dy = position.y - centerPosition.y;
                 int x = Mathf.Abs(dx);
                 int y = Mathf.Abs(dy);
-                if(centerPosition.x % 2 == 1 ^ dx < 0)
+                if(centerPosition.y % 2 == 1 ^ dx < 0)
                 {
                     int distance = Mathf.Max(0, x - (y + 1) / 2) + y;
                     gridDistanceText.text = distance.ToString();
@@ -106,6 +115,29 @@ namespace RockPaperScissors.UI
                     gridDistanceText.text = distance.ToString();
                 }
             }
+        }
+
+        public void SetActionAvailableHighlight(bool isAvailable)
+        {
+            // actionAvailableHighlight.SetActive(isAvailable);
+            if(isAvailable)
+            {
+                actionAvailableAnimation.StartShine(0, 1.0f);
+            }
+            else
+            {
+                actionAvailableAnimation.StopShine();
+            }
+        }
+
+        public void EnableAttackRangeIndicator(Direction direction)
+        {
+            attackRangeIndicator.SetIndicator(direction);
+        }
+
+        public void DisableAttackRangeIndicator()
+        {
+            attackRangeIndicator.DisableAll();
         }
     }
 }

@@ -10,6 +10,7 @@ namespace RockPaperScissors.UI
     public class StatusIconUI : MonoBehaviour
     {
         [SerializeField] private GameObject buildingOccupiedIcon;
+        [SerializeField] private GameObject actionPointIcon;
         [SerializeField] private Unit unit;
         private GridManager gridManager;
 
@@ -17,29 +18,34 @@ namespace RockPaperScissors.UI
         {
             Unit.OnUnitSpawn += Unit_OnUnitSpawn;            
             UnitAction.OnAnyActionCompleted += UnitAction_OnAnyActionCompleted;
+            TurnManager.OnNextTurn += TurnManager_OnNextTurn;
             gridManager = FindObjectOfType<GridManager>();
+            // TODO remove action point icon, no longer in use. 
+            actionPointIcon.SetActive(false);  
         }
 
         private void OnDestroy() 
         {
             UnitAction.OnAnyActionCompleted -= UnitAction_OnAnyActionCompleted;
             Unit.OnUnitSpawn -= Unit_OnUnitSpawn;
+            TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
         }
 
         private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
         {
-            // float startTime = Time.realtimeSinceStartup;
-
-            if(sender as UnitMovement)
+            if(unit.IsFriendly)
             {
-                Unit updatedUnit = ((UnitMovement)sender).GetUnit();
-                if(updatedUnit == unit)
-                {
-                    CheckForTowerOccupency(updatedUnit);
-                }
+                UpdateActionPointsIconByAction(sender as UnitAction);
             }
-            
-            // Debug.Log("StatusIconUI Action Complete Time: " + (Time.realtimeSinceStartup - startTime)*1000f);
+        }
+
+        private void UpdateActionPointsIconByAction(UnitAction unitAction)
+        {
+            Unit updatedUnit = unitAction.Unit;
+            if(updatedUnit == unit && !updatedUnit.IsBuilding)
+            {
+                CheckForTowerOccupency(updatedUnit);
+            }
         }
 
         private void Unit_OnUnitSpawn(object sender, EventArgs e)
@@ -47,9 +53,10 @@ namespace RockPaperScissors.UI
             Unit spawnedUnit = (Unit)sender;
             if(spawnedUnit == unit)
             {
+                // actionPointIcon.SetActive(unit.GetTotalActionPointsRemaining() > 0);
                 CheckForTowerOccupency(spawnedUnit);
             }
-            else if(spawnedUnit.IsBuilding())
+            else if(spawnedUnit.IsBuilding)
             {
                 CheckForTowerOccupency(spawnedUnit);
             }
@@ -57,8 +64,15 @@ namespace RockPaperScissors.UI
         
         private void CheckForTowerOccupency(Unit updatedUnit)
         {
+            if(unit.IsBuilding)
+            {
+                // Buildings don't get the icon
+                buildingOccupiedIcon.SetActive(false);
+                return;
+            }
+
             GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(updatedUnit.transform.position);
-            if(updatedUnit.GetUnitClass() == UnitClass.PillowFort || updatedUnit.GetUnitClass() == UnitClass.PillowOutpost)
+            if(updatedUnit.IsBuilding)
             {
                 if ((Unit)gridObject.GetOccupantUnit() == unit)
                 {
@@ -76,7 +90,18 @@ namespace RockPaperScissors.UI
                     buildingOccupiedIcon.SetActive(false);
                 }
             }
+        }
 
+        private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs e)
+        {
+            // if(e.IsPlayersTurn && unit.IsFriendly)
+            // {
+            //     actionPointIcon.SetActive(true);                
+            // }
+            // else
+            // {
+            //     actionPointIcon.SetActive(false);
+            // }
         }
     }
 }

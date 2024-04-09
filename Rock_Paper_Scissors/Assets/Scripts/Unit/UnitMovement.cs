@@ -19,15 +19,14 @@ namespace RockPaperScissors.Units
         private UnitManager unitManager;
         private PathFinding pathFinding;
         private UnitAttack unitAttack;
-        private Unit unit;
         private List<GridObject> targetGridObjects = null;
         private int currentPositionIndex = 0;
         private bool moving = false;
 
-        private void Awake() 
+        protected override void Awake() 
         {
+            base.Awake();
             unitAttack = GetComponent<UnitAttack>();
-            unit = GetComponent<Unit>();
         }
         
         protected override void Start() 
@@ -103,9 +102,13 @@ namespace RockPaperScissors.Units
             UnitTrap unitTrap = unit.GetComponent<UnitTrap>();
             if(unitTrap != null)
             {   
-                if(unitTrap.GetUnit().IsFriendly() != this.unit.IsFriendly() && !unitTrap.GetIsTrapSprung())
+                if(unit.IsFriendly != Unit.IsFriendly && !unitTrap.IsTrapSprung)
                 {
                     return true;
+                }
+                else
+                {
+                    // Friendly trap doesn't stop movement.
                 }
             }
             return false;
@@ -133,10 +136,10 @@ namespace RockPaperScissors.Units
             }
 
             Vector2Int currentGridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
-            targetGridObjects = pathFinding.FindPath(currentGridPosition, targetGridObject.GetGridPostion(), out int pathLength, unit);
+            targetGridObjects = pathFinding.FindPath(currentGridPosition, targetGridObject.Position, out int pathLength, unit);
 
             // Check if position is within movement range and moveable
-            if(pathLength > unit.GetMoveDistance() || targetGridObjects == null)
+            if(pathLength > unit.MoveDistance || targetGridObjects == null)
             {
                 return false;
             }
@@ -150,7 +153,7 @@ namespace RockPaperScissors.Units
 
         private void AnimateMovement(Vector2 moveDirection)
         {
-            int level = unit.GetUnitProgression().GetLevel();
+            int level = unit.UnitProgression.GetLevel();
             if(moveDirection.x > 0 && moveDirection.y > 0)
             {
                 unitAnimator.MoveUpRight(level);
@@ -182,10 +185,14 @@ namespace RockPaperScissors.Units
         {
             List<Vector2Int> gridPositionList = new List<Vector2Int>();
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
-
-            for (int x = -unit.GetMoveDistance(); x <= unit.GetMoveDistance(); x++)
+            if(unit == null)
             {
-                for (int z = -unit.GetMoveDistance(); z <= unit.GetMoveDistance(); z++)
+                unit = GetComponent<Unit>();
+            }
+
+            for (int x = -unit.MoveDistance; x <= unit.MoveDistance; x++)
+            {
+                for (int z = -unit.MoveDistance; z <= unit.MoveDistance; z++)
                 {
                     Vector2Int testGridPosition = gridPosition + new Vector2Int(x, z);
 
@@ -203,7 +210,7 @@ namespace RockPaperScissors.Units
 
                     // Check if it's within movement distance
                     pathFinding.FindPath(gridPosition, testGridPosition, out int testDistance, unit);
-                    if (testDistance > unit.GetMoveDistance())
+                    if (testDistance > unit.MoveDistance)
                     {
                         continue;
                     }
@@ -308,7 +315,7 @@ namespace RockPaperScissors.Units
             foreach (Unit unit in targetList)
             {
                 // Add or substract 1 if there is a combat advantage over the unit.
-                targetCountValue += CombatModifiers.UnitHasAdvantage(this.unit.GetUnitClass(), unit.GetUnitClass());
+                targetCountValue += CombatModifiers.UnitHasAdvantage(this.unit.Class, unit.Class);
             }
 
             return targetCountValue;
@@ -322,7 +329,7 @@ namespace RockPaperScissors.Units
                 float averageNormalizedHealth = 0f;
                 foreach (Unit unit in targetList)
                 {
-                    averageNormalizedHealth += unit.GetNormalizedHealth();
+                    averageNormalizedHealth += unit.NormalizedHealth;
                 }
                 averageNormalizedHealth = averageNormalizedHealth / targetList.Count;
                 // The health value is a number between 0 and 10;
@@ -334,7 +341,7 @@ namespace RockPaperScissors.Units
 
         private Vector2Int GetCurrentGridPosition()
         {
-            return gridManager.GetGridPositionFromWorldPosition(this.transform.position);
+            return gridManager.GetGridPositionFromWorldPosition(transform.position);
         }
 
         public override int GetValidActionsRemaining()
@@ -352,11 +359,6 @@ namespace RockPaperScissors.Units
         public override bool TryTakeAction(GridObject gridObject, Action onActionComplete)
         {
             return TryStartMove(gridObject, onActionComplete);
-        }
-
-        public Unit GetUnit()
-        {
-            return unit;
         }
 
         protected override void CancelButton_OnCancelButtonPress()

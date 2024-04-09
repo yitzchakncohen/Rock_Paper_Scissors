@@ -13,7 +13,6 @@ namespace RockPaperScissors.Units
         [SerializeField] private UnitAnimator unitAnimator;
         [SerializeField] private AnimationCurve attackAnimationCurve;
         private float cameraSnapDelay = 0.2f;
-        private Unit unit;
         private Unit target;
         private GridManager gridManager;
         private float timer;
@@ -25,12 +24,6 @@ namespace RockPaperScissors.Units
         private bool attackSoundHasPlayed = false;
         private int unitAttackActionBaseValue = 100;
         private int classAdvantageMultiplier = 10;
-
-
-        private void Awake() 
-        {
-            unit = GetComponent<Unit>();
-        }
 
         protected override void Start() 
         {
@@ -83,7 +76,7 @@ namespace RockPaperScissors.Units
 
         private void AnimateAttack(Vector2 attackDirection)
         {
-            int level = unit.GetUnitProgression().GetLevel();
+            int level = unit.UnitProgression.GetLevel();
             float normalizedAnimationTime = timer/attackAnimationTime;
             // Animate the attack by moving the unit towards the unit it is attacking. 
             transform.position = attackStartPosition + (attackTargetPosition - attackStartPosition)*attackAnimationCurve.Evaluate(normalizedAnimationTime);
@@ -122,7 +115,7 @@ namespace RockPaperScissors.Units
 
         private void PlayAttackSound()
         {
-            switch (unit.GetUnitClass())
+            switch (unit.Class)
             {
                 case UnitClass.GlueTrap:
                     AudioManager.Instance.PlayGlueTrapSound();
@@ -173,7 +166,7 @@ namespace RockPaperScissors.Units
 
 
             // Increment outward getting all the positions in range one layer at a time.
-            for (int i = 0; i < unit.GetAttackRange(); i++)
+            for (int i = 0; i < unit.AttackRange; i++)
             {
                 // Check the valid neighbours of each position and add them to the list if they are new.
                 List<Vector2Int> newPositions = new List<Vector2Int>();
@@ -197,8 +190,8 @@ namespace RockPaperScissors.Units
             {
                 GridObject gridObject = gridManager.GetGridObject(position);
                 if(gridObject.GetCombatTarget() != null 
-                    && gridObject.GetCombatTarget().IsFriendly() != unit.IsFriendly()
-                    && !((Unit)gridObject.GetCombatTarget()).IsDead())
+                    && gridObject.GetCombatTarget().IsFriendly != unit.IsFriendly
+                    && !((Unit)gridObject.GetCombatTarget()).IsDead)
                 {
                     validTargetList.Add((Unit)gridObject.GetCombatTarget());
                 }
@@ -223,8 +216,8 @@ namespace RockPaperScissors.Units
                     {
                         gridObject = gridObject,
                         actionValue = unitAttackActionBaseValue 
-                                        + (1 - unit.GetNormalizedHealth())*unitAttackActionBaseValue 
-                                        + CombatModifiers.UnitHasAdvantage(this.unit.GetUnitClass(), unit.GetUnitClass())*classAdvantageMultiplier,
+                                        + (1 - unit.NormalizedHealth)*unitAttackActionBaseValue 
+                                        + CombatModifiers.UnitHasAdvantage(this.unit.Class, unit.Class)*classAdvantageMultiplier,
                         unitAction = this,
                     };
                 }
@@ -235,8 +228,8 @@ namespace RockPaperScissors.Units
                     {
                         gridObject = gridObject,
                         actionValue = unitAttackActionBaseValue 
-                                        + (1 - unit.GetNormalizedHealth())*unitAttackActionBaseValue
-                                        + CombatModifiers.UnitHasAdvantage(this.unit.GetUnitClass(), unit.GetUnitClass())*classAdvantageMultiplier,
+                                        + (1 - unit.NormalizedHealth)*unitAttackActionBaseValue
+                                        + CombatModifiers.UnitHasAdvantage(this.unit.Class, unit.Class)*classAdvantageMultiplier,
                         unitAction = this,
                     }; 
 
@@ -273,11 +266,6 @@ namespace RockPaperScissors.Units
         public Unit GetTarget()
         {
             return target;
-        }
-
-        public Unit GetUnit()
-        {
-            return unit;
         }
 
         protected override void CancelButton_OnCancelButtonPress()

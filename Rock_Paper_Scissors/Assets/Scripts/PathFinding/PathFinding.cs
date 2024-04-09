@@ -25,7 +25,7 @@ namespace RockPaperScissors.PathFindings
 
         private void GridManager_OnGridSetupComplete()
         {
-            gridSize = gridManager.GetGridSize();
+            gridSize = gridManager.GridSize;
             // Setup the nodes
             pathNodes = new PathNode[gridSize.x, gridSize.y];
 

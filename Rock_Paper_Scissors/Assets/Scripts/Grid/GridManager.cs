@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using RockPaperScissors.Units;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Linq; 
 
 namespace RockPaperScissors.Grids
 {
@@ -15,9 +16,13 @@ namespace RockPaperScissors.Grids
         [SerializeField] private GridObject gridObjectPrefab;
         [SerializeField] private GameObject borderTilePrefab;
         [SerializeField] private Tilemap baseTilemap;
+        [SerializeField] private int borderWidth = 4;
         private Grid grid;
         private GridObject[,] gridObjects;
+        private Vector2[] borderPoints = new Vector2[4];
+        public Vector2[] BorderPoints => borderPoints;
         public Task SetupGridTask{get; private set;} = null;
+        public Vector2Int GridSize => gridSize;
 
         private void Awake()
         {
@@ -29,16 +34,18 @@ namespace RockPaperScissors.Grids
         {
             await Task.Yield();
             gridObjects = new GridObject[gridSize.x, gridSize.y];
+            List<Vector3> allBorderLocations = new List<Vector3>();
 
             // Setup the grid
-            for (int x = -2; x <= gridSize.x + 1; x++)
+            for (int x = -borderWidth; x <= gridSize.x + borderWidth - 1; x++)
             {
-                for (int y = -2; y <= gridSize.y + 1; y++)
+                for (int y = -borderWidth; y <= gridSize.y + borderWidth - 1; y++)
                 {
                     if (x <= -1 || x >= gridSize.x || y <= -1 || y >= gridSize.y)
                     {
                         Vector3 gridPosition = grid.GetCellCenterWorld(new Vector3Int(x, y, 0));
                         Instantiate(borderTilePrefab, gridPosition, Quaternion.identity);
+                        allBorderLocations.Add(gridPosition);
                     }
                     else
                     {
@@ -50,22 +57,64 @@ namespace RockPaperScissors.Grids
                 }
             }
 
+            CalculateBorderCorners(allBorderLocations);
+
             UpdateGridOccupancy();
             Debug.Log("Grid Setup Completed");
             OnGridSetupComplete?.Invoke();
         }
+
+        private void CalculateBorderCorners(List<Vector3> allBorderLocations)
+        {
+            // Bottom Left
+            borderPoints[0] = Vector2Int.zero;
+            // Top Left
+            borderPoints[1] = Vector2Int.zero;
+            // Top Right
+            borderPoints[2] = Vector2Int.zero;
+            // Bottom Right
+            borderPoints[3] = Vector2Int.zero;
+
+            foreach (Vector3 location in allBorderLocations)
+            {
+                // Bottom Left
+                if (location.x <= borderPoints[0].x && location.y <= borderPoints[0].y)
+                {
+                    borderPoints[0] = location;
+                }
+                // Top Left
+                if (location.x <= borderPoints[1].x && location.y >= borderPoints[1].y)
+                {
+                    borderPoints[1] = location;
+                }
+                // Top Right
+                if (location.x >= borderPoints[2].x && location.y >= borderPoints[2].y)
+                {
+                    borderPoints[2] = location;
+                }
+                // Bottom Right
+                if (location.x >= borderPoints[3].x && location.y <= borderPoints[3].y)
+                {
+                    borderPoints[3] = location;
+                }
+            }
+        }
+
         private void Start() 
         {
             UnitAction.OnAnyActionCompleted += UnitAction_OnAnyActionCompleted;
             UnitHealth.OnDeath += Health_OnDeath;
             Unit.OnUnitSpawn += Unit_OnUnitSpawn;
+            ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
         }
+
 
         private void OnDestroy() 
         {
             UnitAction.OnAnyActionCompleted -= UnitAction_OnAnyActionCompleted;
             UnitHealth.OnDeath -= Health_OnDeath;
             Unit.OnUnitSpawn -= Unit_OnUnitSpawn;
+            ActionHandler.OnUnitSelected -= ActionHandler_OnUnitSelected;
         }
 
         public Vector2Int GetGridPositionFromWorldPosition(Vector2 worldPosition)
@@ -97,11 +146,6 @@ namespace RockPaperScissors.Grids
             return gridObjects[gridPosition.x, gridPosition.y];
         }
 
-        public Vector2Int GetGridSize()
-        {
-            return gridSize;
-        }
-
         public void UpdateGridOccupancy()
         {
             float raycastDistance = 0.1f;
@@ -117,14 +161,36 @@ namespace RockPaperScissors.Grids
                         // If the object is a unit set as Occupant
                         hit.collider.TryGetComponent<IGridOccupantInterface>(out IGridOccupantInterface unit);
                         // Check if the unit is a Building
-                        if(unit.IsBuilding())
+                        if(unit.IsBuilding)
                         {
                             gridObjects[x,y].SetOccupantBuilding(unit);
+                        }
+                        else if(unit.IsTrap)
+                        {
+                            gridObjects[x,y].SetOccupantTrap(unit);
                         }
                         else
                         {
                             gridObjects[x,y].SetOccupantUnit(unit);
                         }
+                    }
+                }
+            }
+        }
+
+        public void UpdateActionHighlights(List<Unit> units)
+        {
+            foreach (GridObject gridObject in gridObjects)
+            {
+                gridObject.SetActionAvailableHighlight(false);
+            }
+            if(units != null)
+            {
+                foreach (Unit unit in units)
+                {
+                    if(unit.GetTotalActionPointsRemaining() > 0)
+                    {
+                        GetGridObjectFromWorldPosition(unit.transform.position).SetActionAvailableHighlight(true);
                     }
                 }
             }
@@ -157,7 +223,7 @@ namespace RockPaperScissors.Grids
             int dy = positionB.y - positionA.y;
             int x = Mathf.Abs(dx);
             int y = Mathf.Abs(dy);
-            if (positionA.x % 2 == 1 ^ dx < 0)
+            if (positionA.y % 2 == 1 ^ dx < 0)
             {
                 return Mathf.Max(0, x - (y + 1) / 2) + y;
             }
@@ -189,7 +255,7 @@ namespace RockPaperScissors.Grids
 
             // Movement
             UnitMovement unitMovement = sender as UnitMovement;
-            if(unitMovement != null && !unitMovement.GetUnit().IsBuilding())
+            if(unitMovement != null && !unitMovement.Unit.IsBuilding)
             {
                 // Remove from existing grid location
                 Unit unit = ((UnitMovement)sender).GetComponent<Unit>();
@@ -214,7 +280,7 @@ namespace RockPaperScissors.Grids
 
         private void Health_OnDeath(object sender, Unit e)
         {
-            Unit unit = ((UnitHealth)sender).GetUnit();
+            Unit unit = ((UnitHealth)sender).Unit;
             for (int x = 0; x < gridSize.x; x++)
             {
                 for (int y = 0; y < gridSize.y; y++)
@@ -235,11 +301,11 @@ namespace RockPaperScissors.Grids
         {
             // TODO Clean up this mess :)
             Unit unit = sender as Unit;
-            if(unit.IsBuilding())
+            if(unit.IsBuilding)
             {
                 GetGridObjectFromWorldPosition(unit.transform.position).SetOccupantBuilding(unit);
             }
-            else if(unit.GetUnitClass() == UnitClass.GlueTrap)
+            else if(unit.IsTrap)
             {
                 GetGridObjectFromWorldPosition(unit.transform.position).SetOccupantTrap(unit);
             }
@@ -263,7 +329,7 @@ namespace RockPaperScissors.Grids
 
             }
 
-            if(currentPosition.x + 1 < GetGridSize().x)
+            if(currentPosition.x + 1 < GridSize.x)
             {
                 // Right
                 neighbourList.Add(new Vector2Int(currentPosition.x +1, currentPosition.y +0));
@@ -273,23 +339,35 @@ namespace RockPaperScissors.Grids
             {
                 // Down (left and right)
                 neighbourList.Add(new Vector2Int(currentPosition.x +0, currentPosition.y -1));
-                if(currentPosition.x - 1 >= 0 && currentPosition.x + 1 < GetGridSize().x)
+                if(currentPosition.x - 1 >= 0 && currentPosition.x + 1 < GridSize.x)
                 {
                     neighbourList.Add(new Vector2Int(currentPosition.x + (oddRow ? +1 : -1), currentPosition.y -1));                
                 }
             }
 
-            if(currentPosition.y + 1 < GetGridSize().y)
+            if(currentPosition.y + 1 < GridSize.y)
             {
                 // Up (left and right)
                 neighbourList.Add(new Vector2Int(currentPosition.x + 0, currentPosition.y +1));
-                if(currentPosition.x - 1 >= 0 && currentPosition.x + 1 < GetGridSize().x)
+                if(currentPosition.x - 1 >= 0 && currentPosition.x + 1 < GridSize.x)
                 {
                     neighbourList.Add(new Vector2Int(currentPosition.x + (oddRow ? +1 : -1), currentPosition.y +1));
                 }
             }
 
             return neighbourList;
+        }
+
+        private void ActionHandler_OnUnitSelected(object sender, Unit e)
+        {
+            if(e != null)
+            {
+                Vector2Int position = GetGridPositionFromWorldPosition(e.transform.position);
+                foreach (GridObject gridObject in gridObjects)
+                {
+                    gridObject.SetDistanceFromPosition(position);
+                }
+            }
         }
     }    
 }
