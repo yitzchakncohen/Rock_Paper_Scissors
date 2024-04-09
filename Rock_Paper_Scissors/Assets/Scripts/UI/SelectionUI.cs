@@ -1,7 +1,8 @@
 using System;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using RockPaperScissors.Units;
 using TMPro;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +20,7 @@ namespace RockPaperScissors.UI
         [SerializeField] private TextMeshProUGUI movement;
         [SerializeField] private TextMeshProUGUI xp;
         private Unit selectedUnit = null;
+        private static TextInfo textInfo = new CultureInfo("en-US",false).TextInfo;
 
         
         private void Start() 
@@ -79,12 +81,8 @@ namespace RockPaperScissors.UI
 
         private string SplitCamelCase(string str)
         {
-            string[] strings = SearchUtils.SplitCamelCase(str.ToString());
-            string newString = "";
-            foreach (string partialString in strings)
-            {
-                newString += partialString + " ";
-            }            
+            string newString = Regex.Replace(str, @"\p{Lu}", m => " " + m.Value.ToLower());     
+            newString = textInfo.ToTitleCase(newString);
             return newString.Trim();
         }
     }
