@@ -9,6 +9,7 @@ namespace RockPaperScissors.UI
     public class ScoreUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI scoreText;
+        private float scoreUpdateTime = 0.3f;
 
         private void OnEnable() 
         {
@@ -23,7 +24,21 @@ namespace RockPaperScissors.UI
 
         private void GameplayManager_OnScoreChange(int score)
         {
-            scoreText.text = score.ToString();
+            StartCoroutine(ScoreUpdateRoutine(score));
         }
+
+        private IEnumerator ScoreUpdateRoutine(int score)
+    {
+        float startingCurrency = int.Parse(scoreText.text);
+
+        while(startingCurrency <= score-1)
+        {
+            startingCurrency = Mathf.Lerp(startingCurrency, score, Time.deltaTime/scoreUpdateTime);
+            scoreText.text = startingCurrency.ToString();
+            // Debug.Log(startingCurrency);
+            yield return null;
+        }
+        scoreText.text = score.ToString();
+    }
     }    
 }
