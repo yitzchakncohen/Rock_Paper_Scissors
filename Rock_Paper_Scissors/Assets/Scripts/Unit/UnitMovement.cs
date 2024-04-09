@@ -106,6 +106,10 @@ namespace RockPaperScissors.Units
                 {
                     return true;
                 }
+                else
+                {
+                    // Friendly trap doesn't stop movement.
+                }
             }
             return false;
         }

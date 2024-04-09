@@ -233,7 +233,7 @@ GameObject:
   - component: {fileID: 8219552854865217702}
   - component: {fileID: 3244311521902394323}
   - component: {fileID: 1724070906729191139}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GlueTrap
   m_TagString: Untagged
   m_Icon: {fileID: 0}

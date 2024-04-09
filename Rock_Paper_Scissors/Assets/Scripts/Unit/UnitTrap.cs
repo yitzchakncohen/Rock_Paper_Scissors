@@ -117,7 +117,7 @@ public abstract class UnitTrap : UnitAction
 
         GridObject movingUnitGridObject = gridManager.GetGridObjectFromWorldPosition(movingUnit.transform.position);
         GridObject trapGridObject = gridManager.GetGridObjectFromWorldPosition(transform.position);
-        if(movingUnitGridObject == trapGridObject)
+        if(movingUnitGridObject == trapGridObject && movingUnit.Unit.IsFriendly != Unit.IsFriendly)
         {
             SpringTheTrap(movingUnit.Unit);
         }
@@ -138,7 +138,7 @@ public abstract class UnitTrap : UnitAction
         Instantiate(Unit.HitFX, transform.position, Quaternion.identity);
         yield return new WaitForSeconds(trapAnimationTime);
         AnimateTrap();
-        ApplyTrapEffect(trappedUnit);
+        yield return StartCoroutine(ApplyTrapEffect(trappedUnit));
         // Destroy after turns
         turnsUntilDestroyed = trapEffectTurns;
         ActionComplete();
@@ -150,5 +150,5 @@ public abstract class UnitTrap : UnitAction
     }
 
     abstract protected void AnimateTrap();
-    abstract protected void ApplyTrapEffect(Unit trappedUnit);
+    abstract protected IEnumerator ApplyTrapEffect(Unit trappedUnit);
 }

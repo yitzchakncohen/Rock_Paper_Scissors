@@ -16,15 +16,21 @@ public class TrampolineTrap : UnitTrap
         // TODO animate the trap.
     }
 
-    protected override void ApplyTrapEffect(Unit trappedUnit)
+    protected override IEnumerator ApplyTrapEffect(Unit trappedUnit)
     {
         Direction unitFacingDirection = trappedUnit.UnitAnimator.GetCurrentDirection();
         Vector2Int gridLaunchLocation = gridManager.GetGridPositionFromWorldPosition(transform.position);
-        Vector2Int landingGridLocation = GetLandingLocation(unitFacingDirection, gridLaunchLocation);
-        StartCoroutine(LaunchUnitRoutine(trappedUnit, landingGridLocation, gridLaunchLocation));
+        Vector2Int landingGridLocation = GetLandingLocation(unitFacingDirection, gridLaunchLocation, launchDistance);
+        int i = 1;
+        while(!gridManager.GetGridObject(landingGridLocation).IsWalkable(trappedUnit) && i < launchDistance)
+        {
+            landingGridLocation = GetLandingLocation(unitFacingDirection, gridLaunchLocation, launchDistance -i);
+            i++;
+        }
+        yield return StartCoroutine(LaunchUnitRoutine(trappedUnit, landingGridLocation, gridLaunchLocation));
     }
 
-    private Vector2Int GetLandingLocation(Direction unitFacingDirection, Vector2Int gridLaunchLocation)
+    private Vector2Int GetLandingLocation(Direction unitFacingDirection, Vector2Int gridLaunchLocation, int launchDistance)
     {
         // Odd Row
         bool oddRow = gridLaunchLocation.y % 2 == 1;

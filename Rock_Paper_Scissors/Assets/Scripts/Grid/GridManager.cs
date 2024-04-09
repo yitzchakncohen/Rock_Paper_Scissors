@@ -120,6 +120,10 @@ namespace RockPaperScissors.Grids
                         {
                             gridObjects[x,y].SetOccupantBuilding(unit);
                         }
+                        else if(unit.IsTrap)
+                        {
+                            gridObjects[x,y].SetOccupantTrap(unit);
+                        }
                         else
                         {
                             gridObjects[x,y].SetOccupantUnit(unit);

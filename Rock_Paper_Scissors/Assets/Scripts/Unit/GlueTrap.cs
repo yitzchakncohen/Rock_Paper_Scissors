@@ -12,10 +12,11 @@ public class GlueTrap : UnitTrap
         trapForeground.SetActive(true);
     }
 
-    protected override void ApplyTrapEffect(Unit trappedUnit)
+    protected override IEnumerator ApplyTrapEffect(Unit trappedUnit)
     {
         // Damage unit
         int damageAmount = CombatModifiers.GetDamage(unit, trappedUnit, false);
         trappedUnit.Damage(damageAmount, unit);
+        yield return null;
     }
 }

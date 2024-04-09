@@ -1,4 +1,5 @@
 using RockPaperScissors.UI;
+using RockPaperScissors.Units;
 using UnityEngine;
 
 namespace RockPaperScissors.Grids
@@ -31,7 +32,12 @@ namespace RockPaperScissors.Grids
         public bool IsWalkable(IGridOccupantInterface gridObject)
         {
             // Grid position empty
-            if(gridPositionOccupyingUnit == null && gridPositionOccupyingBuilding == null) {return true;}
+            if(gridPositionOccupyingUnit == null 
+                && gridPositionOccupyingBuilding == null 
+                && gridPositionOccupyingTrap == null) 
+            {
+                return true;
+            }
             
             // Grid position has unit
             // TODO can you walk over your own units?            
@@ -42,6 +48,10 @@ namespace RockPaperScissors.Grids
             if(gridPositionOccupyingBuilding != null)
             {
                 return gridObject.CanWalkOnGridOccupant(gridPositionOccupyingBuilding);
+            }
+            if(gridPositionOccupyingTrap != null)
+            {
+                return gridObject.CanWalkOnGridOccupant(gridPositionOccupyingTrap);
             }
 
             return true;

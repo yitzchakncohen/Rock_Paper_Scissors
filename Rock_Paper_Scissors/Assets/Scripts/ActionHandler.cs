@@ -488,6 +488,7 @@ public class ActionHandler : MonoBehaviour
     private void Health_OnDeath(object sender, Unit e)
     {
         updateGridActionHighlight = true;
+        HighlightUnitActionsAvailable();
     }
 
     private void Unit_OnUnitSpawn(object sender, EventArgs e)

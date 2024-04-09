@@ -113,6 +113,11 @@ namespace RockPaperScissors.Units
 
         public int GetTotalActionPointsRemaining()
         {
+            if(IsTrap)
+            {
+                return 0;
+            }
+
             int actionPoints = 0;
             foreach (UnitAction unitAction in unitActions)
             {
@@ -172,14 +177,26 @@ namespace RockPaperScissors.Units
         public bool CanWalkOnGridOccupant(IGridOccupantInterface gridOccupantInterface)
         {
             Unit gridOccupant = (Unit)gridOccupantInterface;
-            if(gridOccupantInterface != null && isFriendly == gridOccupant.IsFriendly)
+            if(gridOccupantInterface != null && IsFriendly == gridOccupant.IsFriendly)
             {
                 // Which types of buildings can you walk over?
                 if(gridOccupant.UnitClass == UnitClass.PillowOutpost)
                 {
+                    Debug.Log("Can walk on outpost?");
                     return true;
                 }
+                if(gridOccupant.UnitClass == UnitClass.TrampolineTrap)
+                {
+                    Debug.Log("Can walk on trampoline?");
+                    return true;
+                }
+                if(gridOccupant.UnitClass == UnitClass.GlueTrap)
+                {
+                    Debug.Log("Can walk on glue trap?");
+                    return gridOccupant.isFriendly != IsFriendly;
+                }
                 // Can't walk over any units right now
+                Debug.Log("Can walk on unit?");
                 return false;
             }
             return true;
