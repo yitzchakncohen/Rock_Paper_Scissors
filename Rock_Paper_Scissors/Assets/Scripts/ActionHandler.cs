@@ -241,8 +241,7 @@ public class ActionHandler : MonoBehaviour
         {
             if((selectedUnitOccupiedGridObject.GetOccupantTrap() as Unit).TryGetComponent<TrampolineTrap>(out TrampolineTrap trampolineTrap))
             {
-                gridUIManager.ShowGridPositionList(trampolineTrap.GetLaunchLocations(selectedUnit, selectedUnitOccupiedGridObject), GridHighlightType.Movement);
-                return;
+                gridUIManager.ShowGridPositionList(trampolineTrap.GetLaunchLocations(selectedUnit, selectedUnitOccupiedGridObject), GridHighlightType.PlaceObject);
             }
         }
 
