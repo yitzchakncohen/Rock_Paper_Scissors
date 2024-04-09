@@ -172,7 +172,7 @@ namespace RockPaperScissors.Units
 
             if (currencyBank.GetCurrencyRemaining() > minimumPrice)
             {
-                return 1;
+                return actionPointsRemaining;
             }
             else
             {
