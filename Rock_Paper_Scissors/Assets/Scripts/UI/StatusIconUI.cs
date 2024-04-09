@@ -49,7 +49,7 @@ namespace RockPaperScissors.UI
         }
 
         private void Unit_OnUnitSpawn(object sender, EventArgs e)
-        {
+        {        
             Unit spawnedUnit = (Unit)sender;
             if(spawnedUnit == unit)
             {
