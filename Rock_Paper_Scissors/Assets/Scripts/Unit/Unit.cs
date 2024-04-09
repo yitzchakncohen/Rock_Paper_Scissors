@@ -182,21 +182,17 @@ namespace RockPaperScissors.Units
                 // Which types of buildings can you walk over?
                 if(gridOccupant.UnitClass == UnitClass.PillowOutpost)
                 {
-                    Debug.Log("Can walk on outpost?");
                     return true;
                 }
                 if(gridOccupant.UnitClass == UnitClass.TrampolineTrap)
                 {
-                    Debug.Log("Can walk on trampoline?");
                     return true;
                 }
                 if(gridOccupant.UnitClass == UnitClass.GlueTrap)
                 {
-                    Debug.Log("Can walk on glue trap?");
                     return gridOccupant.isFriendly != IsFriendly;
                 }
                 // Can't walk over any units right now
-                Debug.Log("Can walk on unit?");
                 return false;
             }
             return true;
