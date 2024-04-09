@@ -129,7 +129,6 @@ namespace RockPaperScissors.UI
         {
             if(garrisonedUnit != null)
             {
-                Debug.Log(garrisonedUnit.gameObject.name);
                 selectUnitButton.interactable = true;
                 StartCoroutine(OpenMainMenu());
             }

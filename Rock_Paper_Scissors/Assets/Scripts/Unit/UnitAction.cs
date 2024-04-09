@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using RockPaperScissors.Grids;
 using RockPaperScissors.SaveSystem;
 using RockPaperScissors.UI;
@@ -47,6 +48,7 @@ namespace RockPaperScissors.Units
         protected void ActionComplete()
         {
             isActive = false;
+            // Debug.Log(onActionComplete.GetMethodInfo());
             onActionComplete();
             OnAnyActionCompleted?.Invoke(this, EventArgs.Empty);
         }

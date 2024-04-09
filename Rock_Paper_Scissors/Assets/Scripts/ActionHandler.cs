@@ -112,13 +112,13 @@ public class ActionHandler : MonoBehaviour
             {
                 if(trampolineTrap.GetLaunchLocations(selectedUnit, selectedUnitOccupiedGridObject).Contains(gridObject.Position))
                 {
-                    if(trampolineTrap.TryTakeAction(gridObject, ClearBusy))
+                    if(trampolineTrap.TryTakeAction(gridObject, () => TrampolineTrapActionComplete(selectedUnit)))
                     {
                         return;
                     }
                 }
             }
-        } 
+        }
 
         // Try and attack 
         if(gridOccupantUnit != null && !gridOccupantUnit.IsFriendly)
@@ -557,7 +557,8 @@ public class ActionHandler : MonoBehaviour
     private void UnitAction_OnAnyActionStarted(object sender, EventArgs e)
     {
         UnitTrap unitTrap = sender as UnitTrap;
-        if(unitTrap != null)
+        // Exclude the case of the enemy unit by checking if a unit is selected.
+        if(unitTrap != null && selectedUnit == null)
         {
             SetBusy();
             unitTrap.SetActionCompletedAction(ClearBusy);
@@ -579,6 +580,14 @@ public class ActionHandler : MonoBehaviour
             }
         }
 
+    }
+
+    private void TrampolineTrapActionComplete(Unit launchedUnit)
+    {
+        selectedUnit = launchedUnit;
+        OnUnitSelected?.Invoke(this, selectedUnit);
+        updateGridActionHighlight = true;
+        ClearBusy();
     }
 
     private void SetBusy()
