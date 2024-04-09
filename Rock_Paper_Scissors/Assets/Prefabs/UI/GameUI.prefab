@@ -1354,7 +1354,7 @@ GameObject:
   - component: {fileID: 4083752891096165857}
   - component: {fileID: 5227488939547114714}
   m_Layer: 5
-  m_Name: GameOverMenuPanel
+  m_Name: GameOverPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1555,7 +1555,7 @@ GameObject:
   - component: {fileID: 260207724727567218}
   - component: {fileID: 2727050759193786901}
   m_Layer: 5
-  m_Name: NextWaveIcon
+  m_Name: ScoreIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1601,14 +1601,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.7033792, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0c94d12d7e11d1842ba7d77e42318d44, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 717a6d96cc87bf44dbdcb482a6a95390, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -8941,7 +8941,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currencyText: {fileID: 2148604965540889369}
-  marblesIcon: {fileID: 8667643520986624791}
 --- !u!224 &1111428680060312273 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7971028996465664995, guid: 17a82dd9ba2eacd49b54d8461fec8f76, type: 3}

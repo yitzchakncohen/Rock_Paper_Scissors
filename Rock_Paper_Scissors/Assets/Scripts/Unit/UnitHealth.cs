@@ -61,9 +61,12 @@ namespace RockPaperScissors.Units
 
         private void CheckForCurrencyReward(Unit attacker)
         {
-            currencyBank = FindObjectOfType<CurrencyBank>();
-            if(!attacker.IsFriendly)
+            if(attacker.IsFriendly)
             {
+                if(currencyBank == null)
+                {
+                    currencyBank = FindObjectOfType<CurrencyBank>();
+                }
                 currencyBank.AddCurrencyToBank(unit.UnitDefeatedReward, attacker.transform);
             }
         }

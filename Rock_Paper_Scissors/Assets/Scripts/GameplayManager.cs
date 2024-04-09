@@ -21,6 +21,7 @@ namespace RockPaperScissors
         public static event EventHandler<OnGameOverEventArgs> OnGameOver;
         public static event Action<int> OnScoreChange;
         public static event Action<int> OnNewHighscore;
+        [SerializeField] private GameObject scoreFXPrefab;
         private int score = 0;
         
         private void Awake() 
@@ -52,6 +53,7 @@ namespace RockPaperScissors
             {
                 score += 10;
                 OnScoreChange?.Invoke(score);
+                Instantiate(scoreFXPrefab, attacker.transform.position, Quaternion.identity);
             }
         }
 

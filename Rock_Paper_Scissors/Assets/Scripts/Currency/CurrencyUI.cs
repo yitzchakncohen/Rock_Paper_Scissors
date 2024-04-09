@@ -8,7 +8,6 @@ using UnityEngine;
 public class CurrencyUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI currencyText;
-    [SerializeField] private Transform marblesIcon;
     private CurrencyBank currencyBank;
     private float currencyUpdateTime = 0.3f;
 
@@ -41,10 +40,5 @@ public class CurrencyUI : MonoBehaviour
             yield return null;
         }
         currencyText.text = currency.ToString("0000");
-    }
-
-    public Transform GetMarbleLocation()
-    {
-        return marblesIcon;
     }
 }

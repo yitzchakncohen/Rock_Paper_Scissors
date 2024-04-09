@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RockPaperScissors.UI
 {
-    public class CurrencyFX : MonoBehaviour
+    public class GravityWell : MonoBehaviour
     {
-        [SerializeField] private CurrencyUI currencyUI;
+        [SerializeField] private Transform trackingTransform;
 
         private void Update() 
         {
             // Vector2 currencyUIWorldPosition = Camera.main.ScreenToWorldPoint(currencyUI.GetMarbleLocation().position);
             // Game hud canvas is now in world space, so I can access position directly. 
-            transform.position = currencyUI.GetMarbleLocation().position;
+            transform.position = trackingTransform.position;
         }        
     }    
 }
