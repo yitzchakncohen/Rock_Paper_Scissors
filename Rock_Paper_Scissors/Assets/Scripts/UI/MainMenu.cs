@@ -71,7 +71,7 @@ namespace RockPaperScissors.UI
         {
             if(!settingsModal.gameObject.activeSelf)
             {
-                settingsModal.OpenModal();
+                settingsModal.Open();
             }
         }
     }
