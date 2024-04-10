@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2024-04-10T17:27:44.403Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.1.0 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="07mwugC5EGJva7U7O7y_" version="24.1.0" type="device">
+<mxfile host="Electron" modified="2024-04-10T18:05:35.603Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.1.0 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="IPf1U38hizz624w-Hca2" version="24.1.0" type="device">
   <diagram name="Page-1" id="Q-yAtxKkLr_DfTsW5Ip2">
-    <mxGraphModel dx="3649" dy="2994" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+    <mxGraphModel dx="6380" dy="4587" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -557,6 +557,9 @@
         </mxCell>
         <mxCell id="nFh23W7059sgezOXX432-64" value="CanvasFacingController" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="nFh23W7059sgezOXX432-26">
           <mxGeometry x="50" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nFh23W7059sgezOXX432-76" value="LoadingSpinner" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="nFh23W7059sgezOXX432-26">
+          <mxGeometry x="200" y="40" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="nFh23W7059sgezOXX432-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="5rCYG5Pp4PT8a6XN0o9v-49" target="nFh23W7059sgezOXX432-5">
           <mxGeometry relative="1" as="geometry" />

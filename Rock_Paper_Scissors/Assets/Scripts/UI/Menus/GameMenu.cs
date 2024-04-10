@@ -9,6 +9,7 @@ namespace RockPaperScissors.UI.Menus
 {
     public class GameMenu : MonoBehaviour
     {
+        private const string GAME_OVER_STRING = "Game Over";
         public static event Action OnStartGameButtonPress;
 
         [SerializeField] private GameObject HUDPanel;
@@ -104,7 +105,7 @@ namespace RockPaperScissors.UI.Menus
             Sequence gameOverSequence = DOTween.Sequence();
             gameOverSequence.Append(gameOverMenuRectTransform.DOAnchorPos(Vector2.zero, gameOverAnimationTime).SetEase(Ease.InOutQuint));
             gameOverSequence.AppendCallback(() => {
-                gameOverTextAnimation.Play();
+                gameOverTextAnimation.Play(GAME_OVER_STRING);
             });
             gameOverSequence.PlayForward();
         }

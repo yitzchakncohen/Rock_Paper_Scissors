@@ -99,6 +99,7 @@
     <Compile Include="Assets\Scripts\SaveSystem\SaveTurnManagerData.cs" />
     <Compile Include="Assets\Scripts\PathFinding\PathNode.cs" />
     <Compile Include="Assets\Scripts\Unit\TrampolineTrap.cs" />
+    <Compile Include="Assets\Scripts\UI\Components\LoadingSpinner.cs" />
     <Compile Include="Assets\Scripts\Currency\CurrencyBank.cs" />
     <Compile Include="Assets\Scripts\UI\CameraLetterboxing.cs" />
     <Compile Include="Assets\Scripts\UI\Components\OutlineShine.cs" />

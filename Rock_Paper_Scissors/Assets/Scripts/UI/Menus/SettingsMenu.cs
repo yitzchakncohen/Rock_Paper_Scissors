@@ -15,7 +15,7 @@ namespace RockPaperScissors.UI.Menus
         [SerializeField] private Toggle soundToggle;
         [SerializeField] private Slider volumeSlider;
 
-        private void Awake()
+        private void Start()
         {
             modalWindow = GetComponent<ModalWindow>();
 
@@ -36,7 +36,7 @@ namespace RockPaperScissors.UI.Menus
         private void LoadSettings()
         {
             float volume = PlayerPrefs.GetFloat(VOLUME_PREF_STRING, 0.5f);
-            volumeSlider.value = volume;
+            volumeSlider.SetValueWithoutNotify(volume);
             float normalizedVolume = volume / volumeSlider.maxValue;
             PlayerPrefs.SetFloat(VOLUME_PREF_STRING, normalizedVolume);
             bool soundEnabled = PlayerPrefs.GetInt(SOUND_ENABLED_PREF_STRING, 1) == 1;
