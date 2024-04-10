@@ -23,6 +23,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip gameOverSound = null;
 
     private AudioSource audioSource;
+    private bool soundEnabled = true;
+    public bool SoundEnabled => soundEnabled;
     public static AudioManager Instance;
 
     void Awake()
@@ -42,10 +44,25 @@ public class AudioManager : MonoBehaviour
 
     private void PlaySoundOneShot(AudioClip audioClip)
     {
-        if(audioClip != null)
+        if(audioClip != null && soundEnabled)
         {
             audioSource.PlayOneShot(audioClip);
         }
+    }
+
+    public void EnabledSound()
+    {
+        soundEnabled = true;
+    }
+
+    public void DisbledSound()
+    {
+        soundEnabled = false;
+    }
+
+    public void SetVolume(float value)
+    {
+        audioSource.volume = value;
     }
 
     public void PlayMenuNavigationSound()

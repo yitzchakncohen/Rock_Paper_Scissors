@@ -11,8 +11,10 @@ namespace RockPaperScissors.UI
 {
     public class MainMenu : MonoBehaviour
     {
+        [SerializeField] private ModalWindow settingsModal;
         [SerializeField] private Button continueButton;
         [SerializeField] private Button startButton;
+        [SerializeField] private Button settingsButton;
         [SerializeField] private TextMeshProUGUI highscoreText;
         public static event Action OnStartGameButtonPress;
         public static event Action OnContinueGameButtonPress;
@@ -41,12 +43,16 @@ namespace RockPaperScissors.UI
             {
                 highscoreText.gameObject.SetActive(false);
             }
+
+            settingsButton.onClick.AddListener(OpenSettingsMenu);
+            settingsModal.gameObject.SetActive(false);
         }
 
         private void OnDestroy() 
         {
             continueButton.onClick.RemoveAllListeners();
             startButton.onClick.RemoveAllListeners();
+            settingsButton.onClick.RemoveAllListeners();
         }
 
         private void StartGame()
@@ -59,6 +65,14 @@ namespace RockPaperScissors.UI
         {
             AudioManager.Instance.PlayMenuNavigationSound();
             OnContinueGameButtonPress?.Invoke();
+        }
+
+        private void OpenSettingsMenu()
+        {
+            if(!settingsModal.gameObject.activeSelf)
+            {
+                settingsModal.OpenModal();
+            }
         }
     }
 }

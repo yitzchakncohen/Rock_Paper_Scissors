@@ -12,15 +12,18 @@ public class GameMenu : MonoBehaviour
     public static event Action OnStartGameButtonPress;
 
     [SerializeField] private GameObject HUDPanel;
-    [SerializeField] private GameObject gameMenuPanel;
+    [SerializeField] private ModalWindow gameMenuPanel;
     [SerializeField] private GameObject gameOverMenuPanel;
     [SerializeField] private TextMeshProUGUI gameOverScoreValueText;
     [SerializeField] private TextMeshProUGUI gameOverHighScoreValueText;
-    [SerializeField] private Button[] MainMenuButtons;
-    [SerializeField] private Button NewGameButton;
+    [SerializeField] private Button[] mainMenuButtons;
+    [SerializeField] private Button newGameButton;
+    [SerializeField] private Button settingsButton;
+    [SerializeField] private Button closeMenuButton;
     [SerializeField] private LetterAnimation gameOverTextAnimation;
     [SerializeField] private float gameOverAnimationTime = 0.5f;
     [SerializeField] private AdModal adModal;
+    [SerializeField] private ModalWindow settingsModal;
     private RectTransform gameOverMenuRectTransform;
 
     private void Start() 
@@ -29,25 +32,30 @@ public class GameMenu : MonoBehaviour
         GameplayManager.OnGameOver += GameplayManager_OnGameOver;
         AdModal.OnSkipButtonClick += AdModal_OnSkipButtonClick;
         AdModal.OnWatchButtonClick += AdModal_OnWatchButtonClick;
-        foreach (Button button in MainMenuButtons)
+        foreach (Button button in mainMenuButtons)
         {
             button.onClick.AddListener(GoToMainMenu);
         }
-        NewGameButton.onClick.AddListener(StartGame);
+        newGameButton.onClick.AddListener(StartGame);
+        settingsButton.onClick.AddListener(OpenSettingsMenu);
+        closeMenuButton.onClick.AddListener(CloseGameMenu);
 
         gameOverMenuPanel.SetActive(false);
-        gameMenuPanel.SetActive(false);
+        gameMenuPanel.gameObject.SetActive(false);
         HUDPanel.SetActive(true);
         adModal.gameObject.SetActive(false);
+        settingsModal.gameObject.SetActive(false);  
     }
 
     private void OnDestroy() 
     {
-        foreach (Button button in MainMenuButtons)
+        foreach (Button button in mainMenuButtons)
         {
             button.onClick.RemoveAllListeners();
         }
-        NewGameButton.onClick.RemoveAllListeners();
+        newGameButton.onClick.RemoveAllListeners();
+        settingsButton.onClick.RemoveAllListeners();
+        closeMenuButton.onClick.RemoveAllListeners();   
         GameplayManager.OnGameOver -= GameplayManager_OnGameOver;    
         AdModal.OnSkipButtonClick -= AdModal_OnSkipButtonClick;
         AdModal.OnWatchButtonClick -= AdModal_OnWatchButtonClick;    
@@ -55,21 +63,36 @@ public class GameMenu : MonoBehaviour
 
     public void OpenGameMenu()
     {
-        gameMenuPanel.SetActive(true);
-        AudioManager.Instance.PlayMenuNavigationSound();
+        if(!gameMenuPanel.gameObject.activeSelf)
+        {
+            gameMenuPanel.OpenModal();
+        }
     }
 
     public void CloseGameMenu()
     {
-        gameMenuPanel.SetActive(false);
-        AudioManager.Instance.PlayMenuNavigationSound();
+        if(gameMenuPanel.gameObject.activeSelf)
+        {
+            gameMenuPanel.CloseModal();
+        }
     }
 
-    [ContextMenu("Open Game Over Menu")]
-    public void TestMenu()
+    public void OpenSettingsMenu()
     {
-        OpenGameOverMenu(100, 1000);
+        if(!settingsModal.gameObject.activeSelf)
+        {
+            settingsModal.OpenModal();
+        }
     }
+
+    public void CloseSettingsMenu()
+    {
+        if(settingsModal.gameObject.activeSelf)
+        {
+            settingsModal.CloseModal();
+        }
+    }
+
 
     public void OpenGameOverMenu(int score, int highscore)
     {
