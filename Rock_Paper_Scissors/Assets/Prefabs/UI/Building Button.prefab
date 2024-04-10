@@ -565,6 +565,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 804627946948452930}
   m_SourcePrefab: {fileID: 100100000, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
+--- !u!114 &1234233693696378325 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6930254441573241752, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
+  m_PrefabInstance: {fileID: 8146401166307923533}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234233693696378326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1234233693696378326 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6930254441573241755, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
@@ -583,6 +594,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   notEnoughCurrencyRed: {r: 0.7764706, g: 0.15686275, b: 0.15686275, a: 0.74509805}
+  buttonImage: {fileID: 1234233693696378325}
   unitThumbnail: {fileID: 1351772397613750487}
   currencyIcon: {fileID: 2795098427048384670}
   unitCostText: {fileID: 6896996759639493328}

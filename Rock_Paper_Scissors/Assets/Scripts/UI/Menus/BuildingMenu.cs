@@ -21,6 +21,8 @@ namespace RockPaperScissors.UI.Menus
         [SerializeField] private Image selectUnitImage;
         [SerializeField] private Button closeMainMenuButton;
         [SerializeField] private Button closeBuildMenuButton;
+        [SerializeField] private Color moveableUnitButtonColor;
+        [SerializeField] private Color stationaryUnitButtonColor;
         private Unit parentUnit;
         private UnitSpawner unitSpawner;
         private CameraController cameraController;
@@ -44,7 +46,14 @@ namespace RockPaperScissors.UI.Menus
                 foreach (Unit unit in unitSpawner.GetSpawnableUnits())
                 {
                     BuildingButton buildingButton = Instantiate(buildingButtonPrefab, buildButtonsRadialLayoutGroup.transform);
-                    buildingButton.Setup(unit);
+                    if(unit.IsMoveable)
+                    {
+                        buildingButton.Setup(unit, moveableUnitButtonColor);
+                    }
+                    else
+                    {
+                        buildingButton.Setup(unit, stationaryUnitButtonColor);
+                    }
                 }
             }
             ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;

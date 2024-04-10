@@ -26,6 +26,11 @@ public class SavingIndicator : MonoBehaviour
         loadingSpinner.gameObject.SetActive(false);
     }
 
+    private void OnDestroy() 
+    {
+        SaveButton.OnSaveButtonPress -= SaveButton_OnSaveButtonPress;        
+    }
+
     private void OnDisable() 
     {
         SaveManager.OnSaveCompleted -= SaveManager_OnSaveCompleted;
@@ -39,7 +44,7 @@ public class SavingIndicator : MonoBehaviour
         {
             DateTime lastSaveTime = DateTime.Parse(lastSaveString);
             double timeInMinutes =  DateTime.UtcNow.Subtract(lastSaveTime).TotalMinutes;
-            timeString = $"Last Save: {timeInMinutes.ToString("N0")} min ago";
+            timeString = $"Last Save: {timeInMinutes:N0} min ago";
         }
         lastSaveText.Play(timeString);
     }

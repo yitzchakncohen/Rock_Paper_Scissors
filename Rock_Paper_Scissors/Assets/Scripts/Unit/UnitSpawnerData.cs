@@ -10,5 +10,6 @@ namespace RockPaperScissors.Units
         public List<Unit> SpawnableUnits;
         public int SpawnRadius = 5;
         public int CurrencyProducedPerTurn = 5;
+        public int ActionPoints = 1;
     }
 }

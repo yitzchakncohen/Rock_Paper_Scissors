@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using RockPaperScissors.Grids;
 using RockPaperScissors.SaveSystem;
-using RockPaperScissors.UI;
 using RockPaperScissors.UI.Buttons;
 using UnityEngine;
 
@@ -20,6 +17,10 @@ namespace RockPaperScissors.Units
         bool unitSpawning = false;
         private Unit unitToSpawn = null;
         private float timer;
+        private int buildMoveableUnitActionsRemaining = 1;
+        private int buildStationaryUnitActionsRemaining = 1;
+        public int BuildMoveableUnitActionsRemaining => buildMoveableUnitActionsRemaining;
+        public int BuildStationaryUnitActionsRemaining => buildStationaryUnitActionsRemaining;
 
         protected override void Start() 
         {
@@ -32,6 +33,9 @@ namespace RockPaperScissors.Units
             inputManager.OnSingleTap += InputManager_OnSingleTap;
             BuildingButton.OnBuildingButtonPressed += BuildingButton_OnBuildingButtonPressed;
             TurnManager.OnNextTurn += TurnManager_OnNextTurn;
+
+            maxActionPoints = unitSpawnerData.ActionPoints;
+            actionPointsRemaining = maxActionPoints;
         }
 
         private void OnDestroy() 
@@ -73,6 +77,8 @@ namespace RockPaperScissors.Units
             if(e.IsPlayersTurn)
             {
                 currencyBank.AddCurrencyToBank(GetCurrencyProducedThisTurn(), unit.transform);
+                buildStationaryUnitActionsRemaining = 1;
+                buildMoveableUnitActionsRemaining = 1;
             }
         }
 
@@ -163,7 +169,20 @@ namespace RockPaperScissors.Units
                 StartCoroutine(unit.UnitAnimator.SpawnAnimationRoutine(timer));
                 AudioManager.Instance.PlayUnitSpawnSound();
                 unitSpawning = true;
-                actionPointsRemaining -= 1;
+                if(unitToSpawn.IsBuilding || unitToSpawn.IsTrap)
+                {
+                    buildStationaryUnitActionsRemaining--;
+                }
+                else
+                {
+                    buildMoveableUnitActionsRemaining--;
+                }
+                if(buildStationaryUnitActionsRemaining == 0 && buildMoveableUnitActionsRemaining == 0)
+                {
+                    actionPointsRemaining -= 1;
+                    buildStationaryUnitActionsRemaining = 1;
+                    buildMoveableUnitActionsRemaining = 1;
+                }
             }
         }
 
@@ -210,11 +229,15 @@ namespace RockPaperScissors.Units
         public override void LoadAction(SaveUnitData loadData)
         {
             actionPointsRemaining = loadData.SpawnerActionPointsRemaining;
+            buildMoveableUnitActionsRemaining = loadData.SpawnerMoveableActionPointsRemaining;
+            buildStationaryUnitActionsRemaining = loadData.SpawnerStationaryActionPointsRemaining;
         }
 
         public override SaveUnitData SaveAction(SaveUnitData saveData)
         {
             saveData.SpawnerActionPointsRemaining = actionPointsRemaining;
+            saveData.SpawnerMoveableActionPointsRemaining = buildMoveableUnitActionsRemaining;
+            saveData.SpawnerStationaryActionPointsRemaining = buildStationaryUnitActionsRemaining;
             return saveData;
         }
 

@@ -15,6 +15,7 @@ namespace RockPaperScissors.UI.Buttons
     public class BuildingButton : MonoBehaviour
     {
         [SerializeField] private Color notEnoughCurrencyRed;
+        [SerializeField] private Image buttonImage;
         [SerializeField] private Image unitThumbnail;
         [SerializeField] private Image currencyIcon;
         [SerializeField] private TextMeshProUGUI unitCostText;
@@ -58,7 +59,10 @@ namespace RockPaperScissors.UI.Buttons
         {
             if(button != null)
             {
-                bool buttonInteractable = currencyBank.GetCurrencyRemaining() >= unitPrefab.Cost && unitSpawner.ActionPointsRemaining > 0;
+                bool buttonInteractable = currencyBank.GetCurrencyRemaining() >= unitPrefab.Cost 
+                                        && unitSpawner.ActionPointsRemaining > 0
+                                        && (((unitPrefab.IsBuilding || unitPrefab.IsTrap) && unitSpawner.BuildStationaryUnitActionsRemaining > 0)
+                                        || (unitPrefab.IsMoveable && unitSpawner.BuildMoveableUnitActionsRemaining > 0));
                 if(buttonInteractable)
                 {
                     unitThumbnail.color = Color.white;
@@ -83,12 +87,13 @@ namespace RockPaperScissors.UI.Buttons
             }
         }
 
-        public void Setup(Unit unit) 
+        public void Setup(Unit unit, Color color) 
         {
             unitPrefab = unit;
             unitSpawner = GetComponentInParent<UnitSpawner>();
             unitThumbnail.sprite = unitPrefab.UnitThumbnail;
             unitCostText.text = unitPrefab.Cost.ToString();
+            buttonImage.color = color;
         }
 
         public void ButtonPressed()

@@ -21,6 +21,7 @@ namespace RockPaperScissors.Units
         protected Action onActionComplete;
         protected Unit unit;
         protected int actionPointsRemaining = 1;
+        protected int maxActionPoints = 1;
         protected int trappedTurnsRemaining = 0;
 
         protected virtual void Awake() 
@@ -64,7 +65,7 @@ namespace RockPaperScissors.Units
 
         public void ResetActionPoints()
         {
-            actionPointsRemaining = 1;
+            actionPointsRemaining = maxActionPoints;
             trappedTurnsRemaining = Mathf.Max(trappedTurnsRemaining-1, 0);
         }
 
