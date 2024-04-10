@@ -2,59 +2,62 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Camera))]
-public class CameraLetterboxing : MonoBehaviour
+namespace RockPaperScissors.UI
 {
-    private Camera cameraComponent;
-    private float aspectRatio;
-
-    void Awake()
+    [RequireComponent(typeof(Camera))]
+    public class CameraLetterboxing : MonoBehaviour
     {
-        cameraComponent = GetComponent<Camera>();
-        SetupCamera();
-        UpdateAspectRatio();
-    }
+        private Camera cameraComponent;
+        private float aspectRatio;
 
-    private void FixedUpdate() 
-    {
-        if(aspectRatio != (float)Screen.width / (float)Screen.height)
+        void Awake()
         {
+            cameraComponent = GetComponent<Camera>();
             SetupCamera();
             UpdateAspectRatio();
         }
-    }
 
-    
-    private void UpdateAspectRatio()
-    {
-        aspectRatio = (float)Screen.width / (float)Screen.height;
-    }
+        private void FixedUpdate() 
+        {
+            if(aspectRatio != (float)Screen.width / (float)Screen.height)
+            {
+                SetupCamera();
+                UpdateAspectRatio();
+            }
+        }
 
-    private void SetupCamera()
-    {
-        if(aspectRatio > 2f)
+        
+        private void UpdateAspectRatio()
         {
-            float cameraWidth = Screen.height * 2f / Screen.width;
-            float cameraX = (Screen.width - Screen.width * cameraWidth) / (Screen.width * 2f);
-            cameraComponent.rect = new Rect
-            {
-                x = 0,
-                y = 0,
-                width = 1f,
-                height = 1f
-            };
+            aspectRatio = (float)Screen.width / (float)Screen.height;
         }
-        else
+
+        private void SetupCamera()
         {
-            float cameraHeight = Screen.width / (Screen.height * 2f);
-            float cameraY = (Screen.height - Screen.height * cameraHeight) / (Screen.height * 2f);
-            cameraComponent.rect = new Rect
+            if(aspectRatio > 2f)
             {
-                x = 0,
-                y = cameraY,
-                width = 1f,
-                height = cameraHeight
-            };
+                float cameraWidth = Screen.height * 2f / Screen.width;
+                float cameraX = (Screen.width - Screen.width * cameraWidth) / (Screen.width * 2f);
+                cameraComponent.rect = new Rect
+                {
+                    x = 0,
+                    y = 0,
+                    width = 1f,
+                    height = 1f
+                };
+            }
+            else
+            {
+                float cameraHeight = Screen.width / (Screen.height * 2f);
+                float cameraY = (Screen.height - Screen.height * cameraHeight) / (Screen.height * 2f);
+                cameraComponent.rect = new Rect
+                {
+                    x = 0,
+                    y = cameraY,
+                    width = 1f,
+                    height = cameraHeight
+                };
+            }
         }
-    }
+    }    
 }

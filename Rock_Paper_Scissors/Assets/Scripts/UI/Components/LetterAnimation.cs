@@ -5,7 +5,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 
-namespace RockPaperScissors.UI
+namespace RockPaperScissors.UI.Components
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class LetterAnimation : MonoBehaviour

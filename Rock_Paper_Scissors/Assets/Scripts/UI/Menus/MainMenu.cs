@@ -1,13 +1,12 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using RockPaperScissors.SaveSystem;
+using RockPaperScissors.UI.Components;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RockPaperScissors.UI
+namespace RockPaperScissors.UI.Menus
 {
     public class MainMenu : MonoBehaviour
     {

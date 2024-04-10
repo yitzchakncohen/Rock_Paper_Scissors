@@ -4,31 +4,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class NextWaveUI : MonoBehaviour
+namespace RockPaperScissors.UI
 {
-    [SerializeField] private TextMeshProUGUI nextWaveText;
-    [SerializeField] private GameObject nextWaveHighlight;
-
-    private void OnEnable() 
+    public class NextWaveUI : MonoBehaviour
     {
-        WaveManager.OnTurnsUntilNextWaveUpdated += WaveManager_OnTurnsUntilNextWaveUpdated;
-    }
+        [SerializeField] private TextMeshProUGUI nextWaveText;
+        [SerializeField] private GameObject nextWaveHighlight;
 
-    private void OnDisable() 
-    {
-        WaveManager.OnTurnsUntilNextWaveUpdated -= WaveManager_OnTurnsUntilNextWaveUpdated;
-    }
-
-    private void WaveManager_OnTurnsUntilNextWaveUpdated(int turnsUntilNextWave)
-    {
-        nextWaveText.text = turnsUntilNextWave.ToString();
-        if(turnsUntilNextWave == 1)
+        private void OnEnable() 
         {
-            nextWaveHighlight.SetActive(true);
+            WaveManager.OnTurnsUntilNextWaveUpdated += WaveManager_OnTurnsUntilNextWaveUpdated;
         }
-        else
+
+        private void OnDisable() 
         {
-            nextWaveHighlight.SetActive(false);
+            WaveManager.OnTurnsUntilNextWaveUpdated -= WaveManager_OnTurnsUntilNextWaveUpdated;
         }
-    }
+
+        private void WaveManager_OnTurnsUntilNextWaveUpdated(int turnsUntilNextWave)
+        {
+            nextWaveText.text = turnsUntilNextWave.ToString();
+            if(turnsUntilNextWave == 1)
+            {
+                nextWaveHighlight.SetActive(true);
+            }
+            else
+            {
+                nextWaveHighlight.SetActive(false);
+            }
+        }
+    }    
 }

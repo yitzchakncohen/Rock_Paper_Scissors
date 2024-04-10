@@ -1,7 +1,8 @@
+using RockPaperScissors.UI.Components;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RockPaperScissors.UI
+namespace RockPaperScissors.UI.Menus
 {
     public class SettingsMenu : MonoBehaviour
     {

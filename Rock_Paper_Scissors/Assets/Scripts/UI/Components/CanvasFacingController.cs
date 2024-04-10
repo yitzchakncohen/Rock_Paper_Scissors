@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace RockPaperScissors.UI
+namespace RockPaperScissors.UI.Components
 {
     public class CanvasFacingController : MonoBehaviour
     {

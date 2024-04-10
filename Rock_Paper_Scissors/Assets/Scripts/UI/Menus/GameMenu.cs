@@ -1,10 +1,11 @@
 using System;
 using DG.Tweening;
+using RockPaperScissors.UI.Components;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RockPaperScissors.UI
+namespace RockPaperScissors.UI.Menus
 {
     public class GameMenu : MonoBehaviour
     {

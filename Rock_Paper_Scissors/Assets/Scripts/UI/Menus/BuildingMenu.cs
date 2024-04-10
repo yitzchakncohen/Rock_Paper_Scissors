@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
-using JetBrains.Annotations;
+using RockPaperScissors.UI.Buttons;
+using RockPaperScissors.UI.Components;
 using RockPaperScissors.Units;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RockPaperScissors.UI
+namespace RockPaperScissors.UI.Menus
 {
     public class BuildingMenu : MonoBehaviour
     {

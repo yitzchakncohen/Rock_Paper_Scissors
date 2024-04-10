@@ -1,14 +1,11 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using RockPaperScissors;
+using RockPaperScissors.UI.Components;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace RockPaperScissors.UI
 {
-
     public class AdModal : MonoBehaviour
     {
         public static event EventHandler<GameplayManager.OnGameOverEventArgs> OnWatchButtonClick;

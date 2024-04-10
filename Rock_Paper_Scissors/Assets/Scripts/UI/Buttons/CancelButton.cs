@@ -3,7 +3,7 @@ using RockPaperScissors.Units;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RockPaperScissors.UI
+namespace RockPaperScissors.UI.Buttons
 {
     public class CancelButton : MonoBehaviour
     {

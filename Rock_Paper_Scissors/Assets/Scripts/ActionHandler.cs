@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using RockPaperScissors;
 using RockPaperScissors.Grids;
-using RockPaperScissors.UI;
+using RockPaperScissors.UI.Buttons;
+using RockPaperScissors.UI.Menus;
 using RockPaperScissors.Units;
 using UnityEngine;
 

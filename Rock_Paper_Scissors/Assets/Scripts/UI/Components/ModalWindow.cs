@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace RockPaperScissors.UI
+namespace RockPaperScissors.UI.Components
 {
     public class ModalWindow : MonoBehaviour
     {

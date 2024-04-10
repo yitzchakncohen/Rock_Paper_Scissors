@@ -5,7 +5,7 @@ using RockPaperScissors.SaveSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RockPaperScissors.UI
+namespace RockPaperScissors.UI.Buttons
 {
     public class NextActionButton : MonoBehaviour
     {

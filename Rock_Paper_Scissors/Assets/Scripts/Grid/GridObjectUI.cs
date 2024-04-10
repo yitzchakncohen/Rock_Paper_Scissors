@@ -1,4 +1,5 @@
 using RockPaperScissors.Grids;
+using RockPaperScissors.UI.Components;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
