@@ -62,6 +62,7 @@ public class TrampolineTrap : UnitTrap
         float maxLaunchHeight = 2.5f;
         Vector3 launchStartPosition = transform.position;
         Vector3 landingPosition = gridManager.GetGridObject(landingGridLocation).transform.position;
+        AudioManager.Instance.PlayTrampolineTrapSound();
         while(timer < animationTime)
         {
             float normalizedAnimationTime = timer/animationTime;

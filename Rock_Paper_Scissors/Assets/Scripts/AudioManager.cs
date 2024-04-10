@@ -15,6 +15,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip unitMovementSound = null;
     [SerializeField] private AudioClip collectCurrencySound = null;
     [SerializeField] private AudioClip glueTrapSound = null;
+    [SerializeField] private AudioClip trampolineTrapSound = null;
     [SerializeField] private AudioClip rockAttackSound = null;
     [SerializeField] private AudioClip paperAttackSound = null;
     [SerializeField] private AudioClip scissorsAttackSound = null;
@@ -85,6 +86,10 @@ public class AudioManager : MonoBehaviour
     public void PlayGlueTrapSound()
     {
         PlaySoundOneShot(glueTrapSound);
+    }
+    public void PlayTrampolineTrapSound()
+    {
+        PlaySoundOneShot(trampolineTrapSound);
     }
 
     public void PlayRockAttackSound()
