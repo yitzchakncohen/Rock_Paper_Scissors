@@ -21,3 +21,4 @@ MonoBehaviour:
   - {fileID: -5587580392824227166, guid: e9aeddc036a19af4f84827e28a3b7349, type: 3}
   SpawnRadius: 3
   CurrencyProducedPerTurn: 5
+  ActionPoints: 1

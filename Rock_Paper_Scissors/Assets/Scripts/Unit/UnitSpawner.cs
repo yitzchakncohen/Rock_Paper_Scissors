@@ -177,12 +177,7 @@ namespace RockPaperScissors.Units
                 {
                     buildMoveableUnitActionsRemaining--;
                 }
-                if(buildStationaryUnitActionsRemaining == 0 && buildMoveableUnitActionsRemaining == 0)
-                {
-                    actionPointsRemaining -= 1;
-                    buildStationaryUnitActionsRemaining = 1;
-                    buildMoveableUnitActionsRemaining = 1;
-                }
+                actionPointsRemaining -= 1;
             }
         }
 
