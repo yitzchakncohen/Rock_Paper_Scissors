@@ -125,7 +125,6 @@
     <Compile Include="Assets\Scripts\Grid\GridManager.cs" />
     <Compile Include="Assets\Scripts\UI\Buttons\NextActionButton.cs" />
     <Compile Include="Assets\Scripts\UI\Components\LetterAnimation.cs" />
-    <Compile Include="Assets\Scripts\UI\Components\ScaleButton.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitShaderController.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyStatePattern.cs" />
     <Compile Include="Assets\Scripts\UI\HealthBar.cs" />
@@ -151,6 +150,7 @@
     <Compile Include="Assets\Scripts\UI\Components\CanvasFacingController.cs" />
     <Compile Include="Assets\Scripts\UI\Buttons\FastForwardButton.cs" />
     <Compile Include="Assets\Scripts\Direction.cs" />
+    <Compile Include="Assets\Scripts\UI\Components\ScaleUIElement.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

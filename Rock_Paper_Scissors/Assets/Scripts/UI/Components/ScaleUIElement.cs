@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace RockPaperScissors.UI.Components
 {
-    public class ScaleButton : MonoBehaviour
+    public class ScaleUIElement : MonoBehaviour
     {
         private CameraController cameraController;
         private float startingZoom;
