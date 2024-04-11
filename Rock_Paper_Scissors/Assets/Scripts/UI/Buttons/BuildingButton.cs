@@ -43,8 +43,11 @@ namespace RockPaperScissors.UI.Buttons
             {
                 currencyBank = FindObjectOfType<CurrencyBank>();            
             }
-            UpdateButtonInteractability();
-            currencyBank.OnCurrencyChanged += currencyBank_OnCurrencyChanged;
+            if(unitSpawner != null)
+            {
+                UpdateButtonInteractability();
+                currencyBank.OnCurrencyChanged += currencyBank_OnCurrencyChanged;
+            }
         }
 
         private void OnDisable() 

@@ -69,6 +69,9 @@ namespace RockPaperScissors.UI.Menus
             closeMainMenuButton.onClick.AddListener(OnCloseMainMenuButtonPress);
             closeBuildMenuButton.onClick.AddListener(OnCloseBuildMenuButtonPress);
             selectUnitButton.interactable = false;
+
+            buildingMainMenuUI.gameObject.SetActive(false);
+            buildMenuUI.gameObject.SetActive(false);            
         }
 
 
