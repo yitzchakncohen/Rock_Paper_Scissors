@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RockPaperScissors.UI
+namespace RockPaperScissors.UI.Buttons
 {
     public class BuildButtonArguments : EventArgs
     {
@@ -14,17 +14,22 @@ namespace RockPaperScissors.UI
 
     public class BuildingButton : MonoBehaviour
     {
-        [SerializeField] private Image unitThumbnail;
-        [SerializeField] private TextMeshProUGUI unitCostText;
-        private Unit unitPrefab;
+        [SerializeField] protected Color notEnoughCurrencyRed;
+        [SerializeField] protected Image buttonImage;
+        [SerializeField] protected Image unitThumbnail;
+        [SerializeField] protected Image currencyIcon;
+        [SerializeField] protected TextMeshProUGUI unitCostText;
+        protected Unit unitPrefab;
         public static event EventHandler<BuildButtonArguments> OnBuildingButtonPressed;
-        private UnitSpawner unitSpawner;
+        protected UnitSpawner unitSpawner;
         private Button button;
-        private CurrencyBank currencyBank;
+        public Button Button => button;
+        protected CurrencyBank currencyBank;
 
-        private void Awake() 
+        protected virtual void Awake() 
         {
-            button = GetComponent<Button>();        
+            button = GetComponent<Button>();
+            button.onClick.AddListener(ButtonPressed);       
         }
         
         private void Start() 
@@ -47,25 +52,49 @@ namespace RockPaperScissors.UI
             currencyBank.OnCurrencyChanged -= currencyBank_OnCurrencyChanged;
         }
 
+        private void OnDestroy() 
+        {
+            button.onClick.RemoveAllListeners();
+        }
+
         private void currencyBank_OnCurrencyChanged(object sender, int e)
         {
             UpdateButtonInteractability();
         }
 
-        private void UpdateButtonInteractability()
+        protected virtual void UpdateButtonInteractability()
         {
-            if(button != null)
+            bool availableActionPoints = unitSpawner.ActionPointsRemaining > 0;
+            bool availablStationaryActionPoints = (unitPrefab.IsBuilding || unitPrefab.IsTrap) && unitSpawner.BuildStationaryUnitActionsRemaining > 0;
+            bool availablMoveableActionPoints = unitPrefab.IsMoveable && unitSpawner.BuildMoveableUnitActionsRemaining > 0;
+
+            bool buttonInteractable = availableActionPoints && (availablStationaryActionPoints || availablMoveableActionPoints);
+            if(buttonInteractable)
             {
-                button.interactable = currencyBank.GetCurrencyRemaining() >= unitPrefab.Cost && unitSpawner.ActionPointsRemaining > 0;
+                unitThumbnail.color = Color.white;
+                unitCostText.color = Color.white;
+                currencyIcon.color = Color.white;
             }
+            else
+            {
+                unitThumbnail.color = button.colors.disabledColor;
+                if(!availableActionPoints)
+                {
+                    unitCostText.color = button.colors.disabledColor;
+                }
+
+                currencyIcon.color = button.colors.disabledColor;
+            }
+            button.interactable = buttonInteractable;
         }
 
-        public void Setup(Unit unit) 
+        public void Setup(Unit unit, Color color) 
         {
             unitPrefab = unit;
             unitSpawner = GetComponentInParent<UnitSpawner>();
             unitThumbnail.sprite = unitPrefab.UnitThumbnail;
             unitCostText.text = unitPrefab.Cost.ToString();
+            buttonImage.color = color;
         }
 
         public void ButtonPressed()

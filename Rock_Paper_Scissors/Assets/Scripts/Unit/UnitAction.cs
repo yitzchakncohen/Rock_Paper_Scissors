@@ -1,7 +1,9 @@
 using System;
+using System.Reflection;
 using RockPaperScissors.Grids;
 using RockPaperScissors.SaveSystem;
 using RockPaperScissors.UI;
+using RockPaperScissors.UI.Buttons;
 using UnityEngine;
 
 namespace RockPaperScissors.Units
@@ -19,6 +21,7 @@ namespace RockPaperScissors.Units
         protected Action onActionComplete;
         protected Unit unit;
         protected int actionPointsRemaining = 1;
+        protected int maxActionPoints = 1;
         protected int trappedTurnsRemaining = 0;
 
         protected virtual void Awake() 
@@ -47,6 +50,7 @@ namespace RockPaperScissors.Units
         protected void ActionComplete()
         {
             isActive = false;
+            // Debug.Log(onActionComplete.GetMethodInfo());
             onActionComplete();
             OnAnyActionCompleted?.Invoke(this, EventArgs.Empty);
         }
@@ -61,7 +65,7 @@ namespace RockPaperScissors.Units
 
         public void ResetActionPoints()
         {
-            actionPointsRemaining = 1;
+            actionPointsRemaining = maxActionPoints;
             trappedTurnsRemaining = Mathf.Max(trappedTurnsRemaining-1, 0);
         }
 

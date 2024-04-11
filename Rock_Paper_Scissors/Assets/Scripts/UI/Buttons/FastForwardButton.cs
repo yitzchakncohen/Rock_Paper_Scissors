@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RockPaperScissors.UI
+namespace RockPaperScissors.UI.Buttons
 {
     public class FastForwardButton : MonoBehaviour
     {

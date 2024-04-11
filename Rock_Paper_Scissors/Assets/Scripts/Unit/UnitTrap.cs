@@ -141,6 +141,10 @@ public abstract class UnitTrap : UnitAction
         yield return StartCoroutine(ApplyTrapEffect(trappedUnit));
         // Destroy after turns
         turnsUntilDestroyed = trapEffectTurns;
+        if(turnsUntilDestroyed == 0)
+        {
+            unit.DestroyUnit();
+        }
         ActionComplete();
     }
 

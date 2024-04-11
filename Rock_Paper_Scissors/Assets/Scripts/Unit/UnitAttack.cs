@@ -76,7 +76,7 @@ namespace RockPaperScissors.Units
 
         private void AnimateAttack(Vector2 attackDirection)
         {
-            int level = unit.UnitProgression.GetLevel();
+            int level = unit.UnitProgression.Level;
             float normalizedAnimationTime = timer/attackAnimationTime;
             // Animate the attack by moving the unit towards the unit it is attacking. 
             transform.position = attackStartPosition + (attackTargetPosition - attackStartPosition)*attackAnimationCurve.Evaluate(normalizedAnimationTime);

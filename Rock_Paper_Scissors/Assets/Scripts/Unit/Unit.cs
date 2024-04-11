@@ -21,8 +21,8 @@ namespace RockPaperScissors.Units
         public int AttackRange => unitData.attackRange;
         public int UnitDefeatedReward => unitData.unitDefeatedReward;
         public int Health => health.GetHealth(); 
-        public int AttackDamage => unitData.attackDamage[unitProgression.GetLevel() - 1];
-        public int Defense => unitData.defense[unitProgression.GetLevel() - 1];
+        public int AttackDamage => unitData.attackDamage[unitProgression.Level - 1];
+        public int Defense => unitData.defense[unitProgression.Level - 1];
         public bool IsDead => health.IsDead();
         public bool IsFriendly { get => isFriendly; set{} }
         public bool IsMoveable{get => UnitClass.Moveable.HasFlag(Class); set{}} 
@@ -96,14 +96,14 @@ namespace RockPaperScissors.Units
 
         public int GetMaximumHealth()
         {
-            return unitData.maximumHealth[unitProgression.GetLevel() - 1];
+            return unitData.maximumHealth[unitProgression.Level - 1];
         }     
 
         public int GetLevel()
         {
             if(unitProgression != null)
             {
-                return unitProgression.GetLevel();
+                return unitProgression.Level;
             }
             else
             {
@@ -141,7 +141,7 @@ namespace RockPaperScissors.Units
                 UnitClass = unitData.unitClass,
                 UnitLevel = GetLevel(),
                 UnitHealth = Health,
-                UnitXP = unitProgression.GetXP(),
+                UnitXP = unitProgression.XP,
                 IsFriendly = isFriendly,
                 FacingDirection = unitAnimator.GetCurrentDirection()
             };
@@ -158,13 +158,13 @@ namespace RockPaperScissors.Units
         {
             unitProgression.SetLevel(loadData.UnitLevel);
             health.SetHealth(loadData.UnitHealth);
-            unitProgression.SetXP(loadData.UnitXP);
+            unitProgression.XP = loadData.UnitXP;
             isFriendly = loadData.IsFriendly;
             foreach (UnitAction unitAction in UnitActions)
             {
                 unitAction.LoadAction(loadData);
             }
-            unitAnimator.SetFacingDirection(loadData.FacingDirection, unitProgression.GetLevel());
+            unitAnimator.SetFacingDirection(loadData.FacingDirection, unitProgression.Level);
             StartCoroutine(UpdateAnimatorRoutine());
         }
 

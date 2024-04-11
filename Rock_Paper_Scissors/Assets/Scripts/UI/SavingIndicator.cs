@@ -1,18 +1,64 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using RockPaperScissors.SaveSystem;
+using RockPaperScissors.UI.Buttons;
+using RockPaperScissors.UI.Components;
+using TMPro;
 using UnityEngine;
 
 public class SavingIndicator : MonoBehaviour
 {
-    [SerializeField] private Transform spinnerTransform;
-    [SerializeField] private float maxRotationSpeed = 540f;
-    [SerializeField] private float minRotationSpeed = 360f;
-    private float rotationSpeed = 360f;
+    private const string LAST_SAVE_PREF = "lastSave";
+    private const string DEFAULT_SAVE_TIME = "never";
+    [SerializeField] private LoadingSpinner loadingSpinner;
+    [SerializeField] private LetterAnimation lastSaveText;
 
-
-    void Update()
+    void Awake()
     {
-        rotationSpeed = ((360f - spinnerTransform.rotation.eulerAngles.z) / 360) * (maxRotationSpeed-minRotationSpeed) + minRotationSpeed;
-        spinnerTransform.Rotate(spinnerTransform.forward, rotationSpeed*Time.deltaTime);
+        SaveButton.OnSaveButtonPress += SaveButton_OnSaveButtonPress;
+    }
+
+    private void OnEnable() 
+    {
+        SaveManager.OnSaveCompleted += SaveManager_OnSaveCompleted;
+        UpdateLastSaveTime();
+        loadingSpinner.gameObject.SetActive(false);
+    }
+
+    private void OnDestroy() 
+    {
+        SaveButton.OnSaveButtonPress -= SaveButton_OnSaveButtonPress;        
+    }
+
+    private void OnDisable() 
+    {
+        SaveManager.OnSaveCompleted -= SaveManager_OnSaveCompleted;
+    }
+
+    private void UpdateLastSaveTime()
+    {
+        string lastSaveString = PlayerPrefs.GetString(LAST_SAVE_PREF, DEFAULT_SAVE_TIME);
+        string timeString = $"Last Save: {lastSaveString} min ago";
+        if(lastSaveString != DEFAULT_SAVE_TIME)
+        {
+            DateTime lastSaveTime = DateTime.Parse(lastSaveString);
+            double timeInMinutes =  DateTime.UtcNow.Subtract(lastSaveTime).TotalMinutes;
+            timeString = $"Last Save: {timeInMinutes:N0} min ago";
+        }
+        lastSaveText.Play(timeString);
+    }
+
+    private void SaveButton_OnSaveButtonPress()
+    {
+        loadingSpinner.gameObject.SetActive(true);
+    }
+
+    private void SaveManager_OnSaveCompleted()
+    {
+        loadingSpinner.gameObject.SetActive(false);
+        string saveTime = DateTime.UtcNow.ToString();
+        PlayerPrefs.SetString(LAST_SAVE_PREF, saveTime);
+        UpdateLastSaveTime();
     }
 }

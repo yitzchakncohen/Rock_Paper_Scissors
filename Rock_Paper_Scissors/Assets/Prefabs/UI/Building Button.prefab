@@ -31,7 +31,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1234233693696378327}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -107,7 +106,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1752033220232764742}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -184,7 +182,6 @@ RectTransform:
   - {fileID: 1968950665559852893}
   - {fileID: 6896996759639493331}
   m_Father: {fileID: 1234233693696378327}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -222,6 +219,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 1752033220232764742}
     m_Modifications:
     - target: {fileID: 7574589046934035321, guid: d9f72af5c4187f141a94f89fde83bc53, type: 3}
@@ -345,6 +343,9 @@ PrefabInstance:
       value: Unit Cost Text
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9f72af5c4187f141a94f89fde83bc53, type: 3}
 --- !u!114 &6896996759639493328 stripped
 MonoBehaviour:
@@ -367,6 +368,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 6930254441573241752, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
@@ -384,34 +386,6 @@ PrefabInstance:
     - target: {fileID: 6930254441573241752, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
       propertyPath: m_Color.r
       value: 0.25490198
-      objectReference: {fileID: 0}
-    - target: {fileID: 6930254441573241753, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6930254441573241753, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6930254441573241753, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 804627946948452930}
-    - target: {fileID: 6930254441573241753, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6930254441573241753, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ButtonPressed
-      objectReference: {fileID: 0}
-    - target: {fileID: 6930254441573241753, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: BuildingButton, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 6930254441573241753, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6930254441573241754, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
       propertyPath: m_Pivot.x
@@ -550,13 +524,36 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 6930254441573241754, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5685524107486158207}
+    - targetCorrespondingSourceObject: {fileID: 6930254441573241754, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1752033220232764742}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6930254441573241755, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8537477432494446534}
   m_SourcePrefab: {fileID: 100100000, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
+--- !u!114 &1234233693696378325 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6930254441573241752, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
+  m_PrefabInstance: {fileID: 8146401166307923533}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234233693696378326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1234233693696378326 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6930254441573241755, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
   m_PrefabInstance: {fileID: 8146401166307923533}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &804627946948452930
+--- !u!114 &8537477432494446534
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -565,10 +562,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1234233693696378326}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98701df04c70c6a40b0c1ac2a355d8b3, type: 3}
+  m_Script: {fileID: 11500000, guid: 556fa2f55ca548741b1910585a5371df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  notEnoughCurrencyRed: {r: 0.7764706, g: 0.15686275, b: 0.15686275, a: 0.74509805}
+  buttonImage: {fileID: 1234233693696378325}
   unitThumbnail: {fileID: 1351772397613750487}
+  currencyIcon: {fileID: 2795098427048384670}
   unitCostText: {fileID: 6896996759639493328}
 --- !u!224 &1234233693696378327 stripped
 RectTransform:

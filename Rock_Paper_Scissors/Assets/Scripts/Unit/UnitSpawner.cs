@@ -1,10 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using RockPaperScissors.Grids;
 using RockPaperScissors.SaveSystem;
-using RockPaperScissors.UI;
+using RockPaperScissors.UI.Buttons;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace RockPaperScissors.Units
@@ -12,6 +11,7 @@ namespace RockPaperScissors.Units
     public class UnitSpawner : UnitAction
     {
         [SerializeField] private UnitSpawnerData unitSpawnerData;
+        public UnitSpawnerData UnitSpawnerData => unitSpawnerData;
         private GridManager gridManager;
         private InputManager inputManager;
         private CurrencyBank currencyBank;
@@ -19,6 +19,10 @@ namespace RockPaperScissors.Units
         bool unitSpawning = false;
         private Unit unitToSpawn = null;
         private float timer;
+        private int buildMoveableUnitActionsRemaining = 1;
+        private int buildStationaryUnitActionsRemaining = 1;
+        public int BuildMoveableUnitActionsRemaining => buildMoveableUnitActionsRemaining;
+        public int BuildStationaryUnitActionsRemaining => buildStationaryUnitActionsRemaining;
 
         protected override void Start() 
         {
@@ -31,6 +35,9 @@ namespace RockPaperScissors.Units
             inputManager.OnSingleTap += InputManager_OnSingleTap;
             BuildingButton.OnBuildingButtonPressed += BuildingButton_OnBuildingButtonPressed;
             TurnManager.OnNextTurn += TurnManager_OnNextTurn;
+
+            maxActionPoints = unitSpawnerData.ActionPoints;
+            actionPointsRemaining = maxActionPoints;
         }
 
         private void OnDestroy() 
@@ -62,7 +69,14 @@ namespace RockPaperScissors.Units
         {
             if(args.unitSpawner == this)
             {
-                unitToSpawn = args.unit;
+                if(sender as BuildUnitButton)
+                {
+                    unitToSpawn = args.unit;
+                }
+                else if(sender as UpgradeUnitSpawnerButton)
+                {
+                    buildStationaryUnitActionsRemaining--;
+                }
             }
         }
 
@@ -72,6 +86,8 @@ namespace RockPaperScissors.Units
             if(e.IsPlayersTurn)
             {
                 currencyBank.AddCurrencyToBank(GetCurrencyProducedThisTurn(), unit.transform);
+                buildStationaryUnitActionsRemaining = 1;
+                buildMoveableUnitActionsRemaining = 1;
             }
         }
 
@@ -96,10 +112,11 @@ namespace RockPaperScissors.Units
             List<Vector2Int> gridPositionList = new List<Vector2Int>();
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
             // Debug.Log($"Spawner at position { gridPosition}");
+            int spawnRadius = unitSpawnerData.SpawnRadius[unit.UnitProgression.Level];
 
-            for (int x = -unitSpawnerData.SpawnRadius; x <= unitSpawnerData.SpawnRadius; x++)
+            for (int x = -spawnRadius; x <= spawnRadius; x++)
             {
-                for (int y = -unitSpawnerData.SpawnRadius; y <= unitSpawnerData.SpawnRadius; y++)
+                for (int y = -spawnRadius; y <= spawnRadius; y++)
                 {
                     Vector2Int testGridPosition = gridPosition + new Vector2Int(x, y);
 
@@ -124,10 +141,10 @@ namespace RockPaperScissors.Units
                     }
 
                     // Check if it's within spawn distance for the outermost grid positions.
-                    if (x >= unitSpawnerData.SpawnRadius - 1 || x <= -unitSpawnerData.SpawnRadius + 1 || y >= unitSpawnerData.SpawnRadius - 1 || y <= -unitSpawnerData.SpawnRadius + 1)
+                    if (x >= spawnRadius - 1 || x <= -spawnRadius + 1 || y >= spawnRadius - 1 || y <= -spawnRadius + 1)
                     {
                         int testDistance = gridManager.GetGridDistanceBetweenPositions(gridPosition, testGridPosition);
-                        if (testDistance > unitSpawnerData.SpawnRadius)
+                        if (testDistance > spawnRadius)
                         {
                             continue;
                         }
@@ -162,6 +179,14 @@ namespace RockPaperScissors.Units
                 StartCoroutine(unit.UnitAnimator.SpawnAnimationRoutine(timer));
                 AudioManager.Instance.PlayUnitSpawnSound();
                 unitSpawning = true;
+                if(unitToSpawn.IsBuilding || unitToSpawn.IsTrap)
+                {
+                    buildStationaryUnitActionsRemaining--;
+                }
+                else
+                {
+                    buildMoveableUnitActionsRemaining--;
+                }
                 actionPointsRemaining -= 1;
             }
         }
@@ -209,17 +234,21 @@ namespace RockPaperScissors.Units
         public override void LoadAction(SaveUnitData loadData)
         {
             actionPointsRemaining = loadData.SpawnerActionPointsRemaining;
+            buildMoveableUnitActionsRemaining = loadData.SpawnerMoveableActionPointsRemaining;
+            buildStationaryUnitActionsRemaining = loadData.SpawnerStationaryActionPointsRemaining;
         }
 
         public override SaveUnitData SaveAction(SaveUnitData saveData)
         {
             saveData.SpawnerActionPointsRemaining = actionPointsRemaining;
+            saveData.SpawnerMoveableActionPointsRemaining = buildMoveableUnitActionsRemaining;
+            saveData.SpawnerStationaryActionPointsRemaining = buildStationaryUnitActionsRemaining;
             return saveData;
         }
 
         public int GetCurrencyProducedThisTurn()
         {
-            return unitSpawnerData.CurrencyProducedPerTurn;
+            return unitSpawnerData.CurrencyProducedPerTurn[unit.UnitProgression.Level];
         }
     }
 }

@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using RockPaperScissors;
 using RockPaperScissors.Grids;
-using RockPaperScissors.UI;
+using RockPaperScissors.UI.Buttons;
+using RockPaperScissors.UI.Menus;
 using RockPaperScissors.Units;
 using UnityEngine;
 
@@ -112,13 +113,13 @@ public class ActionHandler : MonoBehaviour
             {
                 if(trampolineTrap.GetLaunchLocations(selectedUnit, selectedUnitOccupiedGridObject).Contains(gridObject.Position))
                 {
-                    if(trampolineTrap.TryTakeAction(gridObject, ClearBusy))
+                    if(trampolineTrap.TryTakeAction(gridObject, () => TrampolineTrapActionComplete(selectedUnit)))
                     {
                         return;
                     }
                 }
             }
-        } 
+        }
 
         // Try and attack 
         if(gridOccupantUnit != null && !gridOccupantUnit.IsFriendly)
@@ -241,8 +242,7 @@ public class ActionHandler : MonoBehaviour
         {
             if((selectedUnitOccupiedGridObject.GetOccupantTrap() as Unit).TryGetComponent<TrampolineTrap>(out TrampolineTrap trampolineTrap))
             {
-                gridUIManager.ShowGridPositionList(trampolineTrap.GetLaunchLocations(selectedUnit, selectedUnitOccupiedGridObject), GridHighlightType.Movement);
-                return;
+                gridUIManager.ShowGridPositionList(trampolineTrap.GetLaunchLocations(selectedUnit, selectedUnitOccupiedGridObject), GridHighlightType.PlaceObject);
             }
         }
 
@@ -262,7 +262,10 @@ public class ActionHandler : MonoBehaviour
             else if(unitAction is UnitAttack)
             {
                 HighlightAttackTargets(unitAction as UnitAttack);
-                HighlightAttackRange();
+                if(unitAction.ActionPointsRemaining > 0)
+                {
+                    HighlightAttackRange();
+                }
             }
         }
     }
@@ -474,14 +477,22 @@ public class ActionHandler : MonoBehaviour
 
     private void BuildingButton_BuildingButtonPressed(object sender, BuildButtonArguments arguments)
     {
-        HighlightPlacementTargets(arguments.unitSpawner, arguments.unit);
-        GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(arguments.unitSpawner.transform.position);
-        SetBusy();
-        if(arguments.unitSpawner.TryTakeAction(gridObject , ClearBusy))
+        if(sender as BuildUnitButton)
+        {
+            HighlightPlacementTargets(arguments.unitSpawner, arguments.unit);
+            GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(arguments.unitSpawner.transform.position);
+            SetBusy();
+            if(arguments.unitSpawner.TryTakeAction(gridObject , ClearBusy))
+            {
+                selectedUnit = null;
+                OnUnitSelected?.Invoke(this, selectedUnit);
+            } 
+        }
+        else
         {
             selectedUnit = null;
             OnUnitSelected?.Invoke(this, selectedUnit);
-        }        
+        }
     }
 
     private void BuildingMenu_OnGarrisonedUnitSelected(Unit unit)
@@ -554,7 +565,8 @@ public class ActionHandler : MonoBehaviour
     private void UnitAction_OnAnyActionStarted(object sender, EventArgs e)
     {
         UnitTrap unitTrap = sender as UnitTrap;
-        if(unitTrap != null)
+        // Exclude the case of the enemy unit by checking if a unit is selected.
+        if(unitTrap != null && selectedUnit == null)
         {
             SetBusy();
             unitTrap.SetActionCompletedAction(ClearBusy);
@@ -576,6 +588,14 @@ public class ActionHandler : MonoBehaviour
             }
         }
 
+    }
+
+    private void TrampolineTrapActionComplete(Unit launchedUnit)
+    {
+        selectedUnit = launchedUnit;
+        OnUnitSelected?.Invoke(this, selectedUnit);
+        updateGridActionHighlight = true;
+        ClearBusy();
     }
 
     private void SetBusy()

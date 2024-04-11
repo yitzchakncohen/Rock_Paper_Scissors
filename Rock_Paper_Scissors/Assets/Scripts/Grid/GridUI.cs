@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using RockPaperScissors.Grids;
+using RockPaperScissors.UI.Components;
 using UnityEngine;
 
 namespace RockPaperScissors.Grids

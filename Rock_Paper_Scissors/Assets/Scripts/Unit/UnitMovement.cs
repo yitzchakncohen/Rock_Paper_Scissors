@@ -153,7 +153,7 @@ namespace RockPaperScissors.Units
 
         private void AnimateMovement(Vector2 moveDirection)
         {
-            int level = unit.UnitProgression.GetLevel();
+            int level = unit.UnitProgression.Level;
             if(moveDirection.x > 0 && moveDirection.y > 0)
             {
                 unitAnimator.MoveUpRight(level);

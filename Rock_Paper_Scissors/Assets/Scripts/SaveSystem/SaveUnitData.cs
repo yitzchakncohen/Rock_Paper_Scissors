@@ -16,6 +16,8 @@ namespace RockPaperScissors.SaveSystem
         public int AttackActionPointsRemaining; 
         public int MoveActionPointsRemaining;
         public int SpawnerActionPointsRemaining;
+        public int SpawnerMoveableActionPointsRemaining;
+        public int SpawnerStationaryActionPointsRemaining;
         public int TrappedTurnsRemaining;
         public int UnitHealth;
         public int UnitXP;

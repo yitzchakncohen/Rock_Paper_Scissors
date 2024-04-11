@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitClass: 32
   unitThumbnail: {fileID: 21300000, guid: 3dabcc97bf305ca44a52a4b9fd7a779f, type: 3}
-  spriteLibrary: {fileID: 0}
+  spriteLibrary: {fileID: 7108339969198208228, guid: 102230ed5c15f8940a196aa49bb48822, type: 3}
   moveDistance: 0
   attackDamage: 000000000000000000000000
   attackRange: 0
   defense: 000000000000000000000000
   unitCost: 100
-  maximumHealth: 0a0000000a0000000a000000
+  maximumHealth: 320000004b00000064000000
   unitDefeatedReward: 0
   HitFX: {fileID: 236918012766038522, guid: 9199b18fb605334449baaff5d1010f52, type: 3}
