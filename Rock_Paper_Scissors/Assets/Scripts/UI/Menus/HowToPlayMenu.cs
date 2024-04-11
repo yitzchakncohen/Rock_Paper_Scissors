@@ -46,10 +46,14 @@ namespace RockPaperScissors.UI.Menus
                 backButton.interactable = false;
                 nextButton.interactable = true;
             }
-
-            if(currentPage == howToPlayPanels.Length - 1)
+            else if(currentPage == howToPlayPanels.Length - 1)
             {
                 nextButton.interactable = false;
+                backButton.interactable = true;
+            }
+            else
+            {
+                nextButton.interactable = true;
                 backButton.interactable = true;
             }
 
