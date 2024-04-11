@@ -11,9 +11,11 @@ namespace RockPaperScissors.UI.Menus
     public class MainMenu : MonoBehaviour
     {
         [SerializeField] private ModalWindow settingsModal;
+        [SerializeField] private ModalWindow howToPlayModal;
         [SerializeField] private Button continueButton;
         [SerializeField] private Button startButton;
         [SerializeField] private Button settingsButton;
+        [SerializeField] private Button howToPlayButton;
         [SerializeField] private TextMeshProUGUI highscoreText;
         public static event Action OnStartGameButtonPress;
         public static event Action OnContinueGameButtonPress;
@@ -45,6 +47,8 @@ namespace RockPaperScissors.UI.Menus
 
             settingsButton.onClick.AddListener(OpenSettingsMenu);
             settingsModal.gameObject.SetActive(false);
+            howToPlayButton.onClick.AddListener(OpenHowToPlayMenu);
+            howToPlayModal.gameObject.SetActive(false);
         }
 
         private void OnDestroy() 
@@ -71,6 +75,14 @@ namespace RockPaperScissors.UI.Menus
             if(!settingsModal.gameObject.activeSelf)
             {
                 settingsModal.Open();
+            }
+        }
+
+        private void OpenHowToPlayMenu()
+        {
+            if(!howToPlayModal.gameObject.activeSelf)
+            {
+                howToPlayModal.Open();
             }
         }
     }

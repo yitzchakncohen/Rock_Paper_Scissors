@@ -140,6 +140,7 @@
     <Compile Include="Assets\Scripts\Unit\GlueTrap.cs" />
     <Compile Include="Assets\Scripts\UI\Buttons\NextButtonUI.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitSpawnerData.cs" />
+    <Compile Include="Assets\Scripts\UI\Menus\HowToPlayMenu.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitData.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\SaveGameplayManagerData.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitAttack.cs" />
