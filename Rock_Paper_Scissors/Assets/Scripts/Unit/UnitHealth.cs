@@ -51,7 +51,7 @@ namespace RockPaperScissors.Units
 
         public void CheckForDeath(Unit attacker)
         {
-            if(IsDead())
+            if(IsDead)
             {
                 CheckForCurrencyReward(attacker);
                 OnDeath?.Invoke(this, attacker);
@@ -96,25 +96,15 @@ namespace RockPaperScissors.Units
             }
             Destroy(gameObject);
         }
-
-        public int GetHealth()
-        {
-            return health;
-        }
+        
         public void SetHealth(int health)
         {
             this.health = health;
             OnHealthChanged?.Invoke();
         }
 
-        public bool IsDead()
-        {
-            return health <= 0;
-        }
-
-        public float GetNormalizedHealth()
-        {
-            return (float)health / (float)unit.GetMaximumHealth();
-        }
+        public int Health => health;
+        public bool IsDead => health <= 0;
+        public float NormalizedHealth => (float)health / (float)unit.GetMaximumHealth();        
     }
 }
