@@ -41,17 +41,24 @@ public class DeviceReviewsManager : MonoBehaviour
 
     private IEnumerator LaunchReviewFlow()
     {
-        var launchFlowOperation = reviewManager.LaunchReviewFlow(playReviewInfo);
-        yield return launchFlowOperation;
-        playReviewInfo = null; // Reset the object
-        if (launchFlowOperation.Error != ReviewErrorCode.NoError)
+        if(playReviewInfo == null)
         {
-            Debug.LogError(launchFlowOperation.Error.ToString());
-            yield break;
+            Debug.LogError("No review available...");
         }
-        // The flow has finished. The API does not indicate whether the user
-        // reviewed or not, or even whether the review dialog was shown. Thus, no
-        // matter the result, we continue our app flow.
+        else
+        {
+            var launchFlowOperation = reviewManager.LaunchReviewFlow(playReviewInfo);
+            yield return launchFlowOperation;
+            playReviewInfo = null; // Reset the object
+            if (launchFlowOperation.Error != ReviewErrorCode.NoError)
+            {
+                Debug.LogError(launchFlowOperation.Error.ToString());
+                yield break;
+            }
+            // The flow has finished. The API does not indicate whether the user
+            // reviewed or not, or even whether the review dialog was shown. Thus, no
+            // matter the result, we continue our app flow.
+        }
     }
     #endif
 }

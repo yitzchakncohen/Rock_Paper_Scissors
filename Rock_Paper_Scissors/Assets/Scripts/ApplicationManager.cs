@@ -210,23 +210,31 @@ namespace RockPaperScissors
 
         private void GameplayManager_OnGameOver(object sender, GameplayManager.OnGameOverEventArgs e)
         {
-#if UNITY_ANDROID
-            deviceReviewsManager.LaunchReview();
-#endif
+            deviceReviewsManager.RequestReviewAsync();
         }
 
         private void AdModal_OnWatchButtonClick(object sender, GameplayManager.OnGameOverEventArgs e)
         {
             ShowAd();
-#if UNITY_ANDROID
-            deviceReviewsManager.LaunchReview();
-#endif
+            LanuchReview();
         }
         
         private void AdModal_OnSkipButtonClick(object sender, GameplayManager.OnGameOverEventArgs e)
         {
+            LanuchReview();
+        }
+
+        private void LanuchReview()
+        {
 #if UNITY_ANDROID
-            deviceReviewsManager.LaunchReview();
+            if(deviceReviewsManager != null)
+            {
+                deviceReviewsManager.LaunchReview();
+            }
+            else
+            {
+                Debug.LogError("No Review Manger Found");
+            }
 #endif
         }
     }
