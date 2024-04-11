@@ -135,7 +135,7 @@ namespace RockPaperScissors.Units
 
                     // Check if it has a building already for buildings
                     if (unitToSpawn.Class == UnitClass.PillowOutpost
-                        && gridManager.GetGridObject(testGridPosition).GetOccupantBuilding() != null)
+                        && gridManager.GetGridObject(testGridPosition).OccupantBuilding() != null)
                     {
                         continue;
                     }

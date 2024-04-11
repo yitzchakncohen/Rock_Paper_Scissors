@@ -80,7 +80,7 @@ public class TrampolineTrap : UnitTrap
         {
             ActionStart(onActionComplete);
             GridObject launchGridObject = gridManager.GetGridObjectFromWorldPosition(transform.position);
-            Unit unitToLaunch = launchGridObject.GetOccupantUnit() as Unit;
+            Unit unitToLaunch = launchGridObject.OccupantUnit as Unit;
             StartCoroutine(LaunchUnit(unitToLaunch, gridObject.Position, launchGridObject.Position));
             return true;
         }

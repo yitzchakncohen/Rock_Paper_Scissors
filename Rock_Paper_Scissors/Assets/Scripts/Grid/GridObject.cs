@@ -53,36 +53,6 @@ namespace RockPaperScissors.Grids
             return true;
         }
 
-        public void SetOccupantUnit(IGridOccupantInterface Occupant)
-        {
-            gridPositionOccupyingUnit = Occupant;
-        }
-
-        public IGridOccupantInterface GetOccupantUnit()
-        {
-            return gridPositionOccupyingUnit;
-        }
-
-        public void SetOccupantBuilding(IGridOccupantInterface Occupant)
-        {
-            gridPositionOccupyingBuilding = Occupant;
-        }
-
-        public IGridOccupantInterface GetOccupantBuilding()
-        {
-            return gridPositionOccupyingBuilding;
-        }
-
-        public void SetOccupantTrap(IGridOccupantInterface Occupant)
-        {
-            gridPositionOccupyingTrap = Occupant;
-        }
-
-        public IGridOccupantInterface GetOccupantTrap()
-        {
-            return gridPositionOccupyingTrap;
-        }
-
         public IGridOccupantInterface GetCombatTarget()
         {
             if(gridPositionOccupyingUnit != null)
@@ -96,8 +66,10 @@ namespace RockPaperScissors.Grids
             return null;
         }
 
+        public IGridOccupantInterface OccupantUnit {get => gridPositionOccupyingUnit; set => gridPositionOccupyingUnit = value;}
+        public IGridOccupantInterface OccupantBuilding { get => gridPositionOccupyingBuilding;  set => gridPositionOccupyingBuilding = value;}
+        public IGridOccupantInterface OccupantTrap { get => gridPositionOccupyingTrap; set => gridPositionOccupyingTrap = value;}
         public void ShowHighlight(GridHighlightType highlightType) => gridObjectUI.ShowHighlight(highlightType);
-
         public void HideHighlight(GridHighlightType highlightType) => gridObjectUI.HideHighlight(highlightType);
         public void HideAllHighlights() => gridObjectUI.HideAllHighlights();
         public void SetActionValue(float actionValue) => gridObjectUI.SetActionValue(actionValue);

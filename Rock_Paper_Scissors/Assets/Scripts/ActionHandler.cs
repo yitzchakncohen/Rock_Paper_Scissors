@@ -100,15 +100,15 @@ public class ActionHandler : MonoBehaviour
 
     private void HandleGridObjectTouch(GridObject gridObject)
     {
-        IGridOccupantInterface gridOccupantUnit = gridObject.GetOccupantUnit();
-        IGridOccupantInterface gridOccupantBuilding = gridObject.GetOccupantBuilding();
-        IGridOccupantInterface gridOccupantTrap = gridObject.GetOccupantTrap();
+        IGridOccupantInterface gridOccupantUnit = gridObject.OccupantUnit;
+        IGridOccupantInterface gridOccupantBuilding = gridObject.OccupantBuilding();
+        IGridOccupantInterface gridOccupantTrap = gridObject.OccupantTrap();
 
         // Selected unit on a trampoline
         if(selectedUnit != null)
         {
             GridObject selectedUnitOccupiedGridObject = gridManager.GetGridObjectFromWorldPosition(selectedUnit.transform.position);
-            Unit trap = selectedUnitOccupiedGridObject.GetOccupantTrap() as Unit;
+            Unit trap = selectedUnitOccupiedGridObject.OccupantTrap() as Unit;
             if(trap != null && trap.TryGetComponent<TrampolineTrap>(out TrampolineTrap trampolineTrap))
             {
                 if(trampolineTrap.GetLaunchLocations(selectedUnit, selectedUnitOccupiedGridObject).Contains(gridObject.Position))
@@ -201,7 +201,7 @@ public class ActionHandler : MonoBehaviour
 
     private void SelectUnitOccupyingGridPosition(GridObject gridObject)
     {
-        selectedUnit = (Unit)gridObject.GetOccupantUnit();
+        selectedUnit = (Unit)gridObject.OccupantUnit;
         OnUnitSelected?.Invoke(this, selectedUnit);
         AudioManager.Instance.PlayUnitSelectionSound();
         updateGridActionHighlight = true;
@@ -209,11 +209,11 @@ public class ActionHandler : MonoBehaviour
 
     private void SelectBuildingOccupyingGridPosition(GridObject gridObject)
     {
-        selectedUnit = (Unit)gridObject.GetOccupantBuilding();
-        if(gridObject.GetOccupantUnit() != null)
+        selectedUnit = (Unit)gridObject.OccupantBuilding();
+        if(gridObject.OccupantUnit != null)
         {
             BuildingMenu buildingMenu = selectedUnit.GetComponentInChildren<BuildingMenu>();
-            buildingMenu.SetGarrisonedUnit(gridObject.GetOccupantUnit() as Unit);
+            buildingMenu.SetGarrisonedUnit(gridObject.OccupantUnit as Unit);
         }
         OnUnitSelected?.Invoke(this, selectedUnit);
         AudioManager.Instance.PlayUnitSelectionSound();
@@ -238,9 +238,9 @@ public class ActionHandler : MonoBehaviour
 
         // Unit on TrampolineTrap
         GridObject selectedUnitOccupiedGridObject = gridManager.GetGridObjectFromWorldPosition(selectedUnit.transform.position);
-        if(selectedUnitOccupiedGridObject.GetOccupantTrap() != null)
+        if(selectedUnitOccupiedGridObject.OccupantTrap() != null)
         {
-            if((selectedUnitOccupiedGridObject.GetOccupantTrap() as Unit).TryGetComponent<TrampolineTrap>(out TrampolineTrap trampolineTrap))
+            if((selectedUnitOccupiedGridObject.OccupantTrap() as Unit).TryGetComponent<TrampolineTrap>(out TrampolineTrap trampolineTrap))
             {
                 gridUIManager.ShowGridPositionList(trampolineTrap.GetLaunchLocations(selectedUnit, selectedUnitOccupiedGridObject), GridHighlightType.PlaceObject);
             }
@@ -580,7 +580,7 @@ public class ActionHandler : MonoBehaviour
         if(movingUnit != null)
         {
             GridObject movingUnitGridObject = gridManager.GetGridObjectFromWorldPosition(movingUnit.transform.position);
-            TrampolineTrap trampolineTrap = movingUnitGridObject.GetOccupantTrap() as TrampolineTrap;
+            TrampolineTrap trampolineTrap = movingUnitGridObject.OccupantTrap() as TrampolineTrap;
             if(trampolineTrap != null && trampolineTrap.Unit.IsFriendly == movingUnit.Unit.IsFriendly)
             {
                 selectedUnit = movingUnit.Unit;

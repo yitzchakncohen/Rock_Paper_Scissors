@@ -154,8 +154,8 @@ namespace RockPaperScissors.Grids
                 for (int y = 0; y < gridSize.y; y++)
                 {
                     RaycastHit2D[] hits = Physics2D.RaycastAll(gridObjects[x,y].transform.position, Vector2.up, raycastDistance, occupancyLayerMask);
-                    gridObjects[x,y].SetOccupantUnit(null);
-                    gridObjects[x,y].SetOccupantBuilding(null);
+                    gridObjects[x,y].OccupantUnit = null;
+                    gridObjects[x,y].OccupantBuilding = null;
                     foreach (RaycastHit2D hit in hits)
                     {
                         // If the object is a unit set as Occupant
@@ -163,15 +163,15 @@ namespace RockPaperScissors.Grids
                         // Check if the unit is a Building
                         if(unit.IsBuilding)
                         {
-                            gridObjects[x,y].SetOccupantBuilding(unit);
+                            gridObjects[x,y].OccupantBuilding = unit;
                         }
                         else if(unit.IsTrap)
                         {
-                            gridObjects[x,y].SetOccupantTrap(unit);
+                            gridObjects[x,y].OccupantTrap = unit;
                         }
                         else
                         {
-                            gridObjects[x,y].SetOccupantUnit(unit);
+                            gridObjects[x,y].OccupantUnit = unit;
                         }
                     }
                 }
@@ -246,9 +246,6 @@ namespace RockPaperScissors.Grids
 
         private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
         {
-            // TODO more efficient occupency update
-            // UpdateGridOccupancy();
-
             // Death and Spawning already handled
 
             // float startTime = Time.realtimeSinceStartup;
@@ -263,16 +260,16 @@ namespace RockPaperScissors.Grids
                 {
                     for (int y = 0; y < gridSize.y; y++)
                     {
-                        if((Unit)gridObjects[x, y].GetOccupantUnit() == unit)
+                        if((Unit)gridObjects[x, y].OccupantUnit == unit)
                         {
-                            gridObjects[x, y].SetOccupantUnit(null);
+                            gridObjects[x, y].OccupantUnit = null;
                         }
                     }
                 }
 
                 // Add to new grid location.
                 GridObject gridObject = GetGridObjectFromWorldPosition(unit.transform.position);
-                gridObject.SetOccupantUnit(unit);
+                gridObject.OccupantUnit = unit;
             }
 
             // TrampolineTrap
@@ -280,10 +277,10 @@ namespace RockPaperScissors.Grids
             if(trampolineTrap != null)
             {
                 GridObject launchStartGridObject = GetGridObjectFromWorldPosition(trampolineTrap.Unit.transform.position);
-                Unit launchedUnit = launchStartGridObject.GetOccupantUnit() as Unit;
-                launchStartGridObject.SetOccupantUnit(null);
+                Unit launchedUnit = launchStartGridObject.OccupantUnit as Unit;
+                launchStartGridObject.OccupantUnit = null;
                 GridObject launchedUnitGridObject = GetGridObjectFromWorldPosition(launchedUnit.transform.position);
-                launchedUnitGridObject.SetOccupantUnit(launchedUnit);
+                launchedUnitGridObject.OccupantUnit = launchedUnit;
             }
 
             // Debug.Log("GridManager Action Complete Time: " + (Time.realtimeSinceStartup - startTime)*1000f);
@@ -296,17 +293,17 @@ namespace RockPaperScissors.Grids
             {
                 for (int y = 0; y < gridSize.y; y++)
                 {
-                    if((Unit)gridObjects[x, y].GetOccupantUnit() == unit)
+                    if((Unit)gridObjects[x, y].OccupantUnit == unit)
                     {
-                        gridObjects[x, y].SetOccupantUnit(null);
+                        gridObjects[x, y].OccupantUnit = null;
                     }
-                    else if((Unit)gridObjects[x, y].GetOccupantBuilding() == unit)
+                    else if((Unit)gridObjects[x, y].OccupantBuilding == unit)
                     {
-                        gridObjects[x, y].SetOccupantBuilding(null);
+                        gridObjects[x, y].OccupantBuilding = null;
                     }
-                    else if((Unit)gridObjects[x, y].GetOccupantTrap() == unit)
+                    else if((Unit)gridObjects[x, y].OccupantTrap == unit)
                     {
-                        gridObjects[x, y].SetOccupantTrap(null);
+                        gridObjects[x, y].OccupantTrap = null;
                     }
                 }
             }
@@ -318,15 +315,15 @@ namespace RockPaperScissors.Grids
             Unit unit = sender as Unit;
             if(unit.IsBuilding)
             {
-                GetGridObjectFromWorldPosition(unit.transform.position).SetOccupantBuilding(unit);
+                GetGridObjectFromWorldPosition(unit.transform.position).OccupantBuilding = unit;
             }
             else if(unit.IsTrap)
             {
-                GetGridObjectFromWorldPosition(unit.transform.position).SetOccupantTrap(unit);
+                GetGridObjectFromWorldPosition(unit.transform.position).OccupantTrap = unit;
             }
             else
             {
-                GetGridObjectFromWorldPosition(unit.transform.position).SetOccupantUnit(unit);
+                GetGridObjectFromWorldPosition(unit.transform.position).OccupantUnit = unit;
             }
         }
 
