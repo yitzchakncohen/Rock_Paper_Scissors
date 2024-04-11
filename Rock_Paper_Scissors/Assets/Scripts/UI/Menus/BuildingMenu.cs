@@ -18,17 +18,17 @@ namespace RockPaperScissors.UI.Menus
         [SerializeField] private BuildingButton buildingButtonPrefab;
         [SerializeField] private Button openBuildMenuButton;
         [SerializeField] private Button selectUnitButton;
+        [SerializeField] private UpgradeUnitSpawnerButton upgradeUnitSpawnerButtonPrefab;
         [SerializeField] private Image selectUnitImage;
         [SerializeField] private Button closeMainMenuButton;
         [SerializeField] private Button closeBuildMenuButton;
         [SerializeField] private Color moveableUnitButtonColor;
         [SerializeField] private Color stationaryUnitButtonColor;
+        private UpgradeUnitSpawnerButton upgradeUnitSpawnerButton;
         private Unit parentUnit;
         private UnitSpawner unitSpawner;
-        private CameraController cameraController;
         private Unit garrisonedUnit = null;
-        private float startingZoom;
-        private Vector3 startingScale;
+
 
         private void Awake() 
         {
@@ -55,6 +55,8 @@ namespace RockPaperScissors.UI.Menus
                         buildingButton.Setup(unit, stationaryUnitButtonColor);
                     }
                 }
+                upgradeUnitSpawnerButton = Instantiate(upgradeUnitSpawnerButtonPrefab, buildButtonsRadialLayoutGroup.transform);
+                upgradeUnitSpawnerButton.Setup(parentUnit, stationaryUnitButtonColor);
             }
             ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
             BuildingButton.OnBuildingButtonPressed += BuildingButton_OnBuildingButtonPressed;
@@ -67,23 +69,8 @@ namespace RockPaperScissors.UI.Menus
             closeMainMenuButton.onClick.AddListener(OnCloseMainMenuButtonPress);
             closeBuildMenuButton.onClick.AddListener(OnCloseBuildMenuButtonPress);
             selectUnitButton.interactable = false;
-
-            startingScale = transform.localScale;
         }
 
-        private void Start() 
-        {
-            cameraController = FindObjectOfType<CameraController>();
-            startingZoom = cameraController.DefaultZoom;
-        }
-
-        private void Update() 
-        {
-            if(startingZoom != Camera.main.orthographicSize)
-            {
-                transform.localScale = startingScale * Camera.main.orthographicSize/startingZoom;
-            }
-        }
 
         private void OnDestroy() 
         {

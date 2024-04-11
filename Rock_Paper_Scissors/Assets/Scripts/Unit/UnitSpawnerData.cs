@@ -8,8 +8,9 @@ namespace RockPaperScissors.Units
     public class UnitSpawnerData : ScriptableObject 
     {
         public List<Unit> SpawnableUnits;
-        public int SpawnRadius = 5;
-        public int CurrencyProducedPerTurn = 5;
-        public int ActionPoints = 1;
+        public int[] SpawnRadius;
+        public int[] CurrencyProducedPerTurn;
+        public int ActionPoints = 2;
+        public int[] UpgradeCost;
     }
 }

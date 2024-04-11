@@ -14,20 +14,22 @@ namespace RockPaperScissors.UI.Buttons
 
     public class BuildingButton : MonoBehaviour
     {
-        [SerializeField] private Color notEnoughCurrencyRed;
-        [SerializeField] private Image buttonImage;
-        [SerializeField] private Image unitThumbnail;
-        [SerializeField] private Image currencyIcon;
-        [SerializeField] private TextMeshProUGUI unitCostText;
-        private Unit unitPrefab;
+        [SerializeField] protected Color notEnoughCurrencyRed;
+        [SerializeField] protected Image buttonImage;
+        [SerializeField] protected Image unitThumbnail;
+        [SerializeField] protected Image currencyIcon;
+        [SerializeField] protected TextMeshProUGUI unitCostText;
+        protected Unit unitPrefab;
         public static event EventHandler<BuildButtonArguments> OnBuildingButtonPressed;
-        private UnitSpawner unitSpawner;
+        protected UnitSpawner unitSpawner;
         private Button button;
-        private CurrencyBank currencyBank;
+        public Button Button => button;
+        protected CurrencyBank currencyBank;
 
-        private void Awake() 
+        protected virtual void Awake() 
         {
-            button = GetComponent<Button>();        
+            button = GetComponent<Button>();
+            button.onClick.AddListener(ButtonPressed);       
         }
         
         private void Start() 
@@ -50,41 +52,40 @@ namespace RockPaperScissors.UI.Buttons
             currencyBank.OnCurrencyChanged -= currencyBank_OnCurrencyChanged;
         }
 
+        private void OnDestroy() 
+        {
+            button.onClick.RemoveAllListeners();
+        }
+
         private void currencyBank_OnCurrencyChanged(object sender, int e)
         {
             UpdateButtonInteractability();
         }
 
-        private void UpdateButtonInteractability()
+        protected virtual void UpdateButtonInteractability()
         {
-            if(button != null)
-            {
-                bool buttonInteractable = currencyBank.GetCurrencyRemaining() >= unitPrefab.Cost 
-                                        && unitSpawner.ActionPointsRemaining > 0
-                                        && (((unitPrefab.IsBuilding || unitPrefab.IsTrap) && unitSpawner.BuildStationaryUnitActionsRemaining > 0)
-                                        || (unitPrefab.IsMoveable && unitSpawner.BuildMoveableUnitActionsRemaining > 0));
-                if(buttonInteractable)
-                {
-                    unitThumbnail.color = Color.white;
-                    unitCostText.color = Color.white;
-                    currencyIcon.color = Color.white;
-                }
-                else
-                {
-                    unitThumbnail.color = button.colors.disabledColor;
-                    if(unitSpawner.ActionPointsRemaining == 0)
-                    {
-                        unitCostText.color = button.colors.disabledColor;
-                    }
-                    else if(currencyBank.GetCurrencyRemaining() < unitPrefab.Cost)
-                    {
-                        unitCostText.color = notEnoughCurrencyRed;
-                    }
+            bool availableActionPoints = unitSpawner.ActionPointsRemaining > 0;
+            bool availablStationaryActionPoints = (unitPrefab.IsBuilding || unitPrefab.IsTrap) && unitSpawner.BuildStationaryUnitActionsRemaining > 0;
+            bool availablMoveableActionPoints = unitPrefab.IsMoveable && unitSpawner.BuildMoveableUnitActionsRemaining > 0;
 
-                    currencyIcon.color = button.colors.disabledColor;
-                }
-                button.interactable = buttonInteractable;
+            bool buttonInteractable = availableActionPoints && (availablStationaryActionPoints || availablMoveableActionPoints);
+            if(buttonInteractable)
+            {
+                unitThumbnail.color = Color.white;
+                unitCostText.color = Color.white;
+                currencyIcon.color = Color.white;
             }
+            else
+            {
+                unitThumbnail.color = button.colors.disabledColor;
+                if(!availableActionPoints)
+                {
+                    unitCostText.color = button.colors.disabledColor;
+                }
+
+                currencyIcon.color = button.colors.disabledColor;
+            }
+            button.interactable = buttonInteractable;
         }
 
         public void Setup(Unit unit, Color color) 

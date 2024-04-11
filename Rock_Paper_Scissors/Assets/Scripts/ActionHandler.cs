@@ -477,14 +477,22 @@ public class ActionHandler : MonoBehaviour
 
     private void BuildingButton_BuildingButtonPressed(object sender, BuildButtonArguments arguments)
     {
-        HighlightPlacementTargets(arguments.unitSpawner, arguments.unit);
-        GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(arguments.unitSpawner.transform.position);
-        SetBusy();
-        if(arguments.unitSpawner.TryTakeAction(gridObject , ClearBusy))
+        if(sender as BuildUnitButton)
+        {
+            HighlightPlacementTargets(arguments.unitSpawner, arguments.unit);
+            GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(arguments.unitSpawner.transform.position);
+            SetBusy();
+            if(arguments.unitSpawner.TryTakeAction(gridObject , ClearBusy))
+            {
+                selectedUnit = null;
+                OnUnitSelected?.Invoke(this, selectedUnit);
+            } 
+        }
+        else
         {
             selectedUnit = null;
             OnUnitSelected?.Invoke(this, selectedUnit);
-        }        
+        }
     }
 
     private void BuildingMenu_OnGarrisonedUnitSelected(Unit unit)

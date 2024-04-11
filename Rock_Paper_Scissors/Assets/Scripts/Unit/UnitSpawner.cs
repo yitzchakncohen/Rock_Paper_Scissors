@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using RockPaperScissors.Grids;
 using RockPaperScissors.SaveSystem;
 using RockPaperScissors.UI.Buttons;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace RockPaperScissors.Units
@@ -10,6 +11,7 @@ namespace RockPaperScissors.Units
     public class UnitSpawner : UnitAction
     {
         [SerializeField] private UnitSpawnerData unitSpawnerData;
+        public UnitSpawnerData UnitSpawnerData => unitSpawnerData;
         private GridManager gridManager;
         private InputManager inputManager;
         private CurrencyBank currencyBank;
@@ -67,7 +69,14 @@ namespace RockPaperScissors.Units
         {
             if(args.unitSpawner == this)
             {
-                unitToSpawn = args.unit;
+                if(sender as BuildUnitButton)
+                {
+                    unitToSpawn = args.unit;
+                }
+                else if(sender as UpgradeUnitSpawnerButton)
+                {
+                    buildStationaryUnitActionsRemaining--;
+                }
             }
         }
 
@@ -103,10 +112,11 @@ namespace RockPaperScissors.Units
             List<Vector2Int> gridPositionList = new List<Vector2Int>();
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
             // Debug.Log($"Spawner at position { gridPosition}");
+            int spawnRadius = unitSpawnerData.SpawnRadius[unit.UnitProgression.Level];
 
-            for (int x = -unitSpawnerData.SpawnRadius; x <= unitSpawnerData.SpawnRadius; x++)
+            for (int x = -spawnRadius; x <= spawnRadius; x++)
             {
-                for (int y = -unitSpawnerData.SpawnRadius; y <= unitSpawnerData.SpawnRadius; y++)
+                for (int y = -spawnRadius; y <= spawnRadius; y++)
                 {
                     Vector2Int testGridPosition = gridPosition + new Vector2Int(x, y);
 
@@ -131,10 +141,10 @@ namespace RockPaperScissors.Units
                     }
 
                     // Check if it's within spawn distance for the outermost grid positions.
-                    if (x >= unitSpawnerData.SpawnRadius - 1 || x <= -unitSpawnerData.SpawnRadius + 1 || y >= unitSpawnerData.SpawnRadius - 1 || y <= -unitSpawnerData.SpawnRadius + 1)
+                    if (x >= spawnRadius - 1 || x <= -spawnRadius + 1 || y >= spawnRadius - 1 || y <= -spawnRadius + 1)
                     {
                         int testDistance = gridManager.GetGridDistanceBetweenPositions(gridPosition, testGridPosition);
-                        if (testDistance > unitSpawnerData.SpawnRadius)
+                        if (testDistance > spawnRadius)
                         {
                             continue;
                         }
@@ -238,7 +248,7 @@ namespace RockPaperScissors.Units
 
         public int GetCurrencyProducedThisTurn()
         {
-            return unitSpawnerData.CurrencyProducedPerTurn;
+            return unitSpawnerData.CurrencyProducedPerTurn[unit.UnitProgression.Level];
         }
     }
 }

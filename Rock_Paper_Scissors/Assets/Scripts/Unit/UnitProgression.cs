@@ -13,6 +13,9 @@ namespace RockPaperScissors.Units
         private int level = 1;
         private int xp = 0;
 
+        public int Level => level;
+        public int XP {get => xp; set {xp = value;}}
+
         private void Start() 
         {
             unitAnimator = GetComponentInChildren<UnitAnimator>();
@@ -51,25 +54,17 @@ namespace RockPaperScissors.Units
             }
         }
 
-        public int GetXP()
+        public void SetLevel(int newLevel)
         {
-            return xp;
-        }
-
-        public int GetLevel()
-        {
-            return level;
-        }
-
-        
-        public void SetXP(int xp)
-        {
-            this.xp = xp;
-        }
-
-        public void SetLevel(int level)
-        {
-            this.level = level;
+            int oldLevel = level;
+            level = newLevel;
+            level = Math.Clamp(level, 1, 3);
+            if(level > oldLevel)
+            {
+                OnLevelUp?.Invoke();
+                StartCoroutine(unitAnimator.AnimateLevelUp(level));
+                AudioManager.Instance.PlayUnitLevelUpSound();
+            }
         }
     }
 }

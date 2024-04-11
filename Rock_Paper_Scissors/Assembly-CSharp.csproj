@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\Grid\IGridOccupantInterface.cs" />
     <Compile Include="Assets\Scripts\GameplayManager.cs" />
     <Compile Include="Assets\Scripts\ActionHandler.cs" />
+    <Compile Include="Assets\Scripts\UI\Buttons\UpgradeUnitSpawnerButton.cs" />
     <Compile Include="Assets\Scripts\Grid\GridHighlightType.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitTrap.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitAction.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Assets\Scripts\Unit\UnitHealth.cs" />
     <Compile Include="Assets\Scripts\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Unit\Unit.cs" />
+    <Compile Include="Assets\Scripts\UI\Buttons\BuildUnitButton.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\SaveTurnManagerData.cs" />
     <Compile Include="Assets\Scripts\PathFinding\PathNode.cs" />
     <Compile Include="Assets\Scripts\Unit\TrampolineTrap.cs" />
@@ -122,6 +124,7 @@
     <Compile Include="Assets\Scripts\Grid\GridManager.cs" />
     <Compile Include="Assets\Scripts\UI\Buttons\NextActionButton.cs" />
     <Compile Include="Assets\Scripts\UI\Components\LetterAnimation.cs" />
+    <Compile Include="Assets\Scripts\UI\Components\ScaleButton.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitShaderController.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyStatePattern.cs" />
     <Compile Include="Assets\Scripts\UI\HealthBar.cs" />

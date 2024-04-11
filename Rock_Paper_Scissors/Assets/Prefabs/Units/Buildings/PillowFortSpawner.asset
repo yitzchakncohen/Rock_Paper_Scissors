@@ -19,6 +19,7 @@ MonoBehaviour:
   - {fileID: 2715817389625404827, guid: c477b10fc6ef1b94d8860e3a1f446ef8, type: 3}
   - {fileID: -5587580392824227166, guid: 78755d156e89a524da87e32ecb6b7ab9, type: 3}
   - {fileID: -5587580392824227166, guid: e9aeddc036a19af4f84827e28a3b7349, type: 3}
-  SpawnRadius: 5
-  CurrencyProducedPerTurn: 10
+  SpawnRadius: 050000000600000007000000
+  CurrencyProducedPerTurn: 0a0000001900000032000000
   ActionPoints: 2
+  UpgradeCost: 64000000c80000002c010000
