@@ -3,9 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{94B843E7-64F8-4E02-FBE2-552705A48AA2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Google.Android.AppBundle.Editor", "Google.Android.AppBundle.Editor.csproj", "{6CC9FCD2-915A-2A06-B828-38402407032A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Google.Play.Common", "Google.Play.Common.csproj", "{78513D60-B02C-8EAE-2668-6407F8B97945}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass", "Assembly-CSharp-firstpass.csproj", "{4A57B30F-3FB7-9EE7-7888-3DCF8F70AE57}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Google.Play.Core", "Google.Play.Core.csproj", "{15EF39DB-27B0-9D82-9E7D-70042C5B46E7}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleMobileAds.Editor", "GoogleMobileAds.Editor.csproj", "{D167F3AA-7069-CCFD-2BF6-C31AE945B6C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Google.Play.Review", "Google.Play.Review.csproj", "{1E09084A-5C5F-CBC8-6B66-A919121D9442}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{36C26211-662D-4016-E393-656CAD1DD322}"
 EndProject
@@ -21,14 +29,30 @@ Global
 		{94B843E7-64F8-4E02-FBE2-552705A48AA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94B843E7-64F8-4E02-FBE2-552705A48AA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94B843E7-64F8-4E02-FBE2-552705A48AA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CC9FCD2-915A-2A06-B828-38402407032A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CC9FCD2-915A-2A06-B828-38402407032A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CC9FCD2-915A-2A06-B828-38402407032A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CC9FCD2-915A-2A06-B828-38402407032A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78513D60-B02C-8EAE-2668-6407F8B97945}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78513D60-B02C-8EAE-2668-6407F8B97945}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78513D60-B02C-8EAE-2668-6407F8B97945}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78513D60-B02C-8EAE-2668-6407F8B97945}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4A57B30F-3FB7-9EE7-7888-3DCF8F70AE57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4A57B30F-3FB7-9EE7-7888-3DCF8F70AE57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A57B30F-3FB7-9EE7-7888-3DCF8F70AE57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A57B30F-3FB7-9EE7-7888-3DCF8F70AE57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15EF39DB-27B0-9D82-9E7D-70042C5B46E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15EF39DB-27B0-9D82-9E7D-70042C5B46E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15EF39DB-27B0-9D82-9E7D-70042C5B46E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15EF39DB-27B0-9D82-9E7D-70042C5B46E7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D167F3AA-7069-CCFD-2BF6-C31AE945B6C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D167F3AA-7069-CCFD-2BF6-C31AE945B6C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D167F3AA-7069-CCFD-2BF6-C31AE945B6C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D167F3AA-7069-CCFD-2BF6-C31AE945B6C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E09084A-5C5F-CBC8-6B66-A919121D9442}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E09084A-5C5F-CBC8-6B66-A919121D9442}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E09084A-5C5F-CBC8-6B66-A919121D9442}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E09084A-5C5F-CBC8-6B66-A919121D9442}.Release|Any CPU.Build.0 = Release|Any CPU
 		{36C26211-662D-4016-E393-656CAD1DD322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{36C26211-662D-4016-E393-656CAD1DD322}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36C26211-662D-4016-E393-656CAD1DD322}.Release|Any CPU.ActiveCfg = Release|Any CPU

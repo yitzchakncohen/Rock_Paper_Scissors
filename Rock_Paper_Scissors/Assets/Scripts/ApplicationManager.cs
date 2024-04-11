@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Threading.Tasks;
 using GoogleMobileAds.Api;
@@ -21,14 +22,17 @@ namespace RockPaperScissors
         private const string GAME_SCENE_STRING = "MainScene";
         private const string MENU_SCENE_STRING = "MenuScene";
         private const float REWARD_MULTIPLIER = 10f;
+        private const int TARGET_FRAME_RATE = 60;
         public static ApplicationManager Instance;
         private SceneTransitionUI sceneTransitionUI;
         private GridManager gridManager;
         private AdsManager adsManager;
+        private DeviceReviewsManager deviceReviewsManager;
         private int rewardAmount = 0;
 
         void Awake()
         {
+            Application.targetFrameRate = TARGET_FRAME_RATE;
             if(Instance == null)
             {
                 Instance = this;
@@ -41,6 +45,7 @@ namespace RockPaperScissors
 
             sceneTransitionUI = GetComponentInChildren<SceneTransitionUI>();
             adsManager = GetComponent<AdsManager>();
+            deviceReviewsManager = GetComponent<DeviceReviewsManager>();
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
         }
 
@@ -56,6 +61,8 @@ namespace RockPaperScissors
             SaveButton.OnSaveButtonPress += SaveButton_OnSaveButtonPress;
             GameMenu.OnStartGameButtonPress += GameMenu_OnStartGameButtonPress;
             AdModal.OnWatchButtonClick += AdModal_OnWatchButtonClick;
+            AdModal.OnSkipButtonClick += AdModal_OnSkipButtonClick;
+            GameplayManager.OnGameOver += GameplayManager_OnGameOver;
             StartCoroutine(StartUpRoutine());
         }
 
@@ -66,6 +73,8 @@ namespace RockPaperScissors
             SaveButton.OnSaveButtonPress -= SaveButton_OnSaveButtonPress;
             GameMenu.OnStartGameButtonPress -= GameMenu_OnStartGameButtonPress;
             AdModal.OnWatchButtonClick -= AdModal_OnWatchButtonClick;
+            AdModal.OnSkipButtonClick -= AdModal_OnSkipButtonClick;
+            GameplayManager.OnGameOver -= GameplayManager_OnGameOver;
         }
 
         public void StartNewGame()
@@ -199,9 +208,26 @@ namespace RockPaperScissors
             Debug.Log("Reward Received");
         }
 
+        private void GameplayManager_OnGameOver(object sender, GameplayManager.OnGameOverEventArgs e)
+        {
+#if UNITY_ANDROID
+            deviceReviewsManager.LaunchReview();
+#endif
+        }
+
         private void AdModal_OnWatchButtonClick(object sender, GameplayManager.OnGameOverEventArgs e)
         {
             ShowAd();
+#if UNITY_ANDROID
+            deviceReviewsManager.LaunchReview();
+#endif
+        }
+        
+        private void AdModal_OnSkipButtonClick(object sender, GameplayManager.OnGameOverEventArgs e)
+        {
+#if UNITY_ANDROID
+            deviceReviewsManager.LaunchReview();
+#endif
         }
     }
 

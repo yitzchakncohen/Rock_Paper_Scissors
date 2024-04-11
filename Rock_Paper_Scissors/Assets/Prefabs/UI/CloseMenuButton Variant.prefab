@@ -274,14 +274,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CloseMenuButton Variant
       objectReference: {fileID: 0}
-    - target: {fileID: 8438655588416461566, guid: bfe801df83e48f84b9af77521e777022, type: 3}
-      propertyPath: m_Color.g
-      value: 0.6117647
-      objectReference: {fileID: 0}
-    - target: {fileID: 8438655588416461566, guid: bfe801df83e48f84b9af77521e777022, type: 3}
-      propertyPath: m_Color.r
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

@@ -101,6 +101,7 @@
     <Compile Include="Assets\Scripts\SaveSystem\SaveTurnManagerData.cs" />
     <Compile Include="Assets\Scripts\PathFinding\PathNode.cs" />
     <Compile Include="Assets\Scripts\Unit\TrampolineTrap.cs" />
+    <Compile Include="Assets\Scripts\Review\DeviceReviewsManager.cs" />
     <Compile Include="Assets\Scripts\UI\Components\LoadingSpinner.cs" />
     <Compile Include="Assets\Scripts\Currency\CurrencyBank.cs" />
     <Compile Include="Assets\Scripts\UI\CameraLetterboxing.cs" />
@@ -176,8 +177,10 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\GooglePlayPlugins\com.google.play.review\Proguard\review.txt" />
     <None Include="Assets\GoogleMobileAds\GoogleMobileAds.Unity.dll" />
     <None Include="Assets\Saves\save.txt" />
+    <None Include="Assets\GooglePlayPlugins\com.google.play.core\Proguard\common.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\GoogleMobileAds\GoogleMobileAds.Android.dll" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
@@ -1331,6 +1334,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj" />
+    <ProjectReference Include="Google.Play.Core.csproj" />
+    <ProjectReference Include="Google.Play.Common.csproj" />
+    <ProjectReference Include="Google.Play.Review.csproj" />
+    <ProjectReference Include="Google.Android.AppBundle.Editor.csproj" />
     <ProjectReference Include="GoogleMobileAds.Editor.csproj" />
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
