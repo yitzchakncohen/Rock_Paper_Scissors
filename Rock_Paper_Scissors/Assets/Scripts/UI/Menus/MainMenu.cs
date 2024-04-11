@@ -12,6 +12,8 @@ namespace RockPaperScissors.UI.Menus
     {
         [SerializeField] private ModalWindow settingsModal;
         [SerializeField] private ModalWindow howToPlayModal;
+        [SerializeField] private GameModeMenu gameModeMenu;
+        private ModalWindow gameModeModal;
         [SerializeField] private Button continueButton;
         [SerializeField] private Button startButton;
         [SerializeField] private Button settingsButton;
@@ -49,6 +51,11 @@ namespace RockPaperScissors.UI.Menus
             settingsModal.gameObject.SetActive(false);
             howToPlayButton.onClick.AddListener(OpenHowToPlayMenu);
             howToPlayModal.gameObject.SetActive(false);
+
+            gameModeModal = gameModeMenu.GetComponent<ModalWindow>();
+            gameModeMenu.OnHighScoreModeButtonPress += GameModeMenu_OnHighScoreModeButtonPress;
+            gameModeMenu.OnLevelModeButtonPress += GameModeMenu_OnLevelModeButtonPress;
+            gameModeMenu.gameObject.SetActive(false);
         }
 
         private void OnDestroy() 
@@ -56,12 +63,14 @@ namespace RockPaperScissors.UI.Menus
             continueButton.onClick.RemoveAllListeners();
             startButton.onClick.RemoveAllListeners();
             settingsButton.onClick.RemoveAllListeners();
+            gameModeMenu.OnHighScoreModeButtonPress -= GameModeMenu_OnHighScoreModeButtonPress;
+            gameModeMenu.OnLevelModeButtonPress -= GameModeMenu_OnLevelModeButtonPress;
         }
 
         private void StartGame()
         {
             AudioManager.Instance.PlayMenuNavigationSound();
-            OnStartGameButtonPress?.Invoke();
+            gameModeModal.Open();
         }
 
         private void ContinueGame()
@@ -84,6 +93,16 @@ namespace RockPaperScissors.UI.Menus
             {
                 howToPlayModal.Open();
             }
+        }
+
+        private void GameModeMenu_OnLevelModeButtonPress()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void GameModeMenu_OnHighScoreModeButtonPress()
+        {
+            OnStartGameButtonPress?.Invoke();
         }
     }
 }

@@ -25,6 +25,7 @@ namespace RockPaperScissors.UI.Menus
         [SerializeField] private float gameOverAnimationTime = 0.5f;
         [SerializeField] private AdModal adModal;
         [SerializeField] private ModalWindow settingsModal;
+        [SerializeField] private ModalWindow gameModeModal;
         private RectTransform gameOverMenuRectTransform;
 
         private void Start() 

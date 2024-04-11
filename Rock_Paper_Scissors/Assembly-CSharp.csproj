@@ -81,6 +81,7 @@
     <Compile Include="Assets\Scripts\Unit\UnitAnimator.cs" />
     <Compile Include="Assets\Scripts\UI\Buttons\SaveButton.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitSpawner.cs" />
+    <Compile Include="Assets\Scripts\UI\Menus\GameModeMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Buttons\CancelButton.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\SaveManager.cs" />
     <Compile Include="Assets\Scripts\UI\StatusUpdateUI.cs" />
