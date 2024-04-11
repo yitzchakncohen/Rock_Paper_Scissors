@@ -81,7 +81,7 @@ namespace RockPaperScissors.UI
             }
             else
             {
-                if (gridObject.OccupantBuilding() != null)
+                if (gridObject.OccupantBuilding != null)
                 {
                     buildingOccupiedIcon.SetActive(true);
                 }
