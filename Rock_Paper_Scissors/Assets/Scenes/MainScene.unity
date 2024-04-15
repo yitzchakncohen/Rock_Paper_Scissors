@@ -906,18 +906,27 @@ MonoBehaviour:
     - {fileID: 8909835649686224163, guid: e547fb81a099d9544a36bdf74adf9d3d, type: 3}
     - {fileID: 6548610982091184903, guid: c84a2cefecbc72c45b4b5061beb8770c, type: 3}
     FriendlyUnitTypesToSpawn: []
-    TotalEnemyUnitsToSpawn: 4
+    TotalEnemyUnitsToSpawn: 6
     TotalFriendlyUnitsToSpawn: 0
-    CurrencyBonus: 150
+    CurrencyBonus: 100
     TurnToStartWave: 4
   - EnemyUnitTypesToSpawn:
     - {fileID: 3659614332370105537, guid: 3a99c9f8d3b8b3d41b1531669fd2f659, type: 3}
     - {fileID: 8909835649686224163, guid: e547fb81a099d9544a36bdf74adf9d3d, type: 3}
     - {fileID: 6548610982091184903, guid: c84a2cefecbc72c45b4b5061beb8770c, type: 3}
     FriendlyUnitTypesToSpawn: []
-    TotalEnemyUnitsToSpawn: 4
+    TotalEnemyUnitsToSpawn: 10
     TotalFriendlyUnitsToSpawn: 0
-    CurrencyBonus: 150
+    CurrencyBonus: 100
+    TurnToStartWave: 8
+  - EnemyUnitTypesToSpawn:
+    - {fileID: 3659614332370105537, guid: 3a99c9f8d3b8b3d41b1531669fd2f659, type: 3}
+    - {fileID: 8909835649686224163, guid: e547fb81a099d9544a36bdf74adf9d3d, type: 3}
+    - {fileID: 6548610982091184903, guid: c84a2cefecbc72c45b4b5061beb8770c, type: 3}
+    FriendlyUnitTypesToSpawn: []
+    TotalEnemyUnitsToSpawn: 14
+    TotalFriendlyUnitsToSpawn: 0
+    CurrencyBonus: 100
     TurnToStartWave: 8
   enemySpawnPoints:
   - {fileID: 1205715837}
@@ -2792,7 +2801,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5773631841882567295, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 95
       objectReference: {fileID: 0}
     - target: {fileID: 5991560217563658135, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
       propertyPath: m_AnchorMax.y
