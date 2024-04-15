@@ -8,7 +8,7 @@
   </packages>
   <files />
   <settings>
-    <setting name="androidAbis" value="arm64-v8a" />
+    <setting name="androidAbis" value="arm64-v8a,armeabi-v7a,x86,x86_64" />
     <setting name="bundleId" value="com.DefaultCompany.Rock_Paper_Scissors" />
     <setting name="explodeAars" value="True" />
     <setting name="gradleBuildEnabled" value="True" />
