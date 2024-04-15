@@ -67,11 +67,11 @@ namespace RockPaperScissors.Units
             }
             if(attacker != null && attacker.IsFriendly)
             {
-                currencyBank.AddCurrencyToBank(unit.UnitDefeatedReward, attacker.transform);
+                currencyBank.AddCurrencyToBank(unit.UnitDefeatedCurrencReward, attacker.transform);
             }
             else if(!unit.IsFriendly)
             {
-                currencyBank.AddCurrencyToBank(unit.UnitDefeatedReward, transform);
+                currencyBank.AddCurrencyToBank(unit.UnitDefeatedCurrencReward, transform);
             }
         }
 

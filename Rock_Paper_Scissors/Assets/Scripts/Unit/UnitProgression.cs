@@ -32,20 +32,21 @@ namespace RockPaperScissors.Units
             
             if(attacker.UnitProgression == this)
             {
-                GainXP(100);
+                Unit unitDefeated = (sender as UnitHealth).GetComponent<Unit>();
+                GainXP(unitDefeated.UnitDefeatedXPReward, attacker.XPToLevelUp);
             }
         }
 
-        private void GainXP(int amount)
+        private void GainXP(int amount, int levelUpXPRequired)
         {
             xp += amount;
             OnGainXP?.Invoke();
-            CheckForLevelUp();
+            CheckForLevelUp(levelUpXPRequired);
         }
 
-        private void CheckForLevelUp()
+        private void CheckForLevelUp(int levelUpXPRequired)
         {
-            if(xp % 100 == 0)
+            if(xp == levelUpXPRequired)
             {
                 level = Math.Clamp(level + 1, 1, 3);
                 OnLevelUp?.Invoke();
