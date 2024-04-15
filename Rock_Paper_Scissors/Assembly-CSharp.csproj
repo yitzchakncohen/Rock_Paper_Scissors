@@ -1335,8 +1335,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj" />
-    <ProjectReference Include="Google.Play.Core.csproj" />
     <ProjectReference Include="Google.Play.Common.csproj" />
+    <ProjectReference Include="Google.Play.Core.csproj" />
     <ProjectReference Include="Google.Play.Review.csproj" />
     <ProjectReference Include="Google.Android.AppBundle.Editor.csproj" />
     <ProjectReference Include="GoogleMobileAds.Editor.csproj" />
