@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2024-04-11T20:57:02.369Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.1.0 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="1vSBVMkuzKhCOwM6U0lg" version="24.1.0" type="device">
+<mxfile host="Electron" modified="2024-04-15T15:53:43.508Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.1.0 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="XDBulYwkDo54ITBeLIof" version="24.1.0" type="device">
   <diagram name="Page-1" id="Q-yAtxKkLr_DfTsW5Ip2">
-    <mxGraphModel dx="3034" dy="2636" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+    <mxGraphModel dx="3287" dy="2784" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -361,6 +361,9 @@
         <mxCell id="k2wFrJ3f_RFzbmOJsM-f-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="M5sFaCqMI3LGULJpn6zM-2" source="M5sFaCqMI3LGULJpn6zM-42" target="k2wFrJ3f_RFzbmOJsM-f-3" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
+        <mxCell id="lXBw2MyXd94gxOqPdHQ--6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="M5sFaCqMI3LGULJpn6zM-2" source="M5sFaCqMI3LGULJpn6zM-42" target="lXBw2MyXd94gxOqPdHQ--5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="M5sFaCqMI3LGULJpn6zM-42" value="ISaveInterface&amp;lt;T&amp;gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="M5sFaCqMI3LGULJpn6zM-2" vertex="1">
           <mxGeometry x="170" y="140" width="120" height="60" as="geometry" />
         </mxCell>
@@ -372,6 +375,9 @@
         </mxCell>
         <mxCell id="k2wFrJ3f_RFzbmOJsM-f-3" value="SaveTurnManagerData" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="M5sFaCqMI3LGULJpn6zM-2" vertex="1">
           <mxGeometry x="370" y="380" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="lXBw2MyXd94gxOqPdHQ--5" value="SaveWaveData" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="M5sFaCqMI3LGULJpn6zM-2">
+          <mxGeometry x="370" y="130" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="8GIG4aWdincUIpCO8D-R-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="8GIG4aWdincUIpCO8D-R-1" target="5rCYG5Pp4PT8a6XN0o9v-49" edge="1">
           <mxGeometry relative="1" as="geometry" />

@@ -125,6 +125,7 @@
     <Compile Include="Assets\Scripts\UI\Components\RadialLayoutGroup.cs" />
     <Compile Include="Assets\Scripts\Grid\GridManager.cs" />
     <Compile Include="Assets\Scripts\UI\Buttons\NextActionButton.cs" />
+    <Compile Include="Assets\Scripts\SaveSystem\SaveWaveData.cs" />
     <Compile Include="Assets\Scripts\UI\Components\LetterAnimation.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitShaderController.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyStatePattern.cs" />
