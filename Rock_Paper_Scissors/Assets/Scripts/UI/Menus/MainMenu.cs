@@ -12,6 +12,7 @@ namespace RockPaperScissors.UI.Menus
     {
         [SerializeField] private ModalWindow settingsModal;
         [SerializeField] private ModalWindow howToPlayModal;
+        private HowToPlayMenu howToPlayMenu;
         [SerializeField] private GameModeMenu gameModeMenu;
         private ModalWindow gameModeModal;
         [SerializeField] private Button continueButton;
@@ -51,6 +52,8 @@ namespace RockPaperScissors.UI.Menus
             settingsModal.gameObject.SetActive(false);
             howToPlayButton.onClick.AddListener(OpenHowToPlayMenu);
             howToPlayModal.gameObject.SetActive(false);
+            howToPlayMenu = howToPlayModal.GetComponent<HowToPlayMenu>();
+            howToPlayMenu.OnPlayButtonPress += HowToPlayMenu_OnPlayButtonPress;
 
             gameModeModal = gameModeMenu.GetComponent<ModalWindow>();
             gameModeMenu.OnHighScoreModeButtonPress += GameModeMenu_OnHighScoreModeButtonPress;
@@ -65,6 +68,7 @@ namespace RockPaperScissors.UI.Menus
             settingsButton.onClick.RemoveAllListeners();
             gameModeMenu.OnHighScoreModeButtonPress -= GameModeMenu_OnHighScoreModeButtonPress;
             gameModeMenu.OnLevelModeButtonPress -= GameModeMenu_OnLevelModeButtonPress;
+            howToPlayMenu.OnPlayButtonPress -= HowToPlayMenu_OnPlayButtonPress;
         }
 
         private void StartGame()
@@ -103,6 +107,11 @@ namespace RockPaperScissors.UI.Menus
         private void GameModeMenu_OnHighScoreModeButtonPress()
         {
             OnStartGameButtonPress?.Invoke();
+        }
+
+        private void HowToPlayMenu_OnPlayButtonPress()
+        {
+            StartGame();
         }
     }
 }

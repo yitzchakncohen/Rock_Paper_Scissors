@@ -14,12 +14,18 @@ public class CurrencyUI : MonoBehaviour
     private void Start() 
     {
         currencyBank = FindObjectOfType<CurrencyBank>();
-        currencyBank.OnCurrencyChanged += CurrencyBank_OnCurrencyChanged;
+        if(currencyBank != null)
+        {
+            currencyBank.OnCurrencyChanged += CurrencyBank_OnCurrencyChanged;
+        }
     }
 
     private void OnDestroy() 
     {
-        currencyBank.OnCurrencyChanged -= CurrencyBank_OnCurrencyChanged;
+        if(currencyBank != null)
+        {
+            currencyBank.OnCurrencyChanged -= CurrencyBank_OnCurrencyChanged;
+        }
     }
 
     private void CurrencyBank_OnCurrencyChanged(object sender, int currency)

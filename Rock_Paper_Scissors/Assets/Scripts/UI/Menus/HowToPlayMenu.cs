@@ -11,10 +11,12 @@ namespace RockPaperScissors.UI.Menus
     [RequireComponent(typeof(ModalWindow))]
     public class HowToPlayMenu : MonoBehaviour
     {
+        public event Action OnPlayButtonPress;
         [SerializeField] private GameObject[] howToPlayPanels;
         [SerializeField] private Button backButton;
         [SerializeField] private Button nextButton;
         [SerializeField] private Button closeButton;
+        [SerializeField] private Button playButton;
         [SerializeField] private TextMeshProUGUI pageNumberText;
         private ModalWindow modalWindow;
         private int currentPage = 0;
@@ -26,9 +28,15 @@ namespace RockPaperScissors.UI.Menus
 
         private void OnEnable() 
         {
-            backButton.onClick.AddListener(OnBackButtonPress);
-            nextButton.onClick.AddListener(OnNextButtonPress);
-            closeButton.onClick.AddListener(OnCloseButtonPress);
+            backButton.onClick.AddListener(BackButtonOnClick);
+            nextButton.onClick.AddListener(NextButtonOnClick);
+            closeButton.onClick.AddListener(CloseButtonOnClick);
+            playButton.onClick.AddListener(PlayButtonOnClick);
+            UpdateButtonInteractability();
+            // Open first page
+            CloseAllHowToPlayPanels();
+            currentPage = 0;
+            howToPlayPanels[currentPage].SetActive(true); 
             UpdateButtonInteractability();
         }
 
@@ -37,6 +45,7 @@ namespace RockPaperScissors.UI.Menus
             backButton.onClick.RemoveAllListeners();
             nextButton.onClick.RemoveAllListeners();
             closeButton.onClick.RemoveAllListeners();
+            playButton.onClick.RemoveAllListeners();
         }
 
         private void UpdateButtonInteractability()
@@ -44,28 +53,40 @@ namespace RockPaperScissors.UI.Menus
             if(currentPage == 0)
             {
                 backButton.interactable = false;
+                nextButton.gameObject.SetActive(true);
+                playButton.gameObject.SetActive(false);  
                 nextButton.interactable = true;
             }
             else if(currentPage == howToPlayPanels.Length - 1)
             {
                 nextButton.interactable = false;
+                nextButton.gameObject.SetActive(false);
+                playButton.gameObject.SetActive(true);  
                 backButton.interactable = true;
             }
             else
             {
                 nextButton.interactable = true;
+                nextButton.gameObject.SetActive(true);
+                playButton.gameObject.SetActive(false);  
                 backButton.interactable = true;
             }
 
             pageNumberText.text = $"{currentPage + 1} of {howToPlayPanels.Length}";
         }
 
-        private void OnCloseButtonPress()
+        private void CloseButtonOnClick()
         {
             modalWindow.Close();
         }
 
-        private void OnNextButtonPress()
+        private void PlayButtonOnClick()
+        {
+            OnPlayButtonPress?.Invoke();
+            CloseButtonOnClick();
+        }
+
+        private void NextButtonOnClick()
         {
             currentPage = Math.Clamp(currentPage+1, 0, howToPlayPanels.Length-1);
             CloseAllHowToPlayPanels();
@@ -73,7 +94,7 @@ namespace RockPaperScissors.UI.Menus
             UpdateButtonInteractability();
         }
 
-        private void OnBackButtonPress()
+        private void BackButtonOnClick()
         {
             currentPage = Math.Clamp(currentPage-1, 0, howToPlayPanels.Length-1);
             CloseAllHowToPlayPanels();
