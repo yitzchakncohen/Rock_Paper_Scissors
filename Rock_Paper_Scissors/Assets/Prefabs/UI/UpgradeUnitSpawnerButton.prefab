@@ -427,7 +427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   notEnoughCurrencyRed: {r: 0.7764706, g: 0.15686275, b: 0.15686275, a: 0.74509805}
-  buttonImage: {fileID: 3761589378379402579}
+  buttonImage: {fileID: 5819402963963695353}
   unitThumbnail: {fileID: 7913933558651115651}
   currencyIcon: {fileID: 3088180287328924415}
   unitCostText: {fileID: 5533921630218741030}
