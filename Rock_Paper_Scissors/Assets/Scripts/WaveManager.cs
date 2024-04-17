@@ -84,7 +84,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveData>
     private void UpdateTurnsUntilNextWave(int currentTurn)
     {
         int nextWave = currentTurn;
-        if(currentTurn > waves[waves.Length].TurnToStartWave)
+        if(currentTurn > waves[waves.Length-1].TurnToStartWave)
         {
             // Ran out of waves
             turnsUntilNextWave--;
@@ -106,7 +106,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveData>
 
     private void TryStartWave(int turn)
     {
-        if(turn > waves[waves.Length].TurnToStartWave)
+        if(turn > waves[waves.Length-1].TurnToStartWave)
         {
             // Ran out of waves
             if(turnsUntilNextWave == 0)
