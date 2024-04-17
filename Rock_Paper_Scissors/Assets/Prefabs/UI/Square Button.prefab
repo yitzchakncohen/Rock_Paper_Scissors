@@ -16,10 +16,6 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 70b9d5b7e6e753242a528e211a14f7d0, type: 3}
-    - target: {fileID: 6930254441573241752, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
-      propertyPath: m_PixelsPerUnitMultiplier
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 6930254441573241754, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -110,7 +106,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6930254441853392362, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
       propertyPath: m_fontSize
-      value: 23.65
+      value: 22
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
