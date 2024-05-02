@@ -9,16 +9,19 @@ namespace RockPaperScissors.UI.Buttons
 {
     public class NextActionButton : MonoBehaviour
     {
+        private ActionHandler actionHandler;
         private Button button;
 
         private void Start() 
         {
+            actionHandler = FindObjectOfType<ActionHandler>();
             TurnManager.OnNextTurn += TurnManager_OnNextTurn;
             WaveManager.OnWaveCompleted += WaveManager_OnWaveCompleted;
             WaveManager.OnWaveStarted += WaveManager_OnWaveStarted;
             SaveManager.OnLoadCompleted += SaveManager_OnLoadCompleted;
             button = GetComponent<Button>();
             button.interactable = false;
+            button.onClick.AddListener(() => actionHandler.SelectNextAvaliableUnit());
         }
 
         private void OnDestroy() 
@@ -27,6 +30,7 @@ namespace RockPaperScissors.UI.Buttons
             WaveManager.OnWaveCompleted -= WaveManager_OnWaveCompleted;
             WaveManager.OnWaveStarted -= WaveManager_OnWaveStarted;
             SaveManager.OnLoadCompleted -= SaveManager_OnLoadCompleted;
+            button.onClick.RemoveAllListeners();
         }
 
         private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs e)
