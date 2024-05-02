@@ -62,6 +62,7 @@ namespace RockPaperScissors.Units
 
         private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs e)
         {
+            Debug.Log("Reset Action Points");
             ResetAllUnitActionPoints();
         }
 

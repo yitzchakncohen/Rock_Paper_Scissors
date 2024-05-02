@@ -24,6 +24,13 @@ namespace RockPaperScissors.Units
         public int BuildMoveableUnitActionsRemaining => buildMoveableUnitActionsRemaining;
         public int BuildStationaryUnitActionsRemaining => buildStationaryUnitActionsRemaining;
 
+        protected override void Awake()
+        {
+            base.Awake();
+            maxActionPoints = unitSpawnerData.ActionPoints;
+            actionPointsRemaining = maxActionPoints;
+        }
+
         protected override void Start() 
         {
             base.Start(); 
@@ -34,10 +41,7 @@ namespace RockPaperScissors.Units
             currencyBank = FindObjectOfType<CurrencyBank>();
             inputManager.OnSingleTap += InputManager_OnSingleTap;
             BuildingButton.OnBuildingButtonPressed += BuildingButton_OnBuildingButtonPressed;
-            TurnManager.OnNextTurn += TurnManager_OnNextTurn;
-
-            maxActionPoints = unitSpawnerData.ActionPoints;
-            actionPointsRemaining = maxActionPoints;
+            TurnManager.OnNextTurn += TurnManager_OnNextTurn;            
         }
 
         private void OnDestroy() 
@@ -76,6 +80,7 @@ namespace RockPaperScissors.Units
                 else if(sender as UpgradeUnitSpawnerButton)
                 {
                     buildStationaryUnitActionsRemaining--;
+                    actionPointsRemaining -= 1;
                 }
             }
         }
