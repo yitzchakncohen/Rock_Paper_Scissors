@@ -63,8 +63,11 @@ namespace RockPaperScissors.Units
             if(level > oldLevel)
             {
                 OnLevelUp?.Invoke();
-                StartCoroutine(unitAnimator.AnimateLevelUp(level));
-                AudioManager.Instance.PlayUnitLevelUpSound();
+                if(unitAnimator != null)
+                {
+                    StartCoroutine(unitAnimator.AnimateLevelUp(level));
+                    AudioManager.Instance.PlayUnitLevelUpSound();
+                }
             }
         }
     }

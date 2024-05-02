@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace RockPaperScissors.UI.Buttons
 {
-    public class NextButtonUI : MonoBehaviour
+    public class NextTurnButton : MonoBehaviour
     {
         [SerializeField] private GameObject highlight;
         private Button button;
@@ -14,10 +14,8 @@ namespace RockPaperScissors.UI.Buttons
         private TurnManager turnManager;
         private bool waveOccuring = false;
 
-        private void Start() 
+        private void Awake()
         {
-            unitManager = FindObjectOfType<UnitManager>();
-            turnManager = FindObjectOfType<TurnManager>();
             TurnManager.OnNextTurn += TurnManager_OnNextTurn;
             WaveManager.OnWaveCompleted += WaveManager_OnWaveCompleted;
             WaveManager.OnWaveStarted += WaveManager_OnWaveStarted;
@@ -25,6 +23,13 @@ namespace RockPaperScissors.UI.Buttons
             SaveManager.OnLoadCompleted += SaveManager_OnLoadCompleted;
             button = GetComponent<Button>();
             button.interactable = false;
+            Debug.Log("next button awake");
+        }
+
+        private void Start() 
+        {
+            unitManager = FindObjectOfType<UnitManager>();
+            turnManager = FindObjectOfType<TurnManager>();
         }
 
         private void OnDestroy() 

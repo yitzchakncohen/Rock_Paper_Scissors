@@ -87,6 +87,7 @@
     <Compile Include="Assets\Scripts\UI\StatusUpdateUI.cs" />
     <Compile Include="Assets\Scripts\CombatModifiers.cs" />
     <Compile Include="Assets\Scripts\UI\NextWaveUI.cs" />
+    <Compile Include="Assets\Scripts\UI\Buttons\NextTurnButton.cs" />
     <Compile Include="Assets\Scripts\PathFinding\PathFinding.cs" />
     <Compile Include="Assets\Scripts\Ads\AdsManager.cs" />
     <Compile Include="Assets\Scripts\UI\RewardBonusUI.cs" />
@@ -140,7 +141,6 @@
     <Compile Include="Assets\Scripts\Currency\CurrencyUI.cs" />
     <Compile Include="Assets\Scripts\UI\Menus\GameMenu.cs" />
     <Compile Include="Assets\Scripts\Unit\GlueTrap.cs" />
-    <Compile Include="Assets\Scripts\UI\Buttons\NextButtonUI.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitSpawnerData.cs" />
     <Compile Include="Assets\Scripts\UI\Menus\HowToPlayMenu.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitData.cs" />

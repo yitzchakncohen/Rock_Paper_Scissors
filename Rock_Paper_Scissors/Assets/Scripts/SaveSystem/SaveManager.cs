@@ -108,6 +108,7 @@ namespace RockPaperScissors.SaveSystem
         public async Task LoadGameAsync()
         {
             await Task.Yield();
+            Debug.Log("Loading game...");
             // TODO clear all grid objects and delete all units. 
 
             if (File.Exists(Application.persistentDataPath + SAVE_DIRECTORY + "save.txt"))
@@ -129,6 +130,7 @@ namespace RockPaperScissors.SaveSystem
             }
             gridManager.UpdateGridOccupancy();
 
+            Debug.Log("Game loaded...");
             OnLoadCompleted?.Invoke();
         }
 
