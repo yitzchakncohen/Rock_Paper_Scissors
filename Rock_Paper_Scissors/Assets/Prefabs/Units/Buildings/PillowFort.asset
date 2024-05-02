@@ -24,4 +24,4 @@ MonoBehaviour:
   UnitDefeatedCurrencyReward: 15
   UnitDefeatedXPReward: 320000004b00000064000000
   HitFX: {fileID: 236918012766038522, guid: 9199b18fb605334449baaff5d1010f52, type: 3}
-  XPToLevelUp: 
+  XPToLevelUp: 64000000c80000002c010000

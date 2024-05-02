@@ -19,6 +19,7 @@ namespace RockPaperScissors.UI.Buttons
             if(Button.interactable)
             {
                 unitThumbnail.color = Color.white;
+                unitThumbnail.material.SetFloat("_Alpha", 1);
                 unitCostText.color = Color.white;
                 currencyIcon.color = Color.white;
             }
@@ -30,9 +31,10 @@ namespace RockPaperScissors.UI.Buttons
                 }
                 if(!unitButtonInteractability)
                 {
-                    unitThumbnail.color = Button.colors.disabledColor;
                     currencyIcon.color = Button.colors.disabledColor;
                 }
+                unitThumbnail.color = Button.colors.disabledColor;
+                unitThumbnail.material.SetFloat("_Alpha", Button.colors.disabledColor.a);
             }
         }
     }

@@ -34,7 +34,8 @@ namespace RockPaperScissors.UI.Buttons
         
         private void Start() 
         {
-            currencyBank = FindObjectOfType<CurrencyBank>();            
+            currencyBank = FindObjectOfType<CurrencyBank>();
+            unitThumbnail.material = new Material(unitThumbnail.material);
         }
 
         private void OnEnable()
@@ -75,12 +76,14 @@ namespace RockPaperScissors.UI.Buttons
             if(buttonInteractable)
             {
                 unitThumbnail.color = Color.white;
+                unitThumbnail.material.SetFloat("_Alpha", 1);
                 unitCostText.color = Color.white;
                 currencyIcon.color = Color.white;
             }
             else
             {
                 unitThumbnail.color = button.colors.disabledColor;
+                unitThumbnail.material.SetFloat("_Alpha", Button.colors.disabledColor.a);
                 if(!availableActionPoints)
                 {
                     unitCostText.color = button.colors.disabledColor;
