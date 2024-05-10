@@ -21,6 +21,7 @@ namespace RockPaperScissors.UI.Buttons
             {
                 int currentLevel = unitSpawner.Unit.UnitProgression.Level;
                 unitSpawner.Unit.UnitProgression.SetLevel(currentLevel+1);
+                UnitAction.ActionCompleted(unitSpawner);
             }
         }
 

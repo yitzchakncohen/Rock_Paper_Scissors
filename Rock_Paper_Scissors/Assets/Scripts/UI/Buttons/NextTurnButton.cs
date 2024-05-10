@@ -23,6 +23,7 @@ namespace RockPaperScissors.UI.Buttons
             SaveManager.OnLoadCompleted += SaveManager_OnLoadCompleted;
             button = GetComponent<Button>();
             button.interactable = false;
+            button.onClick.AddListener(() => turnManager.NextTurn());
             Debug.Log("next button awake");
         }
 
@@ -39,6 +40,7 @@ namespace RockPaperScissors.UI.Buttons
             WaveManager.OnWaveCompleted -= WaveManager_OnWaveCompleted;
             WaveManager.OnWaveStarted -= WaveManager_OnWaveStarted;
             SaveManager.OnLoadCompleted -= SaveManager_OnLoadCompleted;
+            button.onClick.RemoveAllListeners();
         }
 
         private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
