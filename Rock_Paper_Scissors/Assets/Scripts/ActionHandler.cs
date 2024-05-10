@@ -619,8 +619,7 @@ public class ActionHandler : MonoBehaviour
 
     public void SelectNextAvaliableUnit()
     {
-        Unit nextAvaliableUnit = null;
-        nextAvaliableUnit = FindNextAvaliableUnit(nextAvaliableUnit);
+        Unit nextAvaliableUnit = FindNextAvaliableUnit();
         for (int i = 0; i < unitQueue.Count; i++)
         {
             if(unitQueue.Peek() == nextAvaliableUnit)
@@ -633,9 +632,10 @@ public class ActionHandler : MonoBehaviour
                 unitQueue.Enqueue(unitQueue.Dequeue());            
             }
         }
+
     }
 
-    private Unit FindNextAvaliableUnit(Unit nextAvaliableUnit)
+    private Unit FindNextAvaliableUnit()
     {
         foreach (Unit unit in unitQueue)
         {
@@ -648,8 +648,19 @@ public class ActionHandler : MonoBehaviour
                     updateGridActionHighlight = true;
                     return unit;
                 }
+                else if (unitAction as TrampolineTrap)
+                {
+                    if(unitManager.IsTrampolineOccupied(unitAction as TrampolineTrap, out Unit unitOnTrampoline))
+                    {
+                        selectedUnit = unitOnTrampoline;
+                        OnUnitSelected?.Invoke(this, unitOnTrampoline);
+                        updateGridActionHighlight = true;
+                        return unitOnTrampoline;
+                    }
+                }
             }
         }
+        
         return null;
     }
 }

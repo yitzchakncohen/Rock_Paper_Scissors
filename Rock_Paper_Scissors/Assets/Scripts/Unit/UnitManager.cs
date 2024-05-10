@@ -122,10 +122,31 @@ namespace RockPaperScissors.Units
                 foreach (UnitAction unitAction in friendlyUnit.UnitActions)
                 {
                     actionPoints += unitAction.GetValidActionsRemaining();
+                    // TODO check for trampolines with units on them.
+                    if(unitAction as TrampolineTrap)
+                    {
+                        if(IsTrampolineOccupied(unitAction as TrampolineTrap, out Unit unitOnTrampoline))
+                        {
+                            actionPoints += 1;
+                        }
+                    }
                 }
             }
 
             return actionPoints;
+        }
+
+
+        public bool IsTrampolineOccupied(TrampolineTrap trampoline, out Unit unitOnTrampoline)
+        {
+            GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(trampoline.transform.position);
+            if(gridObject.OccupantUnit != null && gridObject.OccupantUnit.IsFriendly)
+            {
+                unitOnTrampoline = gridObject.OccupantUnit as Unit;
+                return true;
+            }
+            unitOnTrampoline = null;
+            return false;
         }
     }
 }
