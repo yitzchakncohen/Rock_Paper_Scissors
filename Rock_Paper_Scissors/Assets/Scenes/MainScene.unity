@@ -927,7 +927,7 @@ MonoBehaviour:
     TotalEnemyUnitsToSpawn: 14
     TotalFriendlyUnitsToSpawn: 0
     CurrencyBonus: 100
-    TurnToStartWave: 8
+    TurnToStartWave: 12
   enemySpawnPoints:
   - {fileID: 1205715837}
   - {fileID: 1500587892}

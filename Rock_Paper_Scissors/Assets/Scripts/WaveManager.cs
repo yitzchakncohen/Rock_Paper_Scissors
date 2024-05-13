@@ -86,8 +86,14 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveData>
         int nextWave = currentTurn;
         if(currentTurn > waves[waves.Length-1].TurnToStartWave)
         {
+            
             // Ran out of waves
             turnsUntilNextWave--;
+        }
+        else if(currentTurn == waves[waves.Length-1].TurnToStartWave)
+        {
+            // The first time you pass the last wave.
+            turnsUntilNextWave = turnsBetweenWaves;
         }
         else
         {
@@ -106,13 +112,15 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveData>
 
     private void TryStartWave(int turn)
     {
+        Debug.Log("Try Start Wave");
         if(turn > waves[waves.Length-1].TurnToStartWave)
         {
             // Ran out of waves
             if(turnsUntilNextWave == 0)
             {
                 // Use the last wave
-                Wave wave = waves[waves.Length];
+                Wave wave = waves[waves.Length-1];
+                Debug.Log("Start extra wave");
                 StartWave(turn, wave);
                 turnsUntilNextWave = turnsBetweenWaves;
             }
@@ -123,6 +131,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveData>
         {
             if(wave.TurnToStartWave == turn)
             {
+                Debug.Log("Start wave by turn");
                 StartWave(turn, wave);
             }
         }
