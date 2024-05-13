@@ -3,16 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using RockPaperScissors.Grids;
+using RockPaperScissors.SaveSystem;
 using RockPaperScissors.Units;
 using UnityEngine;
 
-public class WaveManager : MonoBehaviour
+public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
 {  
     [System.Serializable]
     private struct Wave
     {
-        public Unit[] EnemyUnitsToSpawn;
-        public Unit[] FriendlyUnitsToSpawn;
+        public Unit[] EnemyUnitTypesToSpawn;
+        public Unit[] FriendlyUnitTypesToSpawn;
+        public int TotalEnemyUnitsToSpawn;
+        public int TotalFriendlyUnitsToSpawn;
         public int CurrencyBonus;
         public int TurnToStartWave;
     }
@@ -29,6 +32,7 @@ public class WaveManager : MonoBehaviour
     private CurrencyBank currencyBank;
     private GridManager gridManager;
     private int turnsUntilNextWave = 0;
+    private int turnsBetweenWaves = 4;
     private bool startWaveWhenReady = false;
 
     private void Start() 
@@ -46,7 +50,7 @@ public class WaveManager : MonoBehaviour
             if(gridManager.SetupGridTask.IsCompleted)
             {
                 startWaveWhenReady = false;
-                StartWave(0);
+                TryStartWave(0);
             }
         }
     }
@@ -54,7 +58,7 @@ public class WaveManager : MonoBehaviour
     [ContextMenu("Start Wave 0")]
     public void StartWaveZero()
     {
-        StartWave(0);
+        TryStartWave(0);
     }
 
     public void StartWaveWhenReady()
@@ -71,7 +75,7 @@ public class WaveManager : MonoBehaviour
     {
         if (eventArgs.IsPlayersTurn)
         {
-            StartWave(eventArgs.Turn);
+            TryStartWave(eventArgs.Turn);
         }
 
         UpdateTurnsUntilNextWave(eventArgs.Turn);
@@ -79,73 +83,101 @@ public class WaveManager : MonoBehaviour
 
     private void UpdateTurnsUntilNextWave(int currentTurn)
     {
-        int nextWave = currentTurn;
-        foreach (Wave wave in waves)
+        int nextWaveTurn = currentTurn;
+        if(currentTurn <= waves[waves.Length-1].TurnToStartWave )
         {
-            if (wave.TurnToStartWave > currentTurn)
+            foreach (Wave wave in waves)
             {
-                nextWave = wave.TurnToStartWave;
-                break;
+                if (wave.TurnToStartWave > currentTurn)
+                {
+                    nextWaveTurn = wave.TurnToStartWave;
+                    break;
+                }
             }
+            turnsUntilNextWave = nextWaveTurn - currentTurn;
         }
-        turnsUntilNextWave = nextWave - currentTurn;
         OnTurnsUntilNextWaveUpdated.Invoke(turnsUntilNextWave);
     }
 
-    private void StartWave(int turn)
+    private void TryStartWave(int turn)
     {
-        foreach (Wave wave in waves)
+        if(turn > waves[waves.Length-1].TurnToStartWave)
         {
-            if(wave.TurnToStartWave == turn)
+            turnsUntilNextWave--;
+            // Ran out of waves
+            if(turnsUntilNextWave == 0)
             {
-                currencyBank.AddCurrencyToBank(wave.CurrencyBonus, null);
-
-                List<Unit> unitsSpawnedThisWave = SpawnEnemyUnits(wave.EnemyUnitsToSpawn);
-                unitsSpawnedThisWave.AddRange(SpawnFriendlyUnits(wave.FriendlyUnitsToSpawn, turn));
-                gridManager.UpdateGridOccupancy();
-
-                StartCoroutine(ShowSpawnedUnits(unitsSpawnedThisWave));
-                Debug.Log($"Wave spawning...");
+                // Use the last wave
+                Wave wave = waves[waves.Length-1];
+                StartWave(turn, wave);
+                turnsUntilNextWave = turnsBetweenWaves;
+            }
+            return;
+        }
+        else
+        {
+            foreach (Wave wave in waves)
+            {
+                if(wave.TurnToStartWave == turn)
+                {
+                    StartWave(turn, wave);
+                }
             }
         }
+
     }
 
-    private List<Unit> SpawnEnemyUnits(Unit[] unitsToSpawn)
+    private void StartWave(int turn, Wave wave)
     {
-        if(unitsToSpawn.Length == 0 )
+        currencyBank.AddCurrencyToBank(wave.CurrencyBonus, null);
+
+        List<Unit> unitsSpawnedThisWave = SpawnEnemyUnits(wave.EnemyUnitTypesToSpawn, wave.TotalEnemyUnitsToSpawn);
+        unitsSpawnedThisWave.AddRange(SpawnFriendlyUnits(wave.FriendlyUnitTypesToSpawn, wave.TotalFriendlyUnitsToSpawn, turn));
+        gridManager.UpdateGridOccupancy();
+
+        StartCoroutine(ShowSpawnedUnits(unitsSpawnedThisWave));
+        Debug.Log($"Wave spawning...");
+    }
+
+    private List<Unit> SpawnEnemyUnits(Unit[] unitTypesToSpawn, int totalUnitsToSpawn)
+    {
+        if(unitTypesToSpawn.Length == 0 )
         {
             return new List<Unit>();
         }
 
         List<Unit> enemyUnitsSpawnedThisWave = new List<Unit>();
         // Create a list of valid spawn points
-        int radius = unitsToSpawn.Length / 3;
+        int radius = unitTypesToSpawn.Length / 3;
         List<Vector2Int> spawnPositions = new List<Vector2Int>();
         foreach (Transform point in enemySpawnPoints)
         {
-            spawnPositions = spawnPositions.Concat(GetValidSpawnGridPositionsForSpawnPoint(unitsToSpawn.FirstOrDefault(), point.position, radius)).ToList();
+            spawnPositions = spawnPositions.Concat(GetValidSpawnGridPositionsForSpawnPoint(unitTypesToSpawn.FirstOrDefault(), point.position, radius)).ToList();
         }
 
         // Spawn the units in random locations near the spawn points.
-        foreach (Unit unit in unitsToSpawn)
+        for (int i = 0; i < totalUnitsToSpawn; i++)
         {
+            int unitToSpawnIndex = UnityEngine.Random.Range(0, unitTypesToSpawn.Length);
+            Unit unitToSpawn = unitTypesToSpawn[unitToSpawnIndex];
             if(spawnPositions.Count() > 0)
             {
                 int spawnPositionIndex = UnityEngine.Random.Range(0, spawnPositions.Count());
                 Vector2Int spawnPosition = spawnPositions[spawnPositionIndex];
-                Unit spawnedUnit = Instantiate(unit, gridManager.GetGridObject(spawnPosition).transform.position, Quaternion.identity);
+                Unit spawnedUnit = Instantiate(unitToSpawn, gridManager.GetGridObject(spawnPosition).transform.position, Quaternion.identity);
                 enemyUnitsSpawnedThisWave.Add(spawnedUnit);
                 spawnPositions.Remove(spawnPosition);
             }
         }
+
         return enemyUnitsSpawnedThisWave;
     }
 
-    private List<Unit> SpawnFriendlyUnits(Unit[] unitsToSpawn, int turn)
+    private List<Unit> SpawnFriendlyUnits(Unit[] unitTypesToSpawn, int totalUnitsToSpawn, int turn)
     {
 
         List<Unit> friendlyUnitsSpawnedThisWave = new List<Unit>();
-        int radius = unitsToSpawn.Length / 3;
+        int radius = unitTypesToSpawn.Length / 3;
         
         if(turn == 0)
         {
@@ -155,18 +187,20 @@ public class WaveManager : MonoBehaviour
             friendlyUnitsSpawnedThisWave.Add(spawnedUnit);
         }        
 
-        if(unitsToSpawn.Length == 0 )
+        if(unitTypesToSpawn.Length == 0 )
         {
             return friendlyUnitsSpawnedThisWave;
         }
-        List<Vector2Int> spawnPositions = GetValidSpawnGridPositionsForSpawnPoint(unitsToSpawn.FirstOrDefault(), friendlySpawnPoint.position, radius);
-        foreach (Unit unit in unitsToSpawn)
+        List<Vector2Int> spawnPositions = GetValidSpawnGridPositionsForSpawnPoint(unitTypesToSpawn.FirstOrDefault(), friendlySpawnPoint.position, radius);
+        for (int i = 0; i < totalUnitsToSpawn; i++)
         {
+            int unitToSpawnIndex = UnityEngine.Random.Range(0, unitTypesToSpawn.Length);
+            Unit unitToSpawn = unitTypesToSpawn[unitToSpawnIndex];
             if(spawnPositions.Count() > 0)
             {
                 int spawnPositionIndex = UnityEngine.Random.Range(0, spawnPositions.Count());
                 Vector2Int spawnPosition = spawnPositions[spawnPositionIndex];
-                Unit spawnedUnit = Instantiate(unit, gridManager.GetGridObject(spawnPosition).transform.position, Quaternion.identity);
+                Unit spawnedUnit = Instantiate(unitToSpawn, gridManager.GetGridObject(spawnPosition).transform.position, Quaternion.identity);
                 friendlyUnitsSpawnedThisWave.Add(spawnedUnit);
                 spawnPositions.Remove(spawnPosition);
             }
@@ -251,5 +285,19 @@ public class WaveManager : MonoBehaviour
             yield return StartCoroutine(unit.UnitAnimator.SpawnAnimationRoutine(showUnitsTime));
         }
         OnWaveCompleted?.Invoke();
+    }
+
+    public SaveWaveManagerData Save()
+    {
+        return new SaveWaveManagerData
+        {
+            TurnsUntilNextWave = turnsUntilNextWave
+        };
+    }
+
+    public void Load(SaveWaveManagerData loadData)
+    {
+        turnsUntilNextWave = loadData.TurnsUntilNextWave;
+        OnTurnsUntilNextWaveUpdated.Invoke(turnsUntilNextWave);
     }
 }

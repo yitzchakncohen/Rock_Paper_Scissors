@@ -21,6 +21,10 @@ namespace RockPaperScissors.UI.Components
 
         public void Play(string textString)
         {
+            if(textComponent == null)
+            {
+                textComponent = GetComponent<TextMeshProUGUI>();
+            }
             textComponent.text = "";
             textComponent.DOText(textString, animationTime);
         }

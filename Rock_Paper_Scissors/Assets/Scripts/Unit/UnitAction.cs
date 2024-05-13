@@ -24,6 +24,11 @@ namespace RockPaperScissors.Units
         protected int maxActionPoints = 1;
         protected int trappedTurnsRemaining = 0;
 
+        public static void ActionCompleted(UnitAction sender)
+        {
+            OnAnyActionCompleted?.Invoke(sender, EventArgs.Empty);
+        }
+
         protected virtual void Awake() 
         {
             unit = GetComponent<Unit>();
@@ -78,11 +83,11 @@ namespace RockPaperScissors.Units
         {
             return trappedTurnsRemaining;
         }
+        
         public abstract EnemyAIAction GetBestEnemyAIAction();
         public abstract bool TryTakeAction(GridObject gridObject, Action onActionComplete);
         public abstract int GetValidActionsRemaining();
         public abstract void LoadAction(SaveUnitData loadData);
         public abstract SaveUnitData SaveAction(SaveUnitData saveData);
-
     }
 }

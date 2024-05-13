@@ -34,8 +34,7 @@ namespace RockPaperScissors.UI
         while(startingCurrency <= score-1)
         {
             startingCurrency = Mathf.Lerp(startingCurrency, score, Time.deltaTime/scoreUpdateTime);
-            scoreText.text = startingCurrency.ToString();
-            // Debug.Log(startingCurrency);
+            scoreText.text = startingCurrency.ToString("N0");
             yield return null;
         }
         scoreText.text = score.ToString();

@@ -18,7 +18,7 @@ namespace RockPaperScissors.UI
 
         private void Health_OnHealthChanged()
         {
-            healthBarImage.fillAmount = health.GetNormalizedHealth();
+            healthBarImage.fillAmount = health.NormalizedHealth;
         }
     }    
 }

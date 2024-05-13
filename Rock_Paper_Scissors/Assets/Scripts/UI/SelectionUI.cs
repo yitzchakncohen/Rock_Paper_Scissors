@@ -65,12 +65,12 @@ namespace RockPaperScissors.UI
             }
             this.unit.text = SplitCamelCase(unit.Class.ToString());
             level.text = $"Level: {unit.GetLevel()}";
-            health.text = $" <sprite=0> {unit.Health}/{unit.GetMaximumHealth()}";
-            attack.text = $" <sprite=2> {unit.AttackDamage}";
-            range.text = $" <sprite=3> {unit.AttackRange}";
-            defense.text = $" <sprite=1> {unit.Defense}";
-            movement.text = $" <sprite=4> {unit.MoveDistance}";
-            xp.text = $"XP {unit.UnitProgression.XP}/{100}";
+            health.text = $"<sprite=0> {unit.Health}/{unit.GetMaximumHealth()}";
+            attack.text = $"<sprite=2> {unit.AttackDamage}";
+            range.text = $"<sprite=3> {unit.AttackRange}";
+            defense.text = $"<sprite=1> {unit.Defense}";
+            movement.text = $"<sprite=4> {unit.MoveDistance}";
+            xp.text = $"XP {unit.UnitProgression.XP}/{unit.XPToLevelUp}";
         }
 
         private void selectedUnit_OnLevelUp()
@@ -80,7 +80,7 @@ namespace RockPaperScissors.UI
 
         private void selectedUnit_OnGainXP()
         {
-            xp.text = $"XP {selectedUnit.UnitProgression.XP} / {100}";
+            xp.text = $"XP {selectedUnit.UnitProgression.XP}/{selectedUnit.XPToLevelUp}";
             level.text = $"Level: {selectedUnit.GetLevel()}";
         }
 

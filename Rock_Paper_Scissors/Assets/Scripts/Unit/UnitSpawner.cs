@@ -24,6 +24,13 @@ namespace RockPaperScissors.Units
         public int BuildMoveableUnitActionsRemaining => buildMoveableUnitActionsRemaining;
         public int BuildStationaryUnitActionsRemaining => buildStationaryUnitActionsRemaining;
 
+        protected override void Awake()
+        {
+            base.Awake();
+            maxActionPoints = unitSpawnerData.ActionPoints;
+            actionPointsRemaining = maxActionPoints;
+        }
+
         protected override void Start() 
         {
             base.Start(); 
@@ -34,10 +41,7 @@ namespace RockPaperScissors.Units
             currencyBank = FindObjectOfType<CurrencyBank>();
             inputManager.OnSingleTap += InputManager_OnSingleTap;
             BuildingButton.OnBuildingButtonPressed += BuildingButton_OnBuildingButtonPressed;
-            TurnManager.OnNextTurn += TurnManager_OnNextTurn;
-
-            maxActionPoints = unitSpawnerData.ActionPoints;
-            actionPointsRemaining = maxActionPoints;
+            TurnManager.OnNextTurn += TurnManager_OnNextTurn;            
         }
 
         private void OnDestroy() 
@@ -76,6 +80,7 @@ namespace RockPaperScissors.Units
                 else if(sender as UpgradeUnitSpawnerButton)
                 {
                     buildStationaryUnitActionsRemaining--;
+                    actionPointsRemaining -= 1;
                 }
             }
         }
@@ -135,7 +140,7 @@ namespace RockPaperScissors.Units
 
                     // Check if it has a building already for buildings
                     if (unitToSpawn.Class == UnitClass.PillowOutpost
-                        && gridManager.GetGridObject(testGridPosition).GetOccupantBuilding() != null)
+                        && gridManager.GetGridObject(testGridPosition).OccupantBuilding != null)
                     {
                         continue;
                     }
@@ -193,25 +198,63 @@ namespace RockPaperScissors.Units
 
         public override int GetValidActionsRemaining()
         {
-            int minimumPrice = GetMinimumUnitCost();
+            int actionPoints = 0;
+            if(currencyBank.GetCurrencyRemaining() > GetMinimumMoveableUnitCost())
+            {
+                actionPoints += buildMoveableUnitActionsRemaining;
+            }
+            if(currencyBank.GetCurrencyRemaining() > GetMinimumStationaryUnitCost())
+            {
+                actionPoints += buildStationaryUnitActionsRemaining;
+            }
+            return actionPoints;
+        }
 
-            if (currencyBank.GetCurrencyRemaining() > minimumPrice)
-            {
-                return actionPointsRemaining;
+        private int GetMinimumMoveableUnitCost()
+        {
+            int minimumPrice = 0;
+            foreach (Unit unit in unitSpawnerData.SpawnableUnits)
+            {               
+                if(minimumPrice == 0)
+                {
+                    minimumPrice = unit.Cost;
+                }
+                else if (unit.IsMoveable && unit.Cost < minimumPrice)
+                {
+                    minimumPrice = unit.Cost;
+                }
             }
-            else
-            {
-                return 0;
+            return minimumPrice;
+        }
+
+        private int GetMinimumStationaryUnitCost()
+        {
+            int minimumPrice = 0;
+            foreach (Unit unit in unitSpawnerData.SpawnableUnits)
+            {               
+                bool isStationaru = unit.IsBuilding || unit.IsTrap;
+                if(minimumPrice == 0)
+                {
+                    minimumPrice = unit.Cost;
+                }
+                else if (isStationaru && unit.Cost < minimumPrice)
+                {
+                    minimumPrice = unit.Cost;
+                }
             }
+            return minimumPrice;
         }
 
         private int GetMinimumUnitCost()
         {
-            // Arbitrarily large starting number
-            int minimumPrice = 10000;
+            int minimumPrice = 0;
             foreach (Unit unit in unitSpawnerData.SpawnableUnits)
             {
-                if (unit.Cost < minimumPrice)
+                if(minimumPrice == 0)
+                {
+                    minimumPrice = unit.Cost;
+                }
+                else if (unit.Cost < minimumPrice)
                 {
                     minimumPrice = unit.Cost;
                 }

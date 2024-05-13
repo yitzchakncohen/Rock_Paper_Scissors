@@ -11,9 +11,14 @@ namespace RockPaperScissors.UI.Menus
     public class MainMenu : MonoBehaviour
     {
         [SerializeField] private ModalWindow settingsModal;
+        [SerializeField] private ModalWindow howToPlayModal;
+        private HowToPlayMenu howToPlayMenu;
+        [SerializeField] private GameModeMenu gameModeMenu;
+        private ModalWindow gameModeModal;
         [SerializeField] private Button continueButton;
         [SerializeField] private Button startButton;
         [SerializeField] private Button settingsButton;
+        [SerializeField] private Button howToPlayButton;
         [SerializeField] private TextMeshProUGUI highscoreText;
         public static event Action OnStartGameButtonPress;
         public static event Action OnContinueGameButtonPress;
@@ -45,6 +50,15 @@ namespace RockPaperScissors.UI.Menus
 
             settingsButton.onClick.AddListener(OpenSettingsMenu);
             settingsModal.gameObject.SetActive(false);
+            howToPlayButton.onClick.AddListener(OpenHowToPlayMenu);
+            howToPlayModal.gameObject.SetActive(false);
+            howToPlayMenu = howToPlayModal.GetComponent<HowToPlayMenu>();
+            howToPlayMenu.OnPlayButtonPress += HowToPlayMenu_OnPlayButtonPress;
+
+            gameModeModal = gameModeMenu.GetComponent<ModalWindow>();
+            gameModeMenu.OnHighScoreModeButtonPress += GameModeMenu_OnHighScoreModeButtonPress;
+            gameModeMenu.OnLevelModeButtonPress += GameModeMenu_OnLevelModeButtonPress;
+            gameModeMenu.gameObject.SetActive(false);
         }
 
         private void OnDestroy() 
@@ -52,12 +66,15 @@ namespace RockPaperScissors.UI.Menus
             continueButton.onClick.RemoveAllListeners();
             startButton.onClick.RemoveAllListeners();
             settingsButton.onClick.RemoveAllListeners();
+            gameModeMenu.OnHighScoreModeButtonPress -= GameModeMenu_OnHighScoreModeButtonPress;
+            gameModeMenu.OnLevelModeButtonPress -= GameModeMenu_OnLevelModeButtonPress;
+            howToPlayMenu.OnPlayButtonPress -= HowToPlayMenu_OnPlayButtonPress;
         }
 
         private void StartGame()
         {
             AudioManager.Instance.PlayMenuNavigationSound();
-            OnStartGameButtonPress?.Invoke();
+            gameModeModal.Open();
         }
 
         private void ContinueGame()
@@ -72,6 +89,29 @@ namespace RockPaperScissors.UI.Menus
             {
                 settingsModal.Open();
             }
+        }
+
+        private void OpenHowToPlayMenu()
+        {
+            if(!howToPlayModal.gameObject.activeSelf)
+            {
+                howToPlayModal.Open();
+            }
+        }
+
+        private void GameModeMenu_OnLevelModeButtonPress()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void GameModeMenu_OnHighScoreModeButtonPress()
+        {
+            OnStartGameButtonPress?.Invoke();
+        }
+
+        private void HowToPlayMenu_OnPlayButtonPress()
+        {
+            StartGame();
         }
     }
 }

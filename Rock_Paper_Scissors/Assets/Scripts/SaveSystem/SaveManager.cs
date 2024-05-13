@@ -23,6 +23,7 @@ namespace RockPaperScissors.SaveSystem
         private TurnManager turnManager;
         private CurrencyBank currencyBank;
         private GameplayManager gameplayManager;
+        private WaveManager waveManager;
 
         private void Awake()
         {
@@ -30,6 +31,7 @@ namespace RockPaperScissors.SaveSystem
             turnManager = FindObjectOfType<TurnManager>();
             currencyBank = FindObjectOfType<CurrencyBank>();
             gameplayManager = FindObjectOfType<GameplayManager>();
+            waveManager = FindObjectOfType<WaveManager>();
             CheckForDirectory();
 
             SetupUnitDictionaries();
@@ -65,7 +67,6 @@ namespace RockPaperScissors.SaveSystem
         private IEnumerator SaveGameAsync()
         {
             // TODO add saving indicator
-
             List<SaveUnitData> SaveUnitDataList = new List<SaveUnitData>();
 
             foreach (var unit in FindObjectsOfType<Unit>())
@@ -80,13 +81,15 @@ namespace RockPaperScissors.SaveSystem
             SaveCurrencyBankData currencyBankData = currencyBank.Save();
             SaveTurnManagerData turnManagerData = turnManager.Save();
             SaveGameplayManagerData saveGameManagerData = gameplayManager.Save();
+            SaveWaveManagerData saveWaveManagerData = waveManager.Save();
 
-            SaveObject saveObject = new SaveObject
+            SaveData saveObject = new SaveData
             {
                 SaveCurrencyBankData = currencyBankData,
                 SaveTurnManagerData = turnManagerData,
                 UnitList = SaveUnitDataList,
                 SaveGameManagerData = saveGameManagerData,
+                SaveWaveManagerData = saveWaveManagerData
             };
 
             string json = JsonUtility.ToJson(saveObject);
@@ -108,16 +111,18 @@ namespace RockPaperScissors.SaveSystem
         public async Task LoadGameAsync()
         {
             await Task.Yield();
+            Debug.Log("Loading game...");
             // TODO clear all grid objects and delete all units. 
 
             if (File.Exists(Application.persistentDataPath + SAVE_DIRECTORY + "save.txt"))
             {
                 string saveString = File.ReadAllText(Application.persistentDataPath + SAVE_DIRECTORY + "save.txt");
-                SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
+                SaveData saveObject = JsonUtility.FromJson<SaveData>(saveString);
 
                 turnManager.Load(saveObject.SaveTurnManagerData);
                 currencyBank.Load(saveObject.SaveCurrencyBankData);
                 gameplayManager.Load(saveObject.SaveGameManagerData);
+                waveManager.Load(saveObject.SaveWaveManagerData);
                 foreach (SaveUnitData unitData in saveObject.UnitList)
                 {
                     SpawnUnitByClassandTeam(unitData);
@@ -129,6 +134,7 @@ namespace RockPaperScissors.SaveSystem
             }
             gridManager.UpdateGridOccupancy();
 
+            Debug.Log("Game loaded...");
             OnLoadCompleted?.Invoke();
         }
 

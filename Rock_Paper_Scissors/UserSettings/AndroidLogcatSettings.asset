@@ -3,29 +3,11 @@
     "m_SelectedProcess": {
         "deviceId": "R5CR92W1AAR",
         "name": "com.DefaultCompany.Rock_Paper_Scissors",
-        "processId": 26668,
+        "processId": 23179,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownProcessesForSerialization": [
-        {
-            "deviceId": "R5CR92W1AAR",
-            "name": "com.unity3d.mobileremote",
-            "processId": 24305,
-            "exited": true
-        },
-        {
-            "deviceId": "R5CR92W1AAR",
-            "name": "com.DefaultCompany.Rock_Paper_Scissors",
-            "processId": 27263,
-            "exited": true
-        },
-        {
-            "deviceId": "R5CR92W1AAR",
-            "name": "com.DefaultCompany.Rock_Paper_Scissors",
-            "processId": 27858,
-            "exited": true
-        },
         {
             "deviceId": "R5CR92W1AAR",
             "name": "com.DefaultCompany.Rock_Paper_Scissors",
@@ -36,6 +18,30 @@
             "deviceId": "R5CR92W1AAR",
             "name": "com.DefaultCompany.Rock_Paper_Scissors",
             "processId": 26668,
+            "exited": true
+        },
+        {
+            "deviceId": "R5CR92W1AAR",
+            "name": "com.DefaultCompany.Rock_Paper_Scissors",
+            "processId": 12470,
+            "exited": true
+        },
+        {
+            "deviceId": "R5CR92W1AAR",
+            "name": "com.DefaultCompany.Rock_Paper_Scissors",
+            "processId": 18887,
+            "exited": true
+        },
+        {
+            "deviceId": "R5CR92W1AAR",
+            "name": "com.android.vending",
+            "processId": 32759,
+            "exited": false
+        },
+        {
+            "deviceId": "R5CR92W1AAR",
+            "name": "com.DefaultCompany.Rock_Paper_Scissors",
+            "processId": 23179,
             "exited": false
         }
     ],

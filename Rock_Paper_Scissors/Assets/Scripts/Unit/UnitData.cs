@@ -16,7 +16,9 @@ namespace RockPaperScissors.Units
         public int[] defense;
         public int unitCost;
         public int[] maximumHealth;
-        public int unitDefeatedReward;
+        public int UnitDefeatedCurrencyReward;
+        public int[] UnitDefeatedXPReward;
         public ParticleSystem HitFX;
+        public int[] XPToLevelUp;
     }
 }

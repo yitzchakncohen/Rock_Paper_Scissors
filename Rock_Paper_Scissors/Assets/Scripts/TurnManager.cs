@@ -15,6 +15,7 @@ public class TurnManager : MonoBehaviour, ISaveInterface<SaveTurnManagerData>
     private bool playersTurn = true;
     private int turn = 0;
 
+    public int Turn => turn;
     public bool IsPlayerTurn => playersTurn;
 
     public void NextTurn()

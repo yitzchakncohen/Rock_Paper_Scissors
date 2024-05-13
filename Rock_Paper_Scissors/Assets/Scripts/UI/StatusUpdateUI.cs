@@ -76,7 +76,14 @@ namespace RockPaperScissors.UI
                     ShowStatus("Placing unit...", 0);
                     break;
                 case(UnitTrap unitTrap):
-                    ShowStatus("It's a Trap!", 0);
+                    if(unitTrap as GlueTrap)
+                    {
+                        ShowStatus("Boooiiinnnng!", 0);
+                    }
+                    else
+                    {
+                        ShowStatus("It's a Trap!", 0);
+                    }
                     break;
             }
         }

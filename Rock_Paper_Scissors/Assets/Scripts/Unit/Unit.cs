@@ -15,15 +15,17 @@ namespace RockPaperScissors.Units
         public UnitProgression UnitProgression => unitProgression;
         public UnitClass Class => unitData.unitClass;
         public UnitAction[] UnitActions => unitActions;
-        public float NormalizedHealth => health.GetNormalizedHealth();
+        public float NormalizedHealth => health.NormalizedHealth;
         public int Cost => unitData.unitCost;
         public int MoveDistance => unitData.moveDistance;
         public int AttackRange => unitData.attackRange;
-        public int UnitDefeatedReward => unitData.unitDefeatedReward;
-        public int Health => health.GetHealth(); 
+        public int UnitDefeatedCurrencReward => unitData.UnitDefeatedCurrencyReward;
+        public int Health => health.Health; 
         public int AttackDamage => unitData.attackDamage[unitProgression.Level - 1];
         public int Defense => unitData.defense[unitProgression.Level - 1];
-        public bool IsDead => health.IsDead();
+        public int XPToLevelUp => unitData.XPToLevelUp[unitProgression.Level-1];
+        public int UnitDefeatedXPReward => unitData.UnitDefeatedXPReward[unitProgression.Level-1];
+        public bool IsDead => health.IsDead;
         public bool IsFriendly { get => isFriendly; set{} }
         public bool IsMoveable{get => UnitClass.Moveable.HasFlag(Class); set{}} 
         public bool IsBuilding{get => UnitClass.Building.HasFlag(Class); set{}} 
@@ -91,7 +93,7 @@ namespace RockPaperScissors.Units
 
         public void DestroyUnit()
         {
-            health.Damage(health.GetHealth(), null);
+            health.Damage(health.Health, null);
         }
 
         public int GetMaximumHealth()
