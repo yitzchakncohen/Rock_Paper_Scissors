@@ -210,7 +210,9 @@ namespace RockPaperScissors
 
         private void GameplayManager_OnGameOver(object sender, GameplayManager.OnGameOverEventArgs e)
         {
+#if UNITY_ANDROID
             deviceReviewsManager.RequestReviewAsync();
+#endif
         }
 
         private void AdModal_OnWatchButtonClick(object sender, GameplayManager.OnGameOverEventArgs e)

@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+#if UNITY_ANDROID
 using Google.Play.Review;
+#endif
 using UnityEngine;
 
 public class DeviceReviewsManager : MonoBehaviour
