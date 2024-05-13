@@ -77,7 +77,6 @@
     <Compile Include="Assets\Scripts\Enemy\EnemyAI.cs" />
     <Compile Include="Assets\Scripts\UI\Components\GravityWell.cs" />
     <Compile Include="Assets\Scripts\UI\AttackRangeIndicator.cs" />
-    <Compile Include="Assets\Scripts\SaveSystem\SaveObject.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitAnimator.cs" />
     <Compile Include="Assets\Scripts\UI\Buttons\SaveButton.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitSpawner.cs" />
@@ -96,6 +95,7 @@
     <Compile Include="Assets\Scripts\Grid\GridObjectUI.cs" />
     <Compile Include="Assets\Scripts\ApplicationManager.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitClass.cs" />
+    <Compile Include="Assets\Scripts\SaveSystem\SaveData.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitHealth.cs" />
     <Compile Include="Assets\Scripts\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Unit\Unit.cs" />
@@ -114,6 +114,7 @@
     <Compile Include="Assets\Scripts\TurnManager.cs" />
     <Compile Include="Assets\Test\Test.cs" />
     <Compile Include="Assets\Scripts\UI\Menus\MainMenu.cs" />
+    <Compile Include="Assets\Scripts\SaveSystem\SaveWaveManagerData.cs" />
     <Compile Include="Assets\Scripts\UI\Menus\BuildingMenu.cs" />
     <Compile Include="Assets\Scripts\UI\AdModal.cs" />
     <Compile Include="Assets\Scripts\Grid\GridUI.cs" />
@@ -126,7 +127,6 @@
     <Compile Include="Assets\Scripts\UI\Components\RadialLayoutGroup.cs" />
     <Compile Include="Assets\Scripts\Grid\GridManager.cs" />
     <Compile Include="Assets\Scripts\UI\Buttons\NextActionButton.cs" />
-    <Compile Include="Assets\Scripts\SaveSystem\SaveWaveData.cs" />
     <Compile Include="Assets\Scripts\UI\Components\LetterAnimation.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitShaderController.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyStatePattern.cs" />

@@ -2828,6 +2828,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 7917544054449144569}
+    - target: {fileID: 134733628983776537, guid: e9405376abb4a8e418dfbb56d326fba9, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 134733628983776538, guid: e9405376abb4a8e418dfbb56d326fba9, type: 3}
       propertyPath: m_Name
       value: MenuButton
@@ -3201,7 +3205,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6930254441573241753, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6930254441573241753, guid: 0eaa52c48b207fd409b2281b4db35e57, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -3839,7 +3843,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8438655588416461567, guid: bfe801df83e48f84b9af77521e777022, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8438655588416461567, guid: bfe801df83e48f84b9af77521e777022, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -3848,18 +3852,18 @@ PrefabInstance:
     - target: {fileID: 8438655588416461567, guid: bfe801df83e48f84b9af77521e777022, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 7917544054449144569}
+      objectReference: {fileID: 0}
     - target: {fileID: 8438655588416461567, guid: bfe801df83e48f84b9af77521e777022, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8438655588416461567, guid: bfe801df83e48f84b9af77521e777022, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: TestGameOver
+      value: GameOver
       objectReference: {fileID: 0}
     - target: {fileID: 8438655588416461567, guid: bfe801df83e48f84b9af77521e777022, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GameMenu, Assembly-CSharp
+      value: RockPaperScissors.GameplayManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8438655588416461567, guid: bfe801df83e48f84b9af77521e777022, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -4899,7 +4903,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3036879680228848252, guid: 52f4b09f99a005d4d8390dcba0525131, type: 3}
       propertyPath: m_PixelsPerUnitMultiplier
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4741349261552439988, guid: 52f4b09f99a005d4d8390dcba0525131, type: 3}
       propertyPath: m_Pivot.x
@@ -4984,6 +4988,14 @@ PrefabInstance:
     - target: {fileID: 4741349261552439989, guid: 52f4b09f99a005d4d8390dcba0525131, type: 3}
       propertyPath: m_Name
       value: Fast Forward Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 4741349261552439990, guid: 52f4b09f99a005d4d8390dcba0525131, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4951795241534969955, guid: 52f4b09f99a005d4d8390dcba0525131, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

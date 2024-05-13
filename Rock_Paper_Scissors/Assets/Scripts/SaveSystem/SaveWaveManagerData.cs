@@ -5,7 +5,7 @@ using UnityEngine;
 namespace RockPaperScissors.SaveSystem
 {
     [System.Serializable]
-    public struct SaveWaveData
+    public struct SaveWaveManagerData
     {
         public int TurnsUntilNextWave;
     }

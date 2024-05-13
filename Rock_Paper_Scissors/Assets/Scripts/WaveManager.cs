@@ -7,7 +7,7 @@ using RockPaperScissors.SaveSystem;
 using RockPaperScissors.Units;
 using UnityEngine;
 
-public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveData>
+public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
 {  
     [System.Serializable]
     private struct Wave
@@ -83,58 +83,48 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveData>
 
     private void UpdateTurnsUntilNextWave(int currentTurn)
     {
-        int nextWave = currentTurn;
-        if(currentTurn > waves[waves.Length-1].TurnToStartWave)
-        {
-            
-            // Ran out of waves
-            turnsUntilNextWave--;
-        }
-        else if(currentTurn == waves[waves.Length-1].TurnToStartWave)
-        {
-            // The first time you pass the last wave.
-            turnsUntilNextWave = turnsBetweenWaves;
-        }
-        else
+        int nextWaveTurn = currentTurn;
+        if(currentTurn <= waves[waves.Length-1].TurnToStartWave )
         {
             foreach (Wave wave in waves)
             {
                 if (wave.TurnToStartWave > currentTurn)
                 {
-                    nextWave = wave.TurnToStartWave;
+                    nextWaveTurn = wave.TurnToStartWave;
                     break;
                 }
             }
-            turnsUntilNextWave = nextWave - currentTurn;
+            turnsUntilNextWave = nextWaveTurn - currentTurn;
         }
         OnTurnsUntilNextWaveUpdated.Invoke(turnsUntilNextWave);
     }
 
     private void TryStartWave(int turn)
     {
-        Debug.Log("Try Start Wave");
         if(turn > waves[waves.Length-1].TurnToStartWave)
         {
+            turnsUntilNextWave--;
             // Ran out of waves
             if(turnsUntilNextWave == 0)
             {
                 // Use the last wave
                 Wave wave = waves[waves.Length-1];
-                Debug.Log("Start extra wave");
                 StartWave(turn, wave);
                 turnsUntilNextWave = turnsBetweenWaves;
             }
             return;
         }
-
-        foreach (Wave wave in waves)
+        else
         {
-            if(wave.TurnToStartWave == turn)
+            foreach (Wave wave in waves)
             {
-                Debug.Log("Start wave by turn");
-                StartWave(turn, wave);
+                if(wave.TurnToStartWave == turn)
+                {
+                    StartWave(turn, wave);
+                }
             }
         }
+
     }
 
     private void StartWave(int turn, Wave wave)
@@ -297,16 +287,17 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveData>
         OnWaveCompleted?.Invoke();
     }
 
-    public SaveWaveData Save()
+    public SaveWaveManagerData Save()
     {
-        return new SaveWaveData
+        return new SaveWaveManagerData
         {
             TurnsUntilNextWave = turnsUntilNextWave
         };
     }
 
-    public void Load(SaveWaveData loadData)
+    public void Load(SaveWaveManagerData loadData)
     {
         turnsUntilNextWave = loadData.TurnsUntilNextWave;
+        OnTurnsUntilNextWaveUpdated.Invoke(turnsUntilNextWave);
     }
 }
