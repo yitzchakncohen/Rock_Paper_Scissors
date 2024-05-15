@@ -56,8 +56,8 @@ MonoBehaviour:
   selectUnitImage: {fileID: 5556002543947296888}
   closeMainMenuButton: {fileID: 6145858707899894329}
   closeBuildMenuButton: {fileID: 3696852924407473001}
-  moveableUnitButtonColor: {r: 0.25490198, g: 0.3019608, b: 0.85882354, a: 0.8}
-  stationaryUnitButtonColor: {r: 0.64705884, g: 0.16078432, b: 0.24705882, a: 0.8}
+  moveableUnitButtonColor: {r: 0, g: 0.67058825, b: 0.047058824, a: 0.6666667}
+  stationaryUnitButtonColor: {r: 1, g: 0.18039216, b: 0, a: 0.6666667}
 --- !u!1 &389913418028379282
 GameObject:
   m_ObjectHideFlags: 0
