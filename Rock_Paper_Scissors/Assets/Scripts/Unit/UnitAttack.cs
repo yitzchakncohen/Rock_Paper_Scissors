@@ -16,7 +16,7 @@ namespace RockPaperScissors.Units
         private Unit target;
         private GridManager gridManager;
         private float timer;
-        private float attackAnimationTime = 0.6f;
+        private float attackAnimationTime = 1.0f;
         private float soundAnimationPoint = 0.2f;
         private Vector3 attackStartPosition;
         private Vector3 attackTargetPosition;
