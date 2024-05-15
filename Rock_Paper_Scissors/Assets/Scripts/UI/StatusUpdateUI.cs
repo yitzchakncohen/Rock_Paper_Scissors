@@ -8,6 +8,14 @@ namespace RockPaperScissors.UI
 {
     public class StatusUpdateUI : MonoBehaviour
     {
+        private const string ENEMY_WAVE = "Enemy Wave Incoming...";
+        private const string PLAYER_TURN = "Your Turn";
+        private const string ENEMY_TURN = "Enemy Turn";
+        private const string MOVING = "Moving...";
+        private const string ATTACKING = "Attacking...";
+        private const string PLACING_UNIT = "Placing unit...";
+        private const string GLUE_TRAP = "It's a Trap!";
+        private const string TRAMPOLINE_TRAP = "Boooiiinnnng!";
         [SerializeField] private TextMeshProUGUI statusText;
         [SerializeField] private GameObject background;
 
@@ -38,18 +46,18 @@ namespace RockPaperScissors.UI
 
         private void WaveManager_OnWaveStarted()
         {
-            ShowStatus("Enemy Wave Incoming...", 0);
+            ShowStatus(ENEMY_WAVE, 0);
         }
 
         private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs eventArgs)
         {
             if(eventArgs.IsPlayersTurn)
             {
-                ShowStatus("Your Turn", 5);
+                ShowStatus(PLAYER_TURN, 5);
             }
             else
             {
-                ShowStatus("Enemy Turn", 5);
+                ShowStatus(ENEMY_TURN, 5);
             }
         }
 
@@ -67,22 +75,22 @@ namespace RockPaperScissors.UI
             switch(sender)
             {
                 case (UnitMovement unitMovement):
-                    ShowStatus("Moving...", 0);
+                    ShowStatus(MOVING, 0);
                     break;
                 case (UnitAttack unitAttack):
-                    ShowStatus("Attacking...", 0);
+                    ShowStatus(ATTACKING, 0);
                     break;
                 case (UnitSpawner unitSpawner):
-                    ShowStatus("Placing unit...", 0);
+                    ShowStatus(PLACING_UNIT, 0);
                     break;
                 case(UnitTrap unitTrap):
                     if(unitTrap as GlueTrap)
                     {
-                        ShowStatus("Boooiiinnnng!", 0);
+                        ShowStatus(GLUE_TRAP, 0);
                     }
-                    else
+                    else if(unitTrap as TrampolineTrap)
                     {
-                        ShowStatus("It's a Trap!", 0);
+                        ShowStatus(TRAMPOLINE_TRAP, 0);
                     }
                     break;
             }
