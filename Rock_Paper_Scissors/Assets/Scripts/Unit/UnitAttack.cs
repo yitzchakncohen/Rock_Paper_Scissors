@@ -246,6 +246,11 @@ namespace RockPaperScissors.Units
 
         public override int GetValidActionsRemaining()
         {
+            if( trappedTurnsRemaining > 0)
+            {
+                return 0;
+            }
+            
             // if there are action points remaining AND valid actions to take return the number of action points remaining.
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(unit.transform.position);
             if(GetValidTargets(gridPosition).Count > 0)
