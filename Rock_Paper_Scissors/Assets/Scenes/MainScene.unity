@@ -899,7 +899,7 @@ MonoBehaviour:
     FriendlyUnitTypesToSpawn: []
     TotalEnemyUnitsToSpawn: 4
     TotalFriendlyUnitsToSpawn: 0
-    CurrencyBonus: 500
+    CurrencyBonus: 200
     TurnToStartWave: 0
   - EnemyUnitTypesToSpawn:
     - {fileID: 3659614332370105537, guid: 3a99c9f8d3b8b3d41b1531669fd2f659, type: 3}
@@ -908,7 +908,7 @@ MonoBehaviour:
     FriendlyUnitTypesToSpawn: []
     TotalEnemyUnitsToSpawn: 6
     TotalFriendlyUnitsToSpawn: 0
-    CurrencyBonus: 100
+    CurrencyBonus: 0
     TurnToStartWave: 4
   - EnemyUnitTypesToSpawn:
     - {fileID: 3659614332370105537, guid: 3a99c9f8d3b8b3d41b1531669fd2f659, type: 3}
@@ -917,7 +917,7 @@ MonoBehaviour:
     FriendlyUnitTypesToSpawn: []
     TotalEnemyUnitsToSpawn: 10
     TotalFriendlyUnitsToSpawn: 0
-    CurrencyBonus: 100
+    CurrencyBonus: 0
     TurnToStartWave: 8
   - EnemyUnitTypesToSpawn:
     - {fileID: 3659614332370105537, guid: 3a99c9f8d3b8b3d41b1531669fd2f659, type: 3}
@@ -926,7 +926,7 @@ MonoBehaviour:
     FriendlyUnitTypesToSpawn: []
     TotalEnemyUnitsToSpawn: 14
     TotalFriendlyUnitsToSpawn: 0
-    CurrencyBonus: 100
+    CurrencyBonus: 0
     TurnToStartWave: 12
   enemySpawnPoints:
   - {fileID: 1205715837}
@@ -2279,6 +2279,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1816631300989099885, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1816631300989099885, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1816631300989099885, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1816631300989099885, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2019919688463360254, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3500,6 +3516,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8943737004352690690, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043263937799623281, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043263937799623281, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043263937799623281, guid: d37fc5e7633200b45abe061b36cde57e, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}

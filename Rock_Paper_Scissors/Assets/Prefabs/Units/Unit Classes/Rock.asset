@@ -18,7 +18,7 @@ MonoBehaviour:
   moveDistance: 4
   attackDamage: 0a0000000f00000014000000
   attackRange: 1
-  defense: 020000000400000006000000
+  defense: 030000000600000009000000
   unitCost: 50
   maximumHealth: 14000000190000001e000000
   UnitDefeatedCurrencyReward: 10

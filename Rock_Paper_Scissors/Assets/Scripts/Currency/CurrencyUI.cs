@@ -41,7 +41,7 @@ public class CurrencyUI : MonoBehaviour
         while(startingCurrency <= currency-1)
         {
             startingCurrency = Mathf.Lerp(startingCurrency, currency, Time.deltaTime/currencyUpdateTime);
-            currencyText.text = startingCurrency.ToString();
+            currencyText.text = startingCurrency.ToString("0");
             // Debug.Log(startingCurrency);
             yield return null;
         }

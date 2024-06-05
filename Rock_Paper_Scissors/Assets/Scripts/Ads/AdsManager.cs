@@ -8,11 +8,12 @@ namespace RockPaperScissors.Ads
     {
         // These ad units are configured to always serve test ads.
 #if UNITY_ANDROID
-        private string _adUnitId = "ca-app-pub-3940256099942544/5354046379";
+        private const string _TestAdUnitId = "ca-app-pub-3940256099942544/5354046379";
+        private const string REWARD_INTERSTITIAL_AD_ID = "ca-app-pub-8299681780477439/9619253306";
 #elif UNITY_IPHONE
-        private string _adUnitId = "ca-app-pub-3940256099942544/6978759866";
+        private const string _TestAdUnitId = "ca-app-pub-3940256099942544/6978759866";
 #else
-        private string _adUnitId = "unused";
+        private const string _TestAdUnitId = "unused";
 #endif
         private RewardedInterstitialAd rewardedInterstitialAd;
         public bool adsInitialized {get; private set;} = false;
@@ -47,7 +48,7 @@ namespace RockPaperScissors.Ads
             adRequest.Keywords.Add("unity-admob-sample");
 
             // send the request to load the ad.
-            RewardedInterstitialAd.Load(_adUnitId, adRequest,
+            RewardedInterstitialAd.Load(_TestAdUnitId, adRequest,
                 (RewardedInterstitialAd ad, LoadAdError error) =>
                 {
                     // if error is not null, the load request failed.
