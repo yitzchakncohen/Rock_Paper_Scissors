@@ -32,7 +32,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
     private CurrencyBank currencyBank;
     private GridManager gridManager;
     private int turnsUntilNextWave = 0;
-    private int turnsBetweenWaves = 4;
+    private int minimumTurnsBetweenWaves = 4;
     private bool startWaveWhenReady = false;
 
     private void Start() 
@@ -110,7 +110,8 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
                 // Use the last wave
                 Wave wave = waves[waves.Length-1];
                 StartWave(turn, wave);
-                turnsUntilNextWave = turnsBetweenWaves;
+                turnsUntilNextWave = minimumTurnsBetweenWaves;
+                OnTurnsUntilNextWaveUpdated.Invoke(turnsUntilNextWave);
             }
             return;
         }

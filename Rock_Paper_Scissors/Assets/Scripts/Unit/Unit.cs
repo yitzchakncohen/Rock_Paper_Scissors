@@ -28,6 +28,7 @@ namespace RockPaperScissors.Units
                 if(unitData.attackDamage.Length == 0)
                 {
                     Debug.LogWarning(name + ": No attack damage data.");
+                    return 0;
                 }
                 else if(unitData.attackDamage.Length < unitProgression.Level)
                 {
@@ -45,6 +46,7 @@ namespace RockPaperScissors.Units
                 if(unitData.defense.Length == 0)
                 {
                     Debug.LogWarning(name + ": No defense data.");
+                    return 0;
                 }
                 else if(unitData.defense.Length < unitProgression.Level)
                 {
@@ -61,6 +63,7 @@ namespace RockPaperScissors.Units
                 if(unitData.XPToLevelUp.Length == 0)
                 {
                     Debug.LogWarning(name + ": No XP to level up data.");
+                    return 0;
                 }
                 else if(unitData.XPToLevelUp.Length < unitProgression.Level)
                 {
@@ -78,6 +81,7 @@ namespace RockPaperScissors.Units
                 if(unitData.UnitDefeatedXPReward.Length == 0)
                 {
                     Debug.LogWarning(name + ": No unit defeated XP reward data.");
+                    return 0;
                 }
                 else if(unitData.UnitDefeatedXPReward.Length > unitProgression.Level)
                 {
@@ -93,8 +97,6 @@ namespace RockPaperScissors.Units
         public bool IsMoveable{get => UnitClass.Moveable.HasFlag(Class); set{}} 
         public bool IsBuilding{get => UnitClass.Building.HasFlag(Class); set{}} 
         public bool IsTrap{get => UnitClass.Trap.HasFlag(Class); set{}} 
-
-
         
         public static event EventHandler OnUnitSpawn;
         [SerializeField] private UnitAnimator unitAnimator;
@@ -242,12 +244,12 @@ namespace RockPaperScissors.Units
         public bool CanWalkOnGridOccupant(IGridOccupantInterface gridOccupantInterface)
         {
             Unit gridOccupant = (Unit)gridOccupantInterface;
-            if(gridOccupantInterface != null && IsFriendly == gridOccupant.IsFriendly)
+            if(gridOccupant != null)
             {
                 // Which types of buildings can you walk over?
                 if(gridOccupant.Class == UnitClass.PillowOutpost)
                 {
-                    return true;
+                    return gridOccupant.isFriendly == IsFriendly;
                 }
                 if(gridOccupant.Class == UnitClass.TrampolineTrap)
                 {

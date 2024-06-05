@@ -44,8 +44,9 @@ namespace RockPaperScissors.Units
             TurnManager.OnNextTurn += TurnManager_OnNextTurn;            
         }
 
-        private void OnDestroy() 
+        protected override void OnDestroy() 
         {
+            base.OnDestroy();
             BuildingButton.OnBuildingButtonPressed -= BuildingButton_OnBuildingButtonPressed;  
             TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
         }
