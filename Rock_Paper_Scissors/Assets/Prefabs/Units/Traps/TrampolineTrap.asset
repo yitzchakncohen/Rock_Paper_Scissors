@@ -22,6 +22,6 @@ MonoBehaviour:
   unitCost: 30
   maximumHealth: 0a0000000a0000000a000000
   UnitDefeatedCurrencyReward: 0
-  UnitDefeatedXPReward: 
+  UnitDefeatedXPReward: 000000000000000000000000
   HitFX: {fileID: 236918012766038522, guid: 9199b18fb605334449baaff5d1010f52, type: 3}
-  XPToLevelUp: 
+  XPToLevelUp: 000000000000000000000000
