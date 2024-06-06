@@ -30,6 +30,7 @@ namespace RockPaperScissors
         private AdsManager adsManager;
         private DeviceReviewsManager deviceReviewsManager;
         private int rewardAmount = 0;
+        private float currentTimeScale;
 
         void Awake()
         {
@@ -85,16 +86,19 @@ namespace RockPaperScissors
 
         public void StartNewGame()
         {
+            Time.timeScale = 1.0f;
             StartCoroutine(StartGameRoutine());
         }
 
         public void ContinueGame()
         {
+            Time.timeScale = 1.0f;
             StartCoroutine(LoadGameRoutine());
         }
 
         public void ReturnToMenu()
         {
+            Time.timeScale = 1.0f;
             StartCoroutine(ReturnToMenuRoutine());
         }
 
@@ -248,11 +252,12 @@ namespace RockPaperScissors
 
         private void PauseMenu_OnPauseMenuClose()
         {
-            Time.timeScale = 1.0f;
+            Time.timeScale = currentTimeScale;
         }
 
         private void PauseMenu_OnPauseMenuOpen()
         {
+            currentTimeScale = Time.timeScale;
             Time.timeScale = 0.0f;
         }
     }

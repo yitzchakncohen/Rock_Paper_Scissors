@@ -54,5 +54,17 @@ public class TurnManager : MonoBehaviour, ISaveInterface<SaveTurnManagerData>
     {
         playersTurn = loadData.IsPlayersTurn;
         turn = loadData.Turn;
+        StartCoroutine(ContinueGame());
+    }
+
+    private IEnumerator ContinueGame()
+    {
+        yield return new WaitForSeconds(3.0f);
+        OnNextTurnEventArgs onNextTurnEventArgs = new OnNextTurnEventArgs
+        {
+            IsPlayersTurn = playersTurn,
+            Turn = turn
+        };
+        OnNextTurn?.Invoke(this, onNextTurnEventArgs);
     }
 }
