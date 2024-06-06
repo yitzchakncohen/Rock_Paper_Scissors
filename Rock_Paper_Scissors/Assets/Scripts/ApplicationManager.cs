@@ -30,7 +30,6 @@ namespace RockPaperScissors
         private AdsManager adsManager;
         private DeviceReviewsManager deviceReviewsManager;
         private int rewardAmount = 0;
-        private float currentTimeScale;
 
         void Awake()
         {
@@ -66,8 +65,6 @@ namespace RockPaperScissors
             AdModal.OnWatchButtonClick += AdModal_OnWatchButtonClick;
             AdModal.OnSkipButtonClick += AdModal_OnSkipButtonClick;
             GameplayManager.OnGameOver += GameplayManager_OnGameOver;
-            PauseMenu.OnPauseMenuOpen += PauseMenu_OnPauseMenuOpen;
-            PauseMenu.OnPauseMenuClose += PauseMenu_OnPauseMenuClose;
             StartCoroutine(StartUpRoutine());
         }
 
@@ -80,25 +77,23 @@ namespace RockPaperScissors
             AdModal.OnWatchButtonClick -= AdModal_OnWatchButtonClick;
             AdModal.OnSkipButtonClick -= AdModal_OnSkipButtonClick;
             GameplayManager.OnGameOver -= GameplayManager_OnGameOver;
-            PauseMenu.OnPauseMenuOpen -= PauseMenu_OnPauseMenuOpen;
-            PauseMenu.OnPauseMenuClose -= PauseMenu_OnPauseMenuClose;
         }
 
         public void StartNewGame()
         {
-            Time.timeScale = 1.0f;
+            TimeScaleManager.ResetTimeScale();
             StartCoroutine(StartGameRoutine());
         }
 
         public void ContinueGame()
         {
-            Time.timeScale = 1.0f;
+            TimeScaleManager.ResetTimeScale();
             StartCoroutine(LoadGameRoutine());
         }
 
         public void ReturnToMenu()
         {
-            Time.timeScale = 1.0f;
+            TimeScaleManager.ResetTimeScale();
             StartCoroutine(ReturnToMenuRoutine());
         }
 
@@ -248,17 +243,6 @@ namespace RockPaperScissors
                 Debug.LogError("No Review Manger Found");
             }
 #endif
-        }
-
-        private void PauseMenu_OnPauseMenuClose()
-        {
-            Time.timeScale = currentTimeScale;
-        }
-
-        private void PauseMenu_OnPauseMenuOpen()
-        {
-            currentTimeScale = Time.timeScale;
-            Time.timeScale = 0.0f;
         }
     }
 

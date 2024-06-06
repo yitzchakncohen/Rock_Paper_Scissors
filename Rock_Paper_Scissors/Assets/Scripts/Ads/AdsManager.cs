@@ -48,7 +48,7 @@ namespace RockPaperScissors.Ads
             adRequest.Keywords.Add("unity-admob-sample");
 
             // send the request to load the ad.
-            RewardedInterstitialAd.Load(_TestAdUnitId, adRequest,
+            RewardedInterstitialAd.Load(REWARD_INTERSTITIAL_AD_ID, adRequest,
                 (RewardedInterstitialAd ad, LoadAdError error) =>
                 {
                     // if error is not null, the load request failed.
