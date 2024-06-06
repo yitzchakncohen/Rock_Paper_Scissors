@@ -7,9 +7,9 @@ namespace RockPaperScissors.Ads
     public class AdsManager : MonoBehaviour
     {
         // These ad units are configured to always serve test ads.
+        private const string REWARD_INTERSTITIAL_AD_ID = "ca-app-pub-8299681780477439/9619253306";
 #if UNITY_ANDROID
         private const string _TestAdUnitId = "ca-app-pub-3940256099942544/5354046379";
-        private const string REWARD_INTERSTITIAL_AD_ID = "ca-app-pub-8299681780477439/9619253306";
 #elif UNITY_IPHONE
         private const string _TestAdUnitId = "ca-app-pub-3940256099942544/6978759866";
 #else
