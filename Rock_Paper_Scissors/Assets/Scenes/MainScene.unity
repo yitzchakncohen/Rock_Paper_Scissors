@@ -892,42 +892,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waves:
-  - EnemyUnitTypesToSpawn:
-    - {fileID: 3659614332370105537, guid: 3a99c9f8d3b8b3d41b1531669fd2f659, type: 3}
-    - {fileID: 8909835649686224163, guid: e547fb81a099d9544a36bdf74adf9d3d, type: 3}
-    - {fileID: 6548610982091184903, guid: c84a2cefecbc72c45b4b5061beb8770c, type: 3}
-    FriendlyUnitTypesToSpawn: []
-    TotalEnemyUnitsToSpawn: 4
-    TotalFriendlyUnitsToSpawn: 0
-    CurrencyBonus: 200
-    TurnToStartWave: 0
-  - EnemyUnitTypesToSpawn:
-    - {fileID: 3659614332370105537, guid: 3a99c9f8d3b8b3d41b1531669fd2f659, type: 3}
-    - {fileID: 8909835649686224163, guid: e547fb81a099d9544a36bdf74adf9d3d, type: 3}
-    - {fileID: 6548610982091184903, guid: c84a2cefecbc72c45b4b5061beb8770c, type: 3}
-    FriendlyUnitTypesToSpawn: []
-    TotalEnemyUnitsToSpawn: 6
-    TotalFriendlyUnitsToSpawn: 0
-    CurrencyBonus: 0
-    TurnToStartWave: 4
-  - EnemyUnitTypesToSpawn:
-    - {fileID: 3659614332370105537, guid: 3a99c9f8d3b8b3d41b1531669fd2f659, type: 3}
-    - {fileID: 8909835649686224163, guid: e547fb81a099d9544a36bdf74adf9d3d, type: 3}
-    - {fileID: 6548610982091184903, guid: c84a2cefecbc72c45b4b5061beb8770c, type: 3}
-    FriendlyUnitTypesToSpawn: []
-    TotalEnemyUnitsToSpawn: 10
-    TotalFriendlyUnitsToSpawn: 0
-    CurrencyBonus: 0
-    TurnToStartWave: 8
-  - EnemyUnitTypesToSpawn:
-    - {fileID: 3659614332370105537, guid: 3a99c9f8d3b8b3d41b1531669fd2f659, type: 3}
-    - {fileID: 8909835649686224163, guid: e547fb81a099d9544a36bdf74adf9d3d, type: 3}
-    - {fileID: 6548610982091184903, guid: c84a2cefecbc72c45b4b5061beb8770c, type: 3}
-    FriendlyUnitTypesToSpawn: []
-    TotalEnemyUnitsToSpawn: 14
-    TotalFriendlyUnitsToSpawn: 0
-    CurrencyBonus: 0
-    TurnToStartWave: 12
+  - {fileID: 11400000, guid: 35fbe02adb16b31438c8acda36b048fe, type: 2}
+  - {fileID: 11400000, guid: 7b5b923462a5f2a4f892d04d7af9f56b, type: 2}
+  - {fileID: 11400000, guid: cca704bd22499d842b3f3518a0a9a1b7, type: 2}
   enemySpawnPoints:
   - {fileID: 1205715837}
   - {fileID: 1500587892}

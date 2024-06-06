@@ -13,21 +13,10 @@ public class TurnManager : MonoBehaviour, ISaveInterface<SaveTurnManagerData>
     }
     public static event EventHandler<OnNextTurnEventArgs> OnNextTurn;
     private bool playersTurn = true;
-    private int turn = 0;
+    private int turn = 1;
 
     public int Turn => turn;
     public bool IsPlayerTurn => playersTurn;
-
-
-    private void Start() 
-    {
-        SaveManager.OnLoadCompleted += SaveManager_OnLoadCompleted;
-    }
-
-    private void OnDestroy() 
-    {
-        SaveManager.OnLoadCompleted -= SaveManager_OnLoadCompleted;
-    }
 
     public void NextTurn()
     {
@@ -65,15 +54,5 @@ public class TurnManager : MonoBehaviour, ISaveInterface<SaveTurnManagerData>
     {
         playersTurn = loadData.IsPlayersTurn;
         turn = loadData.Turn;
-    }
-
-    private void SaveManager_OnLoadCompleted()
-    {
-        OnNextTurnEventArgs onNextTurnEventArgs = new OnNextTurnEventArgs
-        {
-            IsPlayersTurn = playersTurn,
-            Turn = turn
-        };
-        OnNextTurn?.Invoke(this, onNextTurnEventArgs);
     }
 }

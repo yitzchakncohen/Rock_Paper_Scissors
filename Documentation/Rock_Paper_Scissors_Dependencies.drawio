@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2024-06-06T12:01:46.651Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.4.8 Chrome/124.0.6367.207 Electron/30.0.6 Safari/537.36" etag="QOA10Qu3Utm76kLC-BaB" version="24.4.8" type="device">
+<mxfile host="Electron" modified="2024-06-06T23:00:32.139Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.4.8 Chrome/124.0.6367.207 Electron/30.0.6 Safari/537.36" etag="XlxRuT3u8dbucubNa1L2" version="24.4.8" type="device">
   <diagram name="Page-1" id="Q-yAtxKkLr_DfTsW5Ip2">
-    <mxGraphModel dx="3990" dy="3193" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+    <mxGraphModel dx="3512" dy="2915" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -165,6 +165,9 @@
               <mxPoint x="440" y="760" />
             </Array>
           </mxGeometry>
+        </mxCell>
+        <mxCell id="2X5Zp6QNR2oleGEmCoYB-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="5rCYG5Pp4PT8a6XN0o9v-6" target="2X5Zp6QNR2oleGEmCoYB-2">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="5rCYG5Pp4PT8a6XN0o9v-6" value="WaveManager" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="590" y="800" width="120" height="60" as="geometry" />
@@ -723,6 +726,19 @@
         </mxCell>
         <mxCell id="lXBw2MyXd94gxOqPdHQ--2" value="DeviceReviewManager" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#6a00ff;fontColor=#ffffff;strokeColor=#3700CC;" parent="1" vertex="1">
           <mxGeometry x="930" y="-600" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="2X5Zp6QNR2oleGEmCoYB-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="2X5Zp6QNR2oleGEmCoYB-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-390" y="670" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="650" y="1400" />
+              <mxPoint x="-390" y="1400" />
+              <mxPoint x="-390" y="670" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2X5Zp6QNR2oleGEmCoYB-2" value="Wave" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="590" y="940" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

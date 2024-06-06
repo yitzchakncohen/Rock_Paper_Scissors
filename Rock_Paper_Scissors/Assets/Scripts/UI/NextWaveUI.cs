@@ -23,7 +23,14 @@ namespace RockPaperScissors.UI
 
         private void WaveManager_OnTurnsUntilNextWaveUpdated(int turnsUntilNextWave)
         {
-            nextWaveText.text = turnsUntilNextWave.ToString();
+            if(turnsUntilNextWave == 0)
+            {
+                nextWaveText.text = "-";
+            }
+            else
+            {
+                nextWaveText.text = turnsUntilNextWave.ToString();
+            }
             if(turnsUntilNextWave == 1)
             {
                 nextWaveHighlight.SetActive(true);

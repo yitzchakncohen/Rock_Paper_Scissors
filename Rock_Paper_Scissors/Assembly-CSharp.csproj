@@ -128,10 +128,12 @@
     <Compile Include="Assets\Scripts\UI\Components\RadialLayoutGroup.cs" />
     <Compile Include="Assets\Scripts\Grid\GridManager.cs" />
     <Compile Include="Assets\Scripts\UI\Buttons\NextActionButton.cs" />
+    <Compile Include="Assets\Scripts\Wave.cs" />
     <Compile Include="Assets\Scripts\UI\Components\LetterAnimation.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitShaderController.cs" />
     <Compile Include="Assets\Scripts\TimeScaleManager.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyStatePattern.cs" />
+    <Compile Include="Assets\Scripts\UI\TurnCounterUI.cs" />
     <Compile Include="Assets\Scripts\UI\HealthBar.cs" />
     <Compile Include="Assets\Scripts\Grid\GridObject.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitProgression.cs" />

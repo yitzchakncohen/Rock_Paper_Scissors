@@ -101,13 +101,6 @@ namespace RockPaperScissors.SaveSystem
             OnSaveCompleted?.Invoke();
         }
 
-        // For Debugging Only
-        // [ContextMenu("Load Game")]
-        // public void LoadGame()
-        // {
-        //     LoadGameAsync();
-        // }
-
         public async Task LoadGameAsync()
         {
             await Task.Yield();

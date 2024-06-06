@@ -3,6 +3,7 @@ using RockPaperScissors.Units;
 using UnityEngine;
 using System.Threading.Tasks;
 using RockPaperScissors;
+using RockPaperScissors.SaveSystem;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -19,12 +20,14 @@ public class EnemyAI : MonoBehaviour
         unitManager = FindObjectOfType<UnitManager>();
         actionHandler = FindObjectOfType<ActionHandler>();
         GameplayManager.OnGameOver += GameplayManager_OnGameOver;
+        SaveManager.OnLoadCompleted += SaveManager_OnLoadCompleted;
     }
 
     private void OnDestroy() 
     {
         TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
         GameplayManager.OnGameOver -= GameplayManager_OnGameOver;
+        SaveManager.OnLoadCompleted -= SaveManager_OnLoadCompleted;
     }
 
     private void Update() 
@@ -70,5 +73,13 @@ public class EnemyAI : MonoBehaviour
     {
         // Use a null state to mark the game being over.
         state = null;
+    }
+
+    private void SaveManager_OnLoadCompleted()
+    {
+        if(!turnManager.IsPlayerTurn && state != null)
+        {
+            state.StartTurn();
+        }
     }
 }
