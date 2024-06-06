@@ -21,6 +21,12 @@ public class EnemyAI : MonoBehaviour
         GameplayManager.OnGameOver += GameplayManager_OnGameOver;
     }
 
+    private void OnDestroy() 
+    {
+        TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
+        GameplayManager.OnGameOver -= GameplayManager_OnGameOver;
+    }
+
     private void Update() 
     {
         if(turnManager.IsPlayerTurn){ return; }

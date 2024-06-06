@@ -38,8 +38,9 @@ public abstract class UnitTrap : UnitAction
         SetupSprites();
     }
 
-    private void OnDestroy() 
+    protected override void OnDestroy() 
     {
+        base.OnDestroy();
         UnitMovement.OnAnyActionCompleted -= UnitMovement_OnAnyActionCompleted;
         TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
     }

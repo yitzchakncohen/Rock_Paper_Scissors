@@ -16,7 +16,7 @@ MonoBehaviour:
   unitThumbnail: {fileID: 21300000, guid: 376a2af96c96e604bb68bf35281c2714, type: 3}
   spriteLibrary: {fileID: 7108339969198208228, guid: 10110c7a3cd3c354ca6b9f5dbb2621a2, type: 3}
   moveDistance: 3
-  attackDamage: 0a0000000f00000014000000
+  attackDamage: 0c0000001000000016000000
   attackRange: 1
   defense: 020000000400000006000000
   unitCost: 60

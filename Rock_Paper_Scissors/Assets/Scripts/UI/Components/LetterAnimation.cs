@@ -26,7 +26,7 @@ namespace RockPaperScissors.UI.Components
                 textComponent = GetComponent<TextMeshProUGUI>();
             }
             textComponent.text = "";
-            textComponent.DOText(textString, animationTime);
+            textComponent.DOText(textString, animationTime).SetUpdate(true);
         }
     }    
 }

@@ -95,10 +95,14 @@ namespace RockPaperScissors.UI.Buttons
 
         private void SaveManager_OnLoadCompleted()
         {
-            button.interactable = true;
             if(turnManager.IsPlayerTurn)
             {
+                button.interactable = true;
                 CheckActionsRemainingAsync();
+            }
+            else
+            {
+                button.interactable = false;
             }
         }
     }

@@ -63,15 +63,15 @@ public class CombatModifiers
 
     private static float GetModiferByClasses(UnitClass attackingUnit, UnitClass defendingUnit)
     {
-        float positiveClassModifier = 1.5f;
-        float negativeClassModifier = 0.75f;
+        const float POSITIVE_CLASS_MODIFIER = 2.0f;
+        const float NEGATIVE_CLASS_MODIFIER = 0.5f;
         
         switch (UnitHasAdvantage(attackingUnit, defendingUnit))
         {
             case -1:
-                return negativeClassModifier;
+                return NEGATIVE_CLASS_MODIFIER;
             case 1: 
-                return positiveClassModifier;
+                return POSITIVE_CLASS_MODIFIER;
             case 0:
             default:
                 return 1f;

@@ -104,10 +104,10 @@ namespace RockPaperScissors.UI.Menus
             gameOverMenuRectTransform.transform.localPosition = new Vector2(0, -Screen.height);
             gameOverMenuRectTransform.sizeDelta = new Vector2(gameOverMenuRectTransform.sizeDelta.x * Camera.main.aspect/2, gameOverMenuRectTransform.sizeDelta.y);
             Sequence gameOverSequence = DOTween.Sequence();
-            gameOverSequence.Append(gameOverMenuRectTransform.DOAnchorPos(Vector2.zero, gameOverAnimationTime).SetEase(Ease.InOutQuint));
+            gameOverSequence.Append(gameOverMenuRectTransform.DOAnchorPos(Vector2.zero, gameOverAnimationTime).SetEase(Ease.InOutQuint).SetUpdate(true));
             gameOverSequence.AppendCallback(() => {
                 gameOverTextAnimation.Play(GAME_OVER_STRING);
-            });
+            }).SetUpdate(true);
             gameOverSequence.PlayForward();
         }
 

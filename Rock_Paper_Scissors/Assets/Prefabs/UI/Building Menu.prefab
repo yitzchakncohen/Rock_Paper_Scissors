@@ -56,8 +56,8 @@ MonoBehaviour:
   selectUnitImage: {fileID: 5556002543947296888}
   closeMainMenuButton: {fileID: 6145858707899894329}
   closeBuildMenuButton: {fileID: 3696852924407473001}
-  moveableUnitButtonColor: {r: 0.25490198, g: 0.3019608, b: 0.85882354, a: 0.8}
-  stationaryUnitButtonColor: {r: 0.64705884, g: 0.16078432, b: 0.24705882, a: 0.8}
+  moveableUnitButtonColor: {r: 0, g: 0.67058825, b: 0.047058824, a: 0.6666667}
+  stationaryUnitButtonColor: {r: 1, g: 0.18039216, b: 0, a: 0.6666667}
 --- !u!1 &389913418028379282
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,7 +511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 8e471cecf76f4b143bde7e43ccc1fa10, type: 2}
+  m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}

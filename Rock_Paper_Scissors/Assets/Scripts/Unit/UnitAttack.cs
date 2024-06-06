@@ -16,7 +16,7 @@ namespace RockPaperScissors.Units
         private Unit target;
         private GridManager gridManager;
         private float timer;
-        private float attackAnimationTime = 0.6f;
+        private float attackAnimationTime = 1.0f;
         private float soundAnimationPoint = 0.2f;
         private Vector3 attackStartPosition;
         private Vector3 attackTargetPosition;
@@ -246,6 +246,11 @@ namespace RockPaperScissors.Units
 
         public override int GetValidActionsRemaining()
         {
+            if( trappedTurnsRemaining > 0)
+            {
+                return 0;
+            }
+            
             // if there are action points remaining AND valid actions to take return the number of action points remaining.
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(unit.transform.position);
             if(GetValidTargets(gridPosition).Count > 0)

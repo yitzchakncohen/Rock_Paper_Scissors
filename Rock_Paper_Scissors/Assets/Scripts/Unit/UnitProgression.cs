@@ -30,7 +30,7 @@ namespace RockPaperScissors.Units
                 return;
             }
             
-            if(attacker.UnitProgression == this)
+            if(attacker.UnitProgression == this && attacker.IsMoveable)
             {
                 Unit unitDefeated = (sender as UnitHealth).GetComponent<Unit>();
                 GainXP(unitDefeated.UnitDefeatedXPReward, attacker.XPToLevelUp);

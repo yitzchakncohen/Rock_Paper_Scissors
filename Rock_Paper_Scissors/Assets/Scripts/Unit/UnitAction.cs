@@ -39,7 +39,7 @@ namespace RockPaperScissors.Units
             CancelButton.OnCancelButtonPress += CancelButton_OnCancelButtonPress;
         }
 
-        private void OnDestroy() 
+        protected virtual void OnDestroy() 
         {
             CancelButton.OnCancelButtonPress -= CancelButton_OnCancelButtonPress;
         }

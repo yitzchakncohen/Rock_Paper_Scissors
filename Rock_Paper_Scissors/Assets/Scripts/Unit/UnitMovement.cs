@@ -346,7 +346,11 @@ namespace RockPaperScissors.Units
 
         public override int GetValidActionsRemaining()
         {
-            if(GetValidMovementPositions().Count > 0)
+            if( trappedTurnsRemaining > 0)
+            {
+                return 0;
+            }
+            else if(GetValidMovementPositions().Count > 0)
             {
                 return actionPointsRemaining;
             }

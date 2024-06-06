@@ -9,6 +9,7 @@ using RockPaperScissors.UI;
 using RockPaperScissors.UI.Buttons;
 using RockPaperScissors.UI.Menus;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 namespace RockPaperScissors
@@ -22,7 +23,7 @@ namespace RockPaperScissors
         private const string GAME_SCENE_STRING = "MainScene";
         private const string MENU_SCENE_STRING = "MenuScene";
         private const float REWARD_MULTIPLIER = 10f;
-        private const int TARGET_FRAME_RATE = 60;
+        private const int TARGET_FRAME_RATE = 30;
         public static ApplicationManager Instance;
         private SceneTransitionUI sceneTransitionUI;
         private GridManager gridManager;
@@ -33,6 +34,7 @@ namespace RockPaperScissors
         void Awake()
         {
             Application.targetFrameRate = TARGET_FRAME_RATE;
+            OnDemandRendering.renderFrameInterval = Application.targetFrameRate/30;
             if(Instance == null)
             {
                 Instance = this;
@@ -79,16 +81,19 @@ namespace RockPaperScissors
 
         public void StartNewGame()
         {
+            TimeScaleManager.ResetTimeScale();
             StartCoroutine(StartGameRoutine());
         }
 
         public void ContinueGame()
         {
+            TimeScaleManager.ResetTimeScale();
             StartCoroutine(LoadGameRoutine());
         }
 
         public void ReturnToMenu()
         {
+            TimeScaleManager.ResetTimeScale();
             StartCoroutine(ReturnToMenuRoutine());
         }
 

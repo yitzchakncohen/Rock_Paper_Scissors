@@ -31,12 +31,6 @@ namespace RockPaperScissors.UI.Buttons
             button = GetComponent<Button>();
             button.onClick.AddListener(ButtonPressed);       
         }
-        
-        private void Start() 
-        {
-            currencyBank = FindObjectOfType<CurrencyBank>();
-            unitThumbnail.material = new Material(unitThumbnail.material);
-        }
 
         private void OnEnable()
         {
@@ -97,10 +91,13 @@ namespace RockPaperScissors.UI.Buttons
         public void Setup(Unit unit, Color color) 
         {
             unitPrefab = unit;
-            unitSpawner = GetComponentInParent<UnitSpawner>();
             unitThumbnail.sprite = unitPrefab.UnitThumbnail;
             unitCostText.text = unitPrefab.Cost.ToString();
             buttonImage.color = color;
+            unitSpawner = GetComponentInParent<UnitSpawner>();
+            currencyBank = FindObjectOfType<CurrencyBank>();
+            unitThumbnail.material = new Material(unitThumbnail.material);
+            UpdateButtonInteractability();
         }
 
         public void ButtonPressed()

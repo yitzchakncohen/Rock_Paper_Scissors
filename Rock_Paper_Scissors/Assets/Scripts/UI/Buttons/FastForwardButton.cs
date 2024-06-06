@@ -8,7 +8,6 @@ namespace RockPaperScissors.UI.Buttons
     public class FastForwardButton : MonoBehaviour
     {
         [SerializeField] private GameObject buttonHighlight;
-        [SerializeField] private float fastForwardMultiplier = 3f;
         private bool fastForwarding = false;
 
         private void Start() 
@@ -47,14 +46,14 @@ namespace RockPaperScissors.UI.Buttons
 
         private void EnableFastForwarding()
         {
-            Time.timeScale = fastForwardMultiplier;
+            TimeScaleManager.SpeedUpTimeScale();
             buttonHighlight.SetActive(true);
             fastForwarding = true;
         }
 
         private void DisableFastForwarding()
         {
-            Time.timeScale = 1f;
+            TimeScaleManager.ReturnToNormalSpeed();
             buttonHighlight.SetActive(false);
             fastForwarding = false;
         }

@@ -11,7 +11,7 @@ namespace RockPaperScissors.UI.Buttons
         {
             base.UpdateButtonInteractability();
             bool lowLevelBuilding = (unitPrefab.IsBuilding || unitPrefab.IsTrap ) && unitSpawner.Unit.UnitProgression.Level == 1;
-            bool unitButtonInteractability = !lowLevelBuilding || (unitSpawner.Unit.Class == UnitClass.PillowFort) || unitSpawner.Unit.IsMoveable;
+            bool unitButtonInteractability = !lowLevelBuilding || (unitSpawner.Unit.Class == UnitClass.PillowFort) || unitPrefab.IsMoveable;
             bool sufficientCurrency = currencyBank.GetCurrencyRemaining() >= unitPrefab.Cost;
 
             Button.interactable = Button.interactable && sufficientCurrency && unitButtonInteractability;

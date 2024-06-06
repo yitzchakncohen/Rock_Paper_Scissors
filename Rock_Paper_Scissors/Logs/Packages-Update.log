@@ -77,3 +77,14 @@ The following packages were updated:
   com.unity.render-pipelines.universal from version 12.1.12 to 14.0.10
   com.unity.timeline from version 1.6.5 to 1.7.6
   com.unity.visualscripting from version 1.8.0 to 1.9.2
+
+=== Wed Jun  5 14:57:39 2024
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.cinemachine from version 2.9.5 to 2.10.0
+  com.unity.mobile.android-logcat from version 1.4.0 to 1.4.1
+  com.unity.render-pipelines.universal from version 14.0.10 to 14.0.11
+  com.unity.visualscripting from version 1.9.2 to 1.9.4

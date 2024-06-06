@@ -44,8 +44,9 @@ namespace RockPaperScissors.Units
             TurnManager.OnNextTurn += TurnManager_OnNextTurn;            
         }
 
-        private void OnDestroy() 
+        protected override void OnDestroy() 
         {
+            base.OnDestroy();
             BuildingButton.OnBuildingButtonPressed -= BuildingButton_OnBuildingButtonPressed;  
             TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
         }
@@ -199,11 +200,15 @@ namespace RockPaperScissors.Units
         public override int GetValidActionsRemaining()
         {
             int actionPoints = 0;
-            if(currencyBank.GetCurrencyRemaining() > GetMinimumMoveableUnitCost())
+            if(currencyBank.GetCurrencyRemaining() >= GetMinimumMoveableUnitCost())
             {
                 actionPoints += buildMoveableUnitActionsRemaining;
             }
-            if(currencyBank.GetCurrencyRemaining() > GetMinimumStationaryUnitCost())
+            if(currencyBank.GetCurrencyRemaining() >= GetMinimumStationaryUnitCost() && unit.GetLevel() > 1)
+            {
+                actionPoints += buildStationaryUnitActionsRemaining;
+            }
+            else if(currencyBank.GetCurrencyRemaining() >= UnitSpawnerData.UpgradeCost[Unit.UnitProgression.Level])
             {
                 actionPoints += buildStationaryUnitActionsRemaining;
             }
@@ -232,12 +237,12 @@ namespace RockPaperScissors.Units
             int minimumPrice = 0;
             foreach (Unit unit in unitSpawnerData.SpawnableUnits)
             {               
-                bool isStationaru = unit.IsBuilding || unit.IsTrap;
+                bool isStationary = unit.IsBuilding || unit.IsTrap;
                 if(minimumPrice == 0)
                 {
                     minimumPrice = unit.Cost;
                 }
-                else if (isStationaru && unit.Cost < minimumPrice)
+                else if (isStationary && unit.Cost < minimumPrice)
                 {
                     minimumPrice = unit.Cost;
                 }
