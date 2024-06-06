@@ -20,7 +20,7 @@ namespace RockPaperScissors.UI.Components
             gameObject.SetActive(true);
             transform.localPosition = new Vector2(0, -Screen.height);
             Sequence openModalSequence = DOTween.Sequence();
-            openModalSequence.Append(rectTransform.DOAnchorPos(Vector2.zero, openModalAnimationTime).SetEase(Ease.InOutQuint));
+            openModalSequence.Append(rectTransform.DOAnchorPos(Vector2.zero, openModalAnimationTime).SetEase(Ease.InOutQuint)).SetUpdate(true);
             openModalSequence.PlayForward();
         }
 
@@ -28,8 +28,8 @@ namespace RockPaperScissors.UI.Components
         {
             AudioManager.Instance.PlayMenuNavigationSound();
             Sequence openModalSequence = DOTween.Sequence();
-            openModalSequence.Append(rectTransform.DOAnchorPos(new Vector2(0, -Screen.height), closeModalAnimationTime).SetEase(Ease.InOutQuint));
-            openModalSequence.AppendCallback(() => {gameObject.SetActive(false);});
+            openModalSequence.Append(rectTransform.DOAnchorPos(new Vector2(0, -Screen.height), closeModalAnimationTime).SetEase(Ease.InOutQuint)).SetUpdate(true);
+            openModalSequence.AppendCallback(() => {gameObject.SetActive(false);}).SetUpdate(true);
             openModalSequence.PlayForward();
         }
     }

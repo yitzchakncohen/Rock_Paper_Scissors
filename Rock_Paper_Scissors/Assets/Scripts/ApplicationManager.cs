@@ -65,6 +65,8 @@ namespace RockPaperScissors
             AdModal.OnWatchButtonClick += AdModal_OnWatchButtonClick;
             AdModal.OnSkipButtonClick += AdModal_OnSkipButtonClick;
             GameplayManager.OnGameOver += GameplayManager_OnGameOver;
+            PauseMenu.OnPauseMenuOpen += PauseMenu_OnPauseMenuOpen;
+            PauseMenu.OnPauseMenuClose += PauseMenu_OnPauseMenuClose;
             StartCoroutine(StartUpRoutine());
         }
 
@@ -77,6 +79,8 @@ namespace RockPaperScissors
             AdModal.OnWatchButtonClick -= AdModal_OnWatchButtonClick;
             AdModal.OnSkipButtonClick -= AdModal_OnSkipButtonClick;
             GameplayManager.OnGameOver -= GameplayManager_OnGameOver;
+            PauseMenu.OnPauseMenuOpen -= PauseMenu_OnPauseMenuOpen;
+            PauseMenu.OnPauseMenuClose -= PauseMenu_OnPauseMenuClose;
         }
 
         public void StartNewGame()
@@ -240,6 +244,16 @@ namespace RockPaperScissors
                 Debug.LogError("No Review Manger Found");
             }
 #endif
+        }
+
+        private void PauseMenu_OnPauseMenuClose()
+        {
+            Time.timeScale = 1.0f;
+        }
+
+        private void PauseMenu_OnPauseMenuOpen()
+        {
+            Time.timeScale = 0.0f;
         }
     }
 

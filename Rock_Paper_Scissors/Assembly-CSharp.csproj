@@ -117,6 +117,7 @@
     <Compile Include="Assets\Scripts\SaveSystem\SaveWaveManagerData.cs" />
     <Compile Include="Assets\Scripts\UI\Menus\BuildingMenu.cs" />
     <Compile Include="Assets\Scripts\UI\AdModal.cs" />
+    <Compile Include="Assets\Scripts\UI\Menus\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\Grid\GridUI.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitMovement.cs" />
     <Compile Include="Assets\Scripts\Enemy\FindingActionState.cs" />
