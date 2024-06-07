@@ -895,6 +895,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 35fbe02adb16b31438c8acda36b048fe, type: 2}
   - {fileID: 11400000, guid: 7b5b923462a5f2a4f892d04d7af9f56b, type: 2}
   - {fileID: 11400000, guid: cca704bd22499d842b3f3518a0a9a1b7, type: 2}
+  - {fileID: 11400000, guid: b45bccacfa74d1d47b75893d74d20a07, type: 2}
+  - {fileID: 11400000, guid: 0fdcad589b965434cbf6e63443ad831d, type: 2}
   enemySpawnPoints:
   - {fileID: 1205715837}
   - {fileID: 1500587892}

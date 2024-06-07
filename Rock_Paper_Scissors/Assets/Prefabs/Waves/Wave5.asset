@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be6f831058984ac41ae1549aaf621012, type: 3}
-  m_Name: Wave3
+  m_Name: Wave5
   m_EditorClassIdentifier: 
   EnemyUnitTypesToSpawn:
   - {fileID: 3659614332370105537, guid: 3a99c9f8d3b8b3d41b1531669fd2f659, type: 3}
   - {fileID: 8909835649686224163, guid: e547fb81a099d9544a36bdf74adf9d3d, type: 3}
   - {fileID: 6548610982091184903, guid: c84a2cefecbc72c45b4b5061beb8770c, type: 3}
   FriendlyUnitTypesToSpawn: []
-  TotalEnemyUnitsToSpawn: 10
+  TotalEnemyUnitsToSpawn: 20
   TotalFriendlyUnitsToSpawn: 0
   CurrencyBonus: 0
-  TurnToStartWave: 9
+  TurnToStartWave: 17

@@ -17,7 +17,7 @@ MonoBehaviour:
   - {fileID: 8909835649686224163, guid: e547fb81a099d9544a36bdf74adf9d3d, type: 3}
   - {fileID: 6548610982091184903, guid: c84a2cefecbc72c45b4b5061beb8770c, type: 3}
   FriendlyUnitTypesToSpawn: []
-  TotalEnemyUnitsToSpawn: 2
+  TotalEnemyUnitsToSpawn: 6
   TotalFriendlyUnitsToSpawn: 0
   CurrencyBonus: 0
-  TurnToStartWave: 3
+  TurnToStartWave: 5
