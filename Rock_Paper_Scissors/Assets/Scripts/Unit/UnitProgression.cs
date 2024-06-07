@@ -46,9 +46,9 @@ namespace RockPaperScissors.Units
 
         private void CheckForLevelUp(int levelUpXPRequired)
         {
-            if(xp == levelUpXPRequired)
+            if(xp >= levelUpXPRequired)
             {
-                level = Math.Clamp(level + 1, 1, 3);
+                level = Mathf.Clamp(level + 1, 1, 3);
                 OnLevelUp?.Invoke();
                 StartCoroutine(unitAnimator.AnimateLevelUp(level));
                 AudioManager.Instance.PlayUnitLevelUpSound();

@@ -80,8 +80,7 @@ namespace RockPaperScissors.UI
 
         private void selectedUnit_OnGainXP()
         {
-            xp.text = $"XP {selectedUnit.UnitProgression.XP}/{selectedUnit.XPToLevelUp}";
-            level.text = $"Level: {selectedUnit.GetLevel()}";
+            UpdateUnitStats(selectedUnit);
         }
 
         private string SplitCamelCase(string str)
