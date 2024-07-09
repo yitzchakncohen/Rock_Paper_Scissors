@@ -15,12 +15,14 @@ namespace RockPaperScissors.UI.Menus
         [SerializeField] private GameObject HUDPanel;
         [SerializeField] private ModalWindow gameMenuPanel;
         [SerializeField] private GameObject gameOverMenuPanel;
+        [SerializeField] private ModalWindow howToPlayModal;
         [SerializeField] private TextMeshProUGUI gameOverScoreValueText;
         [SerializeField] private TextMeshProUGUI gameOverHighScoreValueText;
         [SerializeField] private Button[] mainMenuButtons;
         [SerializeField] private Button newGameButton;
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button closeMenuButton;
+        [SerializeField] private Button helpButton;
         [SerializeField] private LetterAnimation gameOverTextAnimation;
         [SerializeField] private float gameOverAnimationTime = 0.5f;
         [SerializeField] private AdModal adModal;
@@ -41,12 +43,14 @@ namespace RockPaperScissors.UI.Menus
             newGameButton.onClick.AddListener(StartGame);
             settingsButton.onClick.AddListener(OpenSettingsMenu);
             closeMenuButton.onClick.AddListener(CloseGameMenu);
+            helpButton.onClick.AddListener(OpenHowToPlayMenu);
 
             gameOverMenuPanel.SetActive(false);
             gameMenuPanel.gameObject.SetActive(false);
             HUDPanel.SetActive(true);
             adModal.gameObject.SetActive(false);
-            settingsModal.gameObject.SetActive(false);  
+            settingsModal.gameObject.SetActive(false);
+            howToPlayModal.gameObject.SetActive(false);
         }
 
         private void OnDestroy() 
@@ -58,6 +62,7 @@ namespace RockPaperScissors.UI.Menus
             newGameButton.onClick.RemoveAllListeners();
             settingsButton.onClick.RemoveAllListeners();
             closeMenuButton.onClick.RemoveAllListeners();   
+            helpButton.onClick.RemoveAllListeners();
             GameplayManager.OnGameOver -= GameplayManager_OnGameOver;    
             AdModal.OnSkipButtonClick -= AdModal_OnSkipButtonClick;
             AdModal.OnWatchButtonClick -= AdModal_OnWatchButtonClick;    
@@ -84,6 +89,14 @@ namespace RockPaperScissors.UI.Menus
             if(!settingsModal.gameObject.activeSelf)
             {
                 settingsModal.Open();
+            }
+        }
+
+        private void OpenHowToPlayMenu()
+        {
+            if(!howToPlayModal.gameObject.activeSelf)
+            {
+                howToPlayModal.Open();
             }
         }
 

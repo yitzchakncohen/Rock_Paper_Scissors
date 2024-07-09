@@ -31,7 +31,10 @@ namespace RockPaperScissors.UI.Menus
             backButton.onClick.AddListener(BackButtonOnClick);
             nextButton.onClick.AddListener(NextButtonOnClick);
             closeButton.onClick.AddListener(CloseButtonOnClick);
-            playButton.onClick.AddListener(PlayButtonOnClick);
+            if(playButton != null)
+            {
+                playButton.onClick.AddListener(PlayButtonOnClick);
+            }
             UpdateButtonInteractability();
             // Open first page
             CloseAllHowToPlayPanels();
@@ -45,7 +48,10 @@ namespace RockPaperScissors.UI.Menus
             backButton.onClick.RemoveAllListeners();
             nextButton.onClick.RemoveAllListeners();
             closeButton.onClick.RemoveAllListeners();
-            playButton.onClick.RemoveAllListeners();
+            if(playButton != null)
+            {
+                playButton.onClick.RemoveAllListeners();
+            }
         }
 
         private void UpdateButtonInteractability()
@@ -54,21 +60,30 @@ namespace RockPaperScissors.UI.Menus
             {
                 backButton.interactable = false;
                 nextButton.gameObject.SetActive(true);
-                playButton.gameObject.SetActive(false);  
+                if(playButton != null)
+                {
+                    playButton.gameObject.SetActive(false);  
+                }
                 nextButton.interactable = true;
             }
             else if(currentPage == howToPlayPanels.Length - 1)
             {
                 nextButton.interactable = false;
                 nextButton.gameObject.SetActive(false);
-                playButton.gameObject.SetActive(true);  
+                if(playButton != null)
+                {
+                    playButton.gameObject.SetActive(true);  
+                }
                 backButton.interactable = true;
             }
             else
             {
                 nextButton.interactable = true;
                 nextButton.gameObject.SetActive(true);
-                playButton.gameObject.SetActive(false);  
+                if(playButton != null)
+                {
+                    playButton.gameObject.SetActive(false);  
+                }  
                 backButton.interactable = true;
             }
 
