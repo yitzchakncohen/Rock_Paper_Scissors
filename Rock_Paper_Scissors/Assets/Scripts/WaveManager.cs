@@ -171,9 +171,10 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
             Vector2Int spawnPosition = gridManager.GetGridPositionFromWorldPosition(friendlySpawnPoint.position);
             Unit spawnedUnit = Instantiate(homeBasePrefab, gridManager.GetGridObject(spawnPosition).transform.position, Quaternion.identity);
             friendlyUnitsSpawnedThisWave.Add(spawnedUnit);
-        }        
+            gridManager.UpdateGridOccupancy();
+        } 
 
-        if(unitTypesToSpawn.Length == 0 )
+        if(unitTypesToSpawn.Length == 0)
         {
             return friendlyUnitsSpawnedThisWave;
         }

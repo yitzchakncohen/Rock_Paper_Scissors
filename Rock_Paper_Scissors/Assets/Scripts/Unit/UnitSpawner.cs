@@ -204,7 +204,7 @@ namespace RockPaperScissors.Units
             {
                 actionPoints += buildMoveableUnitActionsRemaining;
             }
-            if(currencyBank.GetCurrencyRemaining() >= GetMinimumStationaryUnitCost() && unit.GetLevel() > 1)
+            if(currencyBank.GetCurrencyRemaining() >= GetMinimumStationaryUnitCost() && (unit.Class == UnitClass.PillowFort || unit.GetLevel() > 1))
             {
                 actionPoints += buildStationaryUnitActionsRemaining;
             }
