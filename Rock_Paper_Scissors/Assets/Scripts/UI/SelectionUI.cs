@@ -10,6 +10,13 @@ namespace RockPaperScissors.UI
 {
     public class SelectionUI : MonoBehaviour
     {
+        [SerializeField] private GameObject grid;
+        [SerializeField] private Button collapseButton;
+        [SerializeField] private GameObject openImage;
+        [SerializeField] private GameObject collapseImage;
+
+
+        [Header("Stats")]
         [SerializeField] private GameObject background;
         [SerializeField] private TextMeshProUGUI unit;
         [SerializeField] private TextMeshProUGUI level;
@@ -26,12 +33,28 @@ namespace RockPaperScissors.UI
         private void Start() 
         {
             ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
+            collapseButton.onClick.AddListener(ToggleGrid);
             background.SetActive(false);
         }
 
         private void OnDestroy() 
         {
             ActionHandler.OnUnitSelected -= ActionHandler_OnUnitSelected;
+        }
+
+        private void ToggleGrid()
+        {
+            grid.SetActive(!grid.activeSelf);
+            if(grid.activeSelf)
+            {
+                collapseImage.SetActive(true);
+                openImage.SetActive(false);
+            }
+            else
+            {
+                collapseImage.SetActive(false);
+                openImage.SetActive(true);
+            }
         }
 
         private void ActionHandler_OnUnitSelected(object sender, Unit unit)
