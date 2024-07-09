@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using RockPaperScissors.Grids;
 using RockPaperScissors.SaveSystem;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace RockPaperScissors.Units
@@ -69,6 +70,11 @@ namespace RockPaperScissors.Units
                 {
                     Debug.LogWarning(name + ": XP To Level Up index out of range.");
                     return unitData.XPToLevelUp[unitData.XPToLevelUp.Length - 1];
+                }
+                else if(unitProgression.Level == unitProgression.MaxLevel)
+                {
+                    // Indicates Unit is at max level
+                    return -1;
                 }
                 return unitData.XPToLevelUp[unitProgression.Level - 1];
             }

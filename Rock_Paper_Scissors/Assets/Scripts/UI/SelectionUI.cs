@@ -93,7 +93,14 @@ namespace RockPaperScissors.UI
             range.text = $"<sprite=3> {unit.AttackRange}";
             defense.text = $"<sprite=1> {unit.Defense}";
             movement.text = $"<sprite=4> {unit.MoveDistance}";
-            xp.text = $"XP {unit.UnitProgression.XP}/{unit.XPToLevelUp}";
+            if(unit.XPToLevelUp < 0)
+            {
+                xp.text = "XP -";
+            }
+            else
+            {
+                xp.text = $"XP {unit.UnitProgression.XP}/{unit.XPToLevelUp}";
+            }
         }
 
         private void selectedUnit_OnLevelUp()

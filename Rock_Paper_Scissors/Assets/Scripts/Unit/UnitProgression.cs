@@ -11,9 +11,11 @@ namespace RockPaperScissors.Units
         public event Action OnGainXP;
         private UnitAnimator unitAnimator;
         private int level = 1;
+        private int maxLevel = 3;
         private int xp = 0;
 
         public int Level => level;
+        public int MaxLevel => maxLevel;
         public int XP {get => xp; set {xp = value;}}
 
         private void Start() 
@@ -47,11 +49,15 @@ namespace RockPaperScissors.Units
         private void CheckForLevelUp(int levelUpXPRequired)
         {
             if(xp >= levelUpXPRequired)
-            {
-                level = Mathf.Clamp(level + 1, 1, 3);
-                OnLevelUp?.Invoke();
-                StartCoroutine(unitAnimator.AnimateLevelUp(level));
-                AudioManager.Instance.PlayUnitLevelUpSound();
+            {   
+                int oldLevel = level;
+                level = Mathf.Clamp(level + 1, 1, maxLevel);
+                if(level > oldLevel)
+                {
+                    OnLevelUp?.Invoke();
+                    StartCoroutine(unitAnimator.AnimateLevelUp(level));
+                    AudioManager.Instance.PlayUnitLevelUpSound();
+                }
             }
         }
 
