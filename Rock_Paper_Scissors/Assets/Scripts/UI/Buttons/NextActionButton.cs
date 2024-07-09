@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using RockPaperScissors.SaveSystem;
+using RockPaperScissors.Units;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +20,7 @@ namespace RockPaperScissors.UI.Buttons
             WaveManager.OnWaveCompleted += WaveManager_OnWaveCompleted;
             WaveManager.OnWaveStarted += WaveManager_OnWaveStarted;
             SaveManager.OnLoadCompleted += SaveManager_OnLoadCompleted;
+            UnitManager.OnActionsRemainingUpdated += UnitManager_OnActionsRemainingUpdated;
             button = GetComponent<Button>();
             button.interactable = false;
             button.onClick.AddListener(() => actionHandler.SelectNextAvaliableUnit());
@@ -30,6 +32,7 @@ namespace RockPaperScissors.UI.Buttons
             WaveManager.OnWaveCompleted -= WaveManager_OnWaveCompleted;
             WaveManager.OnWaveStarted -= WaveManager_OnWaveStarted;
             SaveManager.OnLoadCompleted -= SaveManager_OnLoadCompleted;
+            UnitManager.OnActionsRemainingUpdated -= UnitManager_OnActionsRemainingUpdated;
             button.onClick.RemoveAllListeners();
         }
 
@@ -57,7 +60,19 @@ namespace RockPaperScissors.UI.Buttons
 
         private void SaveManager_OnLoadCompleted()
         {
-            button.interactable = true;
+            button.interactable = false;
+        }
+
+        private void UnitManager_OnActionsRemainingUpdated(int actionsRemaining)
+        {
+            if(actionsRemaining <= 0)
+            {
+                button.interactable = false;
+            }
+            else
+            {
+                button.interactable = true;
+            }
         }
     }
 }

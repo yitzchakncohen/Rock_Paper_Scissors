@@ -10,7 +10,6 @@ namespace RockPaperScissors.UI.Buttons
     {
         [SerializeField] private GameObject highlight;
         private Button button;
-        private UnitManager unitManager;
         private TurnManager turnManager;
         private bool waveOccuring = false;
 
@@ -19,8 +18,8 @@ namespace RockPaperScissors.UI.Buttons
             TurnManager.OnNextTurn += TurnManager_OnNextTurn;
             WaveManager.OnWaveCompleted += WaveManager_OnWaveCompleted;
             WaveManager.OnWaveStarted += WaveManager_OnWaveStarted;
-            UnitAction.OnAnyActionCompleted += UnitAction_OnAnyActionCompleted;
             SaveManager.OnLoadCompleted += SaveManager_OnLoadCompleted;
+            UnitManager.OnActionsRemainingUpdated += UnitManager_OnActionsRemainingUpdated;
             button = GetComponent<Button>();
             button.interactable = false;
             button.onClick.AddListener(() => turnManager.NextTurn());
@@ -29,33 +28,21 @@ namespace RockPaperScissors.UI.Buttons
 
         private void Start() 
         {
-            unitManager = FindObjectOfType<UnitManager>();
             turnManager = FindObjectOfType<TurnManager>();
         }
 
         private void OnDestroy() 
         {
             TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
-            UnitAction.OnAnyActionCompleted -= UnitAction_OnAnyActionCompleted;
             WaveManager.OnWaveCompleted -= WaveManager_OnWaveCompleted;
             WaveManager.OnWaveStarted -= WaveManager_OnWaveStarted;
             SaveManager.OnLoadCompleted -= SaveManager_OnLoadCompleted;
+            UnitManager.OnActionsRemainingUpdated -= UnitManager_OnActionsRemainingUpdated;
             button.onClick.RemoveAllListeners();
         }
 
-        private void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
+        private void UnitManager_OnActionsRemainingUpdated(int actionsRemaining)
         {
-            if(turnManager.IsPlayerTurn)
-            {
-                CheckActionsRemainingAsync();
-            }
-        }
-
-        private async void CheckActionsRemainingAsync()
-        {
-            // float startTime = Time.realtimeSinceStartup;
-
-            int actionsRemaining = await unitManager.GetFriendlyAvaliableActionsRemaining();
             if(actionsRemaining <= 0)
             {
                 highlight.SetActive(true);
@@ -64,8 +51,6 @@ namespace RockPaperScissors.UI.Buttons
             {
                 highlight.SetActive(false);
             }
-
-            // Debug.Log("NextButtonUI Action Complete Time: " + (Time.realtimeSinceStartup - startTime)*1000f);
         }
 
         private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs e)
@@ -98,7 +83,6 @@ namespace RockPaperScissors.UI.Buttons
             if(turnManager.IsPlayerTurn)
             {
                 button.interactable = true;
-                CheckActionsRemainingAsync();
             }
             else
             {

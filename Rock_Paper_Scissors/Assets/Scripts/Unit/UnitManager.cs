@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using RockPaperScissors.Grids;
+using RockPaperScissors.SaveSystem;
 using UnityEngine;
 
 namespace RockPaperScissors.Units
 {
     public class UnitManager : MonoBehaviour
     {
+        public static event Action<int> OnActionsRemainingUpdated;
         private GridManager gridManager;
         private List<Unit> friendlyUnits;
         private List<Unit> enemyUnits;
@@ -18,6 +20,8 @@ namespace RockPaperScissors.Units
             UnitHealth.OnDeath += Health_OnDeath;
             Unit.OnUnitSpawn += Unit_OnUnitSpawn;
             TurnManager.OnNextTurn += TurnManager_OnNextTurn;
+            UnitAction.OnAnyActionCompleted += UnitAction_OnAnyActionCompleted;
+            SaveManager.OnLoadCompleted += SaveManager_OnLoadCompleted;
             friendlyUnits = new List<Unit>();
             enemyUnits = new List<Unit>();
             gridManager = FindObjectOfType<GridManager>();
@@ -28,6 +32,8 @@ namespace RockPaperScissors.Units
             UnitHealth.OnDeath -= Health_OnDeath;
             Unit.OnUnitSpawn -= Unit_OnUnitSpawn;
             TurnManager.OnNextTurn -= TurnManager_OnNextTurn;
+            UnitAction.OnAnyActionCompleted -= UnitAction_OnAnyActionCompleted;
+            SaveManager.OnLoadCompleted -= SaveManager_OnLoadCompleted;
         }
 
         private void Unit_OnUnitSpawn(object sender, EventArgs e)
@@ -147,6 +153,25 @@ namespace RockPaperScissors.Units
             }
             unitOnTrampoline = null;
             return false;
+        }
+
+        private async void UnitAction_OnAnyActionCompleted(object sender, EventArgs e)
+        {
+            if(sender as UnitAction)
+            {
+                Unit unit = ((UnitAction)sender).Unit;
+                if(unit.IsFriendly)
+                {
+                    int actionsRemaining = await GetFriendlyAvaliableActionsRemaining();
+                    OnActionsRemainingUpdated?.Invoke(actionsRemaining);
+                }
+            }
+        }
+
+        private async void SaveManager_OnLoadCompleted()
+        {
+            int actionsRemaining = await GetFriendlyAvaliableActionsRemaining();
+            OnActionsRemainingUpdated?.Invoke(actionsRemaining);
         }
     }
 }
