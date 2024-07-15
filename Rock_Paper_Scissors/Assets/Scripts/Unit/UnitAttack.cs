@@ -5,6 +5,7 @@ using System.Linq;
 using RockPaperScissors.Grids;
 using RockPaperScissors.SaveSystem;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace RockPaperScissors.Units
 {
@@ -202,7 +203,7 @@ namespace RockPaperScissors.Units
 
         public override EnemyAIAction GetBestEnemyAIAction()
         {
-            EnemyAIAction bestAction = null;
+            List<EnemyAIAction> bestActions =  new List<EnemyAIAction>();
             Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(unit.transform.position);
 
             // For each valid target find the value
@@ -210,18 +211,6 @@ namespace RockPaperScissors.Units
             {
                 GridObject gridObject = gridManager.GetGridObjectFromWorldPosition(unit.transform.position);
                 // If this is the first action is the best action so far. 
-                if(bestAction == null)
-                {
-                    bestAction = new EnemyAIAction()
-                    {
-                        gridObject = gridObject,
-                        actionValue = unitAttackActionBaseValue 
-                                        + (1 - unit.NormalizedHealth)*unitAttackActionBaseValue 
-                                        + CombatModifiers.UnitHasAdvantage(this.unit.Class, unit.Class)*classAdvantageMultiplier,
-                        unitAction = this,
-                    };
-                }
-                else
                 {
                     // Compare the new action to th best action
                     EnemyAIAction testAction = new EnemyAIAction()
@@ -233,15 +222,30 @@ namespace RockPaperScissors.Units
                         unitAction = this,
                     }; 
 
-                    // Check if this action is better.
-                    if(testAction.actionValue > bestAction.actionValue)
+                    if(testAction != null)
                     {
-                        bestAction = testAction;
+                        // Check if this action is better.
+                        if(bestActions.Count > 0)
+                        {
+                            if (testAction.actionValue > bestActions.First().actionValue)
+                            {
+                                bestActions.Clear();
+                                bestActions.Add(testAction);
+                            }
+                            else if(testAction.actionValue == bestActions.First().actionValue)
+                            {
+                                bestActions.Add(testAction);
+                            }
+                        }
+                        else
+                        {
+                            bestActions.Add(testAction);
+                        }
                     }
                 }
             }
 
-            return bestAction;
+            return  bestActions.Count == 0 ? null : bestActions[Random.Range(0, bestActions.Count)];
         }
 
         public override int GetValidActionsRemaining()

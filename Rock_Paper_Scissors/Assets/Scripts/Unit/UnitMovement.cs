@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using RockPaperScissors.Grids;
 using RockPaperScissors.PathFindings;
 using RockPaperScissors.SaveSystem;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace RockPaperScissors.Units
 {
@@ -224,8 +226,12 @@ namespace RockPaperScissors.Units
 
         public override EnemyAIAction GetBestEnemyAIAction()
         {
-            EnemyAIAction bestAction = null;
+            List<EnemyAIAction> bestActions = new List<EnemyAIAction>();
             List<Vector2Int> validMovePositions = GetValidMovementPositions();
+            if(validMovePositions.Count == 0)
+            {
+                return null;
+            }
 
             foreach (Vector2Int position in validMovePositions)
             {
@@ -236,71 +242,86 @@ namespace RockPaperScissors.Units
                 float healthAmountValue = GetAverageNormalizedHealth(targetList);
                 float targetCountValue = GetValueFromTargetList(targetList);
 
-                if (bestAction == null)
+                EnemyAIAction testAction = new EnemyAIAction()
                 {
-                    bestAction = new EnemyAIAction()
+                    gridObject = gridObject,
+                    actionValue = targetCountValue + healthAmountValue,
+                    unitAction = this,
+                };
+                
+                // Check if this action is better.
+                if(bestActions.Count > 0)
+                {
+                    if (testAction.actionValue > bestActions.First().actionValue)
                     {
-                        gridObject = gridObject,
-                        actionValue = targetCountValue + healthAmountValue,
-                        unitAction = this,
-                    };
+                        bestActions.Clear();
+                        bestActions.Add(testAction);
+                    }
+                    else if(testAction.actionValue == bestActions.First().actionValue)
+                    {
+                        bestActions.Add(testAction);
+                    }
                 }
                 else
                 {
-                    EnemyAIAction testAction = new EnemyAIAction()
-                    {
-                        gridObject = gridObject,
-                        actionValue = targetCountValue + healthAmountValue,
-                        unitAction = this,
-                    };
-
-                    // Check if this action is better.
-                    if (testAction.actionValue > bestAction.actionValue)
-                    {
-                        bestAction = testAction;
-                    }
+                    bestActions.Add(testAction);
                 }
+                gridManager.GetGridObject(position).SetActionValue(testAction.actionValue);
 
-                gridManager.GetGridObject(position).SetActionValue(targetCountValue + healthAmountValue);
             }
             
             // If there are no units in range of any of the movement spaces, the best action value will still be 0.
-            // Instead move towards the closes enemy by setting a value from 1 to 10;
+            // Instead move towards the closest enemy by setting a value from 1 to 10;
             // float startTime = Time.realtimeSinceStartup;
-            if(bestAction.actionValue == 0)
+            if(bestActions.FirstOrDefault().actionValue == 0)
             {
                 Vector2Int gridPosition = gridManager.GetGridPositionFromWorldPosition(transform.position);
                 Unit closestUnit  = unitManager.GetClosestFriendlyUnitToPosition(gridPosition, out float distance);
                 Vector2Int closestUnitPosition;
-                if(closestUnit != null)
+
+                if(closestUnit == null)
                 {
-                    closestUnitPosition = gridManager.GetGridPositionFromWorldPosition(closestUnit.transform.position);
+                    Debug.LogWarning("Unit trying to move, but there are not units to target.");
+                    return  bestActions.Count == 0 ? null : bestActions[Random.Range(0, bestActions.Count)];
                 }
-                else
-                {
-                    return bestAction;
-                }
+
+                closestUnitPosition = gridManager.GetGridPositionFromWorldPosition(closestUnit.transform.position);
                 
                 foreach (Vector2Int position in validMovePositions)
                 {
                     distance = gridManager.GetGridDistanceBetweenPositions(closestUnitPosition, position);
-
-                    if(1 + 9f/distance > bestAction.actionValue)
+                    GridObject gridObject = gridManager.GetGridObject(position);
+                    EnemyAIAction testAction = new EnemyAIAction()
                     {
-                        GridObject gridObject = gridManager.GetGridObject(position);
+                        gridObject = gridObject,
+                        actionValue = 1 + 9f/distance,
+                        unitAction = this,
+                    };
 
-                        bestAction = new EnemyAIAction()
+                    // Check if this action is better.
+                    if(bestActions.Count > 0)
+                    {
+                        if (testAction.actionValue > bestActions.First().actionValue)
                         {
-                            gridObject = gridObject,
-                            actionValue = 1 + 9f/distance,
-                            unitAction = this,
-                        };
+                            bestActions.Clear();
+                            bestActions.Add(testAction);
+                        }
+                        else if(testAction.actionValue == bestActions.First().actionValue)
+                        {
+                            bestActions.Add(testAction);
+                        }
                     }
+                    else
+                    {
+                        bestActions.Add(testAction);
+                    }
+
+                    gridManager.GetGridObject(position).SetActionValue(testAction.actionValue);
                 }
             }
 
             // Debug.Log("Get Closest Friendly: " + (Time.realtimeSinceStartup - startTime) * 1000f);
-            return bestAction;
+            return  bestActions.Count == 0 ? null : bestActions[Random.Range(0, bestActions.Count)];
         }
 
         private float GetValueFromTargetList(List<Unit> targetList)

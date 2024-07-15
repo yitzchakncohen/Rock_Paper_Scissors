@@ -99,7 +99,7 @@ namespace RockPaperScissors.Units
 
         public override EnemyAIAction GetBestEnemyAIAction()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override bool TryTakeAction(GridObject gridObject, Action onActionComplete)

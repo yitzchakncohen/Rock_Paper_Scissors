@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using RockPaperScissors.Units;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class FindingActionState : EnemyState
 {
@@ -52,32 +55,41 @@ public class FindingActionState : EnemyState
 
     private async Task<EnemyAIAction>GetBestEnemyAction(UnitManager unitManager)
     {
-        EnemyAIAction bestEnemeyAIAction = null;
+        List<EnemyAIAction> bestEnemeyAIActions = new List<EnemyAIAction>();
 
         // Get the best action from each unit and see if it is the best.
         foreach (Unit enemyUnit in unitManager.GetEnemyUnitsList())
         {
-            if (bestEnemeyAIAction == null)
+            EnemyAIAction testAction = await GetBestActionForUnit(enemyUnit);
+            if (testAction != null)
             {
-                bestEnemeyAIAction = await GetBestActionForUnit(enemyUnit);
-            }
-            else
-            {
-                EnemyAIAction testAction = await GetBestActionForUnit(enemyUnit);
-                if (testAction != null && testAction.actionValue > bestEnemeyAIAction.actionValue)
+                if(bestEnemeyAIActions.Count > 0)
                 {
-                    bestEnemeyAIAction = testAction;
+                    if (testAction.actionValue > bestEnemeyAIActions.First().actionValue)
+                    {
+                        bestEnemeyAIActions.Clear();
+                        bestEnemeyAIActions.Add(testAction);
+                    }
+                    else if(testAction.actionValue == bestEnemeyAIActions.First().actionValue)
+                    {
+                        bestEnemeyAIActions.Add(testAction);
+                    }
+                }
+                else
+                {
+                    bestEnemeyAIActions.Add(testAction);
                 }
             }
         }
-        return bestEnemeyAIAction;
+
+        return  bestEnemeyAIActions.Count == 0 ? null : bestEnemeyAIActions[Random.Range(0, bestEnemeyAIActions.Count)];
     }
 
     private async Task<EnemyAIAction> GetBestActionForUnit(Unit enemyUnit)
     {
         await Task.Yield();
 
-        EnemyAIAction bestEnemeyAIAction = null;
+        List<EnemyAIAction> bestEnemeyAIActions = new List<EnemyAIAction>();
 
         foreach (UnitAction baseAction in enemyUnit.UnitActions)
         {
@@ -89,18 +101,26 @@ public class FindingActionState : EnemyState
                 continue;
             }
 
-            // Find the best of the best.
-            if(bestEnemeyAIAction == null)
-            {
-                bestEnemeyAIAction = baseAction.GetBestEnemyAIAction();
-            }
-            else
-            {
-                EnemyAIAction testEnemyAIAction = baseAction.GetBestEnemyAIAction();
+            EnemyAIAction testEnemyAIAction = baseAction.GetBestEnemyAIAction();
 
-                if(testEnemyAIAction != null && testEnemyAIAction.actionValue > bestEnemeyAIAction.actionValue)
+            // Find the best of the best.
+            if(testEnemyAIAction != null)
+            {
+                if(bestEnemeyAIActions.Count > 0)
                 {
-                    bestEnemeyAIAction = testEnemyAIAction;
+                    if (testEnemyAIAction.actionValue > bestEnemeyAIActions.First().actionValue)
+                    {
+                        bestEnemeyAIActions.Clear();
+                        bestEnemeyAIActions.Add(testEnemyAIAction);
+                    }
+                    else if(testEnemyAIAction.actionValue == bestEnemeyAIActions.First().actionValue)
+                    {
+                        bestEnemeyAIActions.Add(testEnemyAIAction);
+                    }
+                }
+                else
+                {
+                    bestEnemeyAIActions.Add(testEnemyAIAction);
                 }
             }
 
@@ -113,6 +133,7 @@ public class FindingActionState : EnemyState
             //     Debug.Log("Move Action Found: " + (Time.realtimeSinceStartup - startTime) * 1000f);
             // }
         }
-        return bestEnemeyAIAction;
+
+        return  bestEnemeyAIActions.Count == 0 ? null : bestEnemeyAIActions[Random.Range(0, bestEnemeyAIActions.Count)];
     }
 }
