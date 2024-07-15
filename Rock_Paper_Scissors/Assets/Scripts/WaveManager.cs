@@ -163,7 +163,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
     {
 
         List<Unit> friendlyUnitsSpawnedThisWave = new List<Unit>();
-        int radius = unitTypesToSpawn.Length / 3;
+        int radius = 3;
         
         if(turn == 1)
         {
