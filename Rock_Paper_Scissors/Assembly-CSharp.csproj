@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\ActionHandler.cs" />
     <Compile Include="Assets\Scripts\UI\Buttons\UpgradeUnitSpawnerButton.cs" />
     <Compile Include="Assets\Scripts\Grid\GridHighlightType.cs" />
+    <Compile Include="Assets\Scripts\UI\TitlePageAnimation.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitTrap.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitAction.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyAI.cs" />
