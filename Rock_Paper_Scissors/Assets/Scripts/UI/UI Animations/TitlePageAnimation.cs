@@ -101,7 +101,7 @@ public class TitlePageAnimation : MonoBehaviour
         sequence.AppendCallback(() => { 
             unitAnimator.SetTrigger("Hop");
         });
-        float unitMoveTime = 2.0f;
+        float unitMoveTime = 2.5f;
         sequence.Append(unit.rectTransform.DOAnchorPos(unit.position, unitMoveTime));
         sequence.AppendInterval(3.5f);
         sequence.AppendCallback(PlayRandomUnitAnimation);
