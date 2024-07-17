@@ -14,8 +14,6 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
     public static event Action<Unit> OnWaveUnitSpawn;
     public static event Action<int> OnTurnsUntilNextWaveUpdated;
     [SerializeField] private Wave[] waves;
-    [SerializeField] private Transform[] enemySpawnPoints;
-    [SerializeField] private Transform friendlySpawnPoint;
     [SerializeField] private float showUnitsTime = 1f;
     [SerializeField] private Unit homeBasePrefab; 
     private CurrencyBank currencyBank;
@@ -136,9 +134,9 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
         // Create a list of valid spawn points
         int radius = unitTypesToSpawn.Length / 3;
         List<Vector2Int> spawnPositions = new List<Vector2Int>();
-        foreach (Transform point in enemySpawnPoints)
+        foreach (Vector2Int point in gridManager.SpawnPoints)
         {
-            spawnPositions = spawnPositions.Concat(GetValidSpawnGridPositionsForSpawnPoint(unitTypesToSpawn.FirstOrDefault(), point.position, radius)).ToList();
+            spawnPositions = spawnPositions.Concat(GetValidSpawnGridPositionsForSpawnPoint(unitTypesToSpawn.FirstOrDefault(), point, radius)).ToList();
         }
 
         // Spawn the units in random locations near the spawn points.
@@ -168,8 +166,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
         if(turn == 1)
         {
             //Spawn the home base in the middle on the first turn. 
-            Vector2Int spawnPosition = gridManager.GetGridPositionFromWorldPosition(friendlySpawnPoint.position);
-            Unit spawnedUnit = Instantiate(homeBasePrefab, gridManager.GetGridObject(spawnPosition).transform.position, Quaternion.identity);
+            Unit spawnedUnit = Instantiate(homeBasePrefab, gridManager.GetGridObject(gridManager.PlayerStartingPoint).transform.position, Quaternion.identity);
             friendlyUnitsSpawnedThisWave.Add(spawnedUnit);
             gridManager.UpdateGridOccupancy();
         } 
@@ -178,7 +175,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
         {
             return friendlyUnitsSpawnedThisWave;
         }
-        List<Vector2Int> spawnPositions = GetValidSpawnGridPositionsForSpawnPoint(unitTypesToSpawn.FirstOrDefault(), friendlySpawnPoint.position, radius);
+        List<Vector2Int> spawnPositions = GetValidSpawnGridPositionsForSpawnPoint(unitTypesToSpawn.FirstOrDefault(), gridManager.PlayerStartingPoint, radius);
         for (int i = 0; i < totalUnitsToSpawn; i++)
         {
             int unitToSpawnIndex = UnityEngine.Random.Range(0, unitTypesToSpawn.Length);
@@ -196,17 +193,15 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
         return friendlyUnitsSpawnedThisWave;
     }
 
-    private List<Vector2Int> GetValidSpawnGridPositionsForSpawnPoint(IGridOccupantInterface gridObject, Vector3 spawnPoint,  int radius)
+    private List<Vector2Int> GetValidSpawnGridPositionsForSpawnPoint(IGridOccupantInterface gridObject, Vector2Int spawnPoint,  int radius)
     {
         List<Vector2Int> spawnPositions = new List<Vector2Int>();
-
-        Vector2Int spawnPosition = gridManager.GetGridPositionFromWorldPosition(spawnPoint);
 
         for (int x = -radius; x <= radius; x++)
         {
             for (int y = -radius; y <= radius; y++)
             {
-                Vector2Int testPosition = new Vector2Int(spawnPosition.x + x, spawnPosition.y + y);
+                Vector2Int testPosition = new Vector2Int(spawnPoint.x + x, spawnPoint.y + y);
                 if(gridManager.IsValidGridPosition(testPosition)
                     && gridManager.GetGridObject(testPosition).IsWalkable(gridObject))
                 {

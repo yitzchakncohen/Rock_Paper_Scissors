@@ -21,13 +21,40 @@ namespace RockPaperScissors.Grids
         private GridObject[,] gridObjects;
         private Vector2[] borderPoints = new Vector2[4];
         public Vector2[] BorderPoints => borderPoints;
+        public List<Vector2Int> SpawnPoints => enemySpawnPoints;
+        private List<Vector2Int> enemySpawnPoints = new List<Vector2Int>();
+        public Vector2Int PlayerStartingPoint => playerStartingPoint;
+        private Vector2Int playerStartingPoint;
         public Task SetupGridTask{get; private set;} = null;
         public Vector2Int GridSize => gridSize;
 
         private void Awake()
         {
             grid = GetComponent<Grid>();
+        }
+
+        public Task SetupGrid(int width, int height, int spawnPoints)
+        {
+            CalculateSpawnPoints(width, height, spawnPoints);
             SetupGridTask = SetupGridAsync();
+            return SetupGridTask;
+        }
+
+        private void CalculateSpawnPoints(int width, int height, int spawnPoints)
+        {
+            switch (spawnPoints)
+            {
+                case 4:
+                default:
+                    int middleX = width / 2;
+                    int middleY = height / 2;
+                    enemySpawnPoints.Add(new Vector2Int(1, middleY));
+                    enemySpawnPoints.Add(new Vector2Int(width, middleY));
+                    enemySpawnPoints.Add(new Vector2Int(middleX, 1));
+                    enemySpawnPoints.Add(new Vector2Int(middleX, height));
+                    playerStartingPoint = new Vector2Int(middleX, middleY);
+                    break;
+            }
         }
 
         private async Task SetupGridAsync()

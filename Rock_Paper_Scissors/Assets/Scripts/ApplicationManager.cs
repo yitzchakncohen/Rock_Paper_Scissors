@@ -26,7 +26,6 @@ namespace RockPaperScissors
         private const int TARGET_FRAME_RATE = 30;
         public static ApplicationManager Instance;
         private SceneTransitionUI sceneTransitionUI;
-        private GridManager gridManager;
         private AdsManager adsManager;
         private DeviceReviewsManager deviceReviewsManager;
         private int rewardAmount = 0;
@@ -49,11 +48,6 @@ namespace RockPaperScissors
             adsManager = GetComponent<AdsManager>();
             deviceReviewsManager = GetComponent<DeviceReviewsManager>();
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        }
-
-        private void OnEnable() 
-        {
-            gridManager = FindObjectOfType<GridManager>();
         }
 
         private void Start() 
@@ -111,12 +105,6 @@ namespace RockPaperScissors
         private IEnumerator StartUpRoutine()
         {
             sceneTransitionUI.TransitionIn();
-            gridManager = FindObjectOfType<GridManager>();
-            if(gridManager != null && gridManager.SetupGridTask != null)
-            {
-                Debug.Log("Waiting for grid setup...");
-                yield return new WaitUntil(() => gridManager.SetupGridTask.IsCompleted);
-            }
 
             yield return StartCoroutine(sceneTransitionUI.LoadingCompletedRoutine());
 
@@ -167,11 +155,16 @@ namespace RockPaperScissors
 
             sceneTransitionUI.TransitionIn();
 
-            gridManager = FindObjectOfType<GridManager>();
-            if(gridManager != null && gridManager.SetupGridTask != null)
+            GridManager gridManager = FindObjectOfType<GridManager>();
+            Task GridSetup = gridManager.SetupGrid(36, 36, 4);
+            if(gridManager != null)
             {
                 Debug.Log("Waiting for grid setup...");
-                yield return new WaitUntil(() => gridManager.SetupGridTask.IsCompleted);
+                yield return new WaitUntil(() => GridSetup.IsCompleted);
+            }
+            else
+            {
+                Debug.LogError("No grid found in scene");
             }
         }
 

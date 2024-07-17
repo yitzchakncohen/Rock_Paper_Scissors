@@ -898,12 +898,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b45bccacfa74d1d47b75893d74d20a07, type: 2}
   - {fileID: 11400000, guid: 0fdcad589b965434cbf6e63443ad831d, type: 2}
   - {fileID: 11400000, guid: d7ff2434ca7127441bc3d6c4535ffbf9, type: 2}
-  enemySpawnPoints:
-  - {fileID: 1205715837}
-  - {fileID: 1500587892}
-  - {fileID: 925037804}
-  - {fileID: 694498110}
-  friendlySpawnPoint: {fileID: 15227144}
   showUnitsTime: 1
   homeBasePrefab: {fileID: 7927884055322289663, guid: de102ff297a1a7d4bb4befe5fbf75ad2, type: 3}
 --- !u!1001 &1155898013
@@ -1860,6 +1854,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 28479735033556396, guid: d98ca6261b6900543bbd9b28d8835c3a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4564860170788983693, guid: d98ca6261b6900543bbd9b28d8835c3a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
