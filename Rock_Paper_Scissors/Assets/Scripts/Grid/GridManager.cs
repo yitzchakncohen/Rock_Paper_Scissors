@@ -12,11 +12,11 @@ namespace RockPaperScissors.Grids
     {
         public event Action OnGridSetupComplete;
         [SerializeField] private LayerMask occupancyLayerMask;
-        [SerializeField] private Vector2Int gridSize;
         [SerializeField] private GridObject gridObjectPrefab;
         [SerializeField] private GameObject borderTilePrefab;
         [SerializeField] private Tilemap baseTilemap;
         [SerializeField] private int borderWidth = 4;
+        private Vector2Int gridSize;
         private Grid grid;
         private GridObject[,] gridObjects;
         private Vector2[] borderPoints = new Vector2[4];
@@ -35,6 +35,7 @@ namespace RockPaperScissors.Grids
 
         public Task SetupGrid(int width, int height, int spawnPoints)
         {
+            gridSize = new Vector2Int(width, height);
             CalculateSpawnPoints(width, height, spawnPoints);
             SetupGridTask = SetupGridAsync();
             return SetupGridTask;
@@ -46,8 +47,8 @@ namespace RockPaperScissors.Grids
             {
                 case 4:
                 default:
-                    int middleX = width / 2;
-                    int middleY = height / 2;
+                    int middleX = width / 2 -1;
+                    int middleY = height / 2 -1;
                     enemySpawnPoints.Add(new Vector2Int(1, middleY));
                     enemySpawnPoints.Add(new Vector2Int(width, middleY));
                     enemySpawnPoints.Add(new Vector2Int(middleX, 1));

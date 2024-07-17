@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11bc235b9d6b8c541b0979f5e660b3f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  endlessModeLevelData: {fileID: 11400000, guid: ea5805ada4a136146b4c112575dd86fd, type: 2}
 --- !u!114 &3590444971470325067
 MonoBehaviour:
   m_ObjectHideFlags: 0

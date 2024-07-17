@@ -29,6 +29,7 @@ namespace RockPaperScissors
         private AdsManager adsManager;
         private DeviceReviewsManager deviceReviewsManager;
         private int rewardAmount = 0;
+        [SerializeField] private LevelData endlessModeLevelData;
 
         void Awake()
         {
@@ -156,7 +157,7 @@ namespace RockPaperScissors
             sceneTransitionUI.TransitionIn();
 
             GridManager gridManager = FindObjectOfType<GridManager>();
-            Task GridSetup = gridManager.SetupGrid(36, 36, 4);
+            Task GridSetup = gridManager.SetupGrid(endlessModeLevelData.width, endlessModeLevelData.height, endlessModeLevelData.spawnPoints);
             if(gridManager != null)
             {
                 Debug.Log("Waiting for grid setup...");
