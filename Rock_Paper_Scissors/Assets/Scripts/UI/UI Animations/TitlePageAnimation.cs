@@ -103,6 +103,7 @@ public class TitlePageAnimation : MonoBehaviour
         });
         float unitMoveTime = 2.0f;
         sequence.Append(unit.rectTransform.DOAnchorPos(unit.position, unitMoveTime));
+        sequence.AppendInterval(3.5f);
         sequence.AppendCallback(PlayRandomUnitAnimation);
 
         sequence.PlayForward();
