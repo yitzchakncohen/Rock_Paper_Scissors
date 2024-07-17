@@ -36,7 +36,7 @@ namespace RockPaperScissors.UI
             loadingPanel.DOFade(1.0f, 0.0f).SetUpdate(true);
         }
 
-        public void LoadingCompleted()
+        public IEnumerator LoadingCompletedRoutine()
         {
             Sequence sequence = DOTween.Sequence();
             sequence.Append(loadingPanel.DOFade(0.0f, fadeInTime).SetUpdate(true));
@@ -44,6 +44,7 @@ namespace RockPaperScissors.UI
                 loadingPanel.gameObject.SetActive(false);
             }).SetUpdate(true);
             sequence.PlayForward();
+            yield return sequence;
         }
     }
 }

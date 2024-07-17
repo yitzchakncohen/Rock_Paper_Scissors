@@ -112,18 +112,26 @@ namespace RockPaperScissors
         {
             sceneTransitionUI.TransitionIn();
             gridManager = FindObjectOfType<GridManager>();
-            Debug.Log("Waiting for grid setup...");
-            if(gridManager.SetupGridTask != null)
+            if(gridManager != null && gridManager.SetupGridTask != null)
             {
+                Debug.Log("Waiting for grid setup...");
                 yield return new WaitUntil(() => gridManager.SetupGridTask.IsCompleted);
             }
-            sceneTransitionUI.LoadingCompleted();
+
+            yield return StartCoroutine(sceneTransitionUI.LoadingCompletedRoutine());
+
+            TitlePageAnimation titlePageAnimation = FindObjectOfType<TitlePageAnimation>();
+            if(titlePageAnimation != null)
+            {
+                StartCoroutine(titlePageAnimation.AnimationRoutine());
+            }
         }
+
         private IEnumerator StartGameRoutine()
         {
             yield return StartCoroutine(LoadGameScene());
 
-            sceneTransitionUI.LoadingCompleted();
+            yield return StartCoroutine(sceneTransitionUI.LoadingCompletedRoutine());
 
             // Trigger new game.
             WaveManager waveManager = FindObjectOfType<WaveManager>();
@@ -146,7 +154,7 @@ namespace RockPaperScissors
             SaveManager saveManager = FindObjectOfType<SaveManager>();
             Task loadTask = saveManager.LoadGameAsync();
             yield return new WaitUntil(() => loadTask.IsCompleted);
-            sceneTransitionUI.LoadingCompleted();
+            yield return StartCoroutine(sceneTransitionUI.LoadingCompletedRoutine());            
         }
 
         private IEnumerator LoadGameScene()
@@ -159,7 +167,8 @@ namespace RockPaperScissors
 
             sceneTransitionUI.TransitionIn();
 
-            if(gridManager.SetupGridTask != null)
+            gridManager = FindObjectOfType<GridManager>();
+            if(gridManager != null && gridManager.SetupGridTask != null)
             {
                 Debug.Log("Waiting for grid setup...");
                 yield return new WaitUntil(() => gridManager.SetupGridTask.IsCompleted);
