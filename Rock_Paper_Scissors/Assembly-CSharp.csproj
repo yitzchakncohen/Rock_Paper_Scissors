@@ -72,7 +72,6 @@
     <Compile Include="Assets\Scripts\ActionHandler.cs" />
     <Compile Include="Assets\Scripts\UI\Buttons\UpgradeUnitSpawnerButton.cs" />
     <Compile Include="Assets\Scripts\Grid\GridHighlightType.cs" />
-    <Compile Include="Assets\Scripts\UI\TitlePageAnimation.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitTrap.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitAction.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyAI.cs" />
@@ -117,6 +116,7 @@
     <Compile Include="Assets\Scripts\UI\Menus\MainMenu.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\SaveWaveManagerData.cs" />
     <Compile Include="Assets\Scripts\UI\Menus\BuildingMenu.cs" />
+    <Compile Include="Assets\Scripts\UI\UI Animations\ScanningReflection.cs" />
     <Compile Include="Assets\Scripts\UI\AdModal.cs" />
     <Compile Include="Assets\Scripts\UI\Menus\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\Grid\GridUI.cs" />
@@ -143,6 +143,7 @@
     <Compile Include="Assets\Scripts\UI\SelectionUI.cs" />
     <Compile Include="Assets\Scripts\UI\Components\RandomColourVariation.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\ISaveInterface.cs" />
+    <Compile Include="Assets\Scripts\UI\UI Animations\TitlePageAnimation.cs" />
     <Compile Include="Assets\Scripts\Currency\CurrencyUI.cs" />
     <Compile Include="Assets\Scripts\UI\Menus\GameMenu.cs" />
     <Compile Include="Assets\Scripts\Unit\GlueTrap.cs" />

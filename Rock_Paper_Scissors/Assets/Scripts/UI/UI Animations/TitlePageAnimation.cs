@@ -18,6 +18,8 @@ public class TitlePageAnimation : MonoBehaviour
     [SerializeField] private Transform mainMenu;
     [SerializeField] private Transform titleBlock;
     [SerializeField] private CanvasGroup highscore;
+    [SerializeField] private ObjectToAnimate unit;
+    private Animator unitAnimator;
 
     private List<ObjectToAnimate> titleBlockObjects = new List<ObjectToAnimate>();
     private List<ObjectToAnimate> mainMenuObjects = new List<ObjectToAnimate>();
@@ -25,6 +27,11 @@ public class TitlePageAnimation : MonoBehaviour
     private void Start() 
     {
         StartCoroutine(SetupAnimation());
+    }
+
+    private void OnDestroy() 
+    {
+        CancelInvoke();
     }
 
     public IEnumerator SetupAnimation()
@@ -62,7 +69,13 @@ public class TitlePageAnimation : MonoBehaviour
         mainMenuObjects.OrderBy(item => item.position.y);
         mainMenuObjects.Reverse();
 
+        // Highscore
         highscore.alpha = 0;
+
+        // Unit
+        unit.position = unit.rectTransform.anchoredPosition;
+        unit.rectTransform.DOMoveX(0, 0.0f);
+        unitAnimator = unit.rectTransform.GetComponent<Animator>();
     }
 
     public IEnumerator AnimationRoutine()
@@ -85,7 +98,41 @@ public class TitlePageAnimation : MonoBehaviour
         }
         float fadeTime = 1f;
         sequence.Append(highscore.DOFade(1f, fadeTime));
+        sequence.AppendCallback(() => { 
+            unitAnimator.SetTrigger("Hop");
+        });
+        float unitMoveTime = 2.0f;
+        sequence.Append(unit.rectTransform.DOAnchorPos(unit.position, unitMoveTime));
+        sequence.AppendCallback(PlayRandomUnitAnimation);
+
         sequence.PlayForward();
         yield return sequence;
+    }
+
+    private void PlayRandomUnitAnimation()
+    {
+        int randomAnimation = Random.Range(1, 6);
+
+        switch (randomAnimation)
+        {
+            case 1:
+                unitAnimator.SetTrigger("Hop");
+                break;
+            case 2:
+                unitAnimator.SetTrigger("LookRight");
+                break;
+            case 3:
+                unitAnimator.SetTrigger("LookLeft");
+                break;
+            case 4:
+                unitAnimator.SetTrigger("LookUpRight");
+                break;
+            case 5:
+                unitAnimator.SetTrigger("LookUpLeft");
+                break;
+        }
+
+        float randomAnimationTime = Random.Range(3.5f, 6.0f);
+        Invoke("PlayRandomUnitAnimation", randomAnimationTime);
     }
 }
