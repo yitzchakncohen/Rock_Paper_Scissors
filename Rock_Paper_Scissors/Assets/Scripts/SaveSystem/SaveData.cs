@@ -13,6 +13,6 @@ public struct SaveData
     public List<SaveUnitData> UnitList;
     public SaveCurrencyBankData SaveCurrencyBankData;
     public SaveTurnManagerData SaveTurnManagerData;
-    public SaveGameplayManagerData SaveGameManagerData;
+    public SaveGameplayManagerData SaveGameplayManagerData;
     public SaveWaveManagerData SaveWaveManagerData;
 }

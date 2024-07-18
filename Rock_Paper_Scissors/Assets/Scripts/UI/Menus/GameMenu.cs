@@ -9,46 +9,36 @@ namespace RockPaperScissors.UI.Menus
 {
     public class GameMenu : MonoBehaviour
     {
-        private const string GAME_OVER_STRING = "Game Over";
-        public static event Action OnStartEndlessGameButtonPress;
-        public static event Action OnRestartLevelButtonPress;
-
         [SerializeField] private GameObject HUDPanel;
         [SerializeField] private ModalWindow gameMenuPanel;
-        [SerializeField] private GameObject gameOverMenuPanel;
+        [SerializeField] private GameOverMenu gameOverMenuPanel;
         [SerializeField] private ModalWindow howToPlayModal;
-        [SerializeField] private TextMeshProUGUI gameOverScoreValueText;
-        [SerializeField] private TextMeshProUGUI gameOverHighScoreValueText;
         [SerializeField] private Button[] mainMenuButtons;
-        [SerializeField] private Button newGameButton;
-        [SerializeField] private Button restartLevelButton;
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button closeMenuButton;
+        [SerializeField] private Button endGameMenuButton;
         [SerializeField] private Button helpButton;
-        [SerializeField] private LetterAnimation gameOverTextAnimation;
-        [SerializeField] private float gameOverAnimationTime = 0.5f;
         [SerializeField] private AdModal adModal;
         [SerializeField] private ModalWindow settingsModal;
         [SerializeField] private ModalWindow gameModeModal;
-        private RectTransform gameOverMenuRectTransform;
 
         private void Start() 
         {
-            gameOverMenuRectTransform = gameOverMenuPanel.GetComponent<RectTransform>();
             GameplayManager.OnGameOver += GameplayManager_OnGameOver;
+            GameplayManager.OnLevelCompleted += GameplayManager_OnLevelCompleted;
             AdModal.OnSkipButtonClick += AdModal_OnSkipButtonClick;
             AdModal.OnWatchButtonClick += AdModal_OnWatchButtonClick;
             foreach (Button button in mainMenuButtons)
             {
                 button.onClick.AddListener(GoToMainMenu);
             }
-            newGameButton.onClick.AddListener(StartGame);
-            newGameButton.onClick.AddListener(RestartLevel);
             settingsButton.onClick.AddListener(OpenSettingsMenu);
             closeMenuButton.onClick.AddListener(CloseGameMenu);
             helpButton.onClick.AddListener(OpenHowToPlayMenu);
+            endGameMenuButton.onClick.AddListener(EndGame);
 
-            gameOverMenuPanel.SetActive(false);
+            // Setup UI
+            gameOverMenuPanel.gameObject.SetActive(false);
             gameMenuPanel.gameObject.SetActive(false);
             HUDPanel.SetActive(true);
             adModal.gameObject.SetActive(false);
@@ -62,11 +52,12 @@ namespace RockPaperScissors.UI.Menus
             {
                 button.onClick.RemoveAllListeners();
             }
-            newGameButton.onClick.RemoveAllListeners();
             settingsButton.onClick.RemoveAllListeners();
             closeMenuButton.onClick.RemoveAllListeners();   
             helpButton.onClick.RemoveAllListeners();
+            endGameMenuButton.onClick.RemoveAllListeners();
             GameplayManager.OnGameOver -= GameplayManager_OnGameOver;    
+            GameplayManager.OnLevelCompleted -= GameplayManager_OnLevelCompleted;
             AdModal.OnSkipButtonClick -= AdModal_OnSkipButtonClick;
             AdModal.OnWatchButtonClick -= AdModal_OnWatchButtonClick;    
         }
@@ -111,25 +102,10 @@ namespace RockPaperScissors.UI.Menus
             }
         }
 
-        public void OpenGameOverMenu(int score, int highscore)
+        public void OpenGameOverMenu(int score, int highscore, GameMode gameMode, bool winCondition = false)
         {
             HUDPanel.SetActive(false);
-            gameOverMenuPanel.SetActive(true);
-            gameOverScoreValueText.text = score.ToString();
-            gameOverHighScoreValueText.text = highscore.ToString();
-            gameOverMenuRectTransform.transform.localPosition = new Vector2(0, -Screen.height);
-            gameOverMenuRectTransform.sizeDelta = new Vector2(gameOverMenuRectTransform.sizeDelta.x * Camera.main.aspect/2, gameOverMenuRectTransform.sizeDelta.y);
-            Sequence gameOverSequence = DOTween.Sequence();
-            gameOverSequence.Append(gameOverMenuRectTransform.DOAnchorPos(Vector2.zero, gameOverAnimationTime).SetEase(Ease.InOutQuint).SetUpdate(true));
-            gameOverSequence.AppendCallback(() => {
-                gameOverTextAnimation.Play(GAME_OVER_STRING);
-            }).SetUpdate(true);
-            gameOverSequence.PlayForward();
-        }
-
-        private void CloseGameOverMenu()
-        {
-            gameOverMenuPanel.SetActive(false);
+            gameOverMenuPanel.Open(score, highscore, gameMode, winCondition);
         }
 
         private void GoToMainMenu()
@@ -138,16 +114,9 @@ namespace RockPaperScissors.UI.Menus
             AudioManager.Instance.PlayMenuNavigationSound();
         }
 
-        private void StartGame()
+        private void EndGame()
         {
-            OnStartEndlessGameButtonPress?.Invoke();
-            AudioManager.Instance.PlayMenuNavigationSound();
-        }
-
-        private void RestartLevel()
-        {
-            OnRestartLevelButtonPress?.Invoke();
-            AudioManager.Instance.PlayMenuNavigationSound();
+            FindObjectOfType<GameplayManager>().GameOver();
         }
 
         private void GameplayManager_OnGameOver(object sender, GameplayManager.OnGameOverEventArgs e)
@@ -157,14 +126,21 @@ namespace RockPaperScissors.UI.Menus
             gameMenuPanel.Close();
         }
 
+        private void GameplayManager_OnLevelCompleted(object sender, GameplayManager.OnGameOverEventArgs e)
+        {
+            adModal.Open();
+            adModal.PassGameOverEventArgs(e);
+            gameMenuPanel.Close();
+        }
+
         private void AdModal_OnWatchButtonClick(object sender, GameplayManager.OnGameOverEventArgs e)
         {
-            OpenGameOverMenu(e.Score, e.Highscore);
+            OpenGameOverMenu(e.Score, e.Highscore, e.GameMode, e.WinCondition);
         }
 
         private void AdModal_OnSkipButtonClick(object sender, GameplayManager.OnGameOverEventArgs e)
         {
-            OpenGameOverMenu(e.Score, e.Highscore);
+            OpenGameOverMenu(e.Score, e.Highscore, e.GameMode, e.WinCondition);
         }
     }
 }

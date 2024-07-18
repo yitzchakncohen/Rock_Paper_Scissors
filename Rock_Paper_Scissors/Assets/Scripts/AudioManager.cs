@@ -21,6 +21,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip scissorsAttackSound = null;
     [SerializeField] private AudioClip enemyWaveSound = null;
     [SerializeField] private AudioClip gameOverSound = null;
+    [SerializeField] private AudioClip levelCompleteSound = null;
     [SerializeField] private AudioClip titleBlockSound = null;
     [SerializeField] private AudioClip menuBlockSound = null;
 
@@ -134,6 +135,11 @@ public class AudioManager : MonoBehaviour
     public void PlayGameOverSound()
     {
         PlaySoundOneShot(gameOverSound);
+    }
+
+    public void PlayLevelCompleteSound()
+    {
+        PlaySoundOneShot(levelCompleteSound);
     }
 
     public void PlayTitleBlockSound()

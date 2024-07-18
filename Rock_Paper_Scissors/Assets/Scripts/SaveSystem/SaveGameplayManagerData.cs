@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using RockPaperScissors;
 using UnityEngine;
 
 [System.Serializable]
 public struct SaveGameplayManagerData
 {
     public int Score;
+    public int Level;
+    public GameMode GameMode;
 }

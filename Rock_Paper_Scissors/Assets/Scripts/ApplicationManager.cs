@@ -28,6 +28,7 @@ namespace RockPaperScissors
     public class ApplicationManager : MonoBehaviour
     {
         public const string HIGH_SCORE_STRING = "highscore";
+        public const string BEST_SCORE_STRING = "bestscore";
         private const string GAME_SCENE_STRING = "MainScene";
         private const string MENU_SCENE_STRING = "MenuScene";
         private const float REWARD_MULTIPLIER = 10f;
@@ -36,13 +37,8 @@ namespace RockPaperScissors
         private SceneTransitionUI sceneTransitionUI;
         private AdsManager adsManager;
         private DeviceReviewsManager deviceReviewsManager;
+        private GameplayManager gameplayManager;
         private int rewardAmount = 0;
-        public GameMode GameMode => gameMode;
-        private GameMode gameMode;
-        public int Level => level;
-        private int level = -1;
-        [SerializeField] private LevelData endlessModeLevelData;
-        [SerializeField] private List<LevelData> levelDataList;
 
         void Awake()
         {
@@ -61,6 +57,7 @@ namespace RockPaperScissors
             sceneTransitionUI = GetComponentInChildren<SceneTransitionUI>();
             adsManager = GetComponent<AdsManager>();
             deviceReviewsManager = GetComponent<DeviceReviewsManager>();
+            gameplayManager = GetComponent<GameplayManager>();
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
         }
 
@@ -70,10 +67,13 @@ namespace RockPaperScissors
             MainMenu.OnStartLevelGameButtonPress += MainMenu_OnStartLevelGameButtonPress;
             MainMenu.OnContinueGameButtonPress += MainMenu_OnContinueGameButtonPress;
             SaveButton.OnSaveButtonPress += SaveButton_OnSaveButtonPress;
-            GameMenu.OnStartEndlessGameButtonPress += GameMenu_OnStartEndlessGameButtonPress;
+            GameOverMenu.OnStartEndlessGameButtonPress += GameOverMenu_OnStartEndlessGameButtonPress;
+            GameOverMenu.OnNextLevelButtonPress += GameOverMenu_OnNextLevelButtonPress;
+            GameOverMenu.OnRestartLevelButtonPress += GameOverMenu_OnRestartLevelButtonPress;
             AdModal.OnWatchButtonClick += AdModal_OnWatchButtonClick;
             AdModal.OnSkipButtonClick += AdModal_OnSkipButtonClick;
             GameplayManager.OnGameOver += GameplayManager_OnGameOver;
+            GameplayManager.OnLevelCompleted += GameplayManager_OnLevelCompleted;
             StartCoroutine(StartUpRoutine());
         }
 
@@ -83,15 +83,17 @@ namespace RockPaperScissors
             MainMenu.OnStartLevelGameButtonPress -= MainMenu_OnStartLevelGameButtonPress;
             MainMenu.OnContinueGameButtonPress -= MainMenu_OnContinueGameButtonPress;
             SaveButton.OnSaveButtonPress -= SaveButton_OnSaveButtonPress;
-            GameMenu.OnStartEndlessGameButtonPress -= GameMenu_OnStartEndlessGameButtonPress;
+            GameOverMenu.OnStartEndlessGameButtonPress -= GameOverMenu_OnStartEndlessGameButtonPress;
+            GameOverMenu.OnNextLevelButtonPress -= GameOverMenu_OnNextLevelButtonPress;
+            GameOverMenu.OnRestartLevelButtonPress -= GameOverMenu_OnRestartLevelButtonPress;
             AdModal.OnWatchButtonClick -= AdModal_OnWatchButtonClick;
             AdModal.OnSkipButtonClick -= AdModal_OnSkipButtonClick;
             GameplayManager.OnGameOver -= GameplayManager_OnGameOver;
+            GameplayManager.OnLevelCompleted -= GameplayManager_OnLevelCompleted;
         }
 
-        public void StartNewGame(GameMode gameMode)
+        public void StartGame()
         {
-            this.gameMode = gameMode;
             TimeScaleManager.ResetTimeScale();
             StartCoroutine(StartGameRoutine());
         }
@@ -106,12 +108,6 @@ namespace RockPaperScissors
         {
             TimeScaleManager.ResetTimeScale();
             StartCoroutine(ReturnToMenuRoutine());
-        }
-
-        public void NextLevel()
-        {
-            level++;
-            StartNewGame(gameMode);
         }
 
         private IEnumerator ReturnToMenuRoutine()
@@ -140,20 +136,12 @@ namespace RockPaperScissors
 
         private IEnumerator StartGameRoutine()
         {
-            if(gameMode == GameMode.Endless)
-            {
-                yield return StartCoroutine(LoadGameScene(endlessModeLevelData));
-            }
-            else
-            {
-                yield return StartCoroutine(LoadGameScene(levelDataList[level - 1]));
-            }
-
+            yield return StartCoroutine(LoadGameScene(gameplayManager.GetLevelData(gameplayManager.GameMode, gameplayManager.Level)));
             yield return StartCoroutine(sceneTransitionUI.LoadingCompletedRoutine());
 
             // Trigger new game.
             WaveManager waveManager = FindObjectOfType<WaveManager>();
-            waveManager.StartWaveWhenReady(levelDataList[0].wave, gameMode);
+            waveManager.StartWaveWhenReady(gameplayManager.GetLevelData(gameplayManager.GameMode, gameplayManager.Level).wave, gameplayManager.GameMode);
 
             // Apply Ad Reward
             if(rewardAmount > 0)
@@ -172,16 +160,9 @@ namespace RockPaperScissors
             bool loadSuccessful = saveManager.LoadSaveData(out saveData);
             if(loadSuccessful)
             {
-                gameMode = saveData.GameMode;
-                level = saveData.Level;
-                if(saveData.GameMode == GameMode.Endless)
-                {
-                    yield return StartCoroutine(LoadGameScene(endlessModeLevelData));
-                }
-                else
-                {
-                    yield return StartCoroutine(LoadGameScene(levelDataList[saveData.Level - 1]));
-                }
+                int level = saveData.SaveGameplayManagerData.Level;
+                GameMode gameMode = saveData.SaveGameplayManagerData.GameMode;
+                yield return StartCoroutine(LoadGameScene(gameplayManager.GetLevelData(gameMode, level)));
                 Task loadTask = saveManager.LoadGameAsync(saveData);
                 yield return new WaitUntil(() => loadTask.IsCompleted);
                 yield return StartCoroutine(sceneTransitionUI.LoadingCompletedRoutine());          
@@ -222,26 +203,37 @@ namespace RockPaperScissors
 
         private void MainMenu_OnStartEndlessGameButtonPress()
         {
-            level = -1;
-            StartNewGame(GameMode.Endless);
+            gameplayManager.StartNewGame(GameMode.Endless);
+            StartGame();
         }
 
         private void MainMenu_OnStartLevelGameButtonPress()
         {
-            level = 1;
-            StartNewGame(GameMode.Level);
+            gameplayManager.StartNewGame(GameMode.Level);
+            StartGame();
+        }
+
+        private void GameOverMenu_OnStartEndlessGameButtonPress()
+        {
+            gameplayManager.StartNewGame(GameMode.Endless);
+            StartGame();
+        }
+
+        private void GameOverMenu_OnNextLevelButtonPress()
+        {
+            gameplayManager.NextLevel();
+            StartGame();
+        }
+
+        private void GameOverMenu_OnRestartLevelButtonPress()
+        {
+            StartGame();
         }
 
         private void SaveButton_OnSaveButtonPress()
         {
             SaveManager saveManager = FindObjectOfType<SaveManager>();
             saveManager.SaveGame();
-        }
-
-        private void GameMenu_OnStartEndlessGameButtonPress()
-        {
-            level = -1;
-            StartNewGame(GameMode.Endless);
         }
 
         private void ShowAd()
@@ -261,16 +253,25 @@ namespace RockPaperScissors
         private void OnRewardReceived(Reward reward)
         {
             rewardAmount = (int)(REWARD_MULTIPLIER * reward.Amount);
-            RewardBonusUI rewardBonusUI = FindObjectOfType<RewardBonusUI>(true);
-            if(rewardBonusUI != null)
+            RewardBonusUI[] rewardBonusUIs = FindObjectsOfType<RewardBonusUI>(true);
+            foreach (RewardBonusUI rewardBonusUI in rewardBonusUIs)
             {
-                rewardBonusUI.gameObject.SetActive(true);
-                rewardBonusUI.SetRewardAmount(rewardAmount);
+                if(rewardBonusUI != null)
+                {
+                    rewardBonusUI.gameObject.SetActive(true);
+                    rewardBonusUI.SetRewardAmount(rewardAmount);
+                }
             }
-            Debug.Log("Reward Received");
         }
 
         private void GameplayManager_OnGameOver(object sender, GameplayManager.OnGameOverEventArgs e)
+        {
+#if UNITY_ANDROID
+            deviceReviewsManager.RequestReviewAsync();
+#endif
+        }
+
+        private void GameplayManager_OnLevelCompleted(object sender, GameplayManager.OnGameOverEventArgs e)
         {
 #if UNITY_ANDROID
             deviceReviewsManager.RequestReviewAsync();

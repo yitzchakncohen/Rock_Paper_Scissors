@@ -98,10 +98,10 @@ namespace RockPaperScissors.SaveSystem
                 SaveCurrencyBankData = currencyBankData,
                 SaveTurnManagerData = turnManagerData,
                 UnitList = SaveUnitDataList,
-                SaveGameManagerData = saveGameManagerData,
+                SaveGameplayManagerData = saveGameManagerData,
                 SaveWaveManagerData = saveWaveManagerData,
-                Level = ApplicationManager.Instance.Level,
-                GameMode = ApplicationManager.Instance.GameMode
+                Level = gameplayManager.Level,
+                GameMode = gameplayManager.GameMode
             };
 
             string json = JsonUtility.ToJson(saveObject);
@@ -133,7 +133,7 @@ namespace RockPaperScissors.SaveSystem
             // TODO clear all grid objects and delete all units. 
             turnManager.Load(saveData.SaveTurnManagerData);
             currencyBank.Load(saveData.SaveCurrencyBankData);
-            gameplayManager.Load(saveData.SaveGameManagerData);
+            gameplayManager.Load(saveData.SaveGameplayManagerData);
             waveManager.Load(saveData.SaveWaveManagerData);
             foreach (SaveUnitData unitData in saveData.UnitList)
             {
