@@ -6,5 +6,5 @@ public class LevelData : ScriptableObject
     public int width;
     public int height;
     public int spawnPoints;
-    public Wave enemyStartingUnits;
+    public Wave wave;
 }

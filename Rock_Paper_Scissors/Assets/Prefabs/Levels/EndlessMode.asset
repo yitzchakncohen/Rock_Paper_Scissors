@@ -15,4 +15,4 @@ MonoBehaviour:
   width: 36
   height: 36
   spawnPoints: 4
-  enemyStartingUnits: {fileID: 11400000, guid: 35fbe02adb16b31438c8acda36b048fe, type: 2}
+  wave: {fileID: 11400000, guid: 35fbe02adb16b31438c8acda36b048fe, type: 2}

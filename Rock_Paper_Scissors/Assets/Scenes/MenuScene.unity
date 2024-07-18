@@ -3118,10 +3118,6 @@ PrefabInstance:
       value: -120
       objectReference: {fileID: 0}
     - target: {fileID: 6249588560734673510, guid: 69faee8efef4da64496afd7ee36228c3, type: 3}
-      propertyPath: m_text
-      value: Level Mode (Coming Soon...)
-      objectReference: {fileID: 0}
-    - target: {fileID: 6249588560734673510, guid: 69faee8efef4da64496afd7ee36228c3, type: 3}
       propertyPath: m_fontSize
       value: 14.7
       objectReference: {fileID: 0}

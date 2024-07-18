@@ -23,7 +23,6 @@ namespace RockPaperScissors.UI.Buttons
             button = GetComponent<Button>();
             button.interactable = false;
             button.onClick.AddListener(() => turnManager.NextTurn());
-            Debug.Log("next button awake");
         }
 
         private void Start() 

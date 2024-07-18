@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using RockPaperScissors;
 using RockPaperScissors.Grids;
 using RockPaperScissors.SaveSystem;
 using RockPaperScissors.Units;
@@ -13,13 +14,14 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
     public static event Action OnWaveCompleted;
     public static event Action<Unit> OnWaveUnitSpawn;
     public static event Action<int> OnTurnsUntilNextWaveUpdated;
-    [SerializeField] private Wave[] waves;
+    [SerializeField] private Wave[] endlessModeWaves;
     [SerializeField] private float showUnitsTime = 1f;
     [SerializeField] private Unit homeBasePrefab; 
     private CurrencyBank currencyBank;
     private GridManager gridManager;
     private int turnsUntilNextWave = 0;
     private int minimumTurnsBetweenWaves = 4;
+    private GameMode gameMode;
 
     private void Start() 
     {
@@ -29,15 +31,23 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
         UpdateTurnsUntilNextWave(1);
     }
 
-    public void StartWaveWhenReady()
+    public void StartWaveWhenReady(Wave wave, GameMode gameMode)
     {
-        StartWhenReadyAsync();
+        this.gameMode = gameMode;
+        StartWhenReadyAsync(wave);
     }
 
-    public async void StartWhenReadyAsync()
+    public async void StartWhenReadyAsync(Wave wave)
     {
         await gridManager.SetupGridTask;
-        StartWave(1, waves[0]);
+        if(gameMode == GameMode.Endless)
+        {
+            StartWave(1, endlessModeWaves[0]);
+        }
+        else
+        {
+            StartWave(1, wave);
+        }
     }
 
     private void OnDestroy() 
@@ -49,17 +59,26 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
     {
         if (eventArgs.IsPlayersTurn)
         {
-            UpdateTurnsUntilNextWave(eventArgs.Turn);
-            TryStartWave(eventArgs.Turn);
+            if(gameMode == GameMode.Endless)
+            {
+                UpdateTurnsUntilNextWave(eventArgs.Turn);
+                TryStartWave(eventArgs.Turn);
+            }
         }
     }
 
     private void UpdateTurnsUntilNextWave(int currentTurn)
     {
-        int nextWaveTurn = currentTurn;
-        if(currentTurn <= waves[waves.Length-1].TurnToStartWave )
+        if(gameMode == GameMode.Endless)
         {
-            foreach (Wave wave in waves)
+            OnTurnsUntilNextWaveUpdated.Invoke(0);
+            return;
+        }
+
+        int nextWaveTurn = currentTurn;
+        if(currentTurn <= endlessModeWaves[endlessModeWaves.Length-1].TurnToStartWave )
+        {
+            foreach (Wave wave in endlessModeWaves)
             {
                 if (wave.TurnToStartWave >= currentTurn)
                 {
@@ -71,7 +90,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
         }
         else
         {
-            if(currentTurn == waves[waves.Length-1].TurnToStartWave + 1)
+            if(currentTurn == endlessModeWaves[endlessModeWaves.Length-1].TurnToStartWave + 1)
             {
                 // Handle the transition from set waves to procedural waves.
                 turnsUntilNextWave = minimumTurnsBetweenWaves;
@@ -92,9 +111,9 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
     {
         if(turnsUntilNextWave == 0)
         {
-            if(turn <= waves[waves.Length-1].TurnToStartWave)
+            if(turn <= endlessModeWaves[endlessModeWaves.Length-1].TurnToStartWave)
             {
-                foreach (Wave wave in waves)
+                foreach (Wave wave in endlessModeWaves)
                 {
                     if(wave.TurnToStartWave == turn)
                     {
@@ -105,7 +124,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
             else
             {
                 // Use the last wave
-                Wave wave = waves[waves.Length-1];
+                Wave wave = endlessModeWaves[endlessModeWaves.Length-1];
                 StartWave(turn, wave);
             }
         }
@@ -137,7 +156,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
 
         List<Unit> enemyUnitsSpawnedThisWave = new List<Unit>();
         // Create a list of valid spawn points
-        int radius = unitTypesToSpawn.Length / 3;
+        int radius = Mathf.Max(unitTypesToSpawn.Length / gridManager.SpawnPoints.Count, 1);
         List<Vector2Int> spawnPositions = new List<Vector2Int>();
         foreach (Vector2Int point in gridManager.SpawnPoints)
         {

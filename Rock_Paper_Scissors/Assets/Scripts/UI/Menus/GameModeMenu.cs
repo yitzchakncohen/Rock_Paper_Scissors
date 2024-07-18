@@ -11,7 +11,7 @@ namespace RockPaperScissors.UI.Menus
     public class GameModeMenu : MonoBehaviour
     {
         public event Action OnLevelModeButtonPress;
-        public event Action OnHighScoreModeButtonPress;
+        public event Action OnEndlessModeButtonPress;
         [SerializeField] private Button highScoreModeButton;
         [SerializeField] private Button levelModeButton;
         [SerializeField] private Button closeButton;
@@ -21,8 +21,6 @@ namespace RockPaperScissors.UI.Menus
         private void Awake()
         {
             modalWindow = GetComponent<ModalWindow>();
-            // Level Game Mode Disabled
-            levelModeButton.interactable = false;
         }
 
         private void OnEnable() 
@@ -46,7 +44,7 @@ namespace RockPaperScissors.UI.Menus
 
         private void HighScoreModeButtonPress()
         {
-            OnHighScoreModeButtonPress?.Invoke();
+            OnEndlessModeButtonPress?.Invoke();
             AudioManager.Instance.PlayMenuNavigationSound();
         }  
 

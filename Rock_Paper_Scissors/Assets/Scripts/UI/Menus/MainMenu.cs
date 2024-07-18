@@ -21,6 +21,7 @@ namespace RockPaperScissors.UI.Menus
         [SerializeField] private Button howToPlayButton;
         [SerializeField] private TextMeshProUGUI highscoreText;
         public static event Action OnStartEndlessGameButtonPress;
+        public static event Action OnStartLevelGameButtonPress;
         public static event Action OnContinueGameButtonPress;
 
         private void Start() 
@@ -56,7 +57,7 @@ namespace RockPaperScissors.UI.Menus
             howToPlayMenu.OnPlayButtonPress += HowToPlayMenu_OnPlayButtonPress;
 
             gameModeModal = gameModeMenu.GetComponent<ModalWindow>();
-            gameModeMenu.OnHighScoreModeButtonPress += GameModeMenu_OnHighScoreModeButtonPress;
+            gameModeMenu.OnEndlessModeButtonPress += GameModeMenu_OnHighScoreModeButtonPress;
             gameModeMenu.OnLevelModeButtonPress += GameModeMenu_OnLevelModeButtonPress;
             gameModeMenu.gameObject.SetActive(false);
         }
@@ -66,7 +67,7 @@ namespace RockPaperScissors.UI.Menus
             continueButton.onClick.RemoveAllListeners();
             startButton.onClick.RemoveAllListeners();
             settingsButton.onClick.RemoveAllListeners();
-            gameModeMenu.OnHighScoreModeButtonPress -= GameModeMenu_OnHighScoreModeButtonPress;
+            gameModeMenu.OnEndlessModeButtonPress -= GameModeMenu_OnHighScoreModeButtonPress;
             gameModeMenu.OnLevelModeButtonPress -= GameModeMenu_OnLevelModeButtonPress;
             howToPlayMenu.OnPlayButtonPress -= HowToPlayMenu_OnPlayButtonPress;
         }
@@ -101,7 +102,7 @@ namespace RockPaperScissors.UI.Menus
 
         private void GameModeMenu_OnLevelModeButtonPress()
         {
-            throw new NotImplementedException();
+            OnStartLevelGameButtonPress?.Invoke();
         }
 
         private void GameModeMenu_OnHighScoreModeButtonPress()

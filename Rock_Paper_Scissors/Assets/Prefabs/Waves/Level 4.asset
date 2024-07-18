@@ -19,8 +19,8 @@ MonoBehaviour:
   EnemyBuildingsToSpawn:
   - {fileID: 2715817389625404827, guid: 51476b5903fcd754c845a49d570bf6f0, type: 3}
   FriendlyUnitTypesToSpawn: []
-  FriendlyBuildsToSpawn: []
+  FriendlyBuildingsToSpawn: []
   TotalEnemyUnitsToSpawn: 4
   TotalFriendlyUnitsToSpawn: 1
-  CurrencyBonus: 0
+  CurrencyBonus: 150
   TurnToStartWave: 1

@@ -37,7 +37,10 @@ namespace RockPaperScissors
         private AdsManager adsManager;
         private DeviceReviewsManager deviceReviewsManager;
         private int rewardAmount = 0;
+        public GameMode GameMode => gameMode;
         private GameMode gameMode;
+        public int Level => level;
+        private int level = -1;
         [SerializeField] private LevelData endlessModeLevelData;
         [SerializeField] private List<LevelData> levelDataList;
 
@@ -64,6 +67,7 @@ namespace RockPaperScissors
         private void Start() 
         {
             MainMenu.OnStartEndlessGameButtonPress += MainMenu_OnStartEndlessGameButtonPress;
+            MainMenu.OnStartLevelGameButtonPress += MainMenu_OnStartLevelGameButtonPress;
             MainMenu.OnContinueGameButtonPress += MainMenu_OnContinueGameButtonPress;
             SaveButton.OnSaveButtonPress += SaveButton_OnSaveButtonPress;
             GameMenu.OnStartEndlessGameButtonPress += GameMenu_OnStartEndlessGameButtonPress;
@@ -76,6 +80,7 @@ namespace RockPaperScissors
         private void OnDisable() 
         {
             MainMenu.OnStartEndlessGameButtonPress -= MainMenu_OnStartEndlessGameButtonPress;
+            MainMenu.OnStartLevelGameButtonPress -= MainMenu_OnStartLevelGameButtonPress;
             MainMenu.OnContinueGameButtonPress -= MainMenu_OnContinueGameButtonPress;
             SaveButton.OnSaveButtonPress -= SaveButton_OnSaveButtonPress;
             GameMenu.OnStartEndlessGameButtonPress -= GameMenu_OnStartEndlessGameButtonPress;
@@ -135,6 +140,7 @@ namespace RockPaperScissors
             }
             else
             {
+                level = 1;
                 yield return StartCoroutine(LoadGameScene(levelDataList[0]));
             }
 
@@ -142,7 +148,7 @@ namespace RockPaperScissors
 
             // Trigger new game.
             WaveManager waveManager = FindObjectOfType<WaveManager>();
-            waveManager.StartWaveWhenReady();
+            waveManager.StartWaveWhenReady(levelDataList[0].wave, gameMode);
 
             // Apply Ad Reward
             if(rewardAmount > 0)
@@ -161,6 +167,8 @@ namespace RockPaperScissors
             bool loadSuccessful = saveManager.LoadSaveData(out saveData);
             if(loadSuccessful)
             {
+                gameMode = saveData.GameMode;
+                level = saveData.Level;
                 if(saveData.GameMode == GameMode.Endless)
                 {
                     yield return StartCoroutine(LoadGameScene(endlessModeLevelData));
@@ -210,6 +218,11 @@ namespace RockPaperScissors
         private void MainMenu_OnStartEndlessGameButtonPress()
         {
             StartNewGame(GameMode.Endless);
+        }
+
+        private void MainMenu_OnStartLevelGameButtonPress()
+        {
+            StartNewGame(GameMode.Level);
         }
 
         private void SaveButton_OnSaveButtonPress()

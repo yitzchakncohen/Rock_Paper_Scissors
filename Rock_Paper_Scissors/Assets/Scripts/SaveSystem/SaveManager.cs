@@ -99,7 +99,9 @@ namespace RockPaperScissors.SaveSystem
                 SaveTurnManagerData = turnManagerData,
                 UnitList = SaveUnitDataList,
                 SaveGameManagerData = saveGameManagerData,
-                SaveWaveManagerData = saveWaveManagerData
+                SaveWaveManagerData = saveWaveManagerData,
+                Level = ApplicationManager.Instance.Level,
+                GameMode = ApplicationManager.Instance.GameMode
             };
 
             string json = JsonUtility.ToJson(saveObject);

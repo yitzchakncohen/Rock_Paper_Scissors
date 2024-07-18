@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyUnitTypesToSpawn:
   - {fileID: 3659614332370105537, guid: 3a99c9f8d3b8b3d41b1531669fd2f659, type: 3}
+  EnemyBuildingsToSpawn: []
   FriendlyUnitTypesToSpawn: []
+  FriendlyBuildingsToSpawn: []
   TotalEnemyUnitsToSpawn: 2
   TotalFriendlyUnitsToSpawn: 1
-  CurrencyBonus: 0
+  CurrencyBonus: 50
   TurnToStartWave: 1
