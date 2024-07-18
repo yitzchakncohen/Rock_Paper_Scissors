@@ -115,8 +115,13 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
     {
         currencyBank.AddCurrencyToBank(wave.CurrencyBonus, null);
 
-        List<Unit> unitsSpawnedThisWave = SpawnEnemyUnits(wave.EnemyUnitTypesToSpawn, wave.TotalEnemyUnitsToSpawn);
-        unitsSpawnedThisWave.AddRange(SpawnFriendlyUnits(wave.FriendlyUnitTypesToSpawn, wave.TotalFriendlyUnitsToSpawn, turn));
+        List<Unit> unitsSpawnedThisWave = SpawnEnemyBuildings(wave.EnemyBuildingsToSpawn);
+        gridManager.UpdateGridOccupancy();
+        unitsSpawnedThisWave.AddRange(SpawnEnemyUnits(wave.EnemyUnitTypesToSpawn, wave.TotalEnemyUnitsToSpawn));
+        gridManager.UpdateGridOccupancy();
+        unitsSpawnedThisWave.AddRange(SpawnFriendlyBuildings(wave.FriendlyBuildingsToSpawn, turn));
+        gridManager.UpdateGridOccupancy();
+        unitsSpawnedThisWave.AddRange(SpawnFriendlyUnits(wave.FriendlyUnitTypesToSpawn, turn));
         gridManager.UpdateGridOccupancy();
 
         StartCoroutine(ShowSpawnedUnits(unitsSpawnedThisWave));
@@ -157,7 +162,48 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
         return enemyUnitsSpawnedThisWave;
     }
 
-    private List<Unit> SpawnFriendlyUnits(Unit[] unitTypesToSpawn, int totalUnitsToSpawn, int turn)
+    private List<Unit> SpawnEnemyBuildings(Unit[] unitTypesToSpawn)
+    {
+        if(unitTypesToSpawn.Length == 0 )
+        {
+            return new List<Unit>();
+        }
+
+        List<Unit> enemyUnitsSpawnedThisWave = new List<Unit>();
+        // Create a list of valid spawn points
+        int radius = unitTypesToSpawn.Length / 3;
+        List<Vector2Int> spawnPositions = new List<Vector2Int>();
+        foreach (Vector2Int point in gridManager.SpawnPoints)
+        {
+            spawnPositions = spawnPositions.Concat(GetValidSpawnGridPositionsForSpawnPoint(unitTypesToSpawn.FirstOrDefault(), point, radius)).ToList();
+        }
+
+        // Spawn the units in random locations near the spawn points.
+        for (int i = 0; i < unitTypesToSpawn.Length; i++)
+        {
+            Unit unitToSpawn = unitTypesToSpawn[i];
+            if(spawnPositions.Count() > 0)
+            {
+                Vector2Int spawnPosition;
+                if(i == 0 && spawnPositions.Contains(gridManager.SpawnPoints.First()))
+                {
+                    spawnPosition = gridManager.SpawnPoints.First();
+                }
+                else 
+                {
+                    int spawnPositionIndex = UnityEngine.Random.Range(0, spawnPositions.Count());
+                    spawnPosition = spawnPositions[spawnPositionIndex];
+                }
+                Unit spawnedUnit = Instantiate(unitToSpawn, gridManager.GetGridObject(spawnPosition).transform.position, Quaternion.identity);
+                enemyUnitsSpawnedThisWave.Add(spawnedUnit);
+                spawnPositions.Remove(spawnPosition);
+            }
+        }
+
+        return enemyUnitsSpawnedThisWave;
+    }
+
+    private List<Unit> SpawnFriendlyBuildings(Unit[] unitTypesToSpawn, int turn)
     {
 
         List<Unit> friendlyUnitsSpawnedThisWave = new List<Unit>();
@@ -170,6 +216,33 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
             friendlyUnitsSpawnedThisWave.Add(spawnedUnit);
             gridManager.UpdateGridOccupancy();
         } 
+
+        if(unitTypesToSpawn.Length == 0)
+        {
+            return friendlyUnitsSpawnedThisWave;
+        }
+        List<Vector2Int> spawnPositions = GetValidSpawnGridPositionsForSpawnPoint(unitTypesToSpawn.FirstOrDefault(), gridManager.PlayerStartingPoint, radius);
+        for (int i = 0; i < unitTypesToSpawn.Length; i++)
+        {
+            Unit unitToSpawn = unitTypesToSpawn[i];
+            if(spawnPositions.Count() > 0)
+            {
+                int spawnPositionIndex = UnityEngine.Random.Range(0, spawnPositions.Count());
+                Vector2Int spawnPosition = spawnPositions[spawnPositionIndex];
+                Unit spawnedUnit = Instantiate(unitToSpawn, gridManager.GetGridObject(spawnPosition).transform.position, Quaternion.identity);
+                friendlyUnitsSpawnedThisWave.Add(spawnedUnit);
+                spawnPositions.Remove(spawnPosition);
+            }
+        }
+
+        return friendlyUnitsSpawnedThisWave;
+    }
+
+    private List<Unit> SpawnFriendlyUnits(Unit[] unitTypesToSpawn, int totalUnitsToSpawn)
+    {
+
+        List<Unit> friendlyUnitsSpawnedThisWave = new List<Unit>();
+        int radius = 3;
 
         if(unitTypesToSpawn.Length == 0)
         {

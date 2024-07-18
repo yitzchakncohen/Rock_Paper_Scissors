@@ -43,15 +43,30 @@ namespace RockPaperScissors.Grids
 
         private void CalculateSpawnPoints(int width, int height, int spawnPoints)
         {
+            int middleX = width / 2 -1;
+            int middleY = height / 2 -1;
             switch (spawnPoints)
             {
+                case 1:
+                    enemySpawnPoints.Add(new Vector2Int(middleX, height));
+                    playerStartingPoint = new Vector2Int(middleX, 1);
+                    break;
+                case 2:
+                    enemySpawnPoints.Add(new Vector2Int(middleX, 0));
+                    enemySpawnPoints.Add(new Vector2Int(middleX, height));
+                    playerStartingPoint = new Vector2Int(middleX, middleY);
+                    break;
+                case 3:
+                    enemySpawnPoints.Add(new Vector2Int(width, height));
+                    enemySpawnPoints.Add(new Vector2Int(width, 0));
+                    enemySpawnPoints.Add(new Vector2Int(0, height));
+                    playerStartingPoint = new Vector2Int(1, 1);
+                    break;   
                 case 4:
                 default:
-                    int middleX = width / 2 -1;
-                    int middleY = height / 2 -1;
                     enemySpawnPoints.Add(new Vector2Int(1, middleY));
                     enemySpawnPoints.Add(new Vector2Int(width, middleY));
-                    enemySpawnPoints.Add(new Vector2Int(middleX, 1));
+                    enemySpawnPoints.Add(new Vector2Int(middleX, 0));
                     enemySpawnPoints.Add(new Vector2Int(middleX, height));
                     playerStartingPoint = new Vector2Int(middleX, middleY);
                     break;

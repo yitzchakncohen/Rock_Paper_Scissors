@@ -5,7 +5,9 @@ using UnityEngine;
 public class Wave : ScriptableObject 
 {
     public Unit[] EnemyUnitTypesToSpawn;
+    public Unit[] EnemyBuildingsToSpawn;
     public Unit[] FriendlyUnitTypesToSpawn;
+    public Unit[] FriendlyBuildingsToSpawn;
     public int TotalEnemyUnitsToSpawn;
     public int TotalFriendlyUnitsToSpawn;
     public int CurrencyBonus;
