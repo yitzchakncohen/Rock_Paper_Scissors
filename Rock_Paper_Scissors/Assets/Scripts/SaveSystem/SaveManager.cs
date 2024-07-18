@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using RockPaperScissors.Grids;
 using RockPaperScissors.Units;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace RockPaperScissors.SaveSystem
 {
@@ -27,14 +28,23 @@ namespace RockPaperScissors.SaveSystem
 
         private void Awake()
         {
+            CheckForDirectory();
+            SetupUnitDictionaries();
+            SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+        }
+
+        private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
+        {
+            GetGameManagers();
+        }
+
+        private void GetGameManagers()
+        {
             gridManager = FindObjectOfType<GridManager>();
             turnManager = FindObjectOfType<TurnManager>();
             currencyBank = FindObjectOfType<CurrencyBank>();
             gameplayManager = FindObjectOfType<GameplayManager>();
             waveManager = FindObjectOfType<WaveManager>();
-            CheckForDirectory();
-
-            SetupUnitDictionaries();
         }
 
         private static void CheckForDirectory()
@@ -101,29 +111,31 @@ namespace RockPaperScissors.SaveSystem
             OnSaveCompleted?.Invoke();
         }
 
-        public async Task LoadGameAsync()
+        public bool LoadSaveData(out SaveData saveData)
+        {
+            if (File.Exists(Application.persistentDataPath + SAVE_DIRECTORY + "save.txt"))
+            {
+                string saveString = File.ReadAllText(Application.persistentDataPath + SAVE_DIRECTORY + "save.txt");
+                saveData = JsonUtility.FromJson<SaveData>(saveString);
+                return true;
+            }
+            Debug.LogError("No save file found.");
+            saveData = new SaveData();
+            return false;
+        }
+
+        public async Task LoadGameAsync(SaveData saveData)
         {
             await Task.Yield();
             Debug.Log("Loading game...");
             // TODO clear all grid objects and delete all units. 
-
-            if (File.Exists(Application.persistentDataPath + SAVE_DIRECTORY + "save.txt"))
+            turnManager.Load(saveData.SaveTurnManagerData);
+            currencyBank.Load(saveData.SaveCurrencyBankData);
+            gameplayManager.Load(saveData.SaveGameManagerData);
+            waveManager.Load(saveData.SaveWaveManagerData);
+            foreach (SaveUnitData unitData in saveData.UnitList)
             {
-                string saveString = File.ReadAllText(Application.persistentDataPath + SAVE_DIRECTORY + "save.txt");
-                SaveData saveObject = JsonUtility.FromJson<SaveData>(saveString);
-
-                turnManager.Load(saveObject.SaveTurnManagerData);
-                currencyBank.Load(saveObject.SaveCurrencyBankData);
-                gameplayManager.Load(saveObject.SaveGameManagerData);
-                waveManager.Load(saveObject.SaveWaveManagerData);
-                foreach (SaveUnitData unitData in saveObject.UnitList)
-                {
-                    SpawnUnitByClassandTeam(unitData);
-                }
-            }
-            else
-            {
-                Debug.LogError("No save file found.");
+                SpawnUnitByClassandTeam(unitData);
             }
             gridManager.UpdateGridOccupancy();
 

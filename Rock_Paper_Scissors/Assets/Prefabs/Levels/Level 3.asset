@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ebe66aea6aecdc444ace4480031d493c, type: 3}
-  m_Name: Level 2
+  m_Name: Level 3
   m_EditorClassIdentifier: 
-  width: 8
+  width: 16
   height: 16
-  spawnPoints: 2
-  enemyStartingUnits: {fileID: 11400000, guid: 1fc9e2e56c9888e448281796a9a6076f, type: 2}
+  spawnPoints: 3
+  enemyStartingUnits: {fileID: 11400000, guid: 647be7a13e925934cb3727cfb3b84638, type: 2}

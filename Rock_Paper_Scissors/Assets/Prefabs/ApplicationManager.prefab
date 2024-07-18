@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3590444971470325067}
   - component: {fileID: 3276921475763500657}
   - component: {fileID: 1996479516451863892}
+  - component: {fileID: 7016795054132579239}
   m_Layer: 0
   m_Name: ApplicationManager
   m_TagString: Untagged
@@ -49,6 +50,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endlessModeLevelData: {fileID: 11400000, guid: ea5805ada4a136146b4c112575dd86fd, type: 2}
+  levelDataList:
+  - {fileID: 11400000, guid: e8edb4c8d211f1b4ca3644b70cf614cf, type: 2}
+  - {fileID: 11400000, guid: 67516f739b3cc2742b36dd2744fc5ec5, type: 2}
+  - {fileID: 11400000, guid: 51fb377f9cbc99b43b36dc3682aa2fd0, type: 2}
+  - {fileID: 11400000, guid: 0d64b0e794eb9f144b15d2f5fb32eed4, type: 2}
 --- !u!114 &3590444971470325067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,6 +91,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 346381dbfbac546408832f81591cdb31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7016795054132579239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2983680802661181945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c815dfbf577caf84baf0358cd2968d1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  listOfFriendlyUnitTypes:
+  - {fileID: 7916932273131375014, guid: 74f64e7a24cb4f74d842aadd05e320c1, type: 3}
+  - {fileID: 8339777860477816141, guid: 65f7e2059aa2d734e976f8bff1bf0712, type: 3}
+  - {fileID: 8801933791107242397, guid: 81bd6be0bf9452a4490ac0dce9d9af4b, type: 3}
+  - {fileID: 7927884055322289663, guid: de102ff297a1a7d4bb4befe5fbf75ad2, type: 3}
+  - {fileID: 2715817389625404827, guid: c477b10fc6ef1b94d8860e3a1f446ef8, type: 3}
+  - {fileID: -5587580392824227166, guid: 78755d156e89a524da87e32ecb6b7ab9, type: 3}
+  - {fileID: -5587580392824227166, guid: e9aeddc036a19af4f84827e28a3b7349, type: 3}
+  listOfEnemyUnitTypes:
+  - {fileID: 3659614332370105537, guid: 3a99c9f8d3b8b3d41b1531669fd2f659, type: 3}
+  - {fileID: 8909835649686224163, guid: e547fb81a099d9544a36bdf74adf9d3d, type: 3}
+  - {fileID: 6548610982091184903, guid: c84a2cefecbc72c45b4b5061beb8770c, type: 3}
+  - {fileID: 8066103548949251539, guid: bfdc55cd41d813e4ea45b61ed92b97d7, type: 3}
+  - {fileID: 2934202642371606164, guid: bf95ce37b1840c9439f4c93dc0bb04eb, type: 3}
 --- !u!1001 &7627154392150731950
 PrefabInstance:
   m_ObjectHideFlags: 0

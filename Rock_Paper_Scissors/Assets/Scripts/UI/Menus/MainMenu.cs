@@ -20,7 +20,7 @@ namespace RockPaperScissors.UI.Menus
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button howToPlayButton;
         [SerializeField] private TextMeshProUGUI highscoreText;
-        public static event Action OnStartGameButtonPress;
+        public static event Action OnStartEndlessGameButtonPress;
         public static event Action OnContinueGameButtonPress;
 
         private void Start() 
@@ -106,7 +106,7 @@ namespace RockPaperScissors.UI.Menus
 
         private void GameModeMenu_OnHighScoreModeButtonPress()
         {
-            OnStartGameButtonPress?.Invoke();
+            OnStartEndlessGameButtonPress?.Invoke();
         }
 
         private void HowToPlayMenu_OnPlayButtonPress()

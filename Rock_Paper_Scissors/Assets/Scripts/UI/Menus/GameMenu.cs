@@ -10,7 +10,8 @@ namespace RockPaperScissors.UI.Menus
     public class GameMenu : MonoBehaviour
     {
         private const string GAME_OVER_STRING = "Game Over";
-        public static event Action OnStartGameButtonPress;
+        public static event Action OnStartEndlessGameButtonPress;
+        public static event Action OnRestartLevelButtonPress;
 
         [SerializeField] private GameObject HUDPanel;
         [SerializeField] private ModalWindow gameMenuPanel;
@@ -20,6 +21,7 @@ namespace RockPaperScissors.UI.Menus
         [SerializeField] private TextMeshProUGUI gameOverHighScoreValueText;
         [SerializeField] private Button[] mainMenuButtons;
         [SerializeField] private Button newGameButton;
+        [SerializeField] private Button restartLevelButton;
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button closeMenuButton;
         [SerializeField] private Button helpButton;
@@ -41,6 +43,7 @@ namespace RockPaperScissors.UI.Menus
                 button.onClick.AddListener(GoToMainMenu);
             }
             newGameButton.onClick.AddListener(StartGame);
+            newGameButton.onClick.AddListener(RestartLevel);
             settingsButton.onClick.AddListener(OpenSettingsMenu);
             closeMenuButton.onClick.AddListener(CloseGameMenu);
             helpButton.onClick.AddListener(OpenHowToPlayMenu);
@@ -137,7 +140,13 @@ namespace RockPaperScissors.UI.Menus
 
         private void StartGame()
         {
-            OnStartGameButtonPress?.Invoke();
+            OnStartEndlessGameButtonPress?.Invoke();
+            AudioManager.Instance.PlayMenuNavigationSound();
+        }
+
+        private void RestartLevel()
+        {
+            OnRestartLevelButtonPress?.Invoke();
             AudioManager.Instance.PlayMenuNavigationSound();
         }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using GoogleMobileAds.Api;
 using RockPaperScissors.Ads;
@@ -14,6 +15,13 @@ using UnityEngine.SceneManagement;
 
 namespace RockPaperScissors
 {
+    public enum GameMode
+    {
+        Endless,
+        Level
+    }
+
+
     /// <summary>
     /// Class <c>ApplicationManager</c> is a persistent class that manages the high level state of the application.
     /// </summary>
@@ -29,7 +37,9 @@ namespace RockPaperScissors
         private AdsManager adsManager;
         private DeviceReviewsManager deviceReviewsManager;
         private int rewardAmount = 0;
+        private GameMode gameMode;
         [SerializeField] private LevelData endlessModeLevelData;
+        [SerializeField] private List<LevelData> levelDataList;
 
         void Awake()
         {
@@ -53,10 +63,10 @@ namespace RockPaperScissors
 
         private void Start() 
         {
-            MainMenu.OnStartGameButtonPress += MainMenu_OnStartGameButtonPress;
+            MainMenu.OnStartEndlessGameButtonPress += MainMenu_OnStartEndlessGameButtonPress;
             MainMenu.OnContinueGameButtonPress += MainMenu_OnContinueGameButtonPress;
             SaveButton.OnSaveButtonPress += SaveButton_OnSaveButtonPress;
-            GameMenu.OnStartGameButtonPress += GameMenu_OnStartGameButtonPress;
+            GameMenu.OnStartEndlessGameButtonPress += GameMenu_OnStartEndlessGameButtonPress;
             AdModal.OnWatchButtonClick += AdModal_OnWatchButtonClick;
             AdModal.OnSkipButtonClick += AdModal_OnSkipButtonClick;
             GameplayManager.OnGameOver += GameplayManager_OnGameOver;
@@ -65,17 +75,18 @@ namespace RockPaperScissors
 
         private void OnDisable() 
         {
-            MainMenu.OnStartGameButtonPress -= MainMenu_OnStartGameButtonPress;
+            MainMenu.OnStartEndlessGameButtonPress -= MainMenu_OnStartEndlessGameButtonPress;
             MainMenu.OnContinueGameButtonPress -= MainMenu_OnContinueGameButtonPress;
             SaveButton.OnSaveButtonPress -= SaveButton_OnSaveButtonPress;
-            GameMenu.OnStartGameButtonPress -= GameMenu_OnStartGameButtonPress;
+            GameMenu.OnStartEndlessGameButtonPress -= GameMenu_OnStartEndlessGameButtonPress;
             AdModal.OnWatchButtonClick -= AdModal_OnWatchButtonClick;
             AdModal.OnSkipButtonClick -= AdModal_OnSkipButtonClick;
             GameplayManager.OnGameOver -= GameplayManager_OnGameOver;
         }
 
-        public void StartNewGame()
+        public void StartNewGame(GameMode gameMode)
         {
+            this.gameMode = gameMode;
             TimeScaleManager.ResetTimeScale();
             StartCoroutine(StartGameRoutine());
         }
@@ -118,7 +129,14 @@ namespace RockPaperScissors
 
         private IEnumerator StartGameRoutine()
         {
-            yield return StartCoroutine(LoadGameScene());
+            if(gameMode == GameMode.Endless)
+            {
+                yield return StartCoroutine(LoadGameScene(endlessModeLevelData));
+            }
+            else
+            {
+                yield return StartCoroutine(LoadGameScene(levelDataList[0]));
+            }
 
             yield return StartCoroutine(sceneTransitionUI.LoadingCompletedRoutine());
 
@@ -138,15 +156,30 @@ namespace RockPaperScissors
 
         private IEnumerator LoadGameRoutine()
         {
-            yield return StartCoroutine(LoadGameScene());
-
             SaveManager saveManager = FindObjectOfType<SaveManager>();
-            Task loadTask = saveManager.LoadGameAsync();
-            yield return new WaitUntil(() => loadTask.IsCompleted);
-            yield return StartCoroutine(sceneTransitionUI.LoadingCompletedRoutine());            
+            SaveData saveData;
+            bool loadSuccessful = saveManager.LoadSaveData(out saveData);
+            if(loadSuccessful)
+            {
+                if(saveData.GameMode == GameMode.Endless)
+                {
+                    yield return StartCoroutine(LoadGameScene(endlessModeLevelData));
+                }
+                else
+                {
+                    yield return StartCoroutine(LoadGameScene(levelDataList[saveData.Level - 1]));
+                }
+                Task loadTask = saveManager.LoadGameAsync(saveData);
+                yield return new WaitUntil(() => loadTask.IsCompleted);
+                yield return StartCoroutine(sceneTransitionUI.LoadingCompletedRoutine());          
+            }
+            else
+            {
+                Debug.LogError("Could not load game.");
+            }
         }
 
-        private IEnumerator LoadGameScene()
+        private IEnumerator LoadGameScene(LevelData levelData)
         {
             yield return StartCoroutine(sceneTransitionUI.TransitionOut());
             sceneTransitionUI.StartLoading();
@@ -157,7 +190,7 @@ namespace RockPaperScissors
             sceneTransitionUI.TransitionIn();
 
             GridManager gridManager = FindObjectOfType<GridManager>();
-            Task GridSetup = gridManager.SetupGrid(endlessModeLevelData.width, endlessModeLevelData.height, endlessModeLevelData.spawnPoints);
+            Task GridSetup = gridManager.SetupGrid(levelData.width, levelData.height, levelData.spawnPoints);
             if(gridManager != null)
             {
                 Debug.Log("Waiting for grid setup...");
@@ -174,9 +207,9 @@ namespace RockPaperScissors
             ContinueGame();
         }
 
-        private void MainMenu_OnStartGameButtonPress()
+        private void MainMenu_OnStartEndlessGameButtonPress()
         {
-            StartNewGame();
+            StartNewGame(GameMode.Endless);
         }
 
         private void SaveButton_OnSaveButtonPress()
@@ -185,9 +218,9 @@ namespace RockPaperScissors
             saveManager.SaveGame();
         }
 
-        private void GameMenu_OnStartGameButtonPress()
+        private void GameMenu_OnStartEndlessGameButtonPress()
         {
-            StartNewGame();
+            StartNewGame(GameMode.Endless);
         }
 
         private void ShowAd()
