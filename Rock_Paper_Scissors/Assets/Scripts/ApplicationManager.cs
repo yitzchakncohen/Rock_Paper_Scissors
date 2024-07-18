@@ -108,6 +108,12 @@ namespace RockPaperScissors
             StartCoroutine(ReturnToMenuRoutine());
         }
 
+        public void NextLevel()
+        {
+            level++;
+            StartNewGame(gameMode);
+        }
+
         private IEnumerator ReturnToMenuRoutine()
         {
             yield return StartCoroutine(sceneTransitionUI.TransitionOut());
@@ -140,8 +146,7 @@ namespace RockPaperScissors
             }
             else
             {
-                level = 1;
-                yield return StartCoroutine(LoadGameScene(levelDataList[0]));
+                yield return StartCoroutine(LoadGameScene(levelDataList[level - 1]));
             }
 
             yield return StartCoroutine(sceneTransitionUI.LoadingCompletedRoutine());
@@ -217,11 +222,13 @@ namespace RockPaperScissors
 
         private void MainMenu_OnStartEndlessGameButtonPress()
         {
+            level = -1;
             StartNewGame(GameMode.Endless);
         }
 
         private void MainMenu_OnStartLevelGameButtonPress()
         {
+            level = 1;
             StartNewGame(GameMode.Level);
         }
 
@@ -233,6 +240,7 @@ namespace RockPaperScissors
 
         private void GameMenu_OnStartEndlessGameButtonPress()
         {
+            level = -1;
             StartNewGame(GameMode.Endless);
         }
 

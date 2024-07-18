@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RockPaperScissors.Grids;
 using RockPaperScissors.SaveSystem;
 using RockPaperScissors.Units;
 using UnityEngine;
@@ -21,12 +22,15 @@ namespace RockPaperScissors
         public static event EventHandler<OnGameOverEventArgs> OnGameOver;
         public static event Action<int> OnScoreChange;
         public static event Action<int> OnNewHighscore;
+        public static event Action OnLevelCompleted;
         [SerializeField] private GameObject scoreFXPrefab;
         private int score = 0;
+        private UnitManager unitManager;
         
         private void Awake() 
         {
             UnitHealth.OnDeath += UnitHealth_OnDeath;
+            unitManager = FindObjectOfType<UnitManager>();
         }
         private void OnDestroy() 
         {
@@ -54,6 +58,14 @@ namespace RockPaperScissors
                 score += 10;
                 OnScoreChange?.Invoke(score);
                 Instantiate(scoreFXPrefab, attacker.transform.position, Quaternion.identity);
+            }
+
+            if(ApplicationManager.Instance.GameMode == GameMode.Level)
+            {
+                if(unitManager.GetEnemyUnitsList().Count == 0)
+                {
+                    OnLevelCompleted?.Invoke();
+                }
             }
         }
 
