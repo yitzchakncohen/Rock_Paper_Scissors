@@ -125,6 +125,8 @@ namespace RockPaperScissors
         {
             sceneTransitionUI.TransitionIn();
 
+            yield return new WaitForEndOfFrame();           
+
             yield return StartCoroutine(sceneTransitionUI.LoadingCompletedRoutine());
 
             TitlePageAnimation titlePageAnimation = FindObjectOfType<TitlePageAnimation>();

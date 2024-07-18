@@ -16,3 +16,5 @@ MonoBehaviour:
   height: 10
   spawnPoints: 1
   wave: {fileID: 11400000, guid: 1fc9e2e56c9888e448281796a9a6076f, type: 2}
+  threeStarRequirement: 3
+  twoStarRequirement: 6

@@ -102,10 +102,10 @@ namespace RockPaperScissors.UI.Menus
             }
         }
 
-        public void OpenGameOverMenu(int score, int highscore, GameMode gameMode, bool winCondition = false)
+        public void OpenGameOverMenu(int score, int highscore, GameMode gameMode, LevelData levelData, bool winCondition = false)
         {
             HUDPanel.SetActive(false);
-            gameOverMenuPanel.Open(score, highscore, gameMode, winCondition);
+            gameOverMenuPanel.Open(score, highscore, gameMode, levelData, winCondition);
         }
 
         private void GoToMainMenu()
@@ -135,12 +135,12 @@ namespace RockPaperScissors.UI.Menus
 
         private void AdModal_OnWatchButtonClick(object sender, GameplayManager.OnGameOverEventArgs e)
         {
-            OpenGameOverMenu(e.Score, e.Highscore, e.GameMode, e.WinCondition);
+            OpenGameOverMenu(e.Score, e.Highscore, e.GameMode, e.LevelData, e.WinCondition);
         }
 
         private void AdModal_OnSkipButtonClick(object sender, GameplayManager.OnGameOverEventArgs e)
         {
-            OpenGameOverMenu(e.Score, e.Highscore, e.GameMode, e.WinCondition);
+            OpenGameOverMenu(e.Score, e.Highscore, e.GameMode, e.LevelData, e.WinCondition);
         }
     }
 }
