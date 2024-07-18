@@ -114,13 +114,14 @@ namespace RockPaperScissors
                 }
             }
 
+            LevelData levelData = GameMode == GameMode.Level ? levelDataList[level -1] : endlessModeLevelData;
             OnGameOverEventArgs onGameOverEventArgs = new OnGameOverEventArgs
             {
                 Score = score, 
                 Highscore = highscore,
                 GameMode = this.GameMode,
                 WinCondition = false,
-                LevelData = levelDataList[level -1]
+                LevelData = levelData
             };
             AudioManager.Instance.PlayGameOverSound();
             OnGameOver?.Invoke(this, onGameOverEventArgs);
