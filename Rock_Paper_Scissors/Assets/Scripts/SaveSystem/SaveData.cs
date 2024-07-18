@@ -8,8 +8,6 @@ using UnityEngine;
 [System.Serializable]
 public struct SaveData
 {
-    public GameMode GameMode;
-    public int Level;
     public List<SaveUnitData> UnitList;
     public SaveCurrencyBankData SaveCurrencyBankData;
     public SaveTurnManagerData SaveTurnManagerData;

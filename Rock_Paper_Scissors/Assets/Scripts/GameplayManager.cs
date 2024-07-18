@@ -1,13 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using RockPaperScissors.Grids;
 using RockPaperScissors.SaveSystem;
 using RockPaperScissors.Units;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.SocialPlatforms.Impl;
 
 namespace RockPaperScissors
 {
@@ -63,13 +60,6 @@ namespace RockPaperScissors
                 return;
             }
 
-            UnitHealth unitHealth = sender as UnitHealth;
-            // Game ends when the pillow fort is destroyed.
-            if(unitHealth != null && unitHealth.Unit.Class == UnitClass.PillowFort)
-            {
-                GameOver();
-            }
-
             // Score points for defeating enemies.
             if (attacker.IsFriendly)
             {
@@ -78,9 +68,17 @@ namespace RockPaperScissors
                 Instantiate(scoreFXPrefab, attacker.transform.position, Quaternion.identity);
             }
 
+            UnitHealth unitHealth = sender as UnitHealth;
+            // Game ends when the pillow fort is destroyed.
+            if(unitHealth != null && unitHealth.Unit.Class == UnitClass.PillowFort)
+            {
+                GameOver();
+                return;
+            }
+
             if(GameMode == GameMode.Level)
             {
-                if(unitManager.GetEnemyUnitsList().Count == 0)
+                if(unitManager.GetEnemyUnitsList().Count == 1 && unitManager.GetEnemyUnitsList().Contains(unitHealth.Unit))
                 {
                     LevelCompleted();
                 }
@@ -163,7 +161,9 @@ namespace RockPaperScissors
         {
             return new SaveGameplayManagerData
             {
-                Score = score
+                Score = score,
+                Level = level,
+                GameMode = this.GameMode
             };
         }
 
