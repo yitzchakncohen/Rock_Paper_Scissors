@@ -19,6 +19,7 @@ public class TitlePageAnimation : MonoBehaviour
     [SerializeField] private Transform titleBlock;
     [SerializeField] private CanvasGroup highscore;
     [SerializeField] private ObjectToAnimate unit;
+
     private Animator unitAnimator;
 
     private List<ObjectToAnimate> titleBlockObjects = new List<ObjectToAnimate>();
@@ -86,6 +87,9 @@ public class TitlePageAnimation : MonoBehaviour
         foreach (ObjectToAnimate item in titleBlockObjects)
         {
             sequence.Append(item.rectTransform.DOAnchorPos(item.position, titleMoveTime));
+            sequence.AppendCallback(() => {
+                AudioManager.Instance.PlayTitleBlockSound();
+            });
             time += titleMoveTime;
         }
         sequence.AppendInterval(titleMoveTime);
@@ -95,6 +99,9 @@ public class TitlePageAnimation : MonoBehaviour
         {
             sequence.Insert(time, item.rectTransform.DOAnchorPos(item.position, menuMoveTime));
             time += menuMoveTime / 2f;
+            sequence.InsertCallback(time, () => {
+                AudioManager.Instance.PlayMenuBlockSound();
+            });
         }
         float fadeTime = 1f;
         sequence.Append(highscore.DOFade(1f, fadeTime));
