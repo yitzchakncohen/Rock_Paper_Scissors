@@ -31,22 +31,22 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
         UpdateTurnsUntilNextWave(1);
     }
 
-    public void StartWaveWhenReady(Wave wave, GameMode gameMode)
+    public void StartWaveWhenReady(Wave wave, GameMode gameMode, int reward)
     {
         this.gameMode = gameMode;
-        StartWhenReadyAsync(wave);
+        StartWhenReadyAsync(wave, reward);
     }
 
-    public async void StartWhenReadyAsync(Wave wave)
+    public async void StartWhenReadyAsync(Wave wave, int reward)
     {
         await gridManager.SetupGridTask;
         if(gameMode == GameMode.Endless)
         {
-            StartWave(1, endlessModeWaves[0]);
+            StartWave(1, endlessModeWaves[0], reward);
         }
         else
         {
-            StartWave(1, wave);
+            StartWave(1, wave, reward);
         }
     }
 
@@ -117,7 +117,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
                 {
                     if(wave.TurnToStartWave == turn)
                     {
-                        StartWave(turn, wave);
+                        StartWave(turn, wave, 0);
                     }
                 }
             }
@@ -125,15 +125,13 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
             {
                 // Use the last wave
                 Wave wave = endlessModeWaves[endlessModeWaves.Length-1];
-                StartWave(turn, wave);
+                StartWave(turn, wave, 0);
             }
         }
     }
 
-    private void StartWave(int turn, Wave wave)
+    private void StartWave(int turn, Wave wave, int reward)
     {
-        currencyBank.AddCurrencyToBank(wave.CurrencyBonus, null);
-
         List<Unit> unitsSpawnedThisWave = SpawnEnemyBuildings(wave.EnemyBuildingsToSpawn);
         gridManager.UpdateGridOccupancy();
         unitsSpawnedThisWave.AddRange(SpawnEnemyUnits(wave.EnemyUnitTypesToSpawn, wave.TotalEnemyUnitsToSpawn));
@@ -143,7 +141,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
         unitsSpawnedThisWave.AddRange(SpawnFriendlyUnits(wave.FriendlyUnitTypesToSpawn, turn));
         gridManager.UpdateGridOccupancy();
 
-        StartCoroutine(ShowSpawnedUnits(unitsSpawnedThisWave));
+        StartCoroutine(ShowSpawnedUnits(unitsSpawnedThisWave, wave.CurrencyBonus + reward));
         Debug.Log($"Wave spawning...");
     }
 
@@ -305,7 +303,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
         return spawnPositions;
     }
 
-    private IEnumerator ShowSpawnedUnits(List<Unit> unitsSpawnedThisWave)
+    private IEnumerator ShowSpawnedUnits(List<Unit> unitsSpawnedThisWave, int currency)
     {
         OnWaveStarted?.Invoke();
         AudioManager.Instance.PlayEnemyWaveSound();
@@ -357,6 +355,11 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
             AudioManager.Instance.PlayUnitSpawnSound();
             OnWaveUnitSpawn?.Invoke(unit);
             yield return StartCoroutine(unit.UnitAnimator.SpawnAnimationRoutine(showUnitsTime));
+        }
+
+        if(currency > 0)
+        {
+            currencyBank.AddCurrencyToBank(currency, null);
         }
         OnWaveCompleted?.Invoke();
     }

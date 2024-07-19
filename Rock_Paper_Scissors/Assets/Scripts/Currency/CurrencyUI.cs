@@ -17,6 +17,7 @@ public class CurrencyUI : MonoBehaviour
         if(currencyBank != null)
         {
             currencyBank.OnCurrencyChanged += CurrencyBank_OnCurrencyChanged;
+            currencyText.text = "0";
         }
     }
 

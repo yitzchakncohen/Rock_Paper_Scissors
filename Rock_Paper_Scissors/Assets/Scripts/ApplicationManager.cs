@@ -143,16 +143,8 @@ namespace RockPaperScissors
 
             // Trigger new game.
             WaveManager waveManager = FindObjectOfType<WaveManager>();
-            waveManager.StartWaveWhenReady(gameplayManager.GetLevelData(gameplayManager.GameMode, gameplayManager.Level).wave, gameplayManager.GameMode);
-
-            // Apply Ad Reward
-            if(rewardAmount > 0)
-            {
-                CurrencyBank currencyBank = FindObjectOfType<CurrencyBank>();
-                currencyBank.AddCurrencyToBank(rewardAmount, null);
-                // Reset Flag
-                rewardAmount = 0;
-            }
+            LevelData levelData = gameplayManager.GetLevelData(gameplayManager.GameMode, gameplayManager.Level);
+            waveManager.StartWaveWhenReady(levelData.wave, gameplayManager.GameMode, rewardAmount);
         }
 
         private IEnumerator LoadGameRoutine()
