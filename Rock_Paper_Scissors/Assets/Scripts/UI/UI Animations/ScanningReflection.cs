@@ -14,6 +14,10 @@ public class ScanningReflection : MonoBehaviour
     private void Awake() 
     {
         scanLineStartingX = scanLineTransform.position.x;
+    }
+
+    private void OnEnable() 
+    {
         StartScanAnimation();
     }
 
@@ -21,6 +25,12 @@ public class ScanningReflection : MonoBehaviour
     {
         if(coroutine == null)
         {
+            coroutine = Scan();
+            StartCoroutine(coroutine);
+        }
+        else
+        {
+            CancelScan();
             coroutine = Scan();
             StartCoroutine(coroutine);
         }

@@ -9,7 +9,7 @@ namespace RockPaperScissors.UI.Menus
 {
     public class GameMenu : MonoBehaviour
     {
-        [SerializeField] private GameObject HUDPanel;
+        [SerializeField] private CanvasGroup HUDPanel;
         [SerializeField] private ModalWindow gameMenuPanel;
         [SerializeField] private GameOverMenu gameOverMenuPanel;
         [SerializeField] private ModalWindow howToPlayModal;
@@ -41,7 +41,7 @@ namespace RockPaperScissors.UI.Menus
             // Setup UI
             gameOverMenuPanel.gameObject.SetActive(false);
             gameMenuPanel.gameObject.SetActive(false);
-            HUDPanel.SetActive(true);
+            HUDPanel.gameObject.SetActive(true);
             adModal.gameObject.SetActive(false);
             settingsModal.gameObject.SetActive(false);
             howToPlayModal.gameObject.SetActive(false);
@@ -106,8 +106,12 @@ namespace RockPaperScissors.UI.Menus
 
         public void OpenGameOverMenu(int score, int highscore, GameMode gameMode, LevelData levelData, bool winCondition = false)
         {
-            HUDPanel.SetActive(false);
-            gameOverMenuPanel.Open(score, highscore, gameMode, levelData, winCondition);
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(HUDPanel.DOFade(0f, 1f));
+            sequence.AppendCallback(()=> {
+                HUDPanel.gameObject.SetActive(false);
+                gameOverMenuPanel.Open(score, highscore, gameMode, levelData, winCondition);
+            });
         }
 
         private void GoToMainMenu()

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9035402585991199554}
   - component: {fileID: 9035402585991199553}
   - component: {fileID: 337332999243838746}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GainPointsAnimation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3793,7 +3793,7 @@ ParticleSystem:
     radiusScale: 1
     collidesWith:
       serializedVersion: 2
-      m_Bits: 512
+      m_Bits: 2560
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5

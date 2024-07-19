@@ -101,7 +101,7 @@ namespace RockPaperScissors.UI.Menus
             endlessModeScore.SetActive(false);
             endlessModeHighScore.SetActive(false);
             restartLevelButton.gameObject.SetActive(true);
-            if(winCondition)
+            if (highscore > 0)
             {
                 nextLevelButton.gameObject.SetActive(true);
             }
@@ -111,11 +111,25 @@ namespace RockPaperScissors.UI.Menus
             }
             levelModeScore.SetActive(true);
             levelModeBestScore.SetActive(true);
+            StartCoroutine(AnimateScoreIndicators(score, highscore, levelData));
+        }
+
+        private IEnumerator AnimateScoreIndicators(int score, int highscore, LevelData levelData)
+        {
+            float timeBetween = 0.5f;
+            WaitForSeconds wait = new WaitForSeconds(timeBetween);
+            yield return wait;
+            yield return wait;
             scoreIndicators[0].UpdateScore(score >= 1);
+            yield return wait;
             scoreIndicators[1].UpdateScore(score >= 2, levelData.twoStarRequirement);
+            yield return wait;
             scoreIndicators[2].UpdateScore(score >= 3, levelData.threeStarRequirement);
+            yield return wait;
             bestScoreIndicators[0].UpdateScore(highscore >= 1);
+            yield return wait;
             bestScoreIndicators[1].UpdateScore(highscore >= 2, levelData.twoStarRequirement);
+            yield return wait;
             bestScoreIndicators[2].UpdateScore(highscore >= 3, levelData.threeStarRequirement);
         }
 

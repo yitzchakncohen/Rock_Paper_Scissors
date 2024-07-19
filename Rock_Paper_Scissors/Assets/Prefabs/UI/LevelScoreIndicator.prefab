@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.7033792, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.7019608, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -112,7 +112,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreRequirement: {fileID: 7027754310917980935}
   requirementMetColor: {r: 1, g: 0.7019608, b: 0, a: 1}
-  requirementNotMetColor: {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}
+  requirementNotMetColor: {r: 0.4509804, g: 0.4509804, b: 0.4509804, a: 0.5882353}
 --- !u!1001 &619739542448887934
 PrefabInstance:
   m_ObjectHideFlags: 0

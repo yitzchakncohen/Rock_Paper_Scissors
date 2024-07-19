@@ -24,6 +24,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip levelCompleteSound = null;
     [SerializeField] private AudioClip titleBlockSound = null;
     [SerializeField] private AudioClip menuBlockSound = null;
+    [SerializeField] private AudioClip requirementMetSound = null;
+    [SerializeField] private AudioClip requirementNotMetSound = null;
 
     private AudioSource audioSource;
     private bool soundEnabled = true;
@@ -150,5 +152,15 @@ public class AudioManager : MonoBehaviour
     public void PlayMenuBlockSound()
     {
         PlaySoundOneShot(menuBlockSound);
+    }
+
+    public void PlayRequirementMetSound()
+    {
+        PlaySoundOneShot(requirementMetSound);
+    }
+
+    public void PlayRequirementNotMetSound()
+    {
+        PlaySoundOneShot(requirementNotMetSound);
     }
 }
