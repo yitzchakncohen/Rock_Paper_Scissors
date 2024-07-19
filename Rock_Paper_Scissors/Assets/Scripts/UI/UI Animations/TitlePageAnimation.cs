@@ -108,13 +108,28 @@ public class TitlePageAnimation : MonoBehaviour
         sequence.AppendCallback(() => { 
             unitAnimator.SetTrigger("Hop");
         });
-        float unitMoveTime = 2.5f;
-        sequence.Append(unit.rectTransform.DOAnchorPos(unit.position, unitMoveTime));
+        float unitMoveTime = 2.0f;
+        sequence.AppendCallback(PlayMoveSoundCallback);
+        sequence.Append(unit.rectTransform.DOAnchorPos(unit.position, unitMoveTime).SetEase(Ease.Linear));
         sequence.AppendInterval(3.5f);
         sequence.AppendCallback(PlayRandomUnitAnimation);
 
         sequence.PlayForward();
         yield return sequence;
+    }
+
+    private void PlayMoveSoundCallback()
+    {
+        StartCoroutine(PlayMoveSound());
+    }
+
+    private IEnumerator PlayMoveSound()
+    {
+        AudioManager.Instance.PlayUnitMovementSound();
+        yield return new WaitForSeconds(2.0f/3.0f);
+        AudioManager.Instance.PlayUnitMovementSound();
+        yield return new WaitForSeconds(2.0f/3.0f);
+        AudioManager.Instance.PlayUnitMovementSound();
     }
 
     private void PlayRandomUnitAnimation()

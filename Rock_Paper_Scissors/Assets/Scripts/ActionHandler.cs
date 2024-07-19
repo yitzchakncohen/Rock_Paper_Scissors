@@ -130,6 +130,7 @@ public class ActionHandler : MonoBehaviour
         else if(gridOccupantBuilding != null && !gridOccupantBuilding.IsFriendly)
         {
             // Attack the building
+            TryAttackUnitOccupyingGridPosition(gridObject);
             return;
         }
         // Try to move / select
