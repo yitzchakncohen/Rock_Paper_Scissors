@@ -8,15 +8,14 @@ namespace RockPaperScissors.UI
 {
     public class AdModal : MonoBehaviour
     {
-        public static event EventHandler<GameplayManager.OnGameOverEventArgs> OnWatchButtonClick;
-        public static event EventHandler<GameplayManager.OnGameOverEventArgs> OnSkipButtonClick;
+        public static event Action OnWatchButtonClick;
+        public static event Action OnSkipButtonClick;
         [SerializeField] private Button watchAdButton;
         [SerializeField] private Button skipAdButton;
         [SerializeField] private TextMeshProUGUI timerText;
         [SerializeField] private float watchAdTime = 5f;
         private ModalWindow modalWindow;
         private float timer = 0f;
-        private GameplayManager.OnGameOverEventArgs onGameOverEventArgs = null;
 
         private void Awake() 
         {
@@ -27,34 +26,28 @@ namespace RockPaperScissors.UI
 
         private void Update() 
         {
-            if( onGameOverEventArgs != null)
+            timer -= Time.deltaTime;
+            UpdateTimer(timer);
+            if(timer < 0)
             {
-                timer -= Time.deltaTime;
-                UpdateTimer(timer);
-                if(timer < 0)
-                {
-                    WatchAdButton_onClick();
-                }
+                WatchAdButton_onClick();
             }
         }
 
         private void SkipAdButton_onClick()
         {
-            OnSkipButtonClick?.Invoke(this, onGameOverEventArgs);
+            OnSkipButtonClick?.Invoke();
             modalWindow.Close();
-            onGameOverEventArgs = null;
         }
 
         private void WatchAdButton_onClick()
         {
-            OnWatchButtonClick?.Invoke(this, onGameOverEventArgs);
+            OnWatchButtonClick?.Invoke();
             modalWindow.Close();
-            onGameOverEventArgs = null;
         }
 
-        public void PassGameOverEventArgs(GameplayManager.OnGameOverEventArgs onGameOverEventArgs)
+        public void SetupTimer()
         {
-            this.onGameOverEventArgs = onGameOverEventArgs;
             timer = watchAdTime;
             UpdateTimer(watchAdTime);
         }

@@ -167,9 +167,15 @@ namespace RockPaperScissors
             };
         }
 
-        public void NextLevel()
+        public void NextLevel(GameMode gameMode)
         {
+            score = 0;
             level++;
+        }
+
+        public void RestartLevel(GameMode gameMode)
+        {
+            score = 0;
         }
 
         public void StartNewGame(GameMode gameMode)

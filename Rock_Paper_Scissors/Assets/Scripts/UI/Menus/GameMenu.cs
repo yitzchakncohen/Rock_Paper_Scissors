@@ -26,8 +26,9 @@ namespace RockPaperScissors.UI.Menus
         {
             GameplayManager.OnGameOver += GameplayManager_OnGameOver;
             GameplayManager.OnLevelCompleted += GameplayManager_OnLevelCompleted;
-            AdModal.OnSkipButtonClick += AdModal_OnSkipButtonClick;
-            AdModal.OnWatchButtonClick += AdModal_OnWatchButtonClick;
+            GameOverMenu.OnNextLevelButtonPress += GameOverMenu_OnNextLevelButtonPress;
+            GameOverMenu.OnRestartLevelButtonPress += GameOverMenu_OnRestartLevelButtonPress;
+            GameOverMenu.OnStartEndlessGameButtonPress += GameOverMenu_OnStartEndlessGameButton;
             foreach (Button button in mainMenuButtons)
             {
                 button.onClick.AddListener(GoToMainMenu);
@@ -58,8 +59,9 @@ namespace RockPaperScissors.UI.Menus
             endGameMenuButton.onClick.RemoveAllListeners();
             GameplayManager.OnGameOver -= GameplayManager_OnGameOver;    
             GameplayManager.OnLevelCompleted -= GameplayManager_OnLevelCompleted;
-            AdModal.OnSkipButtonClick -= AdModal_OnSkipButtonClick;
-            AdModal.OnWatchButtonClick -= AdModal_OnWatchButtonClick;    
+            GameOverMenu.OnNextLevelButtonPress -= GameOverMenu_OnNextLevelButtonPress;
+            GameOverMenu.OnRestartLevelButtonPress -= GameOverMenu_OnRestartLevelButtonPress;
+            GameOverMenu.OnStartEndlessGameButtonPress -= GameOverMenu_OnStartEndlessGameButton;   
         }
 
         public void OpenGameMenu()
@@ -121,26 +123,31 @@ namespace RockPaperScissors.UI.Menus
 
         private void GameplayManager_OnGameOver(object sender, GameplayManager.OnGameOverEventArgs e)
         {
-            adModal.Open();
-            adModal.PassGameOverEventArgs(e);
+            adModal.SetupTimer();
             gameMenuPanel.Close();
+            OpenGameOverMenu(e.Score, e.Highscore, e.GameMode, e.LevelData, e.WinCondition);
         }
 
         private void GameplayManager_OnLevelCompleted(object sender, GameplayManager.OnGameOverEventArgs e)
         {
-            adModal.Open();
-            adModal.PassGameOverEventArgs(e);
+            adModal.SetupTimer();
             gameMenuPanel.Close();
-        }
-
-        private void AdModal_OnWatchButtonClick(object sender, GameplayManager.OnGameOverEventArgs e)
-        {
             OpenGameOverMenu(e.Score, e.Highscore, e.GameMode, e.LevelData, e.WinCondition);
         }
 
-        private void AdModal_OnSkipButtonClick(object sender, GameplayManager.OnGameOverEventArgs e)
+        private void GameOverMenu_OnStartEndlessGameButton()
         {
-            OpenGameOverMenu(e.Score, e.Highscore, e.GameMode, e.LevelData, e.WinCondition);
+            adModal.Open();
+        }
+
+        private void GameOverMenu_OnRestartLevelButtonPress()
+        {
+            adModal.Open();
+        }
+
+        private void GameOverMenu_OnNextLevelButtonPress()
+        {
+            adModal.Open();
         }
     }
 }

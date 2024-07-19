@@ -218,18 +218,16 @@ namespace RockPaperScissors
         private void GameOverMenu_OnStartEndlessGameButtonPress()
         {
             gameplayManager.StartNewGame(GameMode.Endless);
-            StartGame();
         }
 
         private void GameOverMenu_OnNextLevelButtonPress()
         {
-            gameplayManager.NextLevel();
-            StartGame();
+            gameplayManager.NextLevel(GameMode.Level);
         }
 
         private void GameOverMenu_OnRestartLevelButtonPress()
         {
-            StartGame();
+            gameplayManager.RestartLevel(GameMode.Level);
         }
 
         private void SaveButton_OnSaveButtonPress()
@@ -264,6 +262,7 @@ namespace RockPaperScissors
                     rewardBonusUI.SetRewardAmount(rewardAmount);
                 }
             }
+            StartGame();
         }
 
         private void GameplayManager_OnGameOver(object sender, GameplayManager.OnGameOverEventArgs e)
@@ -280,18 +279,19 @@ namespace RockPaperScissors
 #endif
         }
 
-        private void AdModal_OnWatchButtonClick(object sender, GameplayManager.OnGameOverEventArgs e)
+        private void AdModal_OnWatchButtonClick()
         {
             ShowAd();
-            LanuchReview();
+            LaunchReview();
         }
         
-        private void AdModal_OnSkipButtonClick(object sender, GameplayManager.OnGameOverEventArgs e)
+        private void AdModal_OnSkipButtonClick()
         {
-            LanuchReview();
+            LaunchReview();
+            StartGame();
         }
 
-        private void LanuchReview()
+        private void LaunchReview()
         {
 #if UNITY_ANDROID
             if(deviceReviewsManager != null)
