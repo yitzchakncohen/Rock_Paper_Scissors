@@ -69,7 +69,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
 
     private void UpdateTurnsUntilNextWave(int currentTurn)
     {
-        if(gameMode == GameMode.Endless)
+        if(gameMode == GameMode.Level)
         {
             OnTurnsUntilNextWaveUpdated.Invoke(0);
             return;
@@ -147,7 +147,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
 
     private List<Unit> SpawnEnemyUnits(Unit[] unitTypesToSpawn, int totalUnitsToSpawn)
     {
-        if(unitTypesToSpawn.Length == 0 )
+        if(unitTypesToSpawn == null || unitTypesToSpawn.Length == 0 )
         {
             return new List<Unit>();
         }
@@ -181,7 +181,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
 
     private List<Unit> SpawnEnemyBuildings(Unit[] unitTypesToSpawn)
     {
-        if(unitTypesToSpawn.Length == 0 )
+        if(unitTypesToSpawn == null || unitTypesToSpawn.Length == 0)
         {
             return new List<Unit>();
         }
@@ -222,7 +222,6 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
 
     private List<Unit> SpawnFriendlyBuildings(Unit[] unitTypesToSpawn, int turn)
     {
-
         List<Unit> friendlyUnitsSpawnedThisWave = new List<Unit>();
         int radius = 3;
         
@@ -234,7 +233,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
             gridManager.UpdateGridOccupancy();
         } 
 
-        if(unitTypesToSpawn.Length == 0)
+        if(unitTypesToSpawn == null || unitTypesToSpawn.Length == 0)
         {
             return friendlyUnitsSpawnedThisWave;
         }
@@ -261,7 +260,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
         List<Unit> friendlyUnitsSpawnedThisWave = new List<Unit>();
         int radius = 3;
 
-        if(unitTypesToSpawn.Length == 0)
+        if(unitTypesToSpawn == null || unitTypesToSpawn.Length == 0)
         {
             return friendlyUnitsSpawnedThisWave;
         }

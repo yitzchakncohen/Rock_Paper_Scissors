@@ -380,13 +380,13 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7971028996465664995, guid: 17a82dd9ba2eacd49b54d8461fec8f76, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 854692357812522686}
+    - targetCorrespondingSourceObject: {fileID: 7971028996465664995, guid: 17a82dd9ba2eacd49b54d8461fec8f76, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 6701556398045601579}
     - targetCorrespondingSourceObject: {fileID: 7971028996465664995, guid: 17a82dd9ba2eacd49b54d8461fec8f76, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3545852173554419348}
-    - targetCorrespondingSourceObject: {fileID: 7971028996465664995, guid: 17a82dd9ba2eacd49b54d8461fec8f76, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 854692357812522686}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7971028996465664994, guid: 17a82dd9ba2eacd49b54d8461fec8f76, type: 3}
       insertIndex: -1
