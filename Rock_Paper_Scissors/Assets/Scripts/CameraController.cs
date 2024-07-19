@@ -339,8 +339,10 @@ public class CameraController : MonoBehaviour
         cameraBoundaryMaxX = cameraBoundaryMaxX + cameraBoundaryCollider.transform.position.x;
         cameraBoundaryMinY = cameraBoundaryMinY + cameraBoundaryCollider.transform.position.y;
         cameraBoundaryMaxY = cameraBoundaryMaxY + cameraBoundaryCollider.transform.position.y;
-
-        zoomClamp.y = ((cameraBoundaryMaxX - cameraBoundaryMinX) / 2) / mainCamera.aspect;
+        
+        float clampY = (cameraBoundaryMaxX - cameraBoundaryMinX) / 2 / mainCamera.aspect;
+        float clampX = (cameraBoundaryMaxY - cameraBoundaryMinY) / 2;
+        zoomClamp.y = Mathf.Min(clampX, clampY);
     }
 
     private void OnDrawGizmos() 

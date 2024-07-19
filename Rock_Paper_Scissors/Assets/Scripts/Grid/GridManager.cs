@@ -15,7 +15,8 @@ namespace RockPaperScissors.Grids
         [SerializeField] private GridObject gridObjectPrefab;
         [SerializeField] private GameObject borderTilePrefab;
         [SerializeField] private Tilemap baseTilemap;
-        [SerializeField] private int borderWidth = 4;
+        private int borderWidthX = 4;
+        private int borderWidthY = 4;
         private Vector2Int gridSize;
         private Grid grid;
         private GridObject[,] gridObjects;
@@ -77,12 +78,13 @@ namespace RockPaperScissors.Grids
         {
             await Task.Yield();
             gridObjects = new GridObject[gridSize.x, gridSize.y];
+            CalculateBorderDimensions();
             List<Vector3> allBorderLocations = new List<Vector3>();
 
             // Setup the grid
-            for (int x = -borderWidth; x <= gridSize.x + borderWidth - 1; x++)
+            for (int x = -borderWidthX; x <= gridSize.x + borderWidthX - 1; x++)
             {
-                for (int y = -borderWidth; y <= gridSize.y + borderWidth - 1; y++)
+                for (int y = -borderWidthY; y <= gridSize.y + borderWidthY - 1; y++)
                 {
                     if (x <= -1 || x >= gridSize.x || y <= -1 || y >= gridSize.y)
                     {
@@ -105,6 +107,20 @@ namespace RockPaperScissors.Grids
             UpdateGridOccupancy();
             Debug.Log("Grid Setup Completed");
             OnGridSetupComplete?.Invoke();
+        }
+
+        private void CalculateBorderDimensions()
+        {
+            // Increase the border width X until the camera fits the grid height. 
+            float gridWidthIncludingBorder = gridSize.x + borderWidthX;
+            float gridHeightIncludingBorder = (gridSize.y + borderWidthY) * (2f / 3f);
+            float aspectRatio = Camera.main.aspect;
+            while(gridWidthIncludingBorder / gridHeightIncludingBorder < aspectRatio)
+            {
+                borderWidthX++;
+                gridWidthIncludingBorder = gridSize.x + borderWidthX;
+                gridHeightIncludingBorder = (gridSize.y + borderWidthY) * (2f / 3f);
+            }
         }
 
         private void CalculateBorderCorners(List<Vector3> allBorderLocations)

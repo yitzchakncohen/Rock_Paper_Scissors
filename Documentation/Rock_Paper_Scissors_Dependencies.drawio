@@ -1,4 +1,4 @@
-<mxfile host="Electron" modified="2024-07-18T20:04:55.765Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.5.3 Chrome/124.0.6367.207 Electron/30.0.6 Safari/537.36" etag="zuo0WmL-rTQBlB1R-yGR" version="24.5.3" type="device">
+<mxfile host="Electron" modified="2024-07-18T23:58:18.677Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.5.3 Chrome/124.0.6367.207 Electron/30.0.6 Safari/537.36" etag="es49TZ1WLJvyP_rdIqDe" version="24.5.3" type="device">
   <diagram name="Page-1" id="Q-yAtxKkLr_DfTsW5Ip2">
     <mxGraphModel dx="2966" dy="2596" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
       <root>
@@ -595,6 +595,9 @@
         </mxCell>
         <mxCell id="Jmr32COCTRODrtMI3vtn-2" value="ScaleUIElement" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="nFh23W7059sgezOXX432-26" vertex="1">
           <mxGeometry x="50" y="-50" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="1EMFBcFOMJEKcjLiC0CP-28" value="LevelScoreIndicator" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="nFh23W7059sgezOXX432-26">
+          <mxGeometry x="200" y="-50" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="nFh23W7059sgezOXX432-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="5rCYG5Pp4PT8a6XN0o9v-49" target="nFh23W7059sgezOXX432-5" edge="1">
           <mxGeometry relative="1" as="geometry" />
