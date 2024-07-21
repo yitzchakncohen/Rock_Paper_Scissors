@@ -109,6 +109,11 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
 
     private void TryStartWave(int turn)
     {
+        if(gameMode == GameMode.Level)
+        {
+            return;
+        }
+
         if(turnsUntilNextWave == 0)
         {
             if(turn <= endlessModeWaves[endlessModeWaves.Length-1].TurnToStartWave)
