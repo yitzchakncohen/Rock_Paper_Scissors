@@ -5118,7 +5118,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f4759c8bfa1285458502e461dbbb69a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationTime: 1
 --- !u!224 &6802618659333959261 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7574589046934035322, guid: d9f72af5c4187f141a94f89fde83bc53, type: 3}
@@ -7857,6 +7856,10 @@ PrefabInstance:
     - target: {fileID: 4123011211012393681, guid: da2c312e79f6c244799fd330fb88a5bc, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497055219977935197, guid: da2c312e79f6c244799fd330fb88a5bc, type: 3}
+      propertyPath: animateOnOpen
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5109352381788847155, guid: da2c312e79f6c244799fd330fb88a5bc, type: 3}
       propertyPath: m_AnchorMax.y

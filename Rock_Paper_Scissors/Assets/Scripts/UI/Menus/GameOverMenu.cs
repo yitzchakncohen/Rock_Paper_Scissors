@@ -26,6 +26,7 @@ namespace RockPaperScissors.UI.Menus
         [SerializeField] private TextMeshProUGUI previousBestText;
         [SerializeField] private LetterAnimation textAnimation;
         [SerializeField] private float gameOverAnimationTime = 0.5f;
+        [SerializeField] private float titleAnimationTime = 0.3f;
         [SerializeField] private GameObject endlessModeScore;
         [SerializeField] private GameObject endlessModeHighScore;
         [SerializeField] private GameObject levelModeScore;
@@ -76,13 +77,13 @@ namespace RockPaperScissors.UI.Menus
             if(winCondition)
             {
                 gameOverSequence.AppendCallback(() => {
-                    textAnimation.Play(LEVEL_COMPLETE_STRING_1 + level.ToString() + LEVEL_COMPLETE_STRING_2);
+                    textAnimation.Play(LEVEL_COMPLETE_STRING_1 + level.ToString() + LEVEL_COMPLETE_STRING_2, titleAnimationTime);
                 }).SetUpdate(true);
             }
             else
             {
                 gameOverSequence.AppendCallback(() => {
-                    textAnimation.Play(GAME_OVER_STRING);
+                    textAnimation.Play(GAME_OVER_STRING, titleAnimationTime);
                 }).SetUpdate(true);
             }
             gameOverSequence.PlayForward();

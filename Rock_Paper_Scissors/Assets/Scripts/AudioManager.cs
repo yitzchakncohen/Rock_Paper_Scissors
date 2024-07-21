@@ -26,6 +26,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip menuBlockSound = null;
     [SerializeField] private AudioClip requirementMetSound = null;
     [SerializeField] private AudioClip requirementNotMetSound = null;
+    [SerializeField] private AudioClip writingSound = null;
 
     private AudioSource audioSource;
     private bool soundEnabled = true;
@@ -162,5 +163,10 @@ public class AudioManager : MonoBehaviour
     public void PlayRequirementNotMetSound()
     {
         PlaySoundOneShot(requirementNotMetSound);
+    }
+
+    public void PlayWritingSound()
+    {
+        PlaySoundOneShot(writingSound);
     }
 }

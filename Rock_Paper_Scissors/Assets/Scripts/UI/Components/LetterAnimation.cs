@@ -10,7 +10,6 @@ namespace RockPaperScissors.UI.Components
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class LetterAnimation : MonoBehaviour
     {
-        [SerializeField] private float animationTime = 0.3f;
         private TextMeshProUGUI textComponent;
 
         private void Awake() 
@@ -19,7 +18,7 @@ namespace RockPaperScissors.UI.Components
             textComponent.text = "";
         }
 
-        public void Play(string textString)
+        public void Play(string textString, float animationTime)
         {
             if(textComponent == null)
             {

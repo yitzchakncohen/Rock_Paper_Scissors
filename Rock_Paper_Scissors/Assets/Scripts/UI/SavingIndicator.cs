@@ -46,7 +46,7 @@ public class SavingIndicator : MonoBehaviour
             double timeInMinutes =  DateTime.UtcNow.Subtract(lastSaveTime).TotalMinutes;
             timeString = $"Last Save: {timeInMinutes:N0} min ago";
         }
-        lastSaveText.Play(timeString);
+        lastSaveText.Play(timeString, 0.3f);
     }
 
     private void SaveButton_OnSaveButtonPress()
