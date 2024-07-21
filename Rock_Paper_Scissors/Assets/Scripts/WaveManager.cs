@@ -11,6 +11,7 @@ using UnityEngine;
 public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
 {  
     public static event Action OnWaveStarted;
+    public static event Action OnLevelStarted;
     public static event Action OnWaveCompleted;
     public static event Action<Unit> OnWaveUnitSpawn;
     public static event Action<int> OnTurnsUntilNextWaveUpdated;
@@ -146,7 +147,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
         unitsSpawnedThisWave.AddRange(SpawnFriendlyUnits(wave.FriendlyUnitTypesToSpawn, turn));
         gridManager.UpdateGridOccupancy();
 
-        StartCoroutine(ShowSpawnedUnits(unitsSpawnedThisWave, wave.CurrencyBonus + reward));
+        StartCoroutine(ShowSpawnedUnits(unitsSpawnedThisWave, wave.CurrencyBonus + reward, turn));
         Debug.Log($"Wave spawning...");
     }
 
@@ -307,7 +308,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
         return spawnPositions;
     }
 
-    private IEnumerator ShowSpawnedUnits(List<Unit> unitsSpawnedThisWave, int currency)
+    private IEnumerator ShowSpawnedUnits(List<Unit> unitsSpawnedThisWave, int currency, int turn)
     {
         OnWaveStarted?.Invoke();
         AudioManager.Instance.PlayEnemyWaveSound();
@@ -367,6 +368,10 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
             currencyBank.AddCurrencyToBank(currency, pillowFortGridPosition);
         }
         OnWaveCompleted?.Invoke();
+        if(gameMode == GameMode.Level && turn == 1)
+        {
+            OnLevelStarted?.Invoke();
+        }
     }
 
     public SaveWaveManagerData Save()

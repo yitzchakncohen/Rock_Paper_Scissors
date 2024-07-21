@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using RockPaperScissors;
 using TMPro;
 using UnityEngine;
 
@@ -14,8 +15,20 @@ public class LevelDescriptionUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreRequirementOneStar;
     [SerializeField] private TextMeshProUGUI scoreRequirementTwoStar;
     [SerializeField] private TextMeshProUGUI scoreRequirementThreeStar;
+    GameplayManager gameplayManager;
 
-    public void Setup(LevelData levelData, int level)
+    private void Start() 
+    {
+        gameplayManager = FindObjectOfType<GameplayManager>();
+    }
+
+    private void OnEnable() 
+    {
+        LevelData levelData = gameplayManager.GetLevelData(gameplayManager.GameMode, gameplayManager.Level);
+        Setup(levelData, gameplayManager.Level);
+    }
+
+    private void Setup(LevelData levelData, int level)
     {
         levelText.text = LEVEL + level;
         scoreRequirementOneStar.text = NO_REQUIREMENT;

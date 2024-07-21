@@ -15,7 +15,8 @@ namespace RockPaperScissors.UI.Menus
         public static event Action OnRestartLevelButtonPress;
         public static event Action OnNextLevelButtonPress;
         private const string GAME_OVER_STRING = "Game Over";
-        private const string LEVEL_COMPLETE_STRING = "Success!";
+        private const string LEVEL_COMPLETE_STRING_1 = "Level ";
+        private const string LEVEL_COMPLETE_STRING_2 = " Completed!";
         [SerializeField] private Button newGameButton;
         [SerializeField] private Button restartLevelButton;
         [SerializeField] private Button nextLevelButton;
@@ -59,7 +60,7 @@ namespace RockPaperScissors.UI.Menus
             switch (gameMode)
             {
                 case GameMode.Level:
-                    SetupForLevelMode(winCondition, score, highscore, level, levelData);
+                    SetupForLevelMode(score, highscore, levelData);
                     break;
                 case GameMode.Endless:
                 default:
@@ -75,7 +76,7 @@ namespace RockPaperScissors.UI.Menus
             if(winCondition)
             {
                 gameOverSequence.AppendCallback(() => {
-                    textAnimation.Play(LEVEL_COMPLETE_STRING);
+                    textAnimation.Play(LEVEL_COMPLETE_STRING_1 + level.ToString() + LEVEL_COMPLETE_STRING_2);
                 }).SetUpdate(true);
             }
             else
@@ -101,7 +102,7 @@ namespace RockPaperScissors.UI.Menus
             levelDescriptionUI.gameObject.SetActive(false);
         }
 
-        private void SetupForLevelMode(bool winCondition, int score, int highscore, int level, LevelData levelData)
+        private void SetupForLevelMode(int score, int highscore, LevelData levelData)
         {
             newGameButton.gameObject.SetActive(false);
             endlessModeScore.SetActive(false);
@@ -120,7 +121,6 @@ namespace RockPaperScissors.UI.Menus
             levelModeScore.SetActive(true);
             levelModeBestScore.SetActive(true);
             levelDescriptionUI.gameObject.SetActive(true);
-            levelDescriptionUI.Setup(levelData, level);
             StartCoroutine(AnimateScoreIndicators(score, highscore, levelData));
         }
 

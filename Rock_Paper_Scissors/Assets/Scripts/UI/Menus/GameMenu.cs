@@ -21,6 +21,7 @@ namespace RockPaperScissors.UI.Menus
         [SerializeField] private AdModal adModal;
         [SerializeField] private ModalWindow settingsModal;
         [SerializeField] private ModalWindow gameModeModal;
+        [SerializeField] private ModalWindow levelStartModal;
 
         private void Start() 
         {
@@ -29,6 +30,7 @@ namespace RockPaperScissors.UI.Menus
             GameOverMenu.OnNextLevelButtonPress += GameOverMenu_OnNextLevelButtonPress;
             GameOverMenu.OnRestartLevelButtonPress += GameOverMenu_OnRestartLevelButtonPress;
             GameOverMenu.OnStartEndlessGameButtonPress += GameOverMenu_OnStartEndlessGameButton;
+            WaveManager.OnLevelStarted += WaveManager_OnLevelStarted;
             foreach (Button button in mainMenuButtons)
             {
                 button.onClick.AddListener(GoToMainMenu);
@@ -45,6 +47,7 @@ namespace RockPaperScissors.UI.Menus
             adModal.gameObject.SetActive(false);
             settingsModal.gameObject.SetActive(false);
             howToPlayModal.gameObject.SetActive(false);
+            levelStartModal.gameObject.SetActive(false);
         }
 
         private void OnDestroy() 
@@ -62,6 +65,12 @@ namespace RockPaperScissors.UI.Menus
             GameOverMenu.OnNextLevelButtonPress -= GameOverMenu_OnNextLevelButtonPress;
             GameOverMenu.OnRestartLevelButtonPress -= GameOverMenu_OnRestartLevelButtonPress;
             GameOverMenu.OnStartEndlessGameButtonPress -= GameOverMenu_OnStartEndlessGameButton;   
+            WaveManager.OnLevelStarted -= WaveManager_OnLevelStarted;
+        }
+
+        private void WaveManager_OnLevelStarted()
+        {
+            levelStartModal.Open();
         }
 
         public void OpenGameMenu()
