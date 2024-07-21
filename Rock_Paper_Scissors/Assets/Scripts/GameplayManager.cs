@@ -62,7 +62,7 @@ namespace RockPaperScissors
             }
 
             // Score points for defeating enemies.
-            if (attacker.IsFriendly)
+            if (attacker.IsFriendly && GameMode == GameMode.Endless)
             {
                 score += 10;
                 OnScoreChange?.Invoke(score);

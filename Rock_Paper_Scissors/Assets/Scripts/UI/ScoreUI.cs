@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RockPaperScissors.SaveSystem;
 using TMPro;
 using UnityEngine;
 
@@ -10,6 +11,23 @@ namespace RockPaperScissors.UI
     {
         [SerializeField] private TextMeshProUGUI scoreText;
         private float scoreUpdateTime = 0.3f;
+
+        private void Awake()
+        {
+            SaveManager_OnLoadCompleted();
+            SaveManager.OnLoadCompleted += SaveManager_OnLoadCompleted;
+        }
+
+        private void SaveManager_OnLoadCompleted()
+        {
+            bool active = FindObjectOfType<GameplayManager>().GameMode == GameMode.Endless;
+            gameObject.SetActive(active);
+        }
+
+        private void OnDestroy() 
+        {
+            SaveManager.OnLoadCompleted -= SaveManager_OnLoadCompleted;
+        }
 
         private void OnEnable() 
         {
@@ -29,12 +47,12 @@ namespace RockPaperScissors.UI
 
         private IEnumerator ScoreUpdateRoutine(int score)
     {
-        float startingCurrency = int.Parse(scoreText.text);
+        float startingScore = int.Parse(scoreText.text);
 
-        while(startingCurrency <= score-1)
+        while(startingScore <= score-1)
         {
-            startingCurrency = Mathf.Lerp(startingCurrency, score, Time.deltaTime/scoreUpdateTime);
-            scoreText.text = startingCurrency.ToString("N0");
+            startingScore = Mathf.Lerp(startingScore, score, Time.deltaTime/scoreUpdateTime);
+            scoreText.text = startingScore.ToString("N0");
             yield return null;
         }
         scoreText.text = score.ToString();

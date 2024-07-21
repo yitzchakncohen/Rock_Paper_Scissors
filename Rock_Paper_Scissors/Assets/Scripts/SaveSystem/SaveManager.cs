@@ -87,7 +87,6 @@ namespace RockPaperScissors.SaveSystem
                 SaveUnitDataList.Add(saveUnitData);
             }
 
-
             SaveCurrencyBankData currencyBankData = currencyBank.Save();
             SaveTurnManagerData turnManagerData = turnManager.Save();
             SaveGameplayManagerData saveGameManagerData = gameplayManager.Save();

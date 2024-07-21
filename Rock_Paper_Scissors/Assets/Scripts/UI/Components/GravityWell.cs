@@ -11,9 +11,8 @@ namespace RockPaperScissors.UI.Components
 
         private void Update() 
         {
-            // Vector2 currencyUIWorldPosition = Camera.main.ScreenToWorldPoint(currencyUI.GetMarbleLocation().position);
-            // Game hud canvas is now in world space, so I can access position directly. 
-            transform.position = trackingTransform.position;
+            Vector2 trackingWorldPosition = Camera.main.ScreenToWorldPoint(trackingTransform.position);
+            transform.position = trackingWorldPosition;
         }        
     }    
 }
