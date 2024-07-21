@@ -21,12 +21,15 @@ namespace RockPaperScissors.UI.Menus
         [SerializeField] private Button nextLevelButton;
         [SerializeField] private TextMeshProUGUI scoreValueText;
         [SerializeField] private TextMeshProUGUI highScoreValueText;
+        [SerializeField] private TextMeshProUGUI highScoreText;
+        [SerializeField] private TextMeshProUGUI previousBestText;
         [SerializeField] private LetterAnimation textAnimation;
         [SerializeField] private float gameOverAnimationTime = 0.5f;
         [SerializeField] private GameObject endlessModeScore;
         [SerializeField] private GameObject endlessModeHighScore;
         [SerializeField] private GameObject levelModeScore;
         [SerializeField] private GameObject levelModeBestScore;
+        [SerializeField] private LevelDescriptionUI levelDescriptionUI;
         [SerializeField] private LevelScoreIndicator[] scoreIndicators = new LevelScoreIndicator[3];
         [SerializeField] private LevelScoreIndicator[] bestScoreIndicators = new LevelScoreIndicator[3];
         private RectTransform rectTransform;
@@ -50,13 +53,13 @@ namespace RockPaperScissors.UI.Menus
             nextLevelButton.onClick.RemoveAllListeners();
         }
 
-        public void Open(int score, int highscore, GameMode gameMode, LevelData levelData, bool winCondition = false)
+        public void Open(int score, int highscore, GameMode gameMode, int level, LevelData levelData, bool winCondition = false)
         {
             gameObject.SetActive(true);
             switch (gameMode)
             {
                 case GameMode.Level:
-                    SetupForLevelMode(winCondition, score, highscore, levelData);
+                    SetupForLevelMode(winCondition, score, highscore, level, levelData);
                     break;
                 case GameMode.Endless:
                 default:
@@ -93,9 +96,12 @@ namespace RockPaperScissors.UI.Menus
             nextLevelButton.gameObject.SetActive(false);
             levelModeScore.SetActive(false);
             levelModeBestScore.SetActive(false);
+            highScoreText.gameObject.SetActive(true);
+            previousBestText.gameObject.SetActive(false);
+            levelDescriptionUI.gameObject.SetActive(false);
         }
 
-        private void SetupForLevelMode(bool winCondition, int score, int highscore, LevelData levelData)
+        private void SetupForLevelMode(bool winCondition, int score, int highscore, int level, LevelData levelData)
         {
             newGameButton.gameObject.SetActive(false);
             endlessModeScore.SetActive(false);
@@ -109,8 +115,12 @@ namespace RockPaperScissors.UI.Menus
             {
                 nextLevelButton.gameObject.SetActive(false);
             }
+            highScoreText.gameObject.SetActive(false);
+            previousBestText.gameObject.SetActive(true);
             levelModeScore.SetActive(true);
             levelModeBestScore.SetActive(true);
+            levelDescriptionUI.gameObject.SetActive(true);
+            levelDescriptionUI.Setup(levelData, level);
             StartCoroutine(AnimateScoreIndicators(score, highscore, levelData));
         }
 
@@ -122,15 +132,15 @@ namespace RockPaperScissors.UI.Menus
             yield return wait;
             scoreIndicators[0].UpdateScore(score >= 1);
             yield return wait;
-            scoreIndicators[1].UpdateScore(score >= 2, levelData.twoStarRequirement);
+            scoreIndicators[1].UpdateScore(score >= 2);
             yield return wait;
-            scoreIndicators[2].UpdateScore(score >= 3, levelData.threeStarRequirement);
+            scoreIndicators[2].UpdateScore(score >= 3);
             yield return wait;
             bestScoreIndicators[0].UpdateScore(highscore >= 1);
             yield return wait;
-            bestScoreIndicators[1].UpdateScore(highscore >= 2, levelData.twoStarRequirement);
+            bestScoreIndicators[1].UpdateScore(highscore >= 2);
             yield return wait;
-            bestScoreIndicators[2].UpdateScore(highscore >= 3, levelData.threeStarRequirement);
+            bestScoreIndicators[2].UpdateScore(highscore >= 3);
         }
 
         private void StartGame()

@@ -104,13 +104,13 @@ namespace RockPaperScissors.UI.Menus
             }
         }
 
-        public void OpenGameOverMenu(int score, int highscore, GameMode gameMode, LevelData levelData, bool winCondition = false)
+        public void OpenGameOverMenu(int score, int highscore, int level, GameMode gameMode, LevelData levelData, bool winCondition = false)
         {
             Sequence sequence = DOTween.Sequence();
             sequence.Append(HUDPanel.DOFade(0f, 1f));
             sequence.AppendCallback(()=> {
                 HUDPanel.gameObject.SetActive(false);
-                gameOverMenuPanel.Open(score, highscore, gameMode, levelData, winCondition);
+                gameOverMenuPanel.Open(score, highscore, gameMode, level, levelData, winCondition);
             });
         }
 
@@ -129,14 +129,14 @@ namespace RockPaperScissors.UI.Menus
         {
             adModal.SetupTimer();
             gameMenuPanel.Close();
-            OpenGameOverMenu(e.Score, e.Highscore, e.GameMode, e.LevelData, e.WinCondition);
+            OpenGameOverMenu(e.Score, e.Highscore, e.Level, e.GameMode, e.LevelData, e.WinCondition);
         }
 
         private void GameplayManager_OnLevelCompleted(object sender, GameplayManager.OnGameOverEventArgs e)
         {
             adModal.SetupTimer();
             gameMenuPanel.Close();
-            OpenGameOverMenu(e.Score, e.Highscore, e.GameMode, e.LevelData, e.WinCondition);
+            OpenGameOverMenu(e.Score, e.Highscore, e.Level, e.GameMode, e.LevelData, e.WinCondition);
         }
 
         private void GameOverMenu_OnStartEndlessGameButton()

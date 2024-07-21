@@ -99,6 +99,7 @@ namespace RockPaperScissors.UI
         private void ShowStatus(string status, float statusDisplayTime)
         {
             background.SetActive(true);
+            statusText.gameObject.SetActive(true);
             statusText.text = status;
             if(statusDisplayTime > 0)
             {
@@ -115,6 +116,7 @@ namespace RockPaperScissors.UI
         private void HideStatus()
         {
             background.SetActive(false);
+            statusText.gameObject.SetActive(false);
         }
     }    
 }

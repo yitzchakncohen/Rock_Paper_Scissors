@@ -17,6 +17,7 @@ namespace RockPaperScissors
         {
             public int Score;
             public int Highscore;
+            public int Level;
             public LevelData LevelData;
             public GameMode GameMode;
             public bool WinCondition;
@@ -119,7 +120,8 @@ namespace RockPaperScissors
                 Highscore = highscore,
                 GameMode = this.GameMode,
                 WinCondition = false,
-                LevelData = levelData
+                LevelData = levelData,
+                Level = level
             };
             AudioManager.Instance.PlayGameOverSound();
             OnGameOver?.Invoke(this, onGameOverEventArgs);
@@ -151,7 +153,8 @@ namespace RockPaperScissors
                 Highscore = highscore,
                 GameMode = this.GameMode,
                 WinCondition = true,
-                LevelData = levelDataList[level -1]
+                LevelData = levelDataList[level -1],
+                Level = level
             };
             AudioManager.Instance.PlayLevelCompleteSound();
             OnLevelCompleted?.Invoke(this, onGameOverEventArgs);
