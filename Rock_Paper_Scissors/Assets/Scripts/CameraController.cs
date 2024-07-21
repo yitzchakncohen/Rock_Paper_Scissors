@@ -34,7 +34,6 @@ public class CameraController : MonoBehaviour
     private Vector2 startDraggingPosition;
     private Vector2 lastFrameDraggingPosition;
     private Vector2 startCameraPosition;
-    private Vector2 waveStartCameraPosition;
     private Vector2 draggingVector;
     private Vector2 cameraVelocity;
     private float pinchingStartDistance;
@@ -243,13 +242,13 @@ public class CameraController : MonoBehaviour
 
     private void WaveManager_OnWaveStarted()
     {
-        waveStartCameraPosition = transform.position;
+        transform.position = gridManager.GetGridObject(gridManager.PlayerStartingPoint).transform.position;
         controlsLocked = true;
     }
 
     private void WaveManager_OnWaveCompleted()
     {
-        transform.position = waveStartCameraPosition;
+        transform.position = gridManager.GetGridObject(gridManager.PlayerStartingPoint).transform.position;
         controlsLocked = false;
     }
 

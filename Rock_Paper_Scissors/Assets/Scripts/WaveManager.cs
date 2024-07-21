@@ -363,7 +363,8 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
 
         if(currency > 0)
         {
-            currencyBank.AddCurrencyToBank(currency, null);
+            Transform pillowFortGridPosition = gridManager.GetGridObject(gridManager.PlayerStartingPoint).transform;
+            currencyBank.AddCurrencyToBank(currency, pillowFortGridPosition);
         }
         OnWaveCompleted?.Invoke();
     }
