@@ -18,20 +18,8 @@ public class LevelDescriptionUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreRequirementTwoStar;
     [SerializeField] private TextMeshProUGUI scoreRequirementThreeStar;
     [SerializeField] private bool animateOnOpen = false;
-    private GameplayManager gameplayManager;
 
-    private void Start() 
-    {
-        gameplayManager = FindObjectOfType<GameplayManager>();
-    }
-
-    private void OnEnable() 
-    {
-        LevelData levelData = gameplayManager.GetLevelData(gameplayManager.GameMode, gameplayManager.Level);
-        Setup(levelData, gameplayManager.Level);
-    }
-
-    private void Setup(LevelData levelData, int level)
+    public void Setup(LevelData levelData, int level)
     {
         if(animateOnOpen)
         {

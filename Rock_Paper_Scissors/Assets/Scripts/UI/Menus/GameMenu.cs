@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using RockPaperScissors.SaveSystem;
 using RockPaperScissors.UI.Components;
 using TMPro;
 using UnityEngine;
@@ -23,7 +24,7 @@ namespace RockPaperScissors.UI.Menus
         [SerializeField] private ModalWindow gameModeModal;
         [SerializeField] private ModalWindow levelStartModal;
 
-        private void Start() 
+        private void Awake() 
         {
             GameplayManager.OnGameOver += GameplayManager_OnGameOver;
             GameplayManager.OnLevelCompleted += GameplayManager_OnLevelCompleted;
@@ -31,6 +32,7 @@ namespace RockPaperScissors.UI.Menus
             GameOverMenu.OnRestartLevelButtonPress += GameOverMenu_OnRestartLevelButtonPress;
             GameOverMenu.OnStartEndlessGameButtonPress += GameOverMenu_OnStartEndlessGameButton;
             WaveManager.OnLevelStarted += WaveManager_OnLevelStarted;
+            SaveManager.OnLoadCompleted += SaveManager_OnLoadCompleted;
             foreach (Button button in mainMenuButtons)
             {
                 button.onClick.AddListener(GoToMainMenu);
@@ -66,11 +68,25 @@ namespace RockPaperScissors.UI.Menus
             GameOverMenu.OnRestartLevelButtonPress -= GameOverMenu_OnRestartLevelButtonPress;
             GameOverMenu.OnStartEndlessGameButtonPress -= GameOverMenu_OnStartEndlessGameButton;   
             WaveManager.OnLevelStarted -= WaveManager_OnLevelStarted;
+            SaveManager.OnLoadCompleted -= SaveManager_OnLoadCompleted;
         }
 
         private void WaveManager_OnLevelStarted()
         {
+            ShowLevelDescription();
+        }
+
+        private void SaveManager_OnLoadCompleted()
+        {
+            ShowLevelDescription();
+        }
+
+        private void ShowLevelDescription()
+        {
+            GameplayManager gameplayManager = FindObjectOfType<GameplayManager>();
             levelStartModal.Open();
+            LevelData levelData = gameplayManager.GetLevelData(gameplayManager.GameMode, gameplayManager.Level);
+            levelStartModal.GetComponentInChildren<LevelDescriptionUI>().Setup(levelData, gameplayManager.Level);
         }
 
         public void OpenGameMenu()

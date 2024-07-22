@@ -72,7 +72,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
     {
         if(gameMode == GameMode.Level)
         {
-            OnTurnsUntilNextWaveUpdated.Invoke(0);
+            OnTurnsUntilNextWaveUpdated?.Invoke(0);
             return;
         }
 
@@ -105,7 +105,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
                 }
             }
         }
-        OnTurnsUntilNextWaveUpdated.Invoke(turnsUntilNextWave);
+        OnTurnsUntilNextWaveUpdated?.Invoke(turnsUntilNextWave);
     }
 
     private void TryStartWave(int turn)
@@ -385,6 +385,6 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
     public void Load(SaveWaveManagerData loadData)
     {
         turnsUntilNextWave = loadData.TurnsUntilNextWave;
-        OnTurnsUntilNextWaveUpdated.Invoke(turnsUntilNextWave);
+        OnTurnsUntilNextWaveUpdated?.Invoke(turnsUntilNextWave);
     }
 }

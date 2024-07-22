@@ -46,7 +46,14 @@ namespace RockPaperScissors.Units
             timer += Time.deltaTime;
             if(timer >= attackAnimationTime)
             {
-                StartCoroutine(CompleteAttack());
+                if(gameObject.activeSelf)
+                {
+                    StartCoroutine(CompleteAttack());
+                }
+                else
+                {
+                    Debug.LogWarning("Unit " + unit.name + "could not finish it's attack because it was not active.");
+                }
             }
         }
 
