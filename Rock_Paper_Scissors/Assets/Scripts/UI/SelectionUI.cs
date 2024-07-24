@@ -72,6 +72,8 @@ namespace RockPaperScissors.UI
 
         private void UpdateGrid()
         {
+            grid.cellSize = new Vector2(0, grid.cellSize.y);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(preferredWidth);
             float width = LayoutUtility.GetPreferredWidth(preferredWidth);
             grid.cellSize = new Vector2(width / 2 - grid.spacing.x, grid.cellSize.y);
         }
