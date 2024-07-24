@@ -18,6 +18,7 @@ public class LevelDescriptionUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreRequirementTwoStar;
     [SerializeField] private TextMeshProUGUI scoreRequirementThreeStar;
     [SerializeField] private bool animateOnOpen = false;
+    private Sequence animationSequence;
 
     public void Setup(LevelData levelData, int level)
     {
@@ -34,30 +35,35 @@ public class LevelDescriptionUI : MonoBehaviour
         }
     }
 
+    private void OnDisable() 
+    {
+        animationSequence.Kill();
+    }
+
     private void AnimateSetup(LevelData levelData, int level)
     {
         float animationTime = 0.5f;
-        Sequence sequence = DOTween.Sequence();
-        sequence.AppendInterval(animationTime);
-        sequence.AppendCallback(() => {
+        animationSequence = DOTween.Sequence();
+        animationSequence.AppendInterval(animationTime);
+        animationSequence.AppendCallback(() => {
             levelText.GetComponent<LetterAnimation>().Play(LEVEL + level, animationTime);
             AudioManager.Instance.PlayWritingSound();
         });
-        sequence.AppendInterval(animationTime);
-        sequence.AppendCallback(() => {
+        animationSequence.AppendInterval(animationTime);
+        animationSequence.AppendCallback(() => {
             scoreRequirementOneStar.GetComponent<LetterAnimation>().Play(NO_REQUIREMENT, animationTime);
             AudioManager.Instance.PlayWritingSound();
         });
-        sequence.AppendInterval(animationTime);
-        sequence.AppendCallback(() => {
+        animationSequence.AppendInterval(animationTime);
+        animationSequence.AppendCallback(() => {
             scoreRequirementTwoStar.GetComponent<LetterAnimation>().Play(SCORE_REQUIREMENT_1 + levelData.twoStarRequirement + SCORE_REQUIREMENT_2, animationTime);
             AudioManager.Instance.PlayWritingSound();
         });
-        sequence.AppendInterval(animationTime);
-        sequence.AppendCallback(() => {
+        animationSequence.AppendInterval(animationTime);
+        animationSequence.AppendCallback(() => {
             scoreRequirementThreeStar.GetComponent<LetterAnimation>().Play(SCORE_REQUIREMENT_1 + levelData.threeStarRequirement + SCORE_REQUIREMENT_2, animationTime);
             AudioManager.Instance.PlayWritingSound();
         });
-        sequence.PlayForward();
+        animationSequence.PlayForward();
     }
 }
