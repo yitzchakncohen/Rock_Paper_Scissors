@@ -18,14 +18,17 @@ namespace RockPaperScissors.UI.Menus
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button closeMenuButton;
         [SerializeField] private Button endGameMenuButton;
+        [SerializeField] private Button restartLevelButton;
         [SerializeField] private Button helpButton;
         [SerializeField] private AdModal adModal;
         [SerializeField] private ModalWindow settingsModal;
         [SerializeField] private ModalWindow gameModeModal;
         [SerializeField] private ModalWindow levelStartModal;
+        private GameplayManager gameplayManager;
 
-        private void Awake() 
+        private void Awake()
         {
+            gameplayManager = FindObjectOfType<GameplayManager>();
             GameplayManager.OnGameOver += GameplayManager_OnGameOver;
             GameplayManager.OnLevelCompleted += GameplayManager_OnLevelCompleted;
             GameOverMenu.OnNextLevelButtonPress += GameOverMenu_OnNextLevelButtonPress;
@@ -41,6 +44,7 @@ namespace RockPaperScissors.UI.Menus
             closeMenuButton.onClick.AddListener(CloseGameMenu);
             helpButton.onClick.AddListener(OpenHowToPlayMenu);
             endGameMenuButton.onClick.AddListener(EndGame);
+            restartLevelButton.onClick.AddListener(RestartLevel);
 
             // Setup UI
             gameOverMenuPanel.gameObject.SetActive(false);
@@ -50,6 +54,21 @@ namespace RockPaperScissors.UI.Menus
             settingsModal.gameObject.SetActive(false);
             howToPlayModal.gameObject.SetActive(false);
             levelStartModal.gameObject.SetActive(false);
+            UpdateMenu();
+        }
+
+        private void UpdateMenu()
+        {
+            if (gameplayManager.GameMode == GameMode.Level)
+            {
+                restartLevelButton.gameObject.SetActive(true);
+                endGameMenuButton.gameObject.SetActive(false);
+            }
+            else
+            {
+                restartLevelButton.gameObject.SetActive(false);
+                endGameMenuButton.gameObject.SetActive(true);
+            }
         }
 
         private void OnDestroy() 
@@ -62,6 +81,7 @@ namespace RockPaperScissors.UI.Menus
             closeMenuButton.onClick.RemoveAllListeners();   
             helpButton.onClick.RemoveAllListeners();
             endGameMenuButton.onClick.RemoveAllListeners();
+            restartLevelButton.onClick.RemoveAllListeners();
             GameplayManager.OnGameOver -= GameplayManager_OnGameOver;    
             GameplayManager.OnLevelCompleted -= GameplayManager_OnLevelCompleted;
             GameOverMenu.OnNextLevelButtonPress -= GameOverMenu_OnNextLevelButtonPress;
@@ -79,11 +99,11 @@ namespace RockPaperScissors.UI.Menus
         private void SaveManager_OnLoadCompleted()
         {
             ShowLevelDescription();
+            UpdateMenu();
         }
 
         private void ShowLevelDescription()
         {
-            GameplayManager gameplayManager = FindObjectOfType<GameplayManager>();
             levelStartModal.Open();
             LevelData levelData = gameplayManager.GetLevelData(gameplayManager.GameMode, gameplayManager.Level);
             levelStartModal.GetComponentInChildren<LevelDescriptionUI>().Setup(levelData, gameplayManager.Level);
@@ -147,7 +167,12 @@ namespace RockPaperScissors.UI.Menus
 
         private void EndGame()
         {
-            FindObjectOfType<GameplayManager>().GameOver();
+            gameplayManager.GameOver();
+        }
+
+        private void RestartLevel()
+        {
+            gameplayManager.RestartLevel(gameplayManager.GameMode);
         }
 
         private void GameplayManager_OnGameOver(object sender, GameplayManager.OnGameOverEventArgs e)

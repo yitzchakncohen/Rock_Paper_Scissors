@@ -10,7 +10,8 @@ namespace RockPaperScissors.UI
 {
     public class SelectionUI : MonoBehaviour
     {
-        [SerializeField] private GameObject grid;
+        [SerializeField] private GameObject[] collapsableObjects;
+        [SerializeField] private GridLayoutGroup grid;
         [SerializeField] private Button collapseButton;
         [SerializeField] private GameObject openImage;
         [SerializeField] private GameObject collapseImage;
@@ -26,15 +27,17 @@ namespace RockPaperScissors.UI
         [SerializeField] private TextMeshProUGUI defense;
         [SerializeField] private TextMeshProUGUI movement;
         [SerializeField] private TextMeshProUGUI xp;
+        [SerializeField] private RectTransform preferredWidth;
         private Unit selectedUnit = null;
+        private bool show = false;
         private static TextInfo textInfo = new CultureInfo("en-US",false).TextInfo;
 
-        
         private void Start() 
         {
             ActionHandler.OnUnitSelected += ActionHandler_OnUnitSelected;
-            collapseButton.onClick.AddListener(ToggleGrid);
+            collapseButton.onClick.AddListener(ToggleDetails);
             background.SetActive(false);
+            ShowHideDetails(show);
         }
 
         private void OnDestroy() 
@@ -42,19 +45,35 @@ namespace RockPaperScissors.UI
             ActionHandler.OnUnitSelected -= ActionHandler_OnUnitSelected;
         }
 
-        private void ToggleGrid()
+        private void ToggleDetails()
         {
-            grid.SetActive(!grid.activeSelf);
-            if(grid.activeSelf)
+            show = !show;
+            ShowHideDetails(show);
+        }
+
+        private void ShowHideDetails(bool show)
+        {
+            foreach (GameObject item in collapsableObjects)
+            {
+                item.SetActive(show);
+            }
+            if (show)
             {
                 collapseImage.SetActive(true);
                 openImage.SetActive(false);
+                UpdateGrid();
             }
             else
             {
                 collapseImage.SetActive(false);
                 openImage.SetActive(true);
             }
+        }
+
+        private void UpdateGrid()
+        {
+            float width = LayoutUtility.GetPreferredWidth(preferredWidth);
+            grid.cellSize = new Vector2(width / 2 - grid.spacing.x, grid.cellSize.y);
         }
 
         private void ActionHandler_OnUnitSelected(object sender, Unit unit)
@@ -101,6 +120,7 @@ namespace RockPaperScissors.UI
             {
                 xp.text = $"XP {unit.UnitProgression.XP}/{unit.XPToLevelUp}";
             }
+            UpdateGrid();
         }
 
         private void selectedUnit_OnLevelUp()
