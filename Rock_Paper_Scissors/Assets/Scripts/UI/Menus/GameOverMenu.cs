@@ -61,7 +61,7 @@ namespace RockPaperScissors.UI.Menus
             switch (gameMode)
             {
                 case GameMode.Level:
-                    SetupForLevelMode(score, highscore, levelData);
+                    SetupForLevelMode(score, highscore, levelData, level);
                     break;
                 case GameMode.Endless:
                 default:
@@ -103,13 +103,16 @@ namespace RockPaperScissors.UI.Menus
             levelDescriptionUI.gameObject.SetActive(false);
         }
 
-        private void SetupForLevelMode(int score, int highscore, LevelData levelData)
+        private void SetupForLevelMode(int score, int highscore, LevelData levelData, int level)
         {
+            int stars = CalculateStars(score, levelData);
+            int bestStars = CalculateStars(highscore, levelData);
+
             newGameButton.gameObject.SetActive(false);
             endlessModeScore.SetActive(false);
             endlessModeHighScore.SetActive(false);
             restartLevelButton.gameObject.SetActive(true);
-            if (highscore > 0)
+            if (bestStars > 0)
             {
                 nextLevelButton.gameObject.SetActive(true);
             }
@@ -122,26 +125,46 @@ namespace RockPaperScissors.UI.Menus
             levelModeScore.SetActive(true);
             levelModeBestScore.SetActive(true);
             levelDescriptionUI.gameObject.SetActive(true);
-            StartCoroutine(AnimateScoreIndicators(score, highscore, levelData));
+            levelDescriptionUI.Setup(levelData, level);
+            StartCoroutine(AnimateScoreIndicators(stars, bestStars, levelData));
         }
 
-        private IEnumerator AnimateScoreIndicators(int score, int highscore, LevelData levelData)
+        private static int CalculateStars(int score, LevelData levelData)
+        {
+            // Zero stars if you have never beaten the level.
+            if(score < 0)
+            {
+                return 0;
+            }
+            int numberOfStars = 1;
+            if (score <= levelData.twoStarRequirement)
+            {
+                numberOfStars = 2;
+            }
+            if (score <= levelData.threeStarRequirement)
+            {
+                numberOfStars = 3;
+            }
+            return numberOfStars;
+        }
+
+        private IEnumerator AnimateScoreIndicators(int stars, int bestStars, LevelData levelData)
         {
             float timeBetween = 0.5f;
             WaitForSeconds wait = new WaitForSeconds(timeBetween);
             yield return wait;
             yield return wait;
-            scoreIndicators[0].UpdateScore(score >= 1);
+            scoreIndicators[0].UpdateScore(stars >= 1);
             yield return wait;
-            scoreIndicators[1].UpdateScore(score >= 2);
+            scoreIndicators[1].UpdateScore(stars >= 2);
             yield return wait;
-            scoreIndicators[2].UpdateScore(score >= 3);
+            scoreIndicators[2].UpdateScore(stars >= 3);
             yield return wait;
-            bestScoreIndicators[0].UpdateScore(highscore >= 1);
+            bestScoreIndicators[0].UpdateScore(bestStars >= 1);
             yield return wait;
-            bestScoreIndicators[1].UpdateScore(highscore >= 2);
+            bestScoreIndicators[1].UpdateScore(bestStars >= 2);
             yield return wait;
-            bestScoreIndicators[2].UpdateScore(highscore >= 3);
+            bestScoreIndicators[2].UpdateScore(bestStars >= 3);
         }
 
         private void StartGame()

@@ -25,7 +25,6 @@ namespace RockPaperScissors
         public static event EventHandler<OnGameOverEventArgs> OnGameOver;
         public static event EventHandler<OnGameOverEventArgs> OnLevelCompleted;
         public static event Action<int> OnScoreChange;
-        public static event Action<int> OnNewHighscore;
         [SerializeField] private GameObject scoreFXPrefab;
         private int score = 0;
         private UnitManager unitManager;
@@ -93,14 +92,8 @@ namespace RockPaperScissors
             int highscore = -1;
             if(GameMode == GameMode.Level)
             {
-                score = 0;
+                score = -1;
                 highscore = PlayerPrefs.GetInt(ApplicationManager.BEST_SCORE_STRING + level.ToString(), -1);
-                if(highscore < score)
-                {
-                    PlayerPrefs.SetInt(ApplicationManager.BEST_SCORE_STRING + level.ToString(), score);
-                    highscore = score;
-                    OnNewHighscore?.Invoke(score);
-                }
             }
             else
             {
@@ -109,7 +102,6 @@ namespace RockPaperScissors
                 {
                     PlayerPrefs.SetInt(ApplicationManager.HIGH_SCORE_STRING, score);
                     highscore = score;
-                    OnNewHighscore?.Invoke(score);
                 }
             }
 
@@ -130,26 +122,16 @@ namespace RockPaperScissors
         [ContextMenu("Complete Level")]
         private void LevelCompleted()
         {
-            int numberOfStars = 1;
-            if(turnManager.Turn <= levelDataList[level-1].twoStarRequirement)
-            {
-                numberOfStars = 2;
-            }
-            if(turnManager.Turn <= levelDataList[level-1].threeStarRequirement)
-            {
-                numberOfStars = 3;
-            }
             int highscore = PlayerPrefs.GetInt(ApplicationManager.BEST_SCORE_STRING + level.ToString(), -1);
-            if(highscore < numberOfStars)
+            if(turnManager.Turn < highscore || highscore < 0)
             {
-                PlayerPrefs.SetInt(ApplicationManager.BEST_SCORE_STRING + level.ToString(), numberOfStars);
-                highscore = numberOfStars;
-                OnNewHighscore?.Invoke(numberOfStars);
+                PlayerPrefs.SetInt(ApplicationManager.BEST_SCORE_STRING + level.ToString(), turnManager.Turn);
+                highscore = turnManager.Turn;
             }
 
             OnGameOverEventArgs onGameOverEventArgs = new OnGameOverEventArgs
             {
-                Score = numberOfStars, 
+                Score = turnManager.Turn, 
                 Highscore = highscore,
                 GameMode = this.GameMode,
                 WinCondition = true,

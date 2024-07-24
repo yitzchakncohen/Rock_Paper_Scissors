@@ -20,6 +20,8 @@ namespace RockPaperScissors.UI.Menus
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button howToPlayButton;
         [SerializeField] private TextMeshProUGUI highscoreText;
+        [SerializeField] private GameObject highscoreTextHolder;
+
         public static event Action OnStartEndlessGameButtonPress;
         public static event Action OnStartLevelGameButtonPress;
         public static event Action OnContinueGameButtonPress;
@@ -46,7 +48,7 @@ namespace RockPaperScissors.UI.Menus
             }
             else
             {
-                highscoreText.gameObject.SetActive(false);
+                highscoreTextHolder.SetActive(false);
             }
 
             settingsButton.onClick.AddListener(OpenSettingsMenu);

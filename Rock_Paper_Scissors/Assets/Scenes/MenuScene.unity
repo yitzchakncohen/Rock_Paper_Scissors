@@ -1018,6 +1018,7 @@ MonoBehaviour:
   settingsButton: {fileID: 1268937192}
   howToPlayButton: {fileID: 89052115}
   highscoreText: {fileID: 2046001323}
+  highscoreTextHolder: {fileID: 1672269497}
 --- !u!114 &466674103
 MonoBehaviour:
   m_ObjectHideFlags: 0
