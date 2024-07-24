@@ -5,6 +5,7 @@ using System.Linq;
 using Cinemachine;
 using RockPaperScissors;
 using RockPaperScissors.Grids;
+using RockPaperScissors.SaveSystem;
 using RockPaperScissors.Units;
 using UnityEngine;
 
@@ -69,6 +70,7 @@ public class CameraController : MonoBehaviour
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
         GameplayManager.OnGameOver += GameplayManager_OnGameOver;
         EnemyAI.OnActionFound += EnemyAI_OnActionFound;
+        SaveManager.OnLoadCompleted += SaveManager_OnLoadCompleted;
         zoomTarget = cinemachineVirtualCamera.m_Lens.OrthographicSize;
     }
 
@@ -91,6 +93,7 @@ public class CameraController : MonoBehaviour
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
         GameplayManager.OnGameOver -= GameplayManager_OnGameOver;
         EnemyAI.OnActionFound -= EnemyAI_OnActionFound;
+        SaveManager.OnLoadCompleted -= SaveManager_OnLoadCompleted;
     }
 
     private void FixedUpdate()
@@ -247,6 +250,12 @@ public class CameraController : MonoBehaviour
     }
 
     private void WaveManager_OnWaveCompleted()
+    {
+        transform.position = gridManager.GetGridObject(gridManager.PlayerStartingPoint).transform.position;
+        controlsLocked = false;
+    }
+
+    private void SaveManager_OnLoadCompleted()
     {
         transform.position = gridManager.GetGridObject(gridManager.PlayerStartingPoint).transform.position;
         controlsLocked = false;
