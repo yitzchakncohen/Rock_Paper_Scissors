@@ -22,7 +22,6 @@ namespace RockPaperScissors.SaveSystem
         private Dictionary<UnitClass, Unit> dictionaryOfEnemyUnitTypes = new Dictionary<UnitClass, Unit>();
         private GridManager gridManager;
         private TurnManager turnManager;
-        private CurrencyBank currencyBank;
         private GameplayManager gameplayManager;
         private WaveManager waveManager;
 
@@ -42,7 +41,6 @@ namespace RockPaperScissors.SaveSystem
         {
             gridManager = FindObjectOfType<GridManager>();
             turnManager = FindObjectOfType<TurnManager>();
-            currencyBank = FindObjectOfType<CurrencyBank>();
             gameplayManager = FindObjectOfType<GameplayManager>();
             waveManager = FindObjectOfType<WaveManager>();
         }
@@ -87,14 +85,16 @@ namespace RockPaperScissors.SaveSystem
                 SaveUnitDataList.Add(saveUnitData);
             }
 
-            SaveCurrencyBankData currencyBankData = currencyBank.Save();
+            SaveCurrencyBankData friendlyCurrencyBankData = CurrencyBank.FriendlyCurrencyBank.Save();
+            SaveCurrencyBankData enemyCurrencyBankData = CurrencyBank.EnemyCurrencyBank.Save();
             SaveTurnManagerData turnManagerData = turnManager.Save();
             SaveGameplayManagerData saveGameManagerData = gameplayManager.Save();
             SaveWaveManagerData saveWaveManagerData = waveManager.Save();
 
             SaveData saveObject = new SaveData
             {
-                SaveCurrencyBankData = currencyBankData,
+                SaveFriendlyCurrencyBankData = friendlyCurrencyBankData,
+                SaveEnemyCurrencyBankData = enemyCurrencyBankData,
                 SaveTurnManagerData = turnManagerData,
                 UnitList = SaveUnitDataList,
                 SaveGameplayManagerData = saveGameManagerData,
@@ -129,7 +129,8 @@ namespace RockPaperScissors.SaveSystem
             Debug.Log("Loading game...");
             // TODO clear all grid objects and delete all units. 
             turnManager.Load(saveData.SaveTurnManagerData);
-            currencyBank.Load(saveData.SaveCurrencyBankData);
+            CurrencyBank.FriendlyCurrencyBank.Load(saveData.SaveFriendlyCurrencyBankData);
+            CurrencyBank.EnemyCurrencyBank.Load(saveData.SaveEnemyCurrencyBankData);
             gameplayManager.Load(saveData.SaveGameplayManagerData);
             waveManager.Load(saveData.SaveWaveManagerData);
             foreach (SaveUnitData unitData in saveData.UnitList)

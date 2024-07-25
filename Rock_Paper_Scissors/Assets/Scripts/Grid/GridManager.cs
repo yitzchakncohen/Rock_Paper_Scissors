@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using RockPaperScissors.Units;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.Linq; 
 
 namespace RockPaperScissors.Grids
 {

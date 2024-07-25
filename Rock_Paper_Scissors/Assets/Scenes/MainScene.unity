@@ -1338,6 +1338,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1687274496}
   - component: {fileID: 1687274495}
+  - component: {fileID: 1687274497}
   m_Layer: 0
   m_Name: CurrencyBank
   m_TagString: Untagged
@@ -1357,6 +1358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26526a6597941414c94b209dc40ddf9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isFriendly: 1
   MarbleFXPrefab: {fileID: 9035402585991199554, guid: dad29e191d4b86b4794eb2c91c30565b, type: 3}
 --- !u!4 &1687274496
 Transform:
@@ -1373,6 +1375,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1687274497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687274494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26526a6597941414c94b209dc40ddf9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFriendly: 0
+  MarbleFXPrefab: {fileID: 9035402585991199554, guid: dad29e191d4b86b4794eb2c91c30565b, type: 3}
 --- !u!1 &1827408927
 GameObject:
   m_ObjectHideFlags: 0

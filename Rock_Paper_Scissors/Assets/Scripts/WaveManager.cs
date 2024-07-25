@@ -18,30 +18,28 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
     [SerializeField] private Wave[] endlessModeWaves;
     [SerializeField] private float showUnitsTime = 1f;
     [SerializeField] private Unit homeBasePrefab; 
-    private CurrencyBank currencyBank;
     private GridManager gridManager;
+    private GameplayManager gameplayManager;
     private int turnsUntilNextWave = 0;
     private int minimumTurnsBetweenWaves = 4;
-    private GameMode gameMode;
 
     private void Start() 
     {
         TurnManager.OnNextTurn += TurnManager_OnNextTurn;
-        currencyBank = FindObjectOfType<CurrencyBank>();
         gridManager = FindObjectOfType<GridManager>();
+        gameplayManager = FindObjectOfType<GameplayManager>();
         UpdateTurnsUntilNextWave(1);
     }
 
-    public void StartWaveWhenReady(Wave wave, GameMode gameMode, int reward)
+    public void StartWaveWhenReady(Wave wave, int reward)
     {
-        this.gameMode = gameMode;
         StartWhenReadyAsync(wave, reward);
     }
 
     public async void StartWhenReadyAsync(Wave wave, int reward)
     {
         await gridManager.SetupGridTask;
-        if(gameMode == GameMode.Endless)
+        if(gameplayManager.GameMode == GameMode.Endless)
         {
             StartWave(1, endlessModeWaves[0], reward);
         }
@@ -60,7 +58,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
     {
         if (eventArgs.IsPlayersTurn)
         {
-            if(gameMode == GameMode.Endless)
+            if(gameplayManager.GameMode == GameMode.Endless)
             {
                 UpdateTurnsUntilNextWave(eventArgs.Turn);
                 TryStartWave(eventArgs.Turn);
@@ -70,7 +68,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
 
     private void UpdateTurnsUntilNextWave(int currentTurn)
     {
-        if(gameMode == GameMode.Level)
+        if(gameplayManager.GameMode == GameMode.Level)
         {
             OnTurnsUntilNextWaveUpdated?.Invoke(0);
             return;
@@ -110,7 +108,7 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
 
     private void TryStartWave(int turn)
     {
-        if(gameMode == GameMode.Level)
+        if(gameplayManager.GameMode == GameMode.Level)
         {
             return;
         }
@@ -365,10 +363,10 @@ public class WaveManager : MonoBehaviour, ISaveInterface<SaveWaveManagerData>
         if(currency > 0)
         {
             Transform pillowFortGridPosition = gridManager.GetGridObject(gridManager.PlayerStartingPoint).transform;
-            currencyBank.AddCurrencyToBank(currency, pillowFortGridPosition);
+            CurrencyBank.FriendlyCurrencyBank.AddCurrencyToBank(currency, pillowFortGridPosition);
         }
         OnWaveCompleted?.Invoke();
-        if(gameMode == GameMode.Level && turn == 1)
+        if(gameplayManager.GameMode == GameMode.Level && turn == 1)
         {
             OnLevelStarted?.Invoke();
         }

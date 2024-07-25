@@ -38,7 +38,7 @@ namespace RockPaperScissors.Units
 
             gridManager = FindObjectOfType<GridManager>();
             inputManager = FindObjectOfType<InputManager>();
-            currencyBank = FindObjectOfType<CurrencyBank>();
+            currencyBank = Unit.IsFriendly ? CurrencyBank.FriendlyCurrencyBank : CurrencyBank.EnemyCurrencyBank;            
             inputManager.OnSingleTap += InputManager_OnSingleTap;
             BuildingButton.OnBuildingButtonPressed += BuildingButton_OnBuildingButtonPressed;
             TurnManager.OnNextTurn += TurnManager_OnNextTurn;            
@@ -97,7 +97,9 @@ namespace RockPaperScissors.Units
             }
             else if(!e.IsPlayersTurn && !unit.IsFriendly)
             {
-                
+                currencyBank.AddCurrencyToBank(GetCurrencyProducedThisTurn(), unit.transform);
+                buildStationaryUnitActionsRemaining = 1;
+                buildMoveableUnitActionsRemaining = 1;
             }
         }
 

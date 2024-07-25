@@ -9,7 +9,8 @@ using UnityEngine;
 public struct SaveData
 {
     public List<SaveUnitData> UnitList;
-    public SaveCurrencyBankData SaveCurrencyBankData;
+    public SaveCurrencyBankData SaveFriendlyCurrencyBankData;
+    public SaveCurrencyBankData SaveEnemyCurrencyBankData;
     public SaveTurnManagerData SaveTurnManagerData;
     public SaveGameplayManagerData SaveGameplayManagerData;
     public SaveWaveManagerData SaveWaveManagerData;

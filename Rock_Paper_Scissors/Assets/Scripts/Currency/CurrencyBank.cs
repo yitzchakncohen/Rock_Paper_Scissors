@@ -5,9 +5,38 @@ using UnityEngine;
 
 public class CurrencyBank : MonoBehaviour, ISaveInterface<SaveCurrencyBankData>
 {
-    [SerializeField] private ParticleSystem MarbleFXPrefab;
+    public static CurrencyBank FriendlyCurrencyBank = null;
+    public static CurrencyBank EnemyCurrencyBank = null;
     public event EventHandler<int> OnCurrencyChanged;
+    [SerializeField] private bool isFriendly;
+    [SerializeField] private ParticleSystem MarbleFXPrefab;
     private int currency = 0;
+
+    private void Awake() 
+    {
+        if(isFriendly)
+        {
+            if(FriendlyCurrencyBank == null)
+            {
+                FriendlyCurrencyBank = this;
+            }
+            else
+            {
+                DestroyImmediate(this);
+            }
+        }
+        else
+        {
+            if(EnemyCurrencyBank == null)
+            {
+                EnemyCurrencyBank = this;
+            }
+            else
+            {
+                DestroyImmediate(this);
+            }
+        }
+    }
 
     public bool TrySpendCurrency(int amountToSpend)
     {
@@ -28,11 +57,14 @@ public class CurrencyBank : MonoBehaviour, ISaveInterface<SaveCurrencyBankData>
     public void AddCurrencyToBank(int amount, Transform unitLocation)
     {
         currency += amount;
-        AudioManager.Instance.PlayCollectCurrencySound();
         OnCurrencyChanged?.Invoke(this, currency);
-        if(unitLocation != null)
+        if(isFriendly)
         {
-            Instantiate(MarbleFXPrefab, unitLocation.position, quaternion.identity);
+            AudioManager.Instance.PlayCollectCurrencySound();
+            if(unitLocation != null)
+            {
+                Instantiate(MarbleFXPrefab, unitLocation.position, quaternion.identity);
+            }
         }
     }
 
@@ -46,7 +78,8 @@ public class CurrencyBank : MonoBehaviour, ISaveInterface<SaveCurrencyBankData>
     {
         SaveCurrencyBankData bankData = new SaveCurrencyBankData
         {
-            Currency = currency
+            Currency = currency,
+            IsFriendly = isFriendly
         };
 
         return bankData;

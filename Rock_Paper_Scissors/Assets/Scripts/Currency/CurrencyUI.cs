@@ -13,7 +13,7 @@ public class CurrencyUI : MonoBehaviour
 
     private void Start() 
     {
-        currencyBank = FindObjectOfType<CurrencyBank>();
+        currencyBank = CurrencyBank.FriendlyCurrencyBank;
         if(currencyBank != null)
         {
             currencyBank.OnCurrencyChanged += CurrencyBank_OnCurrencyChanged;

@@ -63,13 +63,13 @@ namespace RockPaperScissors.Units
         {
             if(currencyBank == null)
             {
-                currencyBank = FindObjectOfType<CurrencyBank>();
+                currencyBank = Unit.IsFriendly ? CurrencyBank.EnemyCurrencyBank : CurrencyBank.FriendlyCurrencyBank;            
             }
-            if(attacker != null && attacker.IsFriendly)
+            if(attacker != null)
             {
                 currencyBank.AddCurrencyToBank(unit.UnitDefeatedCurrencReward, attacker.transform);
             }
-            else if(!unit.IsFriendly)
+            else
             {
                 currencyBank.AddCurrencyToBank(unit.UnitDefeatedCurrencReward, transform);
             }

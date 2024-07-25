@@ -144,7 +144,7 @@ namespace RockPaperScissors
             // Trigger new game.
             WaveManager waveManager = FindObjectOfType<WaveManager>();
             LevelData levelData = gameplayManager.GetLevelData(gameplayManager.GameMode, gameplayManager.Level);
-            waveManager.StartWaveWhenReady(levelData.wave, gameplayManager.GameMode, rewardAmount);
+            waveManager.StartWaveWhenReady(levelData.wave, rewardAmount);
         }
 
         private IEnumerator LoadGameRoutine()

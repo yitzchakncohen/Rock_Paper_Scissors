@@ -6,4 +6,5 @@ using UnityEngine;
 public struct SaveCurrencyBankData
 {
     public int Currency;
+    public bool IsFriendly;
 }

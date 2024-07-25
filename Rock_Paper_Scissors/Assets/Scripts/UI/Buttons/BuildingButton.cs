@@ -34,9 +34,9 @@ namespace RockPaperScissors.UI.Buttons
 
         private void OnEnable()
         {
-            if(currencyBank == null)
+            if(currencyBank == null && unitSpawner != null)
             {
-                currencyBank = FindObjectOfType<CurrencyBank>();            
+                currencyBank = unitSpawner.Unit.IsFriendly ? CurrencyBank.FriendlyCurrencyBank : CurrencyBank.EnemyCurrencyBank;            
             }
             if(unitSpawner != null)
             {
@@ -95,7 +95,7 @@ namespace RockPaperScissors.UI.Buttons
             unitCostText.text = unitPrefab.Cost.ToString();
             buttonImage.color = color;
             unitSpawner = GetComponentInParent<UnitSpawner>();
-            currencyBank = FindObjectOfType<CurrencyBank>();
+            currencyBank = unitSpawner.Unit.IsFriendly ? CurrencyBank.FriendlyCurrencyBank : CurrencyBank.EnemyCurrencyBank;
             unitThumbnail.material = new Material(unitThumbnail.material);
             UpdateButtonInteractability();
         }
