@@ -5,37 +5,40 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LevelScoreIndicator : MonoBehaviour
+namespace RockPaperScissors.UI.Components
 {
-    [SerializeField] private Color requirementMetColor;
-    [SerializeField] private Color requirementNotMetColor;
-    private float animationTime = 0.6f;
-
-    private Image star;
-
-    private void Awake() 
+    public class LevelScoreIndicator : MonoBehaviour
     {
-        star = GetComponent<Image>();
-        transform.localScale = Vector3.zero;
-    }
+        [SerializeField] private Color requirementMetColor;
+        [SerializeField] private Color requirementNotMetColor;
+        private float animationTime = 0.6f;
 
-    public void UpdateScore(bool requirementMet)
-    {
-        if(requirementMet)
+        private Image star;
+
+        private void Awake() 
         {
-            star.color = requirementMetColor;
-            Sequence sequence = DOTween.Sequence();
-            sequence.Append(transform.DOScale(1.0f, animationTime).SetEase(Ease.OutElastic));
-            sequence.InsertCallback(animationTime/2f, AudioManager.Instance.PlayRequirementMetSound);
-            sequence.PlayForward();
+            star = GetComponent<Image>();
+            transform.localScale = Vector3.zero;
         }
-        else
+
+        public void UpdateScore(bool requirementMet)
         {
-            star.color = requirementNotMetColor;
-            Sequence sequence = DOTween.Sequence();
-            sequence.Append(transform.DOScale(1.0f, animationTime));
-            sequence.InsertCallback(animationTime/2f, AudioManager.Instance.PlayRequirementNotMetSound);
-            sequence.PlayForward();
+            if(requirementMet)
+            {
+                star.color = requirementMetColor;
+                Sequence sequence = DOTween.Sequence();
+                sequence.Append(transform.DOScale(1.0f, animationTime).SetEase(Ease.OutElastic));
+                sequence.InsertCallback(animationTime/2f, AudioManager.Instance.PlayRequirementMetSound);
+                sequence.PlayForward();
+            }
+            else
+            {
+                star.color = requirementNotMetColor;
+                Sequence sequence = DOTween.Sequence();
+                sequence.Append(transform.DOScale(1.0f, animationTime));
+                sequence.InsertCallback(animationTime/2f, AudioManager.Instance.PlayRequirementNotMetSound);
+                sequence.PlayForward();
+            }
         }
-    }
+    }    
 }

@@ -3,56 +3,59 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class ScanningReflection : MonoBehaviour
+namespace RockPaperScissors.UI.Animations
 {
-    [SerializeField] private Transform scanLineTransform;
-    [SerializeField] float animationTime = 1.0f;
-    [SerializeField] float delayTime = 3.0f;
-    private float scanLineStartingX;
-    private IEnumerator coroutine = null;
-
-    private void Awake() 
+    public class ScanningReflection : MonoBehaviour
     {
-        scanLineStartingX = scanLineTransform.position.x;
-    }
+        [SerializeField] private Transform scanLineTransform;
+        [SerializeField] float animationTime = 1.0f;
+        [SerializeField] float delayTime = 3.0f;
+        private float scanLineStartingX;
+        private IEnumerator coroutine = null;
 
-    private void OnEnable() 
-    {
-        StartScanAnimation();
-    }
-
-    public void StartScanAnimation()
-    {
-        if(coroutine == null)
+        private void Awake() 
         {
-            coroutine = Scan();
-            StartCoroutine(coroutine);
+            scanLineStartingX = scanLineTransform.position.x;
         }
-        else
-        {
-            CancelScan();
-            coroutine = Scan();
-            StartCoroutine(coroutine);
-        }
-    }
 
-    public void CancelScan()
-    {
-        if(coroutine != null)
+        private void OnEnable() 
         {
-            StopCoroutine(coroutine);
-            coroutine = null;
+            StartScanAnimation();
         }
-    }
 
-    private IEnumerator Scan()
-    {
-        WaitForSeconds waitForSeconds = new WaitForSeconds(animationTime + delayTime);
-        while(true)
+        public void StartScanAnimation()
         {
-            scanLineTransform.localPosition = new Vector3(scanLineStartingX, 0f, 0f);
-            scanLineTransform.DOMoveX(-scanLineStartingX, animationTime);
-            yield return waitForSeconds;
+            if(coroutine == null)
+            {
+                coroutine = Scan();
+                StartCoroutine(coroutine);
+            }
+            else
+            {
+                CancelScan();
+                coroutine = Scan();
+                StartCoroutine(coroutine);
+            }
+        }
+
+        public void CancelScan()
+        {
+            if(coroutine != null)
+            {
+                StopCoroutine(coroutine);
+                coroutine = null;
+            }
+        }
+
+        private IEnumerator Scan()
+        {
+            WaitForSeconds waitForSeconds = new WaitForSeconds(animationTime + delayTime);
+            while(true)
+            {
+                scanLineTransform.localPosition = new Vector3(scanLineStartingX, 0f, 0f);
+                scanLineTransform.DOMoveX(-scanLineStartingX, animationTime);
+                yield return waitForSeconds;
+            }
         }
     }
 }

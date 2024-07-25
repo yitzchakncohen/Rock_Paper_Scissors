@@ -85,7 +85,6 @@
     <Compile Include="Assets\Scripts\UI\Buttons\CancelButton.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\SaveManager.cs" />
     <Compile Include="Assets\Scripts\UI\StatusUpdateUI.cs" />
-    <Compile Include="Assets\Scripts\CombatModifiers.cs" />
     <Compile Include="Assets\Scripts\UI\NextWaveUI.cs" />
     <Compile Include="Assets\Scripts\UI\Buttons\NextTurnButton.cs" />
     <Compile Include="Assets\Scripts\PathFinding\PathFinding.cs" />
@@ -154,6 +153,7 @@
     <Compile Include="Assets\Scripts\Unit\UnitSpawnerData.cs" />
     <Compile Include="Assets\Scripts\UI\Menus\HowToPlayMenu.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitData.cs" />
+    <Compile Include="Assets\Scripts\Unit\CombatModifiers.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\SaveGameplayManagerData.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitAttack.cs" />
     <Compile Include="Assets\Scripts\SaveSystem\SaveUnitData.cs" />

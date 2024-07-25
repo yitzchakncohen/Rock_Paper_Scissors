@@ -9,6 +9,7 @@ using RockPaperScissors.SaveSystem;
 using RockPaperScissors.UI;
 using RockPaperScissors.UI.Buttons;
 using RockPaperScissors.UI.Menus;
+using RockPaperScissors.UI.Animations;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
