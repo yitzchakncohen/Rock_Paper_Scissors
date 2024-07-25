@@ -526,4 +526,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a4e42b15697cb14fb92873e58e2857a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitSpawnerData: {fileID: 11400000, guid: 69ac4230f1ce2f34084144c30edc2642, type: 2}
+  unitSpawnerData: {fileID: 11400000, guid: ff7b4890aa6bf3e4a944c9255577c633, type: 2}

@@ -89,11 +89,15 @@ namespace RockPaperScissors.Units
         private void TurnManager_OnNextTurn(object sender, TurnManager.OnNextTurnEventArgs e)
         {
             // Gain currency on player's turn. 
-            if(e.IsPlayersTurn)
+            if(e.IsPlayersTurn && unit.IsFriendly)
             {
                 currencyBank.AddCurrencyToBank(GetCurrencyProducedThisTurn(), unit.transform);
                 buildStationaryUnitActionsRemaining = 1;
                 buildMoveableUnitActionsRemaining = 1;
+            }
+            else if(!e.IsPlayersTurn && !unit.IsFriendly)
+            {
+                
             }
         }
 
