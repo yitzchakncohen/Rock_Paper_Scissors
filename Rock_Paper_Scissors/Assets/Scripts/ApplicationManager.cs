@@ -16,13 +16,6 @@ using UnityEngine.SceneManagement;
 
 namespace RockPaperScissors
 {
-    public enum GameMode
-    {
-        Endless,
-        Level
-    }
-
-
     /// <summary>
     /// Class <c>ApplicationManager</c> is a persistent class that manages the high level state of the application.
     /// </summary>

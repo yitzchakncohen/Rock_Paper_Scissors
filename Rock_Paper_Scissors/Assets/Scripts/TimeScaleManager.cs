@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using RockPaperScissors.UI.Menus;
 using UnityEngine;
 
 public class TimeScaleManager : MonoBehaviour

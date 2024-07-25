@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using RockPaperScissors.Units;
 using UnityEngine;
 
 namespace RockPaperScissors.Units

@@ -109,6 +109,7 @@
     <Compile Include="Assets\Scripts\Currency\CurrencyBank.cs" />
     <Compile Include="Assets\Scripts\UI\CameraLetterboxing.cs" />
     <Compile Include="Assets\Scripts\UI\Components\OutlineShine.cs" />
+    <Compile Include="Assets\Scripts\GameMode.cs" />
     <Compile Include="Assets\Scripts\UI\Buttons\BuildingButton.cs" />
     <Compile Include="Assets\Scripts\Enemy\WaitingForTurnState.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitManager.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Assets\Scripts\UI\Menus\BuildingMenu.cs" />
     <Compile Include="Assets\Scripts\UI\UI Animations\ScanningReflection.cs" />
     <Compile Include="Assets\Scripts\UI\AdModal.cs" />
+    <Compile Include="Assets\Scripts\UI\Components\SavingIndicator.cs" />
     <Compile Include="Assets\Scripts\UI\Menus\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\LevelData.cs" />
     <Compile Include="Assets\Scripts\Grid\GridUI.cs" />
@@ -141,7 +143,6 @@
     <Compile Include="Assets\Scripts\UI\HealthBar.cs" />
     <Compile Include="Assets\Scripts\Grid\GridObject.cs" />
     <Compile Include="Assets\Scripts\Unit\UnitProgression.cs" />
-    <Compile Include="Assets\Scripts\UI\SavingIndicator.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyAIAction.cs" />
     <Compile Include="Assets\Scripts\UI\SelectionUI.cs" />
     <Compile Include="Assets\Scripts\UI\Components\RandomColourVariation.cs" />
