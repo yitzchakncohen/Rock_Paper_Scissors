@@ -1,0 +1,93 @@
+<mxfile host="Electron" modified="2023-08-22T17:38:20.651Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.5 Chrome/114.0.5735.243 Electron/25.3.1 Safari/537.36" etag="veKxo9EwHPAnU2rtwOtt" version="21.6.5" type="device">
+  <diagram name="Page-1" id="mGJoLvYG-fS1_jH_Z6Cq">
+    <mxGraphModel dx="1668" dy="1865" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Dlo6g0ih8rGAwdO2OKN0-1" target="Dlo6g0ih8rGAwdO2OKN0-36" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-1" value="Enemy" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="630" y="-60" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Dlo6g0ih8rGAwdO2OKN0-2" target="Dlo6g0ih8rGAwdO2OKN0-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-2" value="Attack 100-200" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="630" y="140" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Dlo6g0ih8rGAwdO2OKN0-4" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="690" y="830" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-4" value="Move 0-100" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="630" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-6" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Dlo6g0ih8rGAwdO2OKN0-5" target="Dlo6g0ih8rGAwdO2OKN0-4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-12" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Dlo6g0ih8rGAwdO2OKN0-5" target="Dlo6g0ih8rGAwdO2OKN0-11" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-5" value="In range to attack?" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="615" y="240" width="150" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Dlo6g0ih8rGAwdO2OKN0-11" target="Dlo6g0ih8rGAwdO2OKN0-13" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-11" value="Sort by combat advantage." style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="855" y="285" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Dlo6g0ih8rGAwdO2OKN0-13" target="Dlo6g0ih8rGAwdO2OKN0-15" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-13" value="Sort by lowest health." style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="1050" y="285" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-15" value="Attack unit." style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="1250" y="285" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-24" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Dlo6g0ih8rGAwdO2OKN0-21" target="Dlo6g0ih8rGAwdO2OKN0-23" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-30" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="Dlo6g0ih8rGAwdO2OKN0-21" target="Dlo6g0ih8rGAwdO2OKN0-29" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-21" value="Is unit in range of move position?" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="615" y="530" width="150" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Dlo6g0ih8rGAwdO2OKN0-23" target="Dlo6g0ih8rGAwdO2OKN0-25" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-23" value="Sort by lowest number of units in range. 10-60" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="855" y="575" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Dlo6g0ih8rGAwdO2OKN0-25" target="Dlo6g0ih8rGAwdO2OKN0-27" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-25" value="Sort by units with lowest health." style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="1050" y="575" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-27" value="Move to position." style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="1250" y="575" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Dlo6g0ih8rGAwdO2OKN0-29" target="Dlo6g0ih8rGAwdO2OKN0-32" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-29" value="Sort by how close is closest unit. 1-10" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="630" y="720" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-32" value="Move to position." style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="630" y="820" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Dlo6g0ih8rGAwdO2OKN0-36" target="Dlo6g0ih8rGAwdO2OKN0-2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Dlo6g0ih8rGAwdO2OKN0-36" value="Find unit with highest value move." style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="630" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
