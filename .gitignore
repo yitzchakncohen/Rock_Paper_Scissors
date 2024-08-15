@@ -5,3 +5,5 @@ Logs/
 *.csproj
 *.csproj
 *.log
+/Rock_Paper_Scissors/Builds/iOS/Simulator
+/Rock_Paper_Scissors/Builds/iOS/Release
