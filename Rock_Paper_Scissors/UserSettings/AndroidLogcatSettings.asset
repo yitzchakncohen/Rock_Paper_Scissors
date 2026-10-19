@@ -127,6 +127,17 @@
         "DisplayIdEnabled": false,
         "DisplayId": ""
     },
+    "m_ScreenCaptureSettings": {
+        "Mode": 0,
+        "m_LastSaveLocation": [
+            "D:\\Unity\\repos\\Rock_Paper_Scissors\\Rock_Paper_Scissors",
+            "D:\\Unity\\repos\\Rock_Paper_Scissors\\Rock_Paper_Scissors"
+        ]
+    },
+    "m_QueryLayoutSettings": {
+        "LastLayoutSaveLocation": "",
+        "LastScreenshotSaveLocation": ""
+    },
     "m_InputSettings": {
         "ShiftModifier": false,
         "SendText": "",
