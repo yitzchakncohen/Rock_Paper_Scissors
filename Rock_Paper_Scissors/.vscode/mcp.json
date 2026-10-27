@@ -1,3 +1,15 @@
 {
-  "servers": {}
+  "servers": {
+    "aseprite": {
+      "type": "stdio",
+      "command": "D:\\Unity\\repos\\aseprite-mcp\\.venv\\Scripts\\python.exe",
+      "args": [
+        "-m",
+        "aseprite_mcp"
+      ],
+      "env": {
+        "ASEPRITE_PATH": "D:\\SteamLibrary\\steamapps\\common\\Aseprite\\Aseprite.exe"
+      }
+    }
+  }
 }
